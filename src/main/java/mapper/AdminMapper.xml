@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<mapper namespace="impl.AdminImpl">
-	<select id="selectLike" resultType="model.MemberDTO">
-	select * from member where id=#{param1} and pw=#{param2}
-	</select>
-</mapper>	
