@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns:beans="http://www.springframework.org/schema/beans"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xmlns="http://www.springframework.org/schema/security"
+   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+      http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.2.xsd">
+ 
+   <http>
+      <intercept-url pattern="/**" access="permitAll" />
+      
+      <!-- 로그인 페이지 -->
+      <form-login login-page="/login.do"
+       	authentication-failure-url="/login.do?error" 
+      	default-target-url="/main.do"
+         login-processing-url="/loginAction.do" 
+         username-parameter="id" 
+         password-parameter="pw"/>
+         
+      <!-- 로그아웃 성공페이지 -->
+      <logout logout-url="/logout.do" logout-success-url="/login.do" />
+      
+      <!-- 로그인 후 페이지 권한 없는 경우 -->
+      <access-denied-handler error-page="/accessDenied.do"/>
+   </http>
+   
+   <!-- 계정정보(JDBC연결) -->
+   <authentication-manager>
+      <authentication-provider>
+         <jdbc-user-service data-source-ref="dataSource"
+            role-prefix="Role_"
+            users-by-username-query="SELECT 
+               id, pw, enabled 
+               FROM member WHERE id=?"
+            authorities-by-username-query="SELECT 
+               id, grade 
+               FROM member WHERE id=?" /> 
+      </authentication-provider>
+   </authentication-manager>
+</beans:beans>
