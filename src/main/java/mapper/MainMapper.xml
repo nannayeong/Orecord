@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="impl.MainImpl">
+	<select id="commentCount" resultType="java.lang.Integer" parameterType="int">
+		SELECT COUNT(*) FROM m_comment INNER JOIN audioboard ON m_comment.audio_idx=audioboard.audio_idx where m_comment.audio_idx=#{0}
+	</select>
+	<update id="addheart" parameterType="int">
+		UPDATE audioboard SET like_count=like_count+1 where m_comment.audio_idx=#{0}
+	</update>
+
+	<select id="mainFollwerIdList" resultType="model.FollowDTO" parameterType="java.lang.String" >
+		SELECT * FROM FOLLOW WHERE user_id=#{0}
+	</select>
+	<select id="mainLikeIdList" resultType="model.LikeDTO">
+		select * from like_board where AUDIO_IDX=#{0}
+	</select>
+</mapper> 
