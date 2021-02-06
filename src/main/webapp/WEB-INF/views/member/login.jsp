@@ -25,7 +25,7 @@
 			<div style="width:80%;height:500px;">
 			<c:choose>
 			<c:when test="${empty pageContext.request.userPrincipal.name }">
-			<c:url value="/loginAction.do" var="loginUrl" />
+			<c:url value="/member/loginAction.do" var="loginUrl" />
 			<form:form name="loginFrm" action="${loginUrl }" method="post">
 			<c:if test="${param.error != null }">
 				<p>아이디와 패스워드가 잘못되었습니다.</p>

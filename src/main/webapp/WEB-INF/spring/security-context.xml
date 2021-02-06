@@ -6,15 +6,17 @@
       http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.2.xsd">
  
    <http>
+   	  <intercept-url pattern="/admin/**" access="hasRole('9')"/>
       <intercept-url pattern="/**" access="permitAll" />
       
       <!-- 로그인 페이지 -->
-      <form-login login-page="/member/login.do"
+      <form-login 
+      	login-page="/member/login.do"
        	authentication-failure-url="/member/login.do?error" 
-      	default-target-url="/main.do"
-         login-processing-url="/loginAction.do" 
-         username-parameter="id" 
-         password-parameter="pw"/>
+      	default-target-url="/member/loginPrev.do"
+        login-processing-url="/member/loginAction.do" 
+        username-parameter="id" 
+        password-parameter="pw"/>
          
       <!-- 로그아웃 성공페이지 -->
       <logout logout-url="/logout.do" logout-success-url="/member/login.do" />
