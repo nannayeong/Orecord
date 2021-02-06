@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="impl.PointImpl"> 
+	<!-- 충전내역 건수 조회 -->
+	<select id="selectChargeLogTotalCount" resultType="int" parameterType="hashmap">
+		SELECT count(*)
+		FROM chargeLog 
+    WHERE id=#{loginId} AND 
+    	trunc(regidate) between #{fromDate} and #{toDate}
+    ORDER BY regidate DESC
+	</select>
+	<!-- 충전내역 조회 -->
+	<select id="selectChargeLog" resultType="model.PointDTO" parameterType="hashmap">
+		SELECT * 
+		FROM (
+					SELECT A.*, rownum recordNum 
+					FROM (
+								SELECT regidate, chargePoint, paymentType
+								FROM chargeLog
+								WHERE id=#{loginId} AND 
+									trunc(regidate) between #{fromDate} and #{toDate}
+    						ORDER BY regidate DESC
+					) A
+		)
+		WHERE recordNum between #{startRecord} and #{endRecord}
+	</select>
+	
+	<!-- 후원한내역 건수 조회 -->
+	<select id="selectSponsorLogTotalCount" resultType="int" parameterType="hashmap">
+		SELECT count(*)
+		FROM chargeLog 
+    WHERE id=#{loginId} AND 
+    	trunc(regidate) between #{fromDate} and #{toDate}
+    ORDER BY regidate DESC
+	</select>
+	
+	<!-- 후원한내역 조회 -->
+	<select id="selectSponsorLog" resultType="model.PointDTO" parameterType="hashmap">
+		SELECT * 
+		FROM (
+					SELECT A.*, rownum recordNum 
+					FROM (
+								SELECT regidate, chargePoint, paymentType
+								FROM chargeLog
+								WHERE id=#{loginId} AND 
+									trunc(regidate) between #{fromDate} and #{toDate}
+    						ORDER BY regidate DESC
+					) A
+		)
+		WHERE recordNum between #{startRecord} and #{endRecord}
+	</select>
+	
+	<!-- 후원 받은 내역 건수 조회 -->
+	<select id="selectPatronLogTotalCount" resultType="int" parameterType="hashmap">
+		SELECT count(*)
+		FROM chargeLog 
+    WHERE id=#{loginId} AND 
+    	trunc(regidate) between #{fromDate} and #{toDate}
+    ORDER BY regidate DESC
+	</select>
+	
+	<!-- 후원 받은 내역 조회 -->
+	<select id="selectPatronLog" resultType="model.PointDTO" parameterType="hashmap">
+		SELECT * 
+		FROM (
+					SELECT A.*, rownum recordNum 
+					FROM (
+								SELECT regidate, chargePoint, paymentType
+								FROM chargeLog
+								WHERE id=#{loginId} AND 
+									trunc(regidate) between #{fromDate} and #{toDate}
+    						ORDER BY regidate DESC
+					) A
+		)
+		WHERE recordNum between #{startRecord} and #{endRecord}
+	</select>
+	
+	<!-- 환전내역 건수 조회 -->
+	<select id="selectExchangeLogTotalCount" resultType="int" parameterType="hashmap">
+		SELECT count(*)
+		FROM chargeLog 
+    WHERE id=#{loginId} AND 
+    	trunc(regidate) between #{fromDate} and #{toDate}
+    ORDER BY regidate DESC
+	</select>
+	
+	<!-- 환전내역 조회 -->
+	<select id="selectExchangeLog" resultType="model.PointDTO" parameterType="hashmap">
+		SELECT * 
+		FROM (
+					SELECT A.*, rownum recordNum 
+					FROM (
+								SELECT regidate, chargePoint, paymentType
+								FROM chargeLog
+								WHERE id=#{loginId} AND 
+									trunc(regidate) between #{fromDate} and #{toDate}
+    						ORDER BY regidate DESC
+					) A
+		)
+		WHERE recordNum between #{startRecord} and #{endRecord}
+	</select>
+	
+</mapper>

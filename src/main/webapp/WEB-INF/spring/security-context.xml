@@ -9,18 +9,18 @@
       <intercept-url pattern="/**" access="permitAll" />
       
       <!-- 로그인 페이지 -->
-      <form-login login-page="/login.do"
-       	authentication-failure-url="/login.do?error" 
+      <form-login login-page="/member/login.do"
+       	authentication-failure-url="/member/login.do?error" 
       	default-target-url="/main.do"
          login-processing-url="/loginAction.do" 
          username-parameter="id" 
          password-parameter="pw"/>
          
       <!-- 로그아웃 성공페이지 -->
-      <logout logout-url="/logout.do" logout-success-url="/login.do" />
+      <logout logout-url="/logout.do" logout-success-url="/member/login.do" />
       
       <!-- 로그인 후 페이지 권한 없는 경우 -->
-      <access-denied-handler error-page="/accessDenied.do"/>
+      <access-denied-handler error-page="/member/accessDenied.do"/>
    </http>
    
    <!-- 계정정보(JDBC연결) -->

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="impl.PartyImpl">
+	
+	<!-- 협업신청폼 -->
+	<select id="partyWrite" resultType="model.AudioBoardDTO">
+		SELECT * FROM audioboard where audio_idx=#{audio_idx}
+	</select>
+	
+	<!-- 협업신청처리 -->
+	<insert id="partyAction">
+		INSERT INTO partyboard
+		(party_idx,id,audio_idx,title,contents,audiofilename,kind,point,exdate,regidate)
+		VALUES
+		(seq_partyboard.nextval, #{id}, #{audio_idx}, #{title}, #{contents},
+			#{audiofilename}, #{kind}, #{point}, sysdate+7, sysdate)
+	</insert>
+</mapper>
