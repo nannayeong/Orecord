@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div class="menu-back">
 	<!-- 오른정렬 -->
-	<a href=""><div class="logo">Orecord</div></a>
+	<a href="${pageContext.request.contextPath}/main.do"><div class="logo">Orecord</div></a>
 	<a href=""><div class="menu">menu1</div></a>
 	<a href=""><div class="menu">menu2</div></a>
 	<div class="search">
@@ -30,11 +30,15 @@
 		</div>
 	</div>
 	<div class="noti" id="user"onclick="userFunc();">
-		<img src="./resources/default.jpg" alt="" style="width:1.5em;border-radius:15px;margin-left:5px" />
+		<img src="./resources/img/default.jpg" alt="" style="width:1.5em;border-radius:15px;margin-left:5px" />
 		<i class="fas fa-caret-down"></i>
 		<div style="position:relative;background-color:red;visibility:hidden" class="user-down">
-			<li>1</li>
-			<li>2</li>
+		<c:choose>
+		<c:when test="${sessionScope.SPRING_SECURITY_CONTEXT.authentication.authorities eq '[ROLE_ADMIN]'}">
+			<li onclick="location.href='${pageContext.request.contextPath}/admin/main'">어드민페이지</li>
+		</c:when>
+		</c:choose>
+			<li></li>
 		</div>
 	</div>
 	<a href=""><div class="menu-r">Upload</div></a>
