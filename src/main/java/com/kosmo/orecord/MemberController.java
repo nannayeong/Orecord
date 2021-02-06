@@ -8,6 +8,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,7 +30,7 @@ public class MemberController {
 	
 	/*로그인*/
 	@RequestMapping("/member/login.do")
-	public String Login(Model model, Principal principal) {
+	public String Login(Model model, Principal principal, HttpServletRequest req) {
 
 		String id = "";
 		try {
@@ -37,9 +40,23 @@ public class MemberController {
 			e.printStackTrace();
 		}  
 		
+		/*인증페이지로 이동하기 전 url기억*/
+		String referrer = req.getHeader("Referer");
+	    req.getSession().setAttribute("prevPage", referrer);
+	    
 		model.addAttribute("id", id);
 		
 		return "member/login";
+	}
+	
+	/*로그인 이전페이지로 이동*/
+	@RequestMapping("/member/loginPrev.do")
+	public String loginP(HttpSession session) {
+		
+		String prv = session.getAttribute("prevPage").toString();
+		System.out.println(prv);
+		
+		return "redirect:"+prv;
 	}
 	
 	/*약관동의*/
@@ -77,9 +94,7 @@ public class MemberController {
 	/*회원가입처리*/
 	@RequestMapping(value = "/membership.do", method = RequestMethod.POST)
 	public String memberAction(Model model, MultipartHttpServletRequest req) {
-		
-		
-		
+
 		//서버의 물리적경로 얻어오기
 		String path = req.getSession().getServletContext().getRealPath("/resources/upload");
 		System.out.println(path);
