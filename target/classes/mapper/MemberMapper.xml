@@ -13,8 +13,8 @@
 
 	<!-- 회원가입 -->
 	<insert id="membershipInfo" >
-		insert into member (id,pw,nickname,email,phone,address,grade,regidate,intro,myPoint,img,enabled) 
-				values (#{id},#{pw},#{nickname},#{email},#{phone},#{address},1,sysdate,#{intro},0,#{img},1);
+		insert into member (id,pw,nickname,email,phone,address,intro,img,enabled) 
+				values (#{0},#{1},#{2},#{3},#{4},#{5},#{6},#{7}, 1)
 	</insert>
 	
 	<!-- 아이디 중복확인 -->
@@ -26,9 +26,5 @@
 	<select id="nickChk" resultType="int">
 		SELECT count(*) FROM member WHERE nickname=#{nickname}
 	</select>
-	
-	
-
-
 </mapper>	 
 

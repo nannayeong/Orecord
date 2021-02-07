@@ -17,20 +17,10 @@
 <!-- layout js-->
 <script src="${pageContext.request.contextPath}/resources/js/layout.js"></script>
 
-<style>
-.profile{width:100%;height:260px}
-.my_center{width:100%;background-color:white}
-.my-menu span{font-size:1.2em; margin-left:1em;}
-.my-menu{width:90%;border-bottom:2px solid #f2f2f2;margin:auto;}
-.my-content{width:90%;}
-.my-con-left{width:70%;margin-top:3em;padding:1em 1em 1em 1em}
-.my-con-right{width:30%;padding:1em 1em 1em 1em;border-left:2px solid #f2f2f2}
-</style>
-
 <script>
 
 function logincheck(bt){
-	if($('#login_id').val()==""){
+	if("${pageContext.request.userPrincipal.name}"==""){
 		alert('로그인 후 이용해주세요');
 		location.href="../member/login.do"
 	}
@@ -46,13 +36,11 @@ function logincheck(bt){
 		}
 		 
 	}
-
 }
 </script>
 </head>
 <body>
 	<div>
-		<input type="hidden" value="${pageContext.request.userPrincipal.name}" id="login_id"/>
 		<div class="content">
 			<div class="profile">
 				<table style="">
@@ -71,10 +59,10 @@ function logincheck(bt){
 			</div>
 			<div>
 				<div class="my-menu">
-					<span>record</span>
-					<span>album</span>
-					<span>playlist</span>
-					<span>like</span>
+					<span style="color:orange;" onclick="location.href='./'">record</span>
+					<span onclick="location.href='./${user_id}/album'">album</span>
+					<span onclick="location.href='./${user_id}/playlist'">playlist</span>
+					<span onclick="location.href='./${user_id}/like'">like</span>
 					
 					<div style="float:right;margin-right:1em;">
 						<c:choose>
