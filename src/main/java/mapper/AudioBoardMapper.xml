@@ -11,16 +11,17 @@
 			from audioboard b inner join album a on b.album_idx=a.album_idx where b.id=#{param1}
 	</select>
 	
+	<!-- 업로드 -->
 	<insert id="addAudioBoard">
-		insert into audioboard(audio_idx, audiotitle, id, album_idx, audiofilename, artistname, contents, imagename, category)
-			values(seq_audioboard.nextval, #{param1}, #{param2}, #{param3}, #{param4}, #{param5}, #{param6}, #{param7}, #{param8})
+		insert into audioboard(audio_idx, audiotitle, id, album_idx, audiofilename, artistname, contents, imagename, category, party)
+			values(seq_audioboard.nextval, #{param1}, #{param2}, #{param3}, #{param4}, #{param5}, #{param6}, #{param7}, #{param8}, #{param9})
 	</insert>
 	
 	<select id="mainAudioList" resultType="model.AudioBoardDTO">
 		SELECT * FROM audioboard ORDER BY regidate DESC
 	</select>
 	<select id="audioListLast" resultType="model.AudioBoardDTO">
-		select * from audioboard WHERE ID=#{0} AND <![CDATA[ ROWNUM=1 ]]> ORDER BY regidate DESC;
+		select * from audioboard WHERE ID=#{0} AND <![CDATA[ ROWNUM=1 ]]> ORDER BY regidate DESC
 	</select>
 <!-- 	<select id="audioList2week" resultType="model.AudioBoardDTO">
 		select * from audioboard WHERE ID=#{0} AND <![CDATA[ REGIDATE<=SYSDATE-7 ]]> ORDER BY regidate DESC;

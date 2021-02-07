@@ -14,6 +14,8 @@ public class AudioBoardDTO {
 	private java.sql.Date regidate; //게시일
 	private int play_count; //재생횟수
 	private int like_count; //좋아요 수
+	private int party; // 협업참여여부
+	
 	
 	/*album table innerjoin*/
 	private String albumName;
@@ -94,6 +96,12 @@ public class AudioBoardDTO {
 	}
 	public void setLike_count(int like_count) {
 		this.like_count = like_count;
+	}
+	public int getParty() {
+		return party;
+	}
+	public void setParty(int party) {
+		this.party = party;
 	}
 	
 	public String getAlbumName() {

@@ -37,7 +37,7 @@
 			<li>2</li>
 		</div>
 	</div>
-	<a href=""><div class="menu-r">Upload</div></a>
+	<a href="${pageContext.request.contextPath}/upload.do"><div class="menu-r">Upload</div></a>
 	</c:when>
 	<c:otherwise>
 	<div class="menu-unlogin">
