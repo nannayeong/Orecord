@@ -26,9 +26,5 @@
 	<select id="nickChk" resultType="int">
 		SELECT count(*) FROM member WHERE nickname=#{nickname}
 	</select>
-	
-	
-
-
 </mapper>	 
 
