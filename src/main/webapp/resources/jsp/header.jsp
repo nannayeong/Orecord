@@ -41,7 +41,7 @@
 	</c:when>
 	<c:otherwise>
 	<div class="menu-unlogin">
-		<button type="button" class="btn btn-secondary btn-sm" onclick="location.href='${pageContext.request.contextPath}/member/membership.do'">회원가입</button>
+		<button type="button" class="btn btn-secondary btn-sm" onclick="location.href='${pageContext.request.contextPath}/member/membershipsub.do'">회원가입</button>
 	</div>
 	<div class="menu-unlogin">
 		<button type="button" class="btn btn-primary btn-sm" onclick="location.href='${pageContext.request.contextPath}/member/login.do'">로그인</button>

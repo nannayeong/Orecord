@@ -60,13 +60,13 @@ public class MemberController {
 	}
 	
 	/*약관동의*/
-	@RequestMapping("/membershipsub.do")
+	@RequestMapping("/member/membershipsub.do")
 	public String membershipsub() {
 		return "member/membershipsub";
 	}
 	
 	/*회원가입*/
-	@RequestMapping("/membership.do")
+	@RequestMapping("/member/membership.do")
 	public String membership() {
 		return "member/membership";
 	}
@@ -76,7 +76,7 @@ public class MemberController {
 //	public String pwfind() {
 //		return "";
 //	}
-	
+	 
 	@RequestMapping("/member/accessDenied.do")
 	public String AccessDenied() {
 		return "member/accessDenied";
@@ -92,7 +92,7 @@ public class MemberController {
 	
 	
 	/*회원가입처리*/
-	@RequestMapping(value = "/membership.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/member/membership.do", method = RequestMethod.POST)
 	public String memberAction(Model model, MultipartHttpServletRequest req) {
 
 		//서버의 물리적경로 얻어오기
@@ -116,7 +116,7 @@ public class MemberController {
 			String address = req.getParameter("address")+"/"+req.getParameter("addr1")+"/"+req.getParameter("addr2");
 			String intro = req.getParameter("intro");
 			String img= null;
-			
+			System.out.println(id);
 			
 			/*
 			 물리적경로를 기반으로 File객체를 생성한 후 지정된 디렉토리가 있는지 확인한다.
@@ -137,7 +137,7 @@ public class MemberController {
 				
 				//한글깨짐방지 처리 후 전송된 파일명을 가져옴
 				String originalName = new String(mfile.getOriginalFilename().getBytes(), "UTF-8");
-				
+				img = originalName;
 				//서버로 전송된 파일이 없다면 while문의 처음으로 돌아간다.
 				if("".equals(originalName)) {
 					continue;
@@ -158,7 +158,7 @@ public class MemberController {
 				
 				mfile.transferTo(serverFullName);
 			}
-			
+			System.out.println(id+"**"+ pw+"**"+nickname+"**"+email+"**"+phone+"**"+address+"**"+intro+"**"+img);
 			int result = sqlSession.getMapper(MemberImpl.class).
 					membershipInfo(id, pw, nickname, email, phone, address, intro, img);
 			
