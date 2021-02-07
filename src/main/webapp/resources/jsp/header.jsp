@@ -1,6 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<style>
+a:link { color: red; text-decoration: none;}
+a:visited { color: black; text-decoration: none;}
+a:hover { color: blue; text-decoration: underline;}
+</style>
 <div class="menu-back">
 	<!-- 오른정렬 -->
 	<a href="${pageContext.request.contextPath}/main.do"><div class="logo">Orecord</div></a>
@@ -33,12 +38,10 @@
 		<img src="./resources/img/default.jpg" alt="" style="width:1.5em;border-radius:15px;margin-left:5px" />
 		<i class="fas fa-caret-down"></i>
 		<div style="position:relative;background-color:red;visibility:hidden" class="user-down">
-		<c:choose>
-		<c:when test="${sessionScope.SPRING_SECURITY_CONTEXT.authentication.authorities eq '[ROLE_ADMIN]'}">
-			<li onclick="location.href='${pageContext.request.contextPath}/admin/main'">어드민페이지</li>
-		</c:when>
-		</c:choose>
-			<li></li>
+			<c:if test="${sessionScope.SPRING_SECURITY_CONTEXT.authentication.authorities eq '[ROLE_ADMIN]'}">
+			<li><a href="${pageContext.request.contextPath}/admin/main">어드민페이지</a></li>
+			</c:if>
+			<li><a href="${pageContext.request.contextPath}/${pageContext.request.userPrincipal.name}/">마이페이지</a></li>
 		</div>
 	</div>
 	<a href=""><div class="menu-r">Upload</div></a>
