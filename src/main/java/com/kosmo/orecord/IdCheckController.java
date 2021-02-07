@@ -23,7 +23,7 @@ public class IdCheckController{
 	public String idChk(Model model, HttpServletRequest req, Principal principal) {
 		
 		//전송된 값을 가져와 변수에 저장한다.
-		
+		 
 		String id = req.getParameter("id");
 		
 		int jungbokId = sqlSession.getMapper(MemberImpl.class).idChk(id);
