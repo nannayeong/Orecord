@@ -199,7 +199,6 @@ public class UploadController {
 		catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		return "redirect:/"+id+"/record";
+		return "redirect:/orecord/"+id+"/record";
 	}
 }
