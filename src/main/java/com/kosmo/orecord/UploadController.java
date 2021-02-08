@@ -53,15 +53,11 @@ public class UploadController {
 		AlbumDTO albumDTO = new AlbumDTO();
 		
 		/*아무 앨범도 없을 때*/
-		if(albumList==null) {
+		if(albumList.size()==0) {
 			albumDTO.setAlbumName("default");
 			albumList.add(albumDTO);
 		}
 		
-		for(AlbumDTO dto : albumList) {
-			System.out.println(dto.getAlbumName());
-		}
-		System.out.println(albumList);
 		model.addAttribute("albumList", albumList);
 		
 		return "upload/upload";
@@ -203,7 +199,6 @@ public class UploadController {
 		catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		return "redirect:/"+id+"/album";
+		return "redirect:/orecord/"+id+"/record";
 	}
 }

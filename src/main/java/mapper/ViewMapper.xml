@@ -33,7 +33,8 @@
 	<!-- 상세페이지 수정처리 -->
 	<update id="modifyAction" parameterType="model.AudioBoardDTO">
 		UPDATE audioboard
-			SET audiotitle=#{audiotitle}, artistname=#{artistname}, contents=#{contents}
+			SET audiotitle=#{audiotitle}, artistname=#{artistname}, contents=#{contents},
+				audiofilename=#{audiofilename}, imagename=#{imagename}, category=#{category}
 				WHERE audio_idx=#{audio_idx} AND id=#{id}
 	</update>
 	
