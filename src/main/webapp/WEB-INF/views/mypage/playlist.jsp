@@ -123,8 +123,9 @@ $(function(){
 	     }    
 	});
 	
+	/* 리스트페이지 */
 	$.ajax({
-	     url : "../mypageRecord.do",
+	     url : "../mypagePlay.do",
 	     type : "get",
 	     contentType : "text/html;charset:utf-8",
 	     data : {user_id:"${user_id}", 
@@ -157,9 +158,9 @@ $(function(){
 			</div>
 			<div>
 				<div class="my-menu">
-					<span onclick="location.href='../${user_id}/record'" style="color:orange;">record</span>
+					<span onclick="location.href='../${user_id}/record'">record</span>
 					<span onclick="location.href='../${user_id}/album'">album</span>
-					<span onclick="location.href='../${user_id}/playlist'">playlist</span>
+					<span onclick="location.href='../${user_id}/playlist'" style="color:orange;">playlist</span>
 					<span onclick="location.href='../${user_id}/like'">like</span>
 					
 					<div style="float:right;margin-right:1em;">

@@ -7,8 +7,8 @@
 <mapper namespace="impl.AudioBoardImpl">
 
 	<select id="audioList" resultType="model.AudioBoardDTO">
-		select audio_idx, audiotitle, b.id, b.album_idx, audiofilename, artistname, albumName 
-			from audioboard b inner join album a on b.album_idx=a.album_idx where b.id=#{param1}
+		select audio_idx, audiotitle, b.id, b.album_idx, audiofilename, artistname, albumName, regidate
+			from audioboard b inner join album a on b.album_idx=a.album_idx where b.id=#{param1} order by regidate desc
 	</select>
 	
 	<!-- 업로드 -->

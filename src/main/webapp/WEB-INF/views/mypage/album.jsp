@@ -6,11 +6,10 @@
 <head>
 <meta charset="UTF-8">
 <title>${user_id}님의 페이지</title>
-
 <!-- Jquery, BootStrap -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap-theme.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
 
@@ -30,15 +29,90 @@ function logincheck(bt){
 			
 		}
 		else if(bt.innerHTML=='팔로우'){
-			bt.innerHTML = '팔로워';
+			$.ajax({
+			     url : "../addFollower.do",
+			     type : "get",
+			     contentType : "text/html;charset:utf-8",
+			     data : {followerId:"${user_id}"},
+			     dataType : "html",
+			     success : function sucFunc(resData) {
+			    	 bt.innerHTML = '팔로워';
+			    	 $('#follow').removeClass();
+		    		 $('#follow').addClass('btn btn-outline-success btn-sm');
+			     }    
+			});
+			
+			/* 팔로잉/팔로워/게시물 숫자 불러오기 */
+			$.ajax({
+			     url : "../mypageFollowTrack.do",
+			     type : "get",
+			     contentType : "text/html;charset:utf-8",
+			     data : {user_id:"${user_id}"}, 
+			     dataType : "json",
+			     success : function sucFunc(resData) {
+			   	  $('#following').html(resData.followingCount);
+			   	  $('#followers').html(resData.followerCount);
+			   	  $('#track').html(resData.trackCount);
+			     }    
+			});
 		}
 		else if(bt.innerHTML=='팔로워'){
-			bt.innerHTML = '팔로우';
+			$.ajax({
+			     url : "../unFollow.do",
+			     type : "get",
+			     contentType : "text/html;charset:utf-8",
+			     data : {followerId:"${user_id}"},
+			     dataType : "html",
+			     success : function sucFunc(resData) {
+			    	 bt.innerHTML = '팔로우';
+			    	 $('#follow').removeClass();
+			    	 $('#follow').addClass('btn btn-success btn-sm');
+			     }    
+			});
+			
+			/* 팔로잉/팔로워/게시물 숫자 불러오기 */
+			$.ajax({
+			     url : "../mypageFollowTrack.do",
+			     type : "get",
+			     contentType : "text/html;charset:utf-8",
+			     data : {user_id:"${user_id}"}, 
+			     dataType : "json",
+			     success : function sucFunc(resData) {
+			   	  $('#following').html(resData.followingCount);
+			   	  $('#followers').html(resData.followerCount);
+			   	  $('#track').html(resData.trackCount);
+			     }    
+			});
 		}		 
 	}
 }
 
+function clickAudio(audioFileName,playerName){
+	$('#'+playerName).attr('src',audioFileName).attr('autoplay',true);
+}
+
 $(function(){
+	/*로그인 아이디의 팔로우여부 확인하기*/
+	$.ajax({
+	     url : "../checkFollow.do",
+	     type : "get",
+	     contentType : "text/html;charset:utf-8",
+	     data : {user_id:"${user_id}"},
+	     dataType : "json",
+	     success : function sucFunc(resData) {
+	    	 //언팔상태
+	    	 if(resData.follow==0){
+	    		 $('#follow').html('팔로우');
+	    		 $('#follow').addClass('btn btn-success btn-sm');
+	    	 }
+	    	 else if(resData.follow==1){
+	    		 $('#follow').html('팔로워');
+	    		 $('#follow').removeClass();
+	    		 $('#follow').addClass('btn btn-outline-success btn-sm');
+	    	 }	 
+	     }    
+	});		
+	
 	/* 팔로잉/팔로워/게시물 숫자 불러오기 */
 	$.ajax({
 	     url : "../mypageFollowTrack.do",
@@ -53,12 +127,12 @@ $(function(){
 	     }    
 	});
 	
-	/* 앨범리스트페이지 */
+	/* 리스트페이지 */
 	$.ajax({
 	     url : "../mypageAlbum.do",
 	     type : "get",
 	     contentType : "text/html;charset:utf-8",
-	     data : {user_id:"${pageContext.request.userPrincipal.name}", 
+	     data : {user_id:"${user_id}", 
 	    	 	nowPage:"${nowPage==null?1:nowPage}"},
 	     dataType : "html",
 	     success : function sucFunc(resData) {
@@ -88,8 +162,8 @@ $(function(){
 			</div>
 			<div>
 				<div class="my-menu">
-					<span onclick="location.href='../'">record</span>
-					<span style="color:orange;" onclick="location.href='../${user_id}/album'">album</span>
+					<span onclick="location.href='../${user_id}/record'">record</span>
+					<span onclick="location.href='../${user_id}/album'" style="color:orange;">album</span>
 					<span onclick="location.href='../${user_id}/playlist'">playlist</span>
 					<span onclick="location.href='../${user_id}/like'">like</span>
 					
@@ -100,7 +174,7 @@ $(function(){
 						<button type="button" onclick="logincheck(this)" id="follow" class="btn btn-success btn-sm">팔로우</button>
 						</c:when>
 						<c:otherwise>
-						<button type="button">업로드하기</button>
+						<button type="button" onclick="location.href='../upload.do'">업로드하기</button>
 						</c:otherwise>
 						</c:choose>
 					</div>
