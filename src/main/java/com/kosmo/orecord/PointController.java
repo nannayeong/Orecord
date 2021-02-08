@@ -151,18 +151,21 @@ public class PointController {
 	@RequestMapping("/insertChargeLog.do")
 	@ResponseBody
 	public int insertChargeLog(@RequestParam Map<String,Object> param, HttpServletRequest req, Model model) {
-		System.out.println("컨트롤러에 진입"); // 주석
+		System.out.println("컨트롤러에 진입 파라미터 : " + param); // 주석
 		
 		// 로그인된 아이디 얻어와서 맵에 넣어주기
 		UserDetails userInfo = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String loginId = userInfo.getUsername();
 		param.put("loginId", loginId);
 		
-		int totalPayment = Integer.parseInt(param.get("totalPayment").toString());
+		String paymentType = param.get("paymentType").toString();
+		String totalPaymentStr = param.get("totalPayment").toString();
+		int totalPayment = Integer.parseInt(totalPaymentStr);
 		int chargePoint = (int)(totalPayment/11*10);
 		int VAT = totalPayment - chargePoint;
 		param.put("chargePoint", chargePoint);
 		param.put("VAT", VAT);
+		param.put("paymentType", paymentType);
 		
 		System.out.println("sql문 넘기기전에 파라미터 확인해보기" + param); // 주석
 		

@@ -223,20 +223,24 @@ function paymentConfirm(param) {
 			console.log("돈 빼감");
 			$.ajax({
 				url: "insertChargeLog.do",
-				method: "POST",
-				contentType : "application/x-www-form-urlencoded;charset:utf-8;",
+				method: "get",
+				dataType : "json",
 		    data: {
-		    				totalPayment: rsp.amount,
-		            paymentType: rsp.pay)method
-		          }
-		    }).done(function (data) {
-		    		if (data == 1) {
-			        alert("결제가 완료되었습니다.");
-		    		}
-		      })
-		}
-		else {
-			console.log("돈 못빼감 : "+ rsp.error_msg);
+		    				totalPayment: rsp.paid_amount,
+		            paymentType: rsp.pay_method
+		    			},
+			  success: function (data) {
+	  			if (data == 1) {
+	  				alert("결제가 완료되었습니다.");
+					}
+					else {
+						console.log("돈 못빼감 : "+ rsp.error_msg);
+					}
+				},
+				error : function(error) {
+					alert("error : " + error);
+				}
+			});
 		}
 	});
 }
