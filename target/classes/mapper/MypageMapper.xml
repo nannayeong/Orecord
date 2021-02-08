@@ -6,9 +6,14 @@
 	
 <mapper namespace="impl.MypageImpl">
 
+	<!-- 회원정보 조회하기 -->
+	<select id="memberView" resultType="model.MemberDTO" parameterType="model.MemberDTO">
+		SELECT * FROM member WHERE id=#{id}
+	</select>
+
 	<!-- 회원정보 수정 -->
- 	<update id="memberUpdate" parameterType="int">
-		UPDATE member SET pw=#{pw}, email=#{email}, phone=#{phone}, address=#{address}, intro=#{intro}, img=#{img} WHERE id=#{id} 
+ 	<update id="memberEdit" >
+		UPDATE member SET pw=#{0}, email=#{1}, phone=#{2}, address=#{3}, intro=#{4}, img=#{5} WHERE id=#{6} 
 	</update>
 	
 	<!-- 회원삭제 -->

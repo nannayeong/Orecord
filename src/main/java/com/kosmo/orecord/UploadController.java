@@ -204,6 +204,6 @@ public class UploadController {
 			e.printStackTrace();
 		}
 		
-		return "redirect:/"+id+"/album";
+		return "redirect:/orecord/"+id+"/record";
 	}
 }
