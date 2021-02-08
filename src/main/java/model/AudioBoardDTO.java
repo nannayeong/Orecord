@@ -19,10 +19,19 @@ public class AudioBoardDTO {
 	private String albumName;
 	private String albumJacket;
 	
+	/* member table innerjoin */
+	private String img;
+	
 	/*like table*/
 	private boolean like; 
 	
 	//getter/setter
+	public String getImg() {
+		return img;
+	}
+	public void setImg(String img) {
+		this.img = img;
+	}
 	public int getAudio_idx() {
 		return audio_idx;
 	}
