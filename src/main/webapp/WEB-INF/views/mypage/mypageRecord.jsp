@@ -16,6 +16,9 @@
 #list tr{
 border:2px #f2f2f2 solid
 }
+#list tr:hover{
+background-color: #f2f2f2;cursor:pointer
+}
 </style>
 </head>
 <body>
@@ -29,12 +32,11 @@ border:2px #f2f2f2 solid
 			<img src="" alt="" />
 		</td>
 		<td>
-			<audio controls style="background-color:white;width:30px;" id="">
+			<audio controls style="background-color:white;width:50px;height:50px" id="${audio.albumName }">
     			<source src="${audio.audiofilename }" type="audio/mp4"/>
     		</audio>
 		</td>
-		<td>재생바</td>
-		<td>
+		<td onclick="location.href='../board/view.do?audio_idx=${audio.audio_idx}'">
 			${audio.audiotitle }
 		</td>
 		<td>

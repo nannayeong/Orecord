@@ -35,15 +35,27 @@ public class MyPageController {
 	public String record(@PathVariable String user_id, Model model, Principal principal, HttpServletRequest req) { 
 		
 		String path = req.getContextPath();
+		String login_id = null;
 		
 		/*계정정보*/
 		MemberDTO memberDTO = sqlSession.getMapper(MemberImpl.class).memberInfo(user_id);	
+		
+		/*로그인 유저의 계정정보*/
+		try {
+			login_id = principal.getName();
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		MemberDTO loginDTO = sqlSession.getMapper(MemberImpl.class).memberInfo(login_id);
+		
 		
 		if(memberDTO.getImg()==null) {
 			memberDTO.setImg(path+"/default.jpg");
 		}
 		
 		model.addAttribute("memberDTO", memberDTO);
+		model.addAttribute("loginDTO", loginDTO);
 		model.addAttribute("user_id", user_id);
 		
 		return "mypage/record";

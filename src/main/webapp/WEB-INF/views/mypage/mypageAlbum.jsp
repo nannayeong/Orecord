@@ -13,6 +13,14 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
 </head>
+<style>
+#list tr:hover{
+background-color: #f2f2f2;cursor:pointer
+}
+#list tr{
+border:1px solid #f2f2f2
+}
+</style>
 <body>
 <!-- 앨범 -->
 <c:forEach items="${albumList }" var="album">
@@ -37,24 +45,24 @@
 			<!-- 앨범 수록 음원 -->
  			<div id="accordion">
 				<div id="col${album.albumName }" class="collapse show" data-parent="#accordion">
-					<table style="width:95%;font-size:15px">
+					<table style="width:95%;font-size:15px" id="list">
 						<c:forEach items="${audioList }" var="audio" varStatus="status">
 						<c:if test="${audio.albumName eq album.albumName }">	
 						<tr>		
-							<td style="border:1px solid #f2f2f2"><img src="" alt="" /> ${status.count }. ${audio.audiotitle } - ${audio.artistname }</td>
+							<td onclick="location.href='../board/view.do?audio_idx=${audio.audio_idx}'"><img src="" alt="" /> ${status.count }. ${audio.audiotitle } - ${audio.artistname }</td>
 							<td>
-								<div id="play" onclick="clickAudio('${audio.audiofilename}','${album.albumName }');" class="iconPoint"> 
-                   					
-                   				</div>&nbsp&nbsp
-                   				<div id="addplaylist" class="iconPoint"
+								<span id="play" onclick="clickAudio('${audio.audiofilename}','${album.albumName }');" class="iconPoint"> 
+                   					<i class="fas fa-play"></i>
+                   				</span>&nbsp&nbsp
+                   				<span id="addplaylist" class="iconPoint"
                    					onclick="loginCheckPlay('${pageContext.request.userPrincipal.name}',${audio.audio_idx })">
                    					
-                   				</div>&nbsp&nbsp
+                   				</span>&nbsp&nbsp
                    				
-                   				<div id="" class="iconPoint"
+                   				<span id="" class="iconPoint"
                    					onclick="loginCheckaddLike('${pageContext.request.userPrincipal.name}',${audio.audio_idx })">
                    					
-                   				</div>
+                   				</span>
 							</td>
 						</tr>
 						</c:if>
