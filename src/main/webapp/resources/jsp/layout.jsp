@@ -12,6 +12,7 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
 
+
 <!-- layout css -->
 <link href="${pageContext.request.contextPath}/resources/css/layout.css" rel="stylesheet" />
 <!-- layout js-->
@@ -24,96 +25,7 @@
 			<!-- 왼쪽 컨텐츠 -->
 			<div class="left-content-back">
 				<div class="left-content">
-					<table style="width:100%;border:2px #f2f2f2 solid;margin:auto;margin-bottom:1em">
-						<tr>
-							<td rowspan="4" style="width:7em;padding-left:1em;padding-right:1em">
-								<img src="./resources/img/default.jpg" alt="" style="width:6em"/>
-							</td>
-							<td>안녕안녕안녕안녕 - 아영</td>
-						</tr>
-						<tr>
-							<td colspan="2">
-								<audio src="" controls style="width:95%" >
-									<source src="">
-								</audio>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<button type="button" class="btn btn-secondary btn-sm" >좋아요</button>
-								<button type="button" class="btn btn-secondary btn-sm">플레이리스트</button>
-								<button type="button" class="btn btn-secondary btn-sm">참여</button>
-							</td>
-							<td style="text-align:center">
-								재생수 : 3 좋아요수 : 5
-							</td>
-						</tr>
-						<tr>
-							<td colspan="2">
-								<input type="text" style="width:80%;"/>&nbsp&nbsp<input type="button" value="댓글달기" class="btn btn-secondary btn-sm" style="margin-bottom:5px"/>
-							</td>
-						</tr>
-					</table>
-					<table style="width:100%;border:2px #f2f2f2 solid;margin:auto;margin-bottom:1em">
-						<tr>
-							<td rowspan="4" style="width:7em;padding-left:1em;padding-right:1em">
-								<img src="./resources/img/default.jpg" alt="" style="width:6em"/>
-							</td>
-							<td>안녕안녕안녕안녕 - 아영</td>
-						</tr>
-						<tr>
-							<td colspan="2">
-								<audio src="" controls style="width:95%" >
-									<source src="">
-								</audio>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<button type="button" class="btn btn-secondary btn-sm" >좋아요</button>
-								<button type="button" class="btn btn-secondary btn-sm">플레이리스트</button>
-								<button type="button" class="btn btn-secondary btn-sm">참여</button>
-							</td>
-							<td style="text-align:center">
-								재생수 : 3 좋아요수 : 5
-							</td>
-						</tr>
-						<tr>
-							<td colspan="2">
-								<input type="text" style="width:80%;"/>&nbsp&nbsp<input type="button" value="댓글달기" class="btn btn-secondary btn-sm" style="margin-bottom:5px"/>
-							</td>
-						</tr>
-					</table>
-					<table style="width:100%;border:2px #f2f2f2 solid;margin:auto;margin-bottom:1em">
-						<tr>
-							<td rowspan="4" style="width:7em;padding-left:1em;padding-right:1em">
-								<img src="./resources/img/default.jpg" alt="" style="width:6em"/>
-							</td>
-							<td>안녕안녕안녕안녕 - 아영</td>
-						</tr>
-						<tr>
-							<td colspan="2">
-								<audio src="" controls style="width:95%" >
-									<source src="">
-								</audio>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<button type="button" class="btn btn-secondary btn-sm" >좋아요</button>
-								<button type="button" class="btn btn-secondary btn-sm">플레이리스트</button>
-								<button type="button" class="btn btn-secondary btn-sm">참여</button>
-							</td>
-							<td style="text-align:center">
-								재생수 : 3 좋아요수 : 5
-							</td>
-						</tr>
-						<tr>
-							<td colspan="2">
-								<input type="text" style="width:80%;"/>&nbsp&nbsp<input type="button" value="댓글달기" class="btn btn-secondary btn-sm" style="margin-bottom:5px"/>
-							</td>
-						</tr>
-					</table>
+					
 				</div>
 			</div>
 			<!-- 오른쪽 컨텐츠 -->
