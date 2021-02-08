@@ -51,7 +51,7 @@ public class MyPageController {
 		}
 
 		if(memberDTO.getImg()==null) {
-			memberDTO.setImg(path+"/default.jpg");
+			memberDTO.setImg(path+"/resources/img/default.jpg");
 		}
 		
 		model.addAttribute("memberDTO", memberDTO);
@@ -74,14 +74,14 @@ public class MyPageController {
 		MemberDTO loginDTO = null;
 		try {
 			login_id = principal.getName();
-			 loginDTO = sqlSession.getMapper(MemberImpl.class).memberInfo(login_id);
+			loginDTO = sqlSession.getMapper(MemberImpl.class).memberInfo(login_id);
 		}
 		catch(Exception e) {
 			e.printStackTrace();
 		}
 		
 		if(memberDTO.getImg()==null) {
-			memberDTO.setImg(path+"/default.jpg");
+			memberDTO.setImg(path+"/resources/img/default.jpg");
 		}
 	
 		model.addAttribute("memberDTO", memberDTO);
@@ -111,7 +111,7 @@ public class MyPageController {
 		}
 		
 		if(memberDTO.getImg()==null) {
-			memberDTO.setImg(path+"/default.jpg");
+			memberDTO.setImg(path+"/resources/img/default.jpg");
 		}
 	
 		model.addAttribute("memberDTO", memberDTO);
@@ -171,6 +171,7 @@ public class MyPageController {
 	public String mypageA(Principal principal, HttpServletRequest req, Model model){
 		
 		String path = req.getContextPath();
+		
 		String user_id = req.getParameter("user_id");	
 		ArrayList<AlbumDTO> albumList = sqlSession.getMapper(AlbumImpl.class).albumList(user_id);
 		ArrayList<AudioBoardDTO> audioList = sqlSession.getMapper(AudioBoardImpl.class).audioList(user_id);	
@@ -178,27 +179,28 @@ public class MyPageController {
 		/*앨범*/
 		for(AlbumDTO albumDTO : albumList) {
 			if(albumDTO.getAlbumJacket()==null){
-				albumDTO.setAlbumJacket(path+"/default.jpg");
+				albumDTO.setAlbumJacket(path+"/resources/img/default.jpg");
 			}
 			else {
 				String fileName = albumDTO.getAlbumJacket();
-				albumDTO.setAlbumJacket(path+"/upload/"+fileName);
+				albumDTO.setAlbumJacket(path+"/resources/upload/"+fileName);
 			}
 		}
 		
 		/*음원*/
 		for(AudioBoardDTO audioDTO : audioList) {
 			
+			System.out.println(audioDTO.getImagename()); 
 			if(audioDTO.getImagename()==null){
-				audioDTO.setImagename(path+"/default.jpg");
+				audioDTO.setImagename(path+"/resources/img/default.jpg");
 			}
 			else {
 				String fileName = audioDTO.getImagename();
-				audioDTO.setImagename(path+"/upload/"+fileName);
+				audioDTO.setImagename(path+"/resources/upload/"+fileName);
 			}
 			
 			String fileName = audioDTO.getAudiofilename();
-			audioDTO.setAudiofilename(path+"/upload/"+fileName);
+			audioDTO.setAudiofilename(path+"/resources/upload/"+fileName);
 		}
 
 		model.addAttribute("albumList", albumList);
@@ -226,11 +228,11 @@ public class MyPageController {
 		/*앨범*/
 		for(AlbumDTO albumDTO : albumList) {
 			if(albumDTO.getAlbumJacket()==null){
-				albumDTO.setAlbumJacket(path+"/default.jpg");
+				albumDTO.setAlbumJacket(path+"/resources/img/default.jpg");
 			}
 			else {
 				String fileName = albumDTO.getAlbumJacket();
-				albumDTO.setAlbumJacket(path+"/upload/"+fileName);
+				albumDTO.setAlbumJacket(path+"/resources/upload/"+fileName);
 			}
 		}
 		
@@ -238,15 +240,15 @@ public class MyPageController {
 		for(AudioBoardDTO audioDTO : audioList) {
 			
 			if(audioDTO.getImagename()==null){
-				audioDTO.setImagename(path+"/default.jpg");
+				audioDTO.setImagename(path+"/resources/img/default.jpg");
 			}
 			else {
 				String fileName = audioDTO.getImagename();
-				audioDTO.setImagename(path+"/upload/"+fileName);
+				audioDTO.setImagename(path+"/resources/upload/"+fileName);
 			}
 			
 			String fileName = audioDTO.getAudiofilename();
-			audioDTO.setAudiofilename(path+"/upload/"+fileName);
+			audioDTO.setAudiofilename(path+"/resources/upload/"+fileName);
 		}
 
 		model.addAttribute("albumList", albumList);
@@ -268,16 +270,16 @@ public class MyPageController {
 		for(AudioBoardDTO audioDTO : audioList) {
 			
 			if(audioDTO.getImagename()==null){
-				audioDTO.setImagename(path+"/default.jpg");
+				audioDTO.setImagename(path+"/resources/img/default.jpg");
 			}
 			else {
 				String fileName = audioDTO.getImagename();
-				audioDTO.setImagename(path+"/upload/"+fileName);
+				audioDTO.setImagename(path+"/resources/upload/"+fileName);
 			}
 			
 			
 			String fileName = audioDTO.getAudiofilename();
-			audioDTO.setAudiofilename(path+"/upload/"+fileName);
+			audioDTO.setAudiofilename(path+"/resources/upload/"+fileName);
 		}
 
 		model.addAttribute("audioList", audioList);

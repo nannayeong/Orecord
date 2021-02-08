@@ -92,7 +92,10 @@ function pointCheck(){
 		alert('보유 포인트를 확인해주세요');
 		return false;
 	}
-	
+	if($('#donePoint').val()==''){
+		alert('후원 포인트를 입력해주세요');
+		return false;
+	}
 }
 
 $(function(){
@@ -171,19 +174,7 @@ $(function(){
 	<div>
 		<div class="content">
 			<div class="profile" style="background-color:brown;">
-				<table style="">
-					<tr>
-						<td rowspan="2" style="padding-top:2em;padding-left:2em">
-							<img src="${pageContext.request.contextPath}/resources/img/default.jpg" alt="" style="width:200px;border-radius:50%"/>
-						</td>
-						<td>
-							${user_id }
-						</td>
-					</tr>
-					<tr>
-						<td></td>
-					</tr>
-				</table>
+				<%@include file="/resources/jsp/mypageProfile.jsp" %>
 			</div>
 			<div>
 				<div class="my-menu">
@@ -212,7 +203,7 @@ $(function(){
 						      <form action="?${_csrf.parameterName}=${_csrf.token}" method="post" onsubmit="return pointCheck();">
 						      <div class="modal-body">
 						        <div>${pageContext.request.userPrincipal.name}님의 잔여 포인트 :<span id="myPoint">${loginDTO.mypoint }원</span>&nbsp&nbsp
-						        	<button type="button" class="btn btn-info btn-sm" style="margin-bottom:5px"onclick="location.href=''">충전하기</button>
+						        	<button type="button" class="btn btn-info btn-sm" style="margin-bottom:5px"onclick="location.href='../chargeLog.do'">충전하기</button>
 						        </div>
 						        
 						        <div>후원하실 포인트를 입력해주세요 : <input type="text" id="donePoint" name="donePoint" style="width:7em"/> 원</div>
@@ -230,9 +221,6 @@ $(function(){
 						</c:if>
 						<button type="button" onclick="logincheck(this)" id="follow" class="btn btn-success btn-sm">팔로우</button>
 						</c:when>
-						<c:otherwise>
-						<button type="button" onclick="location.href='../upload.do'">업로드하기</button>
-						</c:otherwise>
 						</c:choose>
 					</div>
 				</div>

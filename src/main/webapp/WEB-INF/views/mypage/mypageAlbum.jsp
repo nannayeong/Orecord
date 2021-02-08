@@ -23,11 +23,21 @@ border:1px solid #f2f2f2
 </style>
 <body>
 <!-- 앨범 -->
+<table style="width:95%;margin:auto;margin-bottom:1em">
+<c:choose>
+<c:when test="${empty albumList }">
+	<td style="text-align:center;border:2px #f2f2f2 solid;height:30em">
+		<div>등록된 앨범이 없습니다.</div><br />
+		<c:if test="${pageContext.request.userPrincipal.name ne user_id}">
+		<div><button type="button" onclick="location.href='../upload.do'" class="btn btn-outline-dark">업로드하기</button></div>
+		</c:if>
+	</td>
+</c:when>
+<c:otherwise>
 <c:forEach items="${albumList }" var="album">
-<table style="width:100%;border:2px #f2f2f2 solid;margin:auto;margin-bottom:1em">
 	<tr>
 		<td rowspan="2" style="width:7em;padding-left:1em;padding-right:1em;vertical-align:top;padding-top:1em">
-			<img src="../resources/img/default.jpg" alt="" style="width:6em"/>
+			<img src="${album.albumJacket }" alt="" style="width:6em"/>
 		</td>
 		<td style="padding-top:1em">
 			<div><h4>${album.albumName }</h4></div>
@@ -49,11 +59,14 @@ border:1px solid #f2f2f2
 						<c:forEach items="${audioList }" var="audio" varStatus="status">
 						<c:if test="${audio.albumName eq album.albumName }">	
 						<tr>		
-							<td onclick="location.href='../board/view.do?audio_idx=${audio.audio_idx}'"><img src="" alt="" /> ${status.count }. ${audio.audiotitle } - ${audio.artistname }</td>
+							<td onclick="location.href='../board/view.do?audio_idx=${audio.audio_idx}'">
+								<img src="${audio.imagename }" alt="" style="width:25px"/> 
+								${status.count }. ${audio.audiotitle } - ${audio.artistname }
+							</td>
 							<td>
 								<span id="play" onclick="clickAudio('${audio.audiofilename}','${album.albumName }');" class="iconPoint"> 
                    					<i class="fas fa-play"></i>
-                   				</span>&nbsp&nbsp
+                   				</span>&nbsp&nbsp 
                    				<span id="addplaylist" class="iconPoint"
                    					onclick="loginCheckPlay('${pageContext.request.userPrincipal.name}',${audio.audio_idx })">
                    					
@@ -78,7 +91,10 @@ border:1px solid #f2f2f2
 			</div>			
 		</td>
 	</tr>
-</table>
 </c:forEach>
+</c:otherwise>
+</c:choose>
+</table>
+
 </body>
 </html>
