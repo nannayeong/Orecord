@@ -146,4 +146,30 @@ public class PointController {
 		
 		return map;
 	}
+	
+	// 결제 진행시 충전 내역 로그에 남기기
+	@RequestMapping("/insertChargeLog.do")
+	@ResponseBody
+	public int insertChargeLog(@RequestParam Map<String,Object> param, HttpServletRequest req, Model model) {
+		System.out.println("컨트롤러에 진입"); // 주석
+		
+		// 로그인된 아이디 얻어와서 맵에 넣어주기
+		UserDetails userInfo = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String loginId = userInfo.getUsername();
+		param.put("loginId", loginId);
+		
+		int totalPayment = Integer.parseInt(param.get("totalPayment").toString());
+		int chargePoint = (int)(totalPayment/11*10);
+		int VAT = totalPayment - chargePoint;
+		param.put("chargePoint", chargePoint);
+		param.put("VAT", VAT);
+		
+		System.out.println("sql문 넘기기전에 파라미터 확인해보기" + param); // 주석
+		
+		int result = sqlSession.getMapper(PointImpl.class).insertChargeLog(param);
+		
+		System.out.println("insert 결과 확인하기" + result); // 주석
+		
+		return result;
+	}
 }
