@@ -15,8 +15,20 @@
 </head>
 <body>
 <!-- 앨범 -->
+<table style="width:95%;margin:auto;margin-bottom:1em">
+<c:choose>
+<c:when test="${empty audioList }">
+	<tr>
+		<td style="text-align:center;border:2px #f2f2f2 solid;height:30em">
+			<div>생성된 플레이리스트가 없습니다</div><br />
+			<c:if test="${pageContext.request.userPrincipal.name ne user_id}">
+			<div><button type="button" onclick="location.href=''" class="btn btn-outline-dark">음악 찾으러 가기</button></div>
+			</c:if>
+		</td>
+	</tr>
+</c:when>
+<c:otherwise>
 <c:forEach items="${albumList }" var="album">
-<table style="width:100%;border:2px #f2f2f2 solid;margin:auto;margin-bottom:1em">
 	<tr>
 		<td rowspan="2" style="width:7em;padding-left:1em;padding-right:1em;vertical-align:top;padding-top:1em">
 			<img src="../resources/img/default.jpg" alt="" style="width:6em"/>
@@ -35,16 +47,23 @@
 	<tr>
 		<td>
 			<!-- 앨범 수록 음원 -->
+			<% int count = 0; %>
  			<div id="accordion">
 				<div id="col${album.albumName }" class="collapse show" data-parent="#accordion">
 					<table style="width:95%;font-size:15px">
 						<c:forEach items="${audioList }" var="audio" varStatus="status">
 						<c:if test="${audio.albumName eq album.albumName }">	
+						<% count += count; %>
 						<tr>		
 							<td style="border:1px solid #f2f2f2"><img src="" alt="" /> ${status.count }. ${audio.audiotitle } - ${audio.artistname }</td>
 						</tr>
 						</c:if>
 						</c:forEach>
+						<c:if test="<%=count %>==0">
+						<tr>		
+							<td style="border:1px solid #f2f2f2">등록된 레코드가 없습니다.</td>
+						</tr>
+						</c:if>
 					</table>
 				</div>
 
@@ -56,7 +75,9 @@
 			</div>			
 		</td>
 	</tr>
-</table>
 </c:forEach>
+</c:otherwise>
+</c:choose>
+</table>
 </body>
 </html>
