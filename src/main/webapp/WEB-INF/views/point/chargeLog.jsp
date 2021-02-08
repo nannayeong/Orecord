@@ -224,20 +224,15 @@ function paymentConfirm(param) {
 			$.ajax({
 				url: "insertChargeLog.do",
 				method: "get",
-				dataType : "json",
 		    data: {
 		    				totalPayment: rsp.paid_amount,
 		            paymentType: rsp.pay_method
 		    			},
-			  success: function (data) {
-	  			if (data == 1) {
-	  				alert("결제가 완료되었습니다.");
-					}
-					else {
-						console.log("돈 못빼감 : "+ rsp.error_msg);
-					}
+			  success: function () {
+	  			alert("결제가 완료되었습니다.");
 				},
 				error : function(error) {
+					console.log(error);
 					alert("error : " + error);
 				}
 			});

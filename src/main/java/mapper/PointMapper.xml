@@ -106,7 +106,7 @@
 	
 	
 	<!-- 결제후 포인트 내역 삽입 -->
-	<select id="insertChargeLog" resultType="int" parameterType="hashmap">
+	<select id="insertChargeLog" parameterType="hashmap">
 		INSERT INTO chargeLog(idx, id, totalPayment, vat, chargePoint, paymentType, paymentResult, regidate)
     	VALUES (seq_chargeLog.nextval, #{loginId}, #{totalPayment}, #{VAT}, #{chargePoint}, #{paymentType}, default, default)
 	</select>
