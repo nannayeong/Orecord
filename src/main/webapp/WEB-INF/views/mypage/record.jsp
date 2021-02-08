@@ -195,6 +195,7 @@ $(function(){
 						<c:when test="${user_id ne pageContext.request.userPrincipal.name}">
 						<button type="button" onclick="logincheck(this)" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#done">후원하기</button>
 						<!-- The Modal -->
+						<c:if test="${not empty pageContext.request.userPrincipal.name}">
 						<div class="modal" id="done">
 						  <div class="modal-dialog">
 						    <div class="modal-content">
@@ -224,6 +225,7 @@ $(function(){
 						    </div>
 						  </div>
 						</div>
+						</c:if>
 						<button type="button" onclick="logincheck(this)" id="follow" class="btn btn-success btn-sm">팔로우</button>
 						</c:when>
 						<c:otherwise>

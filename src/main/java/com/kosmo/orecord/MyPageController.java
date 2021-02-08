@@ -41,15 +41,15 @@ public class MyPageController {
 		MemberDTO memberDTO = sqlSession.getMapper(MemberImpl.class).memberInfo(user_id);	
 		
 		/*로그인 유저의 계정정보*/
+		MemberDTO loginDTO = null;
 		try {
 			login_id = principal.getName();
+			 loginDTO = sqlSession.getMapper(MemberImpl.class).memberInfo(login_id);
 		}
 		catch(Exception e) {
 			e.printStackTrace();
 		}
-		MemberDTO loginDTO = sqlSession.getMapper(MemberImpl.class).memberInfo(login_id);
-		
-		
+
 		if(memberDTO.getImg()==null) {
 			memberDTO.setImg(path+"/default.jpg");
 		}
@@ -65,33 +65,57 @@ public class MyPageController {
 	public String album(@PathVariable String user_id, Model model, HttpServletRequest req, Principal principal) {
 		
 		String path = req.getContextPath();
+		String login_id = null;
 		
 		/*계정정보*/
 		MemberDTO memberDTO = sqlSession.getMapper(MemberImpl.class).memberInfo(user_id);
+		
+		/*로그인 유저의 계정정보*/
+		MemberDTO loginDTO = null;
+		try {
+			login_id = principal.getName();
+			 loginDTO = sqlSession.getMapper(MemberImpl.class).memberInfo(login_id);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 		
 		if(memberDTO.getImg()==null) {
 			memberDTO.setImg(path+"/default.jpg");
 		}
 	
 		model.addAttribute("memberDTO", memberDTO);
+		model.addAttribute("loginDTO", loginDTO);
 		model.addAttribute("user_id", user_id);
 
 		return "mypage/album";
 	}
 	
 	@RequestMapping("/{user_id}/playlist")
-	public String playlist(@PathVariable String user_id, Model model, HttpServletRequest req) {
+	public String playlist(@PathVariable String user_id, Model model, HttpServletRequest req, Principal principal) {
 		
 		String path = req.getContextPath();
+		String login_id = null;
 		
 		/*계정정보*/
 		MemberDTO memberDTO = sqlSession.getMapper(MemberImpl.class).memberInfo(user_id);
+		
+		/*로그인 유저의 계정정보*/
+		MemberDTO loginDTO = null;
+		try {
+			login_id = principal.getName();
+			 loginDTO = sqlSession.getMapper(MemberImpl.class).memberInfo(login_id);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 		
 		if(memberDTO.getImg()==null) {
 			memberDTO.setImg(path+"/default.jpg");
 		}
 	
 		model.addAttribute("memberDTO", memberDTO);
+		model.addAttribute("loginDTO", loginDTO);
 		model.addAttribute("user_id", user_id);
 
 		return "mypage/playlist";
