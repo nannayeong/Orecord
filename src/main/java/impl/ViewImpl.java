@@ -33,6 +33,13 @@ public interface ViewImpl {
 		@Param("id") String id);
 	
 	//게시물 수정하기
-	public int modifyAction(AudioBoardDTO audioBoardDTO);
+	public int modifyAction(@Param("audiotitle") String audiotitle,
+		@Param("artistname") String aritstname,
+		@Param("contents") String contents,
+		@Param("audiofilename") String audiofilename,
+		@Param("imagename") String imagename,
+		@Param("category") String category,
+		@Param("audio_idx") int audio_idx,
+		@Param("id") String id);
 	
 } 

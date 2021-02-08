@@ -84,7 +84,7 @@ function deleteRow(comment_idx, audio_idx){
 							<audio controls
 								style="width: 95%; height: 60px; padding-left: 12px;"
 								id="${album.albumName}">
-								<source src="${audio.audiofilename }" type="audio/mp4"/>
+								<source src="${audio.audiofilename }"/>
 							</audio>
 						</div>
 						<div style="padding: 10px 0 0 35px;">
@@ -94,10 +94,9 @@ function deleteRow(comment_idx, audio_idx){
 							<span>${audio.play_count}</span>
 						</div>
 					</div>
-					<%-- ${audio.imagename } --%>
 					<!-- 앨범사진 -->
 					<div class="col-4">
-						<img src="../resources/img/4.png" alt="앨범사진" width="300px"
+						<img src="${audio.imagename }" alt="앨범사진" width="300px"
 							height="300px" style="padding: 20px 20px 20px 0;">
 					</div>
 				</div>
@@ -110,13 +109,13 @@ function deleteRow(comment_idx, audio_idx){
 			<c:choose>
 				<c:when test="${pageContext.request.userPrincipal.name eq audio.id}">
 					<div class="d-flex flex-row-reverse" style="margin-top: 15px;">
-						<div style="margin-right: 30px;">
+						<div style="margin-right: 60px;">
 							<button type="button" class="btn btn-outline-info"
 								onclick="location.href='modify.do?audio_idx=${audio.audio_idx}'">수정</button>
 						</div>
 						<div style="margin-right: 10px;">
 							<button type="button" class="btn btn-outline-info"
-								onclick="location.href='/project3/main.do'">목록</button>
+								onclick="location.href='/orecord/main.do'">목록</button>
 						</div>
 						<div style="margin-right: 10px;">
 							<button type="button" class="btn btn-outline-info"
@@ -189,9 +188,8 @@ function deleteRow(comment_idx, audio_idx){
 								</div>
 								<c:if test="${pageContext.request.userPrincipal.name eq row.id}">
 								<div class="col-2" style="padding: 22px 0 0 0;" align="left">
-									<input type="submit" class="btn btn-outline-secondary"
-										value="삭제"
-										onclick="javascript:deleteRow(${row.comment_idx}, ${row.audio_idx });">
+									<img src="../resources/img/delete.png" alt="삭제" width="20" style="padding-top:5px; cursor:pointer;"
+										onclick="javascript:deleteRow(${row.comment_idx}, ${row.audio_idx });" />
 								</div>
 								</c:if>
 							</div>
