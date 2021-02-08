@@ -6,10 +6,12 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<!-- Jquery, BootStrap -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap-theme.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
 </head>
 <body>
 <!-- 앨범 -->
@@ -33,27 +35,28 @@
 	<tr>
 		<td>
 			<!-- 앨범 수록 음원 -->
-			<div class="accordion" id="acc">
-				<div id="col${album.albumName }" class="collapse show" aria-labelledby="headingOne" data-parent="#acc">
-					<div>
-						<table style="width:95%;font-size:15px">
-							<c:forEach items="${audioList }" var="audio" varStatus="status">
-							<c:if test="${audio.albumName eq album.albumName }">	
-							<tr>		
-								<td style="border:1px solid #f2f2f2"><img src="" alt="" /> ${status.count }. ${audio.audiotitle } - ${audio.artistname }</td>
-							</tr>
-							</c:if>
-							</c:forEach>
-						</table>
-					</div>
+ 			<div id="accordion">
+				<div id="col${album.albumName }" class="collapse show" data-parent="#accordion">
+					<table style="width:95%;font-size:15px">
+						<c:forEach items="${audioList }" var="audio" varStatus="status">
+						<c:if test="${audio.albumName eq album.albumName }">	
+						<tr>		
+							<td style="border:1px solid #f2f2f2"><img src="" alt="" /> ${status.count }. ${audio.audiotitle } - ${audio.artistname }</td>
+						</tr>
+						</c:if>
+						</c:forEach>
+					</table>
+				</div>
+
+			    <div style="cursor:pointer;background-color:#f2f2f2;font-size:15px;text-align:center;margin-bottom:1em;width:95%">
+			    	<a class="card-link" data-toggle="collapse" href="#col${album.albumName }">
+			    		트랙 리스트
+			    	</a>
 			    </div>
-			    <div data-toggle="collapse" data-target="#col${album.albumName }" aria-expanded="false" aria-controls="col${album.albumName }" 
-			    style="cursor:pointer;background-color:#f2f2f2;font-size:15px;text-align:center;margin-bottom:1em;width:95%">
-			        트랙리스트
-			    </div>
-			</div>
+			</div>			
 		</td>
 	</tr>
 </table>
 </c:forEach>
+</body>
 </html>
