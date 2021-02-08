@@ -41,7 +41,7 @@ border:1px solid #f2f2f2
 		</td>
 		<td style="padding-top:1em">
 			<div><h4>${album.albumName }</h4></div>
-			<audio controls style="background-color:white;width:420px;height:40px" id="${album.albumName }">
+			<audio controls style="background-color:white;width:520px;height:40px" id="${album.albumName }">
 				<c:forEach items="${audioList }" var="audio">
 				<c:if test="${audio.albumName eq album.albumName }">
     			<source src="${audio.audiofilename }" type="audio/mp4"/>
