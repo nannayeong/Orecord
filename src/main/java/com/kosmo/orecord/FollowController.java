@@ -126,26 +126,31 @@ public class FollowController {
 		return map;
 	}
 	
-//	@RequestMapping("/checkFollow.do")
-//	@ResponseBody
-//	public Map<String, Object> checkF(Principal principal, HttpServletRequest req){
-//		
-//		Map<String, Object> map = new HashMap<String, Object>();
-//		
-//		String login_id = null;
-//		String user_id = req.getParameter("user_id");
-//		
-//		System.out.println(user_id);
-//		
-//		try {
-//			login_id = principal.getName();
-//		}
-//		catch(Exception e) {
-//			e.printStackTrace();
-//		}
-//		
-//		return map;
-//	}
+	@RequestMapping("/checkFollow.do")
+	@ResponseBody
+	public Map<String, Object> checkF(Principal principal, HttpServletRequest req){
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		String login_id = null;
+		String user_id = req.getParameter("user_id");
+		
+		System.out.println(user_id);
+		
+		try {
+			login_id = principal.getName();
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		int result = sqlSession.getMapper(FollowImpl.class).followingCheck(user_id, login_id);
+		System.out.println(result);
+		
+		map.put("follow", result);
+		
+		return map;
+	}
 //	
 //	@RequestMapping("/addF.do")
 //	public String addF(HttpServletRequest req, Principal principal, RedirectAttributes rttr) {

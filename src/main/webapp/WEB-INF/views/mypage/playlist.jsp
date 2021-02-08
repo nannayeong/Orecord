@@ -19,10 +19,6 @@
 <script src="${pageContext.request.contextPath}/resources/js/layout.js"></script>
 <script>
 
-function clickAudio(audioFileName,playerName){
-	$('#'+playerName).attr('src',audioFileName).attr('autoplay',true);
-}
-
 function logincheck(bt){
 	if("${pageContext.request.userPrincipal.name}"==""){
 		alert('로그인 후 이용해주세요');
@@ -60,7 +56,7 @@ function logincheck(bt){
 			     }    
 			});
 		}
-		else if(bt.innerHTML=='언팔로우'){
+		else if(bt.innerHTML=='팔로워'){
 			$.ajax({
 			     url : "../unFollow.do",
 			     type : "get",
@@ -68,7 +64,7 @@ function logincheck(bt){
 			     data : {followerId:"${user_id}"},
 			     dataType : "html",
 			     success : function sucFunc(resData) {
-			    	 bt.innerHTML = '팔로우';
+			    	 bt.innerHTML = '언팔로우';
 			    	 $('#follow').removeClass();
 			    	 $('#follow').addClass('btn btn-success btn-sm');
 			     }    
@@ -91,10 +87,6 @@ function logincheck(bt){
 	}
 }
 
-function clickAudio(audioFileName,playerName){
-	$('#'+playerName).attr('src',audioFileName).attr('autoplay',true);
-}
-
 function pointCheck(){
 	if($('#doneError').html()!=''){
 		alert('보유 포인트를 확인해주세요');
@@ -107,6 +99,7 @@ function pointCheck(){
 }
 
 $(function(){
+	
 	$('#follow').mouseenter(function(){
 		if($('#follow').html()=='팔로워'){
 			$('#follow').html('언팔로우');
@@ -155,7 +148,7 @@ $(function(){
 	
 	/* 리스트페이지 */
 	$.ajax({
-	     url : "../mypageAlbum.do",
+	     url : "../mypagePlay.do",
 	     type : "get",
 	     contentType : "text/html;charset:utf-8",
 	     data : {user_id:"${user_id}", 
@@ -186,8 +179,8 @@ $(function(){
 			<div>
 				<div class="my-menu">
 					<span onclick="location.href='../${user_id}/record'">record</span>
-					<span onclick="location.href='../${user_id}/album'" style="color:orange;">album</span>
-					<span onclick="location.href='../${user_id}/playlist'">playlist</span>
+					<span onclick="location.href='../${user_id}/album'">album</span>
+					<span onclick="location.href='../${user_id}/playlist'" style="color:orange;">playlist</span>
 					<span onclick="location.href='../${user_id}/like'">like</span>
 					
 					<div style="float:right;margin-right:1em;">

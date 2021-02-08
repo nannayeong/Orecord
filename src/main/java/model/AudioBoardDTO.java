@@ -4,7 +4,7 @@ public class AudioBoardDTO {
 	
 	private int audio_idx; //게시물인덱스
 	private String audiotitle; //곡이름
-	private String id; //게시물 작성자 아이디
+	private String id; //게시물 작성자 아이디 
 	private int album_idx; //앨범인덱스(FK)
 	private String audiofilename;//서버에 저장될 오디오파일명
 	private String artistname; // 아티스트이름
@@ -14,17 +14,26 @@ public class AudioBoardDTO {
 	private java.sql.Date regidate; //게시일
 	private int play_count; //재생횟수
 	private int like_count; //좋아요 수
-	private int party; // 협업참여여부
+	private int party; // 협업참여여부 
 	
 	
 	/*album table innerjoin*/
 	private String albumName;
 	private String albumJacket;
 	
+	/* member table innerjoin */
+	private String img;
+	
 	/*like table*/
 	private boolean like; 
 	
 	//getter/setter
+	public String getImg() {
+		return img;
+	}
+	public void setImg(String img) {
+		this.img = img;
+	}
 	public int getAudio_idx() {
 		return audio_idx;
 	}

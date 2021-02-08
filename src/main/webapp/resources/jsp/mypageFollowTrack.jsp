@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+
 <table style="margin:auto;width:90%">
 	<tr>
 		<td style="border-right:2px solid #f2f2f2;padding-right:1em">

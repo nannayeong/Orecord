@@ -40,9 +40,32 @@ public class MyPageController {
 	@Autowired
 	SqlSession sqlSession;
 	
-	@RequestMapping("/{user_id}")
-	public String record(@PathVariable String user_id, Model model, Principal principal) { 
+	@RequestMapping("/{user_id}/record")
+	public String record(@PathVariable String user_id, Model model, Principal principal, HttpServletRequest req) { 
 		
+		String path = req.getContextPath();
+		String login_id = null;
+		
+		/*계정정보*/
+		MemberDTO memberDTO = sqlSession.getMapper(MemberImpl.class).memberInfo(user_id);	
+		
+		/*로그인 유저의 계정정보*/
+		MemberDTO loginDTO = null;
+		try {
+			login_id = principal.getName();
+			 loginDTO = sqlSession.getMapper(MemberImpl.class).memberInfo(login_id);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+
+		if(memberDTO.getImg()==null) {
+			memberDTO.setImg(path+"/resources/img/default.jpg");
+		}
+		
+		model.addAttribute("memberDTO", memberDTO);
+		model.addAttribute("loginDTO", loginDTO);
+		model.addAttribute("user_id", user_id);
 		
 		return "mypage/record";
 	}
@@ -51,77 +74,59 @@ public class MyPageController {
 	public String album(@PathVariable String user_id, Model model, HttpServletRequest req, Principal principal) {
 		
 		String path = req.getContextPath();
-		System.out.println(req.getContextPath());
+		String login_id = null;
 		
 		/*계정정보*/
 		MemberDTO memberDTO = sqlSession.getMapper(MemberImpl.class).memberInfo(user_id);
 		
+		/*로그인 유저의 계정정보*/
+		MemberDTO loginDTO = null;
+		try {
+			login_id = principal.getName();
+			loginDTO = sqlSession.getMapper(MemberImpl.class).memberInfo(login_id);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		
 		if(memberDTO.getImg()==null) {
-			memberDTO.setImg(path+"/default.jpg");
+			memberDTO.setImg(path+"/resources/img/default.jpg");
 		}
-		
-		/*팔로잉&팔로워 수*/
-		int followingCount = sqlSession.getMapper(FollowImpl.class).followingCount(user_id);
-		int followerCount = sqlSession.getMapper(FollowImpl.class).followerCount(user_id);
-		
-		model.addAttribute("user_id", user_id);
-		model.addAttribute("followingCount", followingCount);
-		model.addAttribute("followerCount", followerCount);
-		
-		ArrayList<AlbumDTO> albumList = sqlSession.getMapper(AlbumImpl.class).albumList(user_id);
-		ArrayList<AudioBoardDTO> audioList = sqlSession.getMapper(AudioBoardImpl.class).audioList(user_id);	
-		
-		/*앨범*/
-		for(AlbumDTO albumDTO : albumList) {
-			if(albumDTO.getAlbumJacket()==null){
-				albumDTO.setAlbumJacket(path+"/default.jpg");
-			}
-			else {
-				String fileName = albumDTO.getAlbumJacket();
-				albumDTO.setAlbumJacket(path+"/upload/"+fileName);
-			}
-		}
-		
-		/*음원*/
-		for(AudioBoardDTO audioDTO : audioList) {
-			
-			if(audioDTO.getImagename()==null){
-				audioDTO.setImagename(path+"/default.jpg");
-			}
-			else {
-				String fileName = audioDTO.getImagename();
-				audioDTO.setImagename(path+"/upload/"+fileName);
-			}
-			
-			String fileName = audioDTO.getAudiofilename();
-			audioDTO.setAudiofilename(path+"/upload/"+fileName);
-		}
-		
+	
 		model.addAttribute("memberDTO", memberDTO);
+		model.addAttribute("loginDTO", loginDTO);
 		model.addAttribute("user_id", user_id);
 
 		return "mypage/album";
 	}
 	
 	@RequestMapping("/{user_id}/playlist")
-	public String playlist(@PathVariable String user_id, Model model) {
-		/*계정정보*/
-		MemberDTO dto = sqlSession.getMapper(MemberImpl.class).memberInfo(user_id);
+	public String playlist(@PathVariable String user_id, Model model, HttpServletRequest req, Principal principal) {
 		
-		if(dto.getImg()==null) {
-			dto.setImg("../default.jpg");
+		String path = req.getContextPath();
+		String login_id = null;
+		
+		/*계정정보*/
+		MemberDTO memberDTO = sqlSession.getMapper(MemberImpl.class).memberInfo(user_id);
+		
+		/*로그인 유저의 계정정보*/
+		MemberDTO loginDTO = null;
+		try {
+			login_id = principal.getName();
+			 loginDTO = sqlSession.getMapper(MemberImpl.class).memberInfo(login_id);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
 		}
 		
-		model.addAttribute("memberDTO", dto);
-		
-		/*팔로잉&팔로워 수*/
-		int followingCount = sqlSession.getMapper(FollowImpl.class).followingCount(user_id);
-		int followerCount = sqlSession.getMapper(FollowImpl.class).followerCount(user_id);
-		
+		if(memberDTO.getImg()==null) {
+			memberDTO.setImg(path+"/resources/img/default.jpg");
+		}
+	
+		model.addAttribute("memberDTO", memberDTO);
+		model.addAttribute("loginDTO", loginDTO);
 		model.addAttribute("user_id", user_id);
-		model.addAttribute("followingCount", followingCount);
-		model.addAttribute("followerCount", followerCount);
-		
+
 		return "mypage/playlist";
 	}
 	
@@ -262,19 +267,68 @@ public class MyPageController {
 	public String mypageA(Principal principal, HttpServletRequest req, Model model){
 		
 		String path = req.getContextPath();
-//		String user_id = req.getParameter("user_id");
-		String user_id = "kosmo";		
+		
+		String user_id = req.getParameter("user_id");	
 		ArrayList<AlbumDTO> albumList = sqlSession.getMapper(AlbumImpl.class).albumList(user_id);
 		ArrayList<AudioBoardDTO> audioList = sqlSession.getMapper(AudioBoardImpl.class).audioList(user_id);	
 		
 		/*앨범*/
 		for(AlbumDTO albumDTO : albumList) {
 			if(albumDTO.getAlbumJacket()==null){
-				albumDTO.setAlbumJacket(path+"/default.jpg");
+				albumDTO.setAlbumJacket(path+"/resources/img/default.jpg");
 			}
 			else {
 				String fileName = albumDTO.getAlbumJacket();
-				albumDTO.setAlbumJacket(path+"/upload/"+fileName);
+				albumDTO.setAlbumJacket(path+"/resources/upload/"+fileName);
+			}
+		}
+		
+		/*음원*/
+		for(AudioBoardDTO audioDTO : audioList) {
+			
+			System.out.println(audioDTO.getImagename()); 
+			if(audioDTO.getImagename()==null){
+				audioDTO.setImagename(path+"/resources/img/default.jpg");
+			}
+			else {
+				String fileName = audioDTO.getImagename();
+				audioDTO.setImagename(path+"/resources/upload/"+fileName);
+			}
+			
+			String fileName = audioDTO.getAudiofilename();
+			audioDTO.setAudiofilename(path+"/resources/upload/"+fileName);
+		}
+
+		model.addAttribute("albumList", albumList);
+		model.addAttribute("audioList", audioList);
+		
+		return "mypage/mypageAlbum";
+	}
+	
+	@RequestMapping("/mypagePlay.do")
+	public String mypageP(Principal principal, HttpServletRequest req, Model model){
+		
+		String path = req.getContextPath();
+		String user_id = req.getParameter("user_id");	
+		ArrayList<AlbumDTO> albumList = sqlSession.getMapper(AlbumImpl.class).albumList(user_id);
+		ArrayList<AudioBoardDTO> audioList = sqlSession.getMapper(AudioBoardImpl.class).audioList(user_id);	
+		
+		/*나의 플레이리스트 가져와서 앨범명별로 분류한 후 map에 집어넣기*/
+		
+		/*1. 플레이리스트 가져오기*/
+		
+		/*2. for문으로 플레이리스트의 앨범이름을 hashset에 넣은 후 map('albumName', albumList)에 넣기*/
+		
+		/*3.플레이리스트 DTO map에 넣기*/
+		
+		/*앨범*/
+		for(AlbumDTO albumDTO : albumList) {
+			if(albumDTO.getAlbumJacket()==null){
+				albumDTO.setAlbumJacket(path+"/resources/img/default.jpg");
+			}
+			else {
+				String fileName = albumDTO.getAlbumJacket();
+				albumDTO.setAlbumJacket(path+"/resources/upload/"+fileName);
 			}
 		}
 		
@@ -282,21 +336,51 @@ public class MyPageController {
 		for(AudioBoardDTO audioDTO : audioList) {
 			
 			if(audioDTO.getImagename()==null){
-				audioDTO.setImagename(path+"/default.jpg");
+				audioDTO.setImagename(path+"/resources/img/default.jpg");
 			}
 			else {
 				String fileName = audioDTO.getImagename();
-				audioDTO.setImagename(path+"/upload/"+fileName);
+				audioDTO.setImagename(path+"/resources/upload/"+fileName);
 			}
 			
 			String fileName = audioDTO.getAudiofilename();
-			audioDTO.setAudiofilename(path+"/upload/"+fileName);
+			audioDTO.setAudiofilename(path+"/resources/upload/"+fileName);
 		}
 
 		model.addAttribute("albumList", albumList);
 		model.addAttribute("audioList", audioList);
 		
-		return "mypage/albumList";
+		return "mypage/mypagePlay";
+	}
+	
+	@RequestMapping("/mypageRecord.do")
+	public String mypageR(Principal principal, HttpServletRequest req, Model model){
+		
+		String path = req.getContextPath();
+		String user_id = req.getParameter("user_id");
+		
+		ArrayList<AudioBoardDTO> audioList = sqlSession.getMapper(AudioBoardImpl.class).audioList(user_id);	
+		
+		System.out.println(audioList);
+		/*음원*/
+		for(AudioBoardDTO audioDTO : audioList) {
+			
+			if(audioDTO.getImagename()==null){
+				audioDTO.setImagename(path+"/resources/img/default.jpg");
+			}
+			else {
+				String fileName = audioDTO.getImagename();
+				audioDTO.setImagename(path+"/resources/upload/"+fileName);
+			}
+			
+			
+			String fileName = audioDTO.getAudiofilename();
+			audioDTO.setAudiofilename(path+"/resources/upload/"+fileName);
+		}
+
+		model.addAttribute("audioList", audioList);
+		
+		return "mypage/mypageRecord";
 	}
 	
 	@RequestMapping("/mypageFollowTrack.do")
