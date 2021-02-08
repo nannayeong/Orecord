@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans:beans xmlns:beans="http://www.springframework.org/schema/beans"
    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-   xmlns="http://www.springframework.org/schema/security"
+   xmlns="http://www.springframework.org/schema/security" 
    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
       http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.2.xsd">
  
    <http>
-   	  <intercept-url pattern="/admin/**" access="hasRole('9')"/>
+   	  <intercept-url pattern="/admin/**" access="hasRole('ADMIN')"/>
       <intercept-url pattern="/**" access="permitAll" />
       
       <!-- 로그인 페이지 -->
@@ -29,7 +29,7 @@
    <authentication-manager>
       <authentication-provider>
          <jdbc-user-service data-source-ref="dataSource"
-            role-prefix="Role_"
+            role-prefix="ROLE_"
             users-by-username-query="SELECT 
                id, pw, enabled 
                FROM member WHERE id=?"

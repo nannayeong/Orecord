@@ -8,7 +8,7 @@ public class MemberDTO {
 	private String email; //이메일
 	private String phone; //전화번호
 	private String address; //주소
-	private int grade; //회원등급(일반:1, 관리자9)
+	private String grade; //회원등급(일반:ROLE_USER, 관리자:ROLE_AMDIN)
 	private java.sql.Date regidate; //회원가입일
 	private String intro;//자기소개
 	private int mypoint;//내 포인트
@@ -52,10 +52,10 @@ public class MemberDTO {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	public int getGrade() {
+	public String getGrade() {
 		return grade;
 	}
-	public void setGrade(int grade) {
+	public void setGrade(String grade) {
 		this.grade = grade;
 	}
 	public java.sql.Date getRegidate() {
