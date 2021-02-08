@@ -19,6 +19,10 @@
 <script src="${pageContext.request.contextPath}/resources/js/layout.js"></script>
 <script>
 
+function clickAudio(audioFileName,playerName){
+	$('#'+playerName).attr('src',audioFileName).attr('autoplay',true);
+}
+
 function logincheck(bt){
 	if("${pageContext.request.userPrincipal.name}"==""){
 		alert('로그인 후 이용해주세요');
@@ -56,7 +60,7 @@ function logincheck(bt){
 			     }    
 			});
 		}
-		else if(bt.innerHTML=='팔로워'){
+		else if(bt.innerHTML=='언팔로우'){
 			$.ajax({
 			     url : "../unFollow.do",
 			     type : "get",
@@ -91,7 +95,26 @@ function clickAudio(audioFileName,playerName){
 	$('#'+playerName).attr('src',audioFileName).attr('autoplay',true);
 }
 
+function pointCheck(){
+	if($('#doneError').html()!=''){
+		alert('보유 포인트를 확인해주세요');
+		return false;
+	}
+	
+}
+
 $(function(){
+	$('#follow').mouseenter(function(){
+		if($('#follow').html()=='팔로워'){
+			$('#follow').html('언팔로우');
+		}
+	});
+	$('#follow').mouseleave(function(){
+		if($('#follow').html()=='언팔로우'){
+			$('#follow').html('팔로워');
+		}
+	});
+	
 	/*로그인 아이디의 팔로우여부 확인하기*/
 	$.ajax({
 	     url : "../checkFollow.do",
@@ -139,10 +162,19 @@ $(function(){
 	    	 $('#albumList').html(resData);
 	     }    
 	});
+	
+	$('#donePoint').keyup(function(){
+		if($('#donePoint').val()>$('#myPoint').html()){
+			$('#doneError').html('보유 포인트가 부족합니다.');
+		}
+		else{
+			$('#doneError').html('');
+		}
+	});
 });
 </script>
 </head>
-<body>
+<body style="background-color:#f2f2f2;">
 	<div>
 		<div class="content">
 			<div class="profile" style="background-color:brown;">
@@ -170,7 +202,39 @@ $(function(){
 					<div style="float:right;margin-right:1em;">
 						<c:choose>
 						<c:when test="${user_id ne pageContext.request.userPrincipal.name}">
-						<button type="button" onclick="logincheck(this)" id="done" class="btn btn-warning btn-sm">후원하기</button>			
+						<button type="button" onclick="logincheck(this)" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#done">후원하기</button>
+						<!-- The Modal -->
+						<c:if test="${not empty pageContext.request.userPrincipal.name}">
+						<div class="modal" id="done">
+						  <div class="modal-dialog">
+						    <div class="modal-content">
+						
+						      <!-- Modal Header -->
+						      <div class="modal-header">
+						        <h4 class="modal-title">${memberDTO.nickname }(${user_id })님에게 후원하기</h4>
+						        <button type="button" class="close" data-dismiss="modal">&times;</button>
+						      </div>
+						
+						      <!-- Modal body -->
+						      <form action="?${_csrf.parameterName}=${_csrf.token}" method="post" onsubmit="return pointCheck();">
+						      <div class="modal-body">
+						        <div>${pageContext.request.userPrincipal.name}님의 잔여 포인트 :<span id="myPoint">${loginDTO.mypoint }원</span>&nbsp&nbsp
+						        	<button type="button" class="btn btn-info btn-sm" style="margin-bottom:5px"onclick="location.href=''">충전하기</button>
+						        </div>
+						        
+						        <div>후원하실 포인트를 입력해주세요 : <input type="text" id="donePoint" name="donePoint" style="width:7em"/> 원</div>
+								<div id="doneError"></div>
+						      </div>
+						
+						      <!-- Modal footer -->
+						      <div class="modal-footer">
+						        <button type="submit" class="btn btn-warning btn-sm">후원하기</button>
+						      </div>
+							</form>
+						    </div>
+						  </div>
+						</div>
+						</c:if>
 						<button type="button" onclick="logincheck(this)" id="follow" class="btn btn-success btn-sm">팔로우</button>
 						</c:when>
 						<c:otherwise>
