@@ -5,6 +5,13 @@
   
 <mapper namespace="impl.PartyImpl">
 	
+	<!-- 협업신청목록 -->
+	<select id="partyList" resultType="model.PartyBoardDTO">
+		SELECT * FROM partyboard
+			WHERE audio_idx=#{audio_idx}
+		ORDER BY party_idx DESC
+	</select>
+	
 	<!-- 협업신청폼 -->
 	<select id="partyWrite" resultType="model.AudioBoardDTO">
 		SELECT * FROM audioboard where audio_idx=#{audio_idx}

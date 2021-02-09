@@ -111,7 +111,9 @@ function deleteRow(comment_idx, audio_idx){
 				<div class="d-flex flex-row-reverse" style="margin-top: 15px;">
 					<div style="margin-right: 60px;">
 						<button type="button" class="btn btn-outline-info"
-							onclick="location.href='modify.do?audio_idx=${audio.audio_idx}'">수정</button>
+							onclick="location.href='modify.do?audio_idx=${audio.audio_idx}'">
+							수정
+						</button>
 					</div>
 					<div style="margin-right: 10px;">
 						<button type="button" class="btn btn-outline-info"
@@ -119,7 +121,9 @@ function deleteRow(comment_idx, audio_idx){
 					</div>
 					<div style="margin-right: 10px;">
 						<button type="button" class="btn btn-outline-info"
-							onclick="location.href='partyList.do?audio_idx=${audio.audio_idx}';">협업신청목록</button>
+							onclick="location.href='partyList.do?audio_idx=${audio.audio_idx}';">
+							협업신청목록
+						</button>
 					</div>
 				</div>
 			</c:when>
@@ -127,11 +131,15 @@ function deleteRow(comment_idx, audio_idx){
 				<div class="d-flex flex-row-reverse" style="margin-top: 15px;">
 					<div style="margin-right: 60px;">
 						<button type="button" class="btn btn-outline-info"
-							onclick="location.href='partyWrite.do?audio_idx=${audio.audio_idx}';">협업신청</button>
+							onclick="location.href='partyWrite.do?audio_idx=${audio.audio_idx}';">
+							협업신청
+						</button>
 					</div>
 					<div style="margin-right: 10px;">
 						<button type="button" class="btn btn-outline-info"
-							onclick="location.href='/orecord/main.do'">목록</button>
+							onclick="location.href='/orecord/main.do'">
+							목록
+						</button>
 					</div>
 				</div>
 			</c:otherwise>

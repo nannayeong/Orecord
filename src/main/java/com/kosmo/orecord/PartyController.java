@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import impl.PartyImpl;
 import impl.ViewImpl;
 import model.AudioBoardDTO;
+import model.PartyBoardDTO;
 
 @Controller
 public class PartyController {
@@ -31,6 +32,29 @@ public class PartyController {
 	SqlSession sqlSession;
 	public void setSqlSession(SqlSession sqlSession) {
 		this.sqlSession = sqlSession;
+	}
+	
+	//협업신청목록
+	@RequestMapping("/board/partyList.do")
+	public String partyList(Model model, HttpServletRequest req, Principal principal) {
+		
+		String partyIdx = req.getParameter("audio_idx");
+		System.out.println("audio_idx????"+ partyIdx);
+		
+		ArrayList<PartyBoardDTO> partyList =
+			sqlSession.getMapper(PartyImpl.class).partyList(
+				Integer.parseInt(req.getParameter("audio_idx")));
+		
+		for(PartyBoardDTO dto : partyList) {
+			String temp = dto.getTitle().replace("\r\n", "<br/>");
+			dto.setTitle(temp);
+			String temp2 = dto.getContents().replace("\r\n", "<br/>");
+			dto.setContents(temp2);
+		}
+		model.addAttribute("partyIdx", partyIdx);
+		model.addAttribute("partyList", partyList);
+		
+		return "board/partyList";
 	}
 	
 	//협업신청폼
