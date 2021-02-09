@@ -21,6 +21,13 @@ background-color: #f2f2f2;cursor:pointer
 border:1px solid #f2f2f2
 }
 </style>
+<script type="">
+$(function(){
+	$(window).scroll(function(){
+		if()
+	})
+});
+</script>
 <body>
 <!-- 앨범 -->
 <table style="width:95%;margin:auto;margin-bottom:1em">
@@ -60,10 +67,10 @@ border:1px solid #f2f2f2
 						<c:if test="${audio.albumName eq album.albumName }">	
 						<tr>		
 							<td onclick="location.href='../board/view.do?audio_idx=${audio.audio_idx}'" style="padding-left:0.7em">
-								<img src="${audio.imagename }" alt="" style="width:25px"/> 
+								<img src="${audio.imagename }" alt="" style="width:25px;"/> 
 								${status.count }. ${audio.audiotitle } - ${audio.artistname }
 							</td>
-							<td style="padding-left:11.5em;padding-right:0.7em">
+							<td style="padding-left:10em;padding-right:0.7em">
 								<!-- 플레이버튼 -->
 								<span id="play" onclick="clickAudio('${audio.audiofilename}','${album.albumName }');" class="iconPoint"> 
                    					<i class="fas fa-play"></i>
@@ -134,6 +141,9 @@ border:1px solid #f2f2f2
 </c:otherwise>
 </c:choose>
 </table>
-
+<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+	<ul class="pagination justify-content-center">
+		${pagingStr }
+	</ul>			
 </body>
 </html>

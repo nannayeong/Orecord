@@ -6,7 +6,7 @@ public class AlbumDTO {
 	private String id;
 	private String albumName;
 	private String albumJacket;
-	
+	 
 	public int getAlbum_idx() {
 		return album_idx;
 	}

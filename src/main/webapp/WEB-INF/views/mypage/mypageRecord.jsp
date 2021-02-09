@@ -41,7 +41,7 @@ background-color: #f2f2f2;cursor:pointer
 			${status.count}
 		</td>
 		<td>
-			<img src="${audio.imagename }" alt="" />
+			<img src="${audio.imagename }" style="width:30px;" />
 		</td>
 		<td>
 			<audio controls style="background-color:white;width:50px;height:50px" id="${audio.albumName }">

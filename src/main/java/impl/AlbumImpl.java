@@ -10,8 +10,10 @@ import model.AlbumDTO;
 public interface AlbumImpl {
 
 	public ArrayList<AlbumDTO> albumList(String id);
+	public ArrayList<AlbumDTO> albumListPaging(String id, int start, int end);//페이징
 	public int addAlbum(String id, String albumName);
 	public int albumIdxSelect(String id, String albumName);
 	public String getalbum(String album_idx);
+	public int albumTotalCount(String id);
      
 } 

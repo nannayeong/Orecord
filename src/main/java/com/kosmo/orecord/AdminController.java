@@ -40,10 +40,7 @@ public class AdminController {
 	@RequestMapping("/memberList.do")
 	public String list(Model model, HttpServletRequest req, MemberDTO memberDTO) {
 		
-		
-		//Mapper 호출
 		ArrayList<MemberDTO> lists = sqlSession.getMapper(AdminImpl.class).listPage(memberDTO);
-		
 		
 		model.addAttribute("lists", lists);
 		return "admin/memberList";
@@ -53,19 +50,13 @@ public class AdminController {
 	@RequestMapping("/admemberDelete.do")
 	public String memberDelete(HttpServletRequest req, HttpSession session) {
 		
-		/*
-		if(session.getAttribute("siteUserInfo")==null){
-			return "./login.do";
-		}
-		*/
-		
 		int delete = sqlSession.getMapper(AdminImpl.class).memberDelete(req.getParameter("id"));
 		
 		if(delete == 1) {
 			System.out.println("삭제완료");			
 		}
 		
-		return "redirect:admin/memberList";
+		return "redirect:/memberList";
 		
 	}
 	
@@ -116,7 +107,7 @@ public class AdminController {
 		String id = null;
 		
 		try {
-			
+			id = principal.getName();
 			//업로드폼의 file속성의 필드를 가져온다.
 			Iterator itr = req.getFileNames();
 			
@@ -130,7 +121,7 @@ public class AdminController {
 			String address = req.getParameter("address")+"/"+req.getParameter("addr1")+"/"+req.getParameter("addr2");
 			String intro = req.getParameter("intro");
 			String img = req.getParameter("img");
-			id = principal.getName();
+			String user_id = req.getParameter("id");
 			
 			/*
 			 물리적경로를 기반으로 File객체를 생성한 후 지정된 디렉토리가 있는지 확인한다.
@@ -174,10 +165,10 @@ public class AdminController {
 			}
 			
 			//수정폼에서 전송한 모든 폼값을 한꺼번에 저장한 커맨드객체를 사용한다. 
-			int applyRow = sqlSession.getMapper(AdminImpl.class).memberEdit(pw, email, phone, address, intro, img, id);
+			int applyRow = sqlSession.getMapper(AdminImpl.class).memberEdit(pw, email, phone, address, intro, img, user_id);
 			
 			System.out.println("수정처리된 레코드수:"+ applyRow);
-			System.out.println(pw +" "+ email+" " + phone+" " + address+" " + intro+" " + img+" " + id);
+			System.out.println(pw +" "+ email+" " + phone+" " + address+" " + intro+" " + img+" " + user_id);
 		}
 		catch (IOException e) {
 			e.printStackTrace();
@@ -186,6 +177,6 @@ public class AdminController {
 			e.printStackTrace();
 		}
 		
-		return "redirect:admin/memberList";
+		return "redirect:/memberList";
 	}
 }

@@ -16,18 +16,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import impl.PointImpl;
+import model.MemberDTO;
 
 @Controller
 public class PointController {
 
 	@Autowired
-	private SqlSession sqlSession;
+	private SqlSession sqlSession;   
 	
 	/*
 	 1. 다른 페이지에서 결제하기 메뉴 버튼 누르면 충전 내역 조회 페이지로 보내기
 	 2. 충전 내역 조회 페이지(결제하기 버튼 배치)
 	 	- 매핑명 : "/chargeLog.do", 함수명 : charge() 뷰페이지 : "point/chargeLog", DB명 : chargeLog
-	 	- 우상단 결제하기 버튼 클릭하면 결제창 로드
+	 	- 우상단 결제하기 버튼 클릭하면 결제모달 로드
 	 3. 스폰한 내역 조회 페이지(내가 스폰한 유저 아이디 누르면 유저 상세페이지로 보낼지?)
 	    - 매핑명 : "/sponsorLog.do" 함수명 : sponsor() 뷰페이지 : "point/sponsorLog", DB명 : sponsorshipLog 공유
 	    - 우상단에 조회기간에 따른 내가 스폰한 총 포인트, 유저수 보여주기
@@ -43,11 +44,26 @@ public class PointController {
 	
 	
 	// 충전내역 조회 페이지 진입
-	@RequestMapping("/chargeLog.do")
+	@RequestMapping("/chargeLog.do")    
 	public String charge(Model model) {
 		UserDetails userInfo = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		String loginId = userInfo.getUsername();
-		model.addAttribute("loginId", loginId);
+		String loginId = null;
+		loginId = userInfo.getUsername();
+		try {
+			if (loginId == null) {
+				return "member/login";
+			}
+		}
+		catch (Exception e) {
+			
+		}
+		
+//		model.addAttribute("loginId", loginId);
+		// 결제시 필요한 정보 입력을 위해 MemberDTO 반환
+		MemberDTO memberDTO = sqlSession.getMapper(PointImpl.class).selectUserInfo(loginId);
+		
+//		int myPoint = sqlSession.getMapper(PointImpl.class).selectMyPoint(loginId);
+		model.addAttribute("MemberDTO", memberDTO);
 		
 		return "point/chargeLog";
 	}
@@ -147,10 +163,10 @@ public class PointController {
 		return map;
 	}
 	
-	// 결제 진행시 충전 내역 로그에 남기기
+	// 결제 진행시 충전 내역 로그에 삽입
 	@RequestMapping("/insertChargeLog.do")
 	@ResponseBody
-	public int insertChargeLog(@RequestParam Map<String,Object> param, HttpServletRequest req, Model model) {
+	public void insertChargeLog(@RequestParam Map<String,Object> param, HttpServletRequest req, Model model) {
 		System.out.println("컨트롤러에 진입 파라미터 : " + param); // 주석
 		
 		// 로그인된 아이디 얻어와서 맵에 넣어주기
@@ -169,10 +185,9 @@ public class PointController {
 		
 		System.out.println("sql문 넘기기전에 파라미터 확인해보기" + param); // 주석
 		
-		int result = sqlSession.getMapper(PointImpl.class).insertChargeLog(param);
+		sqlSession.getMapper(PointImpl.class).insertChargeLog(param);
 		
-		System.out.println("insert 결과 확인하기" + result); // 주석
-		
-		return result;
 	}
+	
+	// 후원시 포인트 이동 처리
 }

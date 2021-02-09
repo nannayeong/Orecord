@@ -137,7 +137,7 @@ h4 {
 					      </div>
 					
 					      <!-- Modal footer -->
-					      <div class="modal-footer">
+					      <div class="modal-footer"> 
 					        <button type="button" class="btn btn-primary" onClick="paymentConfirm(document.getElementById('totalAmountText').value);" data-dismiss="modal">확인</button>
 					        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
 					      </div>
@@ -145,8 +145,8 @@ h4 {
 					    </div>
 					  </div>
 					</div>
-					<h2>${loginId }님</h2> 
-					<h4>보유 포인트 : 2000Point</h4> <!-- 마이 포인트 얻어오기 -->
+					<h2>${MemberDTO.id }님</h2> 
+					<h4>보유 포인트 : ${MemberDTO.mypoint }Point</h4> <!-- 마이 포인트 얻어오기 -->
 				</div>
 				<div class="pointSubMenu" style="margin-top:20px;">
 					<div class="btn-group btn-group-sm">  
@@ -224,20 +224,15 @@ function paymentConfirm(param) {
 			$.ajax({
 				url: "insertChargeLog.do",
 				method: "get",
-				dataType : "json",
 		    data: {
 		    				totalPayment: rsp.paid_amount,
 		            paymentType: rsp.pay_method
 		    			},
-			  success: function (data) {
-	  			if (data == 1) {
-	  				alert("결제가 완료되었습니다.");
-					}
-					else {
-						console.log("돈 못빼감 : "+ rsp.error_msg);
-					}
+			  success: function () {
+	  			alert("결제가 완료되었습니다.");
 				},
 				error : function(error) {
+					console.log(error);
 					alert("error : " + error);
 				}
 			});
