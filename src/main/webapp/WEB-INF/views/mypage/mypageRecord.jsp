@@ -13,23 +13,35 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
 <style>
-#list tr{
+#list{
 border:2px #f2f2f2 solid
 }
-#list tr:hover{
+#list:hover{
 background-color: #f2f2f2;cursor:pointer
 }
 </style>
 </head>
 <body>
-<table style="width:95%;border:2px #f2f2f2 solid;margin:auto;margin-bottom:1em;" id="list">
-<c:forEach items="${audioList }" var="audio" varStatus="status">
+<table style="width:95%;margin:auto;margin-bottom:1em;">
+<c:choose>
+<c:when test="${empty audioList }">
 	<tr>
+		<td style="text-align:center;border:2px #f2f2f2 solid;height:30em">
+			<div>등록된 레코드가 없습니다.</div><br />
+			<c:if test="${pageContext.request.userPrincipal.name ne user_id}">
+			<div><button type="button" onclick="location.href='../upload.do'" class="btn btn-outline-dark">업로드하기</button></div>
+			</c:if>
+		</td>
+	</tr>
+</c:when>
+<c:otherwise>
+<c:forEach items="${audioList }" var="audio" varStatus="status">
+	<tr id="list">
 		<td style="padding-left:1em;">
 			${status.count}
 		</td>
 		<td>
-			<img src="" alt="" />
+			<img src="${audio.imagename }" alt="" />
 		</td>
 		<td>
 			<audio controls style="background-color:white;width:50px;height:50px" id="${audio.albumName }">
@@ -46,7 +58,7 @@ background-color: #f2f2f2;cursor:pointer
 			${audio.regidate }
 		</td>
 		<td>
-			${audio.party eq '0' ? '협업불가' : '협업중'}
+			${audio.party eq 0 ? '협업불가' : '협업중'}
 		</td>
 		<c:if test="${pageContext.request.userPrincipal.name ne user_id}">
 		<td>
@@ -56,6 +68,8 @@ background-color: #f2f2f2;cursor:pointer
 		</c:if>
 	</tr>
 </c:forEach>
+</c:otherwise> 
+</c:choose>
 </table>
 
 </body>
