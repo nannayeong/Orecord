@@ -123,7 +123,7 @@ $(function(){
 			<div class="left-content-back">
 				<div class="left-content">
 					<!-- <table style="width:100%;border:2px #f2f2f2 solid;margin:auto;margin-bottom:1em"> -->
-						<form name="registFrm" onsubmit="return isValidate(this);" method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/memberEditAction.do">
+						<form name="registFrm" onsubmit="return isValidate(this);" method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/{user_id}/memberEditAction.do">
 				<s:csrfInput />
 					<!-- 아이디 -->
 					<div class="row">
