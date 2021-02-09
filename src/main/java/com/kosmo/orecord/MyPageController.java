@@ -272,7 +272,71 @@ public class MyPageController {
 		String path = req.getContextPath();
 		
 		String user_id = req.getParameter("user_id");	
-		ArrayList<AlbumDTO> albumList = sqlSession.getMapper(AlbumImpl.class).albumList(user_id);
+		
+		/*페이징*/
+		//1. 앨범 토탈카운트
+		int albumTotalCount = sqlSession.getMapper(AlbumImpl.class).albumTotalCount(user_id);
+		
+		int pageSize = 3;
+		int blockPage = 5;
+		
+		int nowPage = Integer.parseInt(req.getParameter("nowPage"));
+		int start = (nowPage-1)*pageSize+1;
+		int end = nowPage * pageSize;
+		
+		String pagingStr = "";
+		
+		//1.전체페이지 구하기
+		int totalPage = 
+		(int)(Math.ceil(((double)albumTotalCount/pageSize)));
+		
+		/*2.현재페이지번호를 통해 이전 페이지블럭에
+		해당하는 페이지를 구한다.
+		*/
+		int intTemp = 
+			(((nowPage-1) / blockPage) * blockPage) + 1;
+		
+		if(intTemp != 1) {
+			//첫번째 페이지 블럭에서는 출력되지 않음
+			//두번째 페이지 블럭부터 출력됨.
+			pagingStr += ""
+				+ "<a href='javascript:paging(1);'>"
+				+ "<img src='../images/paging1.gif'></a>";
+			pagingStr += "&nbsp;";
+			pagingStr += ""
+				+ "<a href='javascript:paging("+(intTemp-blockPage)+");'>"
+				+ "<img src='../images/paging2.gif'></a>";
+		}
+					
+		//페이지표시 제어를 위한 변수
+		int blockCount = 1;
+		/*
+		4.페이지를 뿌려주는 로직 : blockPage의 수만큼 또는
+			마지막페이지가 될때까지 페이지를 출력한다.
+		*/
+		while(blockCount<=blockPage && intTemp<=totalPage)
+		{
+			if(intTemp==nowPage) {
+				pagingStr += "&nbsp;"+intTemp+"&nbsp;";
+			}
+			else {
+				pagingStr += "&nbsp;<a href='javascript:paging("+intTemp+");'>"+
+					intTemp+"</a>&nbsp;";
+			}
+			intTemp++;
+			blockCount++;
+		}
+		
+		//5.다음페이지블럭 & 마지막페이지 바로가기
+		if(intTemp <= totalPage) {
+			pagingStr += "<a href='javascript:paging("+intTemp+");'>"
+				+ "<img src='../images/paging3.gif'></a>";
+			pagingStr += "&nbsp;";
+			pagingStr += "<a href='javascript:paging("+totalPage+");'>"
+				+ "<img src='../images/paging4.gif'></a>";
+		}		
+		
+		ArrayList<AlbumDTO> albumList = sqlSession.getMapper(AlbumImpl.class).albumListPaging(user_id, start, end);
 		ArrayList<AudioBoardDTO> audioList = sqlSession.getMapper(AudioBoardImpl.class).audioList(user_id);	
 		
 		/*앨범*/
@@ -322,6 +386,7 @@ public class MyPageController {
 		model.addAttribute("plList", plList);
 		model.addAttribute("albumList", albumList);
 		model.addAttribute("audioList", audioList);
+		model.addAttribute("pagingStr", pagingStr);
 		
 		return "mypage/mypageAlbum";
 	}
@@ -332,6 +397,7 @@ public class MyPageController {
 		String path = req.getContextPath();
 		String user_id = req.getParameter("user_id");	
 		
+
 		/*1. 플레이리스트 가져오기*/
 		ArrayList<PlayListDTO> plList = sqlSession.getMapper(PlayListImpl.class).myplaylist(user_id);
 		/*2. for문으로 플레이리스트의 앨범이름을 hashset에 넣은 후 map('albumName', albumList)에 넣기*/

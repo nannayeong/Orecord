@@ -7,7 +7,13 @@
 <mapper namespace="impl.AlbumImpl">
 
 	<select id="albumList" resultType="model.AlbumDTO">
-		select * from album where id=#{param1}
+		select tb.*, rownum rnum from 
+		(select * from album where id=#{param1})tb where rnum between #{param2} and #{param3}
+	</select>
+	<select id="albumListPaging" resultType="model.AlbumDTO">
+		select * from 
+		(select tb.*, rownum rnum from 
+		(select * from album where id=#{param1})tb) where rnum between #{param2} and #{param3}
 	</select>
 	
 	<insert id="addAlbum">
@@ -19,5 +25,8 @@
 	</select>
 	<select resultType="model.AlbumDTO" id="getalbum">
 	select * from album where album_idx=#{0} 
+	</select>
+	<select id="albumTotalCount" resultType="int">
+	select count(*) from album where id=#{param1} 
 	</select>
 </mapper> 
