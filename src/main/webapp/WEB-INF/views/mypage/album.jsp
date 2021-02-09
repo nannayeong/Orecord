@@ -18,11 +18,9 @@
 <!-- layout js-->
 <script src="${pageContext.request.contextPath}/resources/js/layout.js"></script>
 <script>
-
 function clickAudio(audioFileName,playerName){
 	$('#'+playerName).attr('src',audioFileName).attr('autoplay',true);
 }
-
 function logincheck(bt){
 	if("${pageContext.request.userPrincipal.name}"==""){
 		alert('로그인 후 이용해주세요');
@@ -90,11 +88,9 @@ function logincheck(bt){
 		}		 
 	}
 }
-
 function clickAudio(audioFileName,playerName){
 	$('#'+playerName).attr('src',audioFileName).attr('autoplay',true);
 }
-
 function pointCheck(){
 	if($('#doneError').html()!=''){
 		alert('보유 포인트를 확인해주세요');
@@ -105,7 +101,6 @@ function pointCheck(){
 		return false;
 	}
 }
-
 $(function(){
 	$('#follow').mouseenter(function(){
 		if($('#follow').html()=='팔로워'){
@@ -152,14 +147,14 @@ $(function(){
 	   	  $('#track').html(resData.trackCount);
 	     }    
 	});
-	
+
 	/* 리스트페이지 */
 	$.ajax({
 	     url : "../mypageAlbum.do",
 	     type : "get",
 	     contentType : "text/html;charset:utf-8",
 	     data : {user_id:"${user_id}", 
-	    	 	nowPage:"${nowPage==null?1:nowPage}"},
+	    	 	nowPage:"${nowPage eq null?1:nowPage}"},
 	     dataType : "html",
 	     success : function sucFunc(resData) {
 	    	 $('#albumList').html(resData);
@@ -236,7 +231,7 @@ $(function(){
 						<tr>
 							<td class="my-con-left">
 								<div id="albumList">
-								
+	
 								</div>
 							</td>
 							<td class="my-con-right">

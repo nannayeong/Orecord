@@ -8,7 +8,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>modify.jsp</title>
+<title>상세페이지 수정</title>
 <!-- Jquery, BootStrap -->
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -253,7 +253,7 @@ function colChoice(){
 				</div>
 				<div style="margin-right: 10px;">
 					<button type="button" class="btn btn-outline-info"
-					onclick="location.href='view.do?audio_idx=${audio_idx}'">
+					onclick="location.href='view.do?audio_idx=${modify.audio_idx}'">
 						취소
 					</button>
 				</div>

@@ -6,7 +6,7 @@ public class MCommentDTO {
 	private String id;
 	private String contents;
 	private java.sql.Date regidate;
-	
+	 
 	//getter,setter
 	public int getComment_idx() {
 		return comment_idx;
