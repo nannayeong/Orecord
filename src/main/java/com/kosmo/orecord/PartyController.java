@@ -86,7 +86,7 @@ public class PartyController {
 			
 			MultipartFile mfile = null;
 			String fileName = req.getParameter("audiofilename");
-			
+			System.out.println("오디오파일 = "+fileName);
 			
 			
 			//파일외에 폼값 받음.
@@ -146,13 +146,20 @@ public class PartyController {
 				mfile.transferTo(serverFullName);
 			}
 			
-			int result2 = sqlSession.getMapper(PartyImpl.class).partyAction(
-					name, party3, title, contents, audiofilename, audiocontents, kind, point);
-			System.out.println("입력결과 = "+ result2);
-			
-			model.addAttribute("audio_idx", party3);
-			
-			
+			if(audiofilename==null) {
+				int result3 = sqlSession.getMapper(PartyImpl.class).partyAction2(
+						name, party3, title, contents, audiocontents, kind, point);
+				System.out.println("입력결과 = "+ result3);
+				
+				model.addAttribute("audio_idx", party3);
+			}
+			else {
+				int result2 = sqlSession.getMapper(PartyImpl.class).partyAction(
+						name, party3, title, contents, audiofilename, audiocontents, kind, point);
+				System.out.println("입력결과 = "+ result2);
+				
+				model.addAttribute("audio_idx", party3);
+			}
 		}
 		catch (IOException e) {
 			e.printStackTrace();

@@ -18,4 +18,13 @@
 		(seq_partyboard.nextval, #{id}, #{audio_idx}, #{title}, #{contents},
 			#{audiofilename},#{audiocontents}, #{kind}, #{point}, sysdate+7, sysdate)
 	</insert>
+	
+	<!-- 협업신청처리(오디오파일X) -->
+	<insert id="partyAction2">
+		INSERT INTO partyboard
+		(party_idx,id,audio_idx,title,contents,audiocontents,kind,point,exdate,regidate)
+		VALUES
+		(seq_partyboard.nextval, #{id}, #{audio_idx}, #{title}, #{contents},
+			#{audiocontents}, #{kind}, #{point}, sysdate+7, sysdate)
+	</insert>
 </mapper>
