@@ -7,8 +7,7 @@
 <mapper namespace="impl.AlbumImpl">
 
 	<select id="albumList" resultType="model.AlbumDTO">
-		select tb.*, rownum rnum from 
-		(select * from album where id=#{param1})tb where rnum between #{param2} and #{param3}
+		select * from album where id=#{param1}
 	</select>
 	<select id="albumListPaging" resultType="model.AlbumDTO">
 		select * from 
