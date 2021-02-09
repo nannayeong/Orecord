@@ -34,4 +34,9 @@
 		(seq_partyboard.nextval, #{id}, #{audio_idx}, #{title}, #{contents},
 			#{audiocontents}, #{kind}, #{point}, sysdate+7, sysdate)
 	</insert>
+	
+	<!-- 협업신청서상세 -->
+	<select id="partyView" resultType="model.PartyBoardDTO">
+		SELECT * FROM partyboard WHERE audio_idx=#{audio_idx} AND id=#{id}
+	</select>
 </mapper>

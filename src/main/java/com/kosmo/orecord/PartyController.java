@@ -67,11 +67,12 @@ public class PartyController {
 		/*절대경로*/
 		String path = req.getContextPath();
 		
+		//매퍼 호출
 		AudioBoardDTO party =
 				sqlSession.getMapper(PartyImpl.class).partyWrite(
 				Integer.parseInt(req.getParameter("audio_idx")));
 		
-		
+		//모델객체에 저장
 		model.addAttribute("party", party);
 		
 		return "board/partyWrite";
@@ -193,5 +194,30 @@ public class PartyController {
 		}
 		
 		return "redirect:view.do?audio_idx="+ party3;
+	}
+	
+	//협업신청서 상세페이지
+	@RequestMapping("/board/partyView.do")
+	public String partyView(Model model, HttpServletRequest req, Principal principal) {
+		
+		//idx값이 넘어오는지 확인
+		String idx = req.getParameter("audio_idx");
+		System.out.println("audio_idx = "+ idx);
+		
+		//Mapper 호출
+		PartyBoardDTO partyView =
+			sqlSession.getMapper(PartyImpl.class).partyView(
+				Integer.parseInt(req.getParameter("audio_idx")),
+				req.getParameter("id"));
+			
+			String temp = partyView.getAudiocontents().replace("\r\n", "<br/>");
+			partyView.setAudiocontents(temp);
+			String temp2 = partyView.getContents().replace("\r\n", "<br/>");
+			partyView.setContents(temp2);
+			
+		model.addAttribute("partyView", partyView);
+		model.addAttribute("audio_idx", idx);
+		
+		return "board/partyView";
 	}
 } 

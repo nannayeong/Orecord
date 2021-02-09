@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>partyList.jsp</title>
+<title>협업신청목록</title>
 
 <!-- Jquery, BootStrap -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -69,7 +69,7 @@
 						<tr>
 							<td>${par.party_idx }</td>
 							<td>
-								<a href="./board/partyView.do?audio_idx=?${par.audio_idx}">
+								<a href="./partyView.do?audio_idx=${par.audio_idx}&id=${par.id}">
 									${par.id }
 								</a>
 							</td>
