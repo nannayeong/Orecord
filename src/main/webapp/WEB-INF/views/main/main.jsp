@@ -494,49 +494,7 @@ function userFunc(){
 	<!-- 상단 메뉴바(위치옮기면안됨!) -->
 	<header>
 		<div class="menu-back">
-			<!-- 오른정렬 -->
-			<a href=""><div class="logo">Orecord</div></a>
-			<a href=""><div class="menu">menu1</div></a>
-			<a href=""><div class="menu">menu2</div></a>
-			<div class="search">
-				<form action="${pageContext.request.contextPath}/search.do" onsubmit="return checknull(this)">
-					<input type="text" value="" type="search" name="searchWord" style="width:18em" placeholder="SEARCH"/>
-					<button type="submit" onclick="" class="btn btn-secondary btn-sm" style="margin-bottom:4px"><i class="fas fa-search"></i></button>
-				</form>
-			</div>
-			<!-- 왼정렬 -->
-			
-			<c:choose>
-			<c:when test="${not empty pageContext.request.userPrincipal.name}">
-			<div class="noti" id="setting" onclick="settingFunc();">
-				<i class="fas fa-ellipsis-h fa-lg"></i>
-				<div style="position:relative;background-color:red;visibility:hidden" class="setting-down">
-					<li>1</li>
-					<li>2</li>
-				</div>
-			</div>
-			<div class="noti" id="noti" onclick="notiFunc();">
-				<i class="fas fa-bell fa-lg"></i>
-				<div style="position:relative;background-color:red;visibility:hidden" class="noti-down">
-					<li>1</li>
-					<li>2</li>
-				</div>
-			</div>
-			<div class="noti" id="user"onclick="userFunc();">
-				<img src="./resources/default.jpg" alt="" style="width:1.5em;border-radius:15px;margin-left:5px" />
-				<i class="fas fa-caret-down"></i>
-				<div style="position:relative;background-color:red;visibility:hidden" class="user-down">
-					<li>1</li>
-					<li>2</li>
-				</div>
-			</div>
-			<a href=""><div class="menu-r">Upload</div></a>
-			</c:when>
-			<c:otherwise>
-			<div class="menu-unlogin"><button type="button" class="btn btn-secondary btn-sm">회원가입</button></div>
-			<div class="menu-unlogin"><button type="button" class="btn btn-primary btn-sm" onclick="location.href='${pageContext.request.contextPath}/member/login.do'">로그인</button></div>
-			</c:otherwise>
-			</c:choose>
+			<%@include file="/resources/jsp/header.jsp" %>
 		</div>
 	</header>
 

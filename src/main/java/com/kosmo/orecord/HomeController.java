@@ -65,6 +65,8 @@ public class HomeController {
 	public String index(Model model, HttpServletRequest req,
 			HttpSession session, Principal principal) {
 		
+		String path = req.getContextPath();
+		
 		//로그인
 		String id="";
 		try {
@@ -86,6 +88,22 @@ public class HomeController {
 		
 		//메인페이지에 출력할 오디오게시글 불러옴
 		ArrayList<AudioBoardDTO> audiolist = sqlSession.getMapper(AudioBoardImpl.class).mainAudioList(0,7,1,8);
+		
+		for(AudioBoardDTO audioDTO : audiolist) {
+			
+			System.out.println(audioDTO.getImagename()); 
+			if(audioDTO.getImagename()==null){
+				audioDTO.setImagename(path+"/resources/img/default.jpg");
+			}
+			else {
+				String fileName = audioDTO.getImagename();
+				audioDTO.setImagename(path+"/resources/upload/"+fileName);
+			}
+			
+			String fileName = audioDTO.getAudiofilename();
+			audioDTO.setAudiofilename(path+"/resources/upload/"+fileName);
+		}
+		
 		HashMap<Integer, Integer> commentC = cal.cCount(audiolist,sqlSession);
 		//인기순정렬 맵으로넣음
 		model.addAttribute("audiolist", audiolist);

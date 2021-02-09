@@ -150,6 +150,31 @@ function colChoice(){
 		fn.party.value = "N";
 	}
 }
+
+function addAlbumFunc(){
+	if($('#addAlbumName').val()==''){
+		alert('앨범명을 입력해주세요');
+	}
+	else{
+		$.ajax({
+		     url : "./addAlbum.do",
+		     type : "get",
+		     contentType : "text/html;charset:utf-8",
+		     data : {addAlbumName:$('#addAlbumName').val()},
+		     dataType : "json",
+		     success : function sucFunc(resData) {
+		    	 if(resData==1){
+			    	 $('#albumName').prepend('<option value="'+resData.addAlbumName+'style="color: black;">'+resData.addAlbumName+'</option>');
+			    	 alert("새 앨범이 추가되었습니다");
+			    	 $('#addalbum').modal('hide');
+			   	 }
+		    	 else{
+		    		 alert('중복되는 앨범이름입니다.');
+		    	 }
+		     }    
+		});
+	}
+}
 </script>
 	<div>
 		<div class="content">
@@ -178,18 +203,31 @@ function colChoice(){
 	                        <input type="text" class="form-control" name="artistname">
 	                      </div>
 	                      <div class="form-group">
-		                        <label>앨범</label>
-			                  	<select name="albumName" id="" class="form-control">
-			                  	<!-- <option value="default" style="color: black;">default</option> -->
-		                  		<c:forEach items="${albumList}" var="album">
-		                  		<option value="${album.albumName}" style="color: black;">${album.albumName}</option>
-		                  		</c:forEach>
-			                  	</select>
-				          </div>
-				          <div>
-				          	<label>음원파일</label>
-                      		<input type="file" class="form-control" name="audiofilename" id="audiofilename" accept=".mp4,.mp3,.wav">
-				          </div>
+	                        <label>앨범</label>
+	                        <button type="button" data-toggle="modal" data-target="#addalbum">앨범추가</button>
+	                        <!-- The Modal -->
+							<div class="modal" id="addalbum">
+							  <div class="modal-dialog">
+							    <div class="modal-content">
+							      <!-- Modal body -->
+							      <div class="modal-body" style="text-align:center">
+							      	<span>추가할 앨범명을 입력해주세요</span><br />
+							      	<input type="text" id="addAlbumName" />
+							      	<button type="button" id="aaButton" class="btn btn-warning btn-sm" onclick='addAlbumFunc();'>추가하기</button>
+							      </div>
+							    </div>
+							  </div>
+							</div>
+							
+		                  	<select name="albumName" id="albumName" class="form-control">
+		                  	<!-- <option value="default" style="color: black;">default</option> -->
+	                  		<c:forEach items="${albumList}" var="album">
+	                  		<option value="${album.albumName}" style="color: black;">${album.albumName}</option>
+	                  		</c:forEach>
+		                  	</select>
+			          	<label>음원파일</label>
+                     		<input type="file" class="form-control" name="audiofilename" id="audiofilename" accept=".mp4,.mp3,.wav">
+			          </div>
 					</div>
 				</div>
 				<div class="row">

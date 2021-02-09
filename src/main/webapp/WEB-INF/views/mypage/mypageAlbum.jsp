@@ -67,10 +67,10 @@ $(function(){
 						<c:if test="${audio.albumName eq album.albumName }">	
 						<tr>		
 							<td onclick="location.href='../board/view.do?audio_idx=${audio.audio_idx}'" style="padding-left:0.7em">
-								<img src="${audio.imagename }" alt="" style="width:25px"/> 
+								<img src="${audio.imagename }" alt="" style="width:25px;"/> 
 								${status.count }. ${audio.audiotitle } - ${audio.artistname }
 							</td>
-							<td style="padding-left:11.5em;padding-right:0.7em">
+							<td style="padding-left:10em;padding-right:0.7em">
 								<!-- 플레이버튼 -->
 								<span id="play" onclick="clickAudio('${audio.audiofilename}','${album.albumName }');" class="iconPoint"> 
                    					<i class="fas fa-play"></i>
