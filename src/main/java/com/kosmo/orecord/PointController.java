@@ -22,7 +22,7 @@ import model.MemberDTO;
 public class PointController {
 
 	@Autowired
-	private SqlSession sqlSession;
+	private SqlSession sqlSession;   
 	
 	/*
 	 1. 다른 페이지에서 결제하기 메뉴 버튼 누르면 충전 내역 조회 페이지로 보내기
