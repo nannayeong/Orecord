@@ -1,17 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-<table style="margin:auto;width:90%">
+<table style="margin:auto;width:240px">
 	<tr>
-		<td style="border-right:2px solid #f2f2f2;padding-right:1em">
+		<td style="border-right:2px solid #f2f2f2;width:40px;">
 			<div style="font-size:0.8em">Followers</div>
 			<div id="followers">0</div>
 		</td>
-		<td style="border-right:2px solid #f2f2f2;padding-left:1em;padding-right:1em">
+		<td style="border-right:2px solid #f2f2f2;width:40px;padding-left:15px">
 			<div style="font-size:0.8em">Following</div>
 			<div id="following">0</div>
 		</td>
-		<td style="padding-left:1em">
+		<td style="width:40px;padding-left:15px">
 			<div style="font-size:0.8em;">Tracks</div>
 			<div id="track">0</div>
 		</td>

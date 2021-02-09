@@ -1,8 +1,13 @@
 package model;
 
-public class AudioBoardDTO {
+public class PlayListDTO {
+
+	private int idx;
+	private String plid;
+	private int audio_idx;
+	private String plname;
 	
-	private int audio_idx; //게시물인덱스
+	/*innerjoin*/
 	private String audiotitle; //곡이름
 	private String id; //게시물 작성자 아이디 
 	private int album_idx; //앨범인덱스(FK)
@@ -16,28 +21,30 @@ public class AudioBoardDTO {
 	private int like_count; //좋아요 수
 	private int party; // 협업참여여부 
 	
-	/*album table innerjoin*/
-	private String albumName;
-	private String albumJacket;
-	
-	/* member table innerjoin */
-	private String img;
-	
-	/*like table*/
-	private boolean like; 
-	
-	//getter/setter
-	public String getImg() {
-		return img;
+	public int getIdx() {
+		return idx;
 	}
-	public void setImg(String img) {
-		this.img = img;
+	public void setIdx(int idx) {
+		this.idx = idx;
 	}
 	public int getAudio_idx() {
 		return audio_idx;
 	}
 	public void setAudio_idx(int audio_idx) {
 		this.audio_idx = audio_idx;
+	}
+	public String getPlname() {
+		return plname;
+	}
+	public void setPlname(String plname) {
+		this.plname = plname;
+	}
+	
+	public String getPlid() {
+		return plid;
+	}
+	public void setPlid(String plid) {
+		this.plid = plid;
 	}
 	public String getAudiotitle() {
 		return audiotitle;
@@ -79,7 +86,7 @@ public class AudioBoardDTO {
 		return imagename;
 	}
 	public void setImagename(String imagename) {
-		this.imagename = imagename; 
+		this.imagename = imagename;
 	}
 	public String getCategory() {
 		return category;
@@ -111,27 +118,8 @@ public class AudioBoardDTO {
 	public void setParty(int party) {
 		this.party = party;
 	}
-	
-	
-	public String getAlbumName() {
-		return albumName;
-	}
-	public void setAlbumName(String albumName) {
-		this.albumName = albumName;
-	}
-	public String getAlbumJacket() {
-		return albumJacket;
-	}
-	public void setAlbumJacket(String albumJacket) {
-		this.albumJacket = albumJacket;
-	}
-	
-	public boolean isLike() {
-		return like;
-	}
-	public void setLike(boolean like) {
-		this.like = like;
-	}
+
+
 	
 	
 }

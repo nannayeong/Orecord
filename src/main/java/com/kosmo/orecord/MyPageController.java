@@ -1,9 +1,15 @@
 package com.kosmo.orecord;
 
+import java.io.File;
+import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -14,20 +20,26 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import impl.AlbumImpl;
 import impl.AudioBoardImpl;
 import impl.FollowImpl;
 import impl.MemberImpl;
 import impl.MypageImpl;
+import impl.PlayListImpl;
 import model.AlbumDTO;
 import model.AudioBoardDTO;
 import model.MemberDTO;
+import model.PlayListDTO;
 
 @Controller
 public class MyPageController {
 
+	private static final MemberDTO MemberDTO = null;
 	@Autowired
 	SqlSession sqlSession;
 	
@@ -104,7 +116,7 @@ public class MyPageController {
 		MemberDTO loginDTO = null;
 		try {
 			login_id = principal.getName();
-			 loginDTO = sqlSession.getMapper(MemberImpl.class).memberInfo(login_id);
+			loginDTO = sqlSession.getMapper(MemberImpl.class).memberInfo(login_id);
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -113,7 +125,7 @@ public class MyPageController {
 		if(memberDTO.getImg()==null) {
 			memberDTO.setImg(path+"/resources/img/default.jpg");
 		}
-	
+
 		model.addAttribute("memberDTO", memberDTO);
 		model.addAttribute("loginDTO", loginDTO);
 		model.addAttribute("user_id", user_id);
@@ -136,14 +148,19 @@ public class MyPageController {
 		
 	}
 	
-	/*회원 수정하기*/
+	public static String getUuid() {
+		String uuid = UUID.randomUUID().toString();
+		System.out.println("생성된UUID-1:"+uuid);
+		uuid = uuid.replaceAll("-", "");
+		System.out.println("생성된UUID-2:"+uuid);
+		return uuid;
+	}
+	
+	/*회원수정폼*/
 	@RequestMapping("/memberEdit.do")
-	public String memberEdit(HttpServletRequest req, Principal principal, MemberDTO memberDTO)
-	{		
-		//수정처리 전 로그인 확인
-		
+	public String memberEdit(Principal principal, Model model) {
 		String id = null;
-		//로그인 없이 접근시 nullpointerexception발생, security로 접근권한 설정해야함.	
+		/*로그인 없이 접근시 nullpointerexception발생, security로 접근권한 설정해야함.*/
 		try {
 			id = principal.getName();
 		}
@@ -151,20 +168,102 @@ public class MyPageController {
 			e.printStackTrace();
 		}
 		
-		String pw = req.getParameter("pw");
-		String email = req.getParameter("email_1")+"@"+req.getParameter("email_2");
-		String phone = req.getParameter("phone");
-		String address = req.getParameter("address")+"/"+req.getParameter("addr1")+"/"+req.getParameter("addr2");
-		String intro = req.getParameter("intro");
-		String img = req.getParameter("img");
-		id = principal.getName();
+		MemberDTO dto = sqlSession.getMapper(MypageImpl.class).memberView(id);
+		model.addAttribute("dto", dto);
 		
-		//수정폼에서 전송한 모든 폼값을 한꺼번에 저장한 커맨드객체를 사용한다. 
-		int applyRow = sqlSession.getMapper(MypageImpl.class).memberEdit(pw, email, phone, address, intro, img, id);
+		//주소 나누기
+		String[] addArr = dto.getAddress().split("\\/");
+		model.addAttribute("addArr", addArr);
 		
-		System.out.println("수정처리된 레코드수:"+ applyRow);
+		String[] emailArr = dto.getEmail().split("\\@");
+		model.addAttribute("emailArr", emailArr);
 		
-		return "redirect:/"+id+"/main.do";
+		
+		return "mypage/memberEdit";
+	}
+	
+	/*회원 수정하기*/
+	@RequestMapping(value = "/memberEditAction.do", method = RequestMethod.POST)
+	public String memberEditAction(Principal principal, MultipartHttpServletRequest req)
+	{		
+		
+		//서버의 물리적경로 얻어오기
+		String path = req.getSession().getServletContext().getRealPath("/resources/upload");
+		System.out.println(path);
+		String id = null;
+		
+		try {
+			
+			//업로드폼의 file속성의 필드를 가져온다.
+			Iterator itr = req.getFileNames();
+			
+			MultipartFile mfile = null;
+			String fileName = "";
+			List resultList = new ArrayList();
+			
+			String pw = req.getParameter("pw");
+			String email = req.getParameter("email_1")+"@"+req.getParameter("email_2");
+			String phone = req.getParameter("phone");
+			String address = req.getParameter("address")+"/"+req.getParameter("addr1")+"/"+req.getParameter("addr2");
+			String intro = req.getParameter("intro");
+			String img = req.getParameter("img");
+			id = principal.getName();
+			
+			/*
+			 물리적경로를 기반으로 File객체를 생성한 후 지정된 디렉토리가 있는지 확인한다.
+			 만약 없다면 mkdir()로 생성한다.
+			 */
+			File directory = new File(path);
+			if(!directory.isDirectory()) {
+				directory.mkdirs();
+			}
+			
+			//업로드 폼의 file필드 갯수만큼 반복
+			while(itr.hasNext()) {
+				//전송된 파일의 이름을 읽어온다.
+				fileName = (String)itr.next();
+				System.out.println("filename"+fileName);
+				mfile = req.getFile(fileName);
+				System.out.println("mfile="+mfile);
+				
+				//한글깨짐방지 처리 후 전송된 파일명을 가져옴
+				String originalName = new String(mfile.getOriginalFilename().getBytes(), "UTF-8");
+				img = originalName;
+				//서버로 전송된 파일이 없다면 while문의 처음으로 돌아간다.
+				if("".equals(originalName)) {
+					continue;
+				}
+				
+				//파일명에서 확장자를 가져옴
+				String ext = originalName.substring(originalName.lastIndexOf('.'));
+				//UUID를 통해 생성된 문자열과 확장자를 합쳐서 파일명 완성
+				String saveFileName = getUuid() + ext;
+				//물리적 경로에 새롭게 생성된 파일명으로 파일저장
+				File serverFullName = new File(path + File.separator + saveFileName);
+				
+				/*서버 저장 imagename*/
+				if(fileName.equals("imagename")) {
+					img = saveFileName;
+					System.out.println("imagename"+img);
+				}
+				
+				mfile.transferTo(serverFullName);
+			}
+			
+			//수정폼에서 전송한 모든 폼값을 한꺼번에 저장한 커맨드객체를 사용한다. 
+			int applyRow = sqlSession.getMapper(MypageImpl.class).memberEdit(pw, email, phone, address, intro, img, id);
+			
+			System.out.println("수정처리된 레코드수:"+ applyRow);
+			System.out.println(pw +" "+ email+" " + phone+" " + address+" " + intro+" " + img+" " + id);
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return "redirect:/"+id+".do";
 	}
 	
 	@RequestMapping("/mypageAlbum.do")
@@ -202,7 +301,25 @@ public class MyPageController {
 			String fileName = audioDTO.getAudiofilename();
 			audioDTO.setAudiofilename(path+"/resources/upload/"+fileName);
 		}
-
+		
+		/*로그인유저의 플레이리스트 가져오기*/
+		String id = null;
+		ArrayList<PlayListDTO> plList = null;
+		try {
+			id = principal.getName();
+			plList = sqlSession.getMapper(PlayListImpl.class).select(id);
+			
+			if(plList.size()==0) {
+				PlayListDTO dto = new PlayListDTO();
+				dto.setPlname("default");
+				plList.add(dto);
+			}
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		model.addAttribute("plList", plList);
 		model.addAttribute("albumList", albumList);
 		model.addAttribute("audioList", audioList);
 		
@@ -214,45 +331,31 @@ public class MyPageController {
 		
 		String path = req.getContextPath();
 		String user_id = req.getParameter("user_id");	
-		ArrayList<AlbumDTO> albumList = sqlSession.getMapper(AlbumImpl.class).albumList(user_id);
-		ArrayList<AudioBoardDTO> audioList = sqlSession.getMapper(AudioBoardImpl.class).audioList(user_id);	
-		
-		/*나의 플레이리스트 가져와서 앨범명별로 분류한 후 map에 집어넣기*/
 		
 		/*1. 플레이리스트 가져오기*/
-		
+		ArrayList<PlayListDTO> plList = sqlSession.getMapper(PlayListImpl.class).myplaylist(user_id);
 		/*2. for문으로 플레이리스트의 앨범이름을 hashset에 넣은 후 map('albumName', albumList)에 넣기*/
-		
-		/*3.플레이리스트 DTO map에 넣기*/
-		
-		/*앨범*/
-		for(AlbumDTO albumDTO : albumList) {
-			if(albumDTO.getAlbumJacket()==null){
-				albumDTO.setAlbumJacket(path+"/resources/img/default.jpg");
+		HashSet<String> plSet = new HashSet<String>();
+		for(PlayListDTO plDTO : plList) {
+			plSet.add(plDTO.getPlname());
+			
+			if(plDTO.getImagename()==null) {
+				plDTO.setImagename(path+"/resources/img/default.jpg");
 			}
 			else {
-				String fileName = albumDTO.getAlbumJacket();
-				albumDTO.setAlbumJacket(path+"/resources/upload/"+fileName);
+				String fileName = plDTO.getImagename();
+				plDTO.setImagename(path+"/resources/upload/"+fileName);
 			}
+			String fileName = plDTO.getAudiofilename();
+			plDTO.setAudiofilename(path+"/resources/upload/"+fileName);
 		}
 		
-		/*음원*/
-		for(AudioBoardDTO audioDTO : audioList) {
-			
-			if(audioDTO.getImagename()==null){
-				audioDTO.setImagename(path+"/resources/img/default.jpg");
-			}
-			else {
-				String fileName = audioDTO.getImagename();
-				audioDTO.setImagename(path+"/resources/upload/"+fileName);
-			}
-			
-			String fileName = audioDTO.getAudiofilename();
-			audioDTO.setAudiofilename(path+"/resources/upload/"+fileName);
+		for(String a : plSet) {
+			System.out.println("리스트확인"+a);
 		}
-
-		model.addAttribute("albumList", albumList);
-		model.addAttribute("audioList", audioList);
+		/*3.플레이리스트 DTO map에 넣기*/		
+		model.addAttribute("plSet", plSet);//폴더명
+		model.addAttribute("plList",plList);//전체리스트
 		
 		return "mypage/mypagePlay";
 	}

@@ -41,10 +41,10 @@ border:1px solid #f2f2f2
 		</td>
 		<td style="padding-top:1em">
 			<div><h4>${album.albumName }</h4></div>
-			<audio controls style="background-color:white;width:520px;height:40px" id="${album.albumName }">
+			<audio controls style="background-color:white;width:495px;height:40px" id="${album.albumName }">
 				<c:forEach items="${audioList }" var="audio">
 				<c:if test="${audio.albumName eq album.albumName }">
-    			<source src="${audio.audiofilename }" type="audio/mp4"/>
+    			<source src="${audio.audiofilename }" type="audio/mp4"/> 
     			</c:if>
     			</c:forEach>
     		</audio>
@@ -59,23 +59,62 @@ border:1px solid #f2f2f2
 						<c:forEach items="${audioList }" var="audio" varStatus="status">
 						<c:if test="${audio.albumName eq album.albumName }">	
 						<tr>		
-							<td onclick="location.href='../board/view.do?audio_idx=${audio.audio_idx}'">
+							<td onclick="location.href='../board/view.do?audio_idx=${audio.audio_idx}'" style="padding-left:0.7em">
 								<img src="${audio.imagename }" alt="" style="width:25px"/> 
 								${status.count }. ${audio.audiotitle } - ${audio.artistname }
 							</td>
-							<td>
+							<td style="padding-left:11.5em;padding-right:0.7em">
+								<!-- 플레이버튼 -->
 								<span id="play" onclick="clickAudio('${audio.audiofilename}','${album.albumName }');" class="iconPoint"> 
                    					<i class="fas fa-play"></i>
                    				</span>&nbsp&nbsp 
-                   				<span id="addplaylist" class="iconPoint"
-                   					onclick="loginCheckPlay('${pageContext.request.userPrincipal.name}',${audio.audio_idx })">
-                   					
-                   				</span>&nbsp&nbsp
                    				
-                   				<span id="" class="iconPoint"
-                   					onclick="loginCheckaddLike('${pageContext.request.userPrincipal.name}',${audio.audio_idx })">
-                   					
-                   				</span>
+                   				<!-- 플레이리스트추가 -->
+                   				<span id="addplaylist" class="iconPoint" onclick="logincheck(this);" data-toggle="modal" data-target="#play${audio.audio_idx}">
+                   					<i class="fas fa-plus fa-lg"></i>
+                   				</span>&nbsp&nbsp
+                   				<!-- The Modal -->
+								<c:if test="${not empty pageContext.request.userPrincipal.name}">
+								<div class="modal" id="play${audio.audio_idx}">
+								  <div class="modal-dialog">
+								    <div class="modal-content">
+								
+								      <!-- Modal Header -->
+								      <div class="modal-header">
+
+								        <h4 class="modal-title">플레이리스트 추가하기</h4>
+								        <button type="button" class="close" data-dismiss="modal">&times;</button>
+								      </div>
+								
+								      <!-- Modal body -->
+								      <form action="../addPlayList.do?${_csrf.parameterName}=${_csrf.token}" method="post">
+								      <input type="hidden" name="audio_idx" value="${audio.audio_idx }" />
+								      <div class="modal-body" style="text-align:center">
+								      	<div><img src="${audio.imagename }" alt="" style="width:25px"/> 
+											${audio.audiotitle } - ${audio.artistname }
+										</div><br />
+								      	<span>저장할 플레이리스트 폴더 선택</span><br />
+								      	<select name="plname" id="" style="width:8em;text-align:center">
+								      		<c:forEach items="${plList}" var="pl" varStatus="status">
+								      		<option value="${pl.plname}">${pl.plname }</option>
+								      		</c:forEach>
+								      	</select>
+								      </div>
+								
+								      <!-- Modal footer -->
+								      <div class="modal-footer">
+								        <button type="submit" class="btn btn-warning btn-sm">추가하기</button>
+								      </div>
+									</form>
+								    </div>
+								  </div>
+								</div>
+								</c:if>
+								
+                   				<!-- like -->
+                   				<span id="heart" class="iconPoint" onclick="logincheck(this);">
+                   					<i class="fas fa-heart"></i>
+                   				</span>	
 							</td>
 						</tr>
 						</c:if>

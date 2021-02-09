@@ -100,6 +100,11 @@
           <span>회원관리</span>
         </a>
       </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="${pageContext.request.contextPath}/memberList.do">
+          <span>회원리스트</span>
+        </a>
+      </li>
     </ul>
 
     <div id="content-wrapper">
