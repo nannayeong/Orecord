@@ -22,9 +22,12 @@ public class ViewController {
 	
 	@Autowired
 	private SqlSession sqlSession;
+	public void setSqlSession(SqlSession sqlSession) {
+		this.sqlSession = sqlSession;
+	}
 	
 	//상세보기 페이지
-	@RequestMapping("/board/view.do") 
+	@RequestMapping("/board/view.do")
 	public String View(Model model, HttpServletRequest req, Principal principal) {
 		
 		//idx값이 넘어오는지 확인
@@ -39,13 +42,16 @@ public class ViewController {
 			sqlSession.getMapper(ViewImpl.class).View(
 			Integer.parseInt(req.getParameter("audio_idx")));
 		
+		String temp2 = view.getContents().replaceAll("\r\n", "<br/>");
+		view.setContents(temp2);
+		
 		if(view.getImagename()==null) {
-			view.setImagename(path+"/default.jpg");
+			view.setImagename(path+"/resources/img/default.jpg");
 		}
 		else {
-			view.setImagename(path+"/upload/"+view.getImagename());
+			view.setImagename(path+"/resources/upload/"+view.getImagename());
 		}
-		view.setAudiofilename(path+"/upload/"+view.getAudiofilename());
+		view.setAudiofilename(path+"/resources/upload/"+view.getAudiofilename());
 		
 		
 		//모델객체에 데이터 저장
@@ -65,54 +71,6 @@ public class ViewController {
 		
 		return "board/view";
 		
-	}
-	
-	//수정 페이지
-	@RequestMapping("/board/modify.do")
-	public String Modify(Model model, HttpServletRequest req, Principal principal) {
-		
-		//값이 넘어오는지 확인
-		String qwer = req.getParameter("audio_idx");
-		System.out.println("audio_idx = "+ qwer);
-		String name = principal.getName();
-		System.out.println("id = "+ name);
-		
-		AudioBoardDTO modify =
-			sqlSession.getMapper(ViewImpl.class).modify(
-				Integer.parseInt(req.getParameter("audio_idx")),
-				principal.getName());
-		
-		//모델객체에 데이터 저장
-		model.addAttribute("audio_idx", modify.getAudio_idx());
-		model.addAttribute("id", modify.getId());
-		model.addAttribute("artistname", modify.getArtistname());
-		model.addAttribute("audiotitle", modify.getAudiotitle());
-		model.addAttribute("contents", modify.getContents());
-		model.addAttribute("regidate", modify.getRegidate());
-		model.addAttribute("playCount", modify.getPlay_count());
-		model.addAttribute("like_count", modify.getLike_count());
-		
-		return "board/modify";
-	}
-	
-	//수정처리 
-	@RequestMapping("/board/modifyAction.do")
-	public String modifyAction(Principal principal, AudioBoardDTO audioBoardDTO,
-			Model model) {
-		
-		//수정처리 전 로그인 확인
-		if(principal.getName()==null) {
-			return "redirect:view.do"; 
-		}
-		
-		int applyRow = sqlSession.getMapper(ViewImpl.class)
-				.modifyAction(audioBoardDTO);
-		System.out.println("수정처리된 레코드수 : "+ applyRow);
-		
-		//모델객체에 idx저장
-		model.addAttribute("audio_idx", audioBoardDTO.getAudio_idx());
-		
-		return "redirect:view.do";
 	}
 	
 	//댓글입력처리

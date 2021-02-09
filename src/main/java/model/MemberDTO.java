@@ -15,6 +15,10 @@ public class MemberDTO {
 	private String img;//프로필이미지
 	private int enabled;
 	
+	//select구간을 위한 멤버변수
+	private int start;//select의 시작
+	private int end;//끝
+	
 	//getter/setter
 	public String getId() {
 		return id;
@@ -87,6 +91,20 @@ public class MemberDTO {
 	}
 	public void setEnabled(int enabled) {
 		this.enabled = enabled;
+	}
+	
+	
+	public int getStart() {
+		return start;
+	}
+	public void setStart(int start) {
+		this.start = start;
+	}
+	public int getEnd() {
+		return end;
+	}
+	public void setEnd(int end) {
+		this.end = end;
 	}
 	
 } 

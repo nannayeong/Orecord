@@ -24,4 +24,5 @@ public interface PointImpl {
 	public int selectExchangeLogTotalCount(Map<String, Object> obj);
 	public ArrayList<ExchangeDTO> selectExchangeLog(Map<String, Object> obj);
 	
+	public int insertChargeLog(Map<String, Object> obj); 
 }

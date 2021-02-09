@@ -188,7 +188,7 @@ function colChoice(){
 				          </div>
 				          <div>
 				          	<label>음원파일</label>
-                      		<input type="file" class="form-control" name="audiofilename" id="audiofilename" style="color: white;" accept=".mp4,.mp3,.wav">
+                      		<input type="file" class="form-control" name="audiofilename" id="audiofilename" accept=".mp4,.mp3,.wav">
 				          </div>
 					</div>
 				</div>

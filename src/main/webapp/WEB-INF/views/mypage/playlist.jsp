@@ -18,7 +18,6 @@
 <!-- layout js-->
 <script src="${pageContext.request.contextPath}/resources/js/layout.js"></script>
 <script>
-
 function logincheck(bt){
 	if("${pageContext.request.userPrincipal.name}"==""){
 		alert('로그인 후 이용해주세요');
@@ -86,7 +85,19 @@ function logincheck(bt){
 		}		 
 	}
 }
-
+function clickAudio(audioFileName,playerName){
+	$('#'+playerName).attr('src',audioFileName).attr('autoplay',true);
+}
+function pointCheck(){
+	if($('#doneError').html()!=''){
+		alert('보유 포인트를 확인해주세요');
+		return false;
+	}
+	if($('#donePoint').val()==''){
+		alert('후원 포인트를 입력해주세요');
+		return false;
+	}
+}
 $(function(){
 	
 	$('#follow').mouseenter(function(){
@@ -147,6 +158,15 @@ $(function(){
 	    	 $('#albumList').html(resData);
 	     }    
 	});
+	
+	$('#donePoint').keyup(function(){
+		if($('#donePoint').val()>$('#myPoint').html()){
+			$('#doneError').html('보유 포인트가 부족합니다.');
+		}
+		else{
+			$('#doneError').html('');
+		}
+	});
 });
 </script>
 </head>
@@ -154,19 +174,7 @@ $(function(){
 	<div>
 		<div class="content">
 			<div class="profile" style="background-color:brown;">
-				<table style="">
-					<tr>
-						<td rowspan="2" style="padding-top:2em;padding-left:2em">
-							<img src="${pageContext.request.contextPath}/resources/img/default.jpg" alt="" style="width:200px;border-radius:50%"/>
-						</td>
-						<td>
-							${user_id }
-						</td>
-					</tr>
-					<tr>
-						<td></td>
-					</tr>
-				</table>
+				<%@include file="/resources/jsp/mypageProfile.jsp" %>
 			</div>
 			<div>
 				<div class="my-menu">
@@ -178,12 +186,41 @@ $(function(){
 					<div style="float:right;margin-right:1em;">
 						<c:choose>
 						<c:when test="${user_id ne pageContext.request.userPrincipal.name}">
-						<button type="button" onclick="logincheck(this)" id="done" class="btn btn-warning btn-sm">후원하기</button>			
+						<button type="button" onclick="logincheck(this)" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#done">후원하기</button>
+						<!-- The Modal -->
+						<c:if test="${not empty pageContext.request.userPrincipal.name}">
+						<div class="modal" id="done">
+						  <div class="modal-dialog">
+						    <div class="modal-content">
+						
+						      <!-- Modal Header -->
+						      <div class="modal-header">
+						        <h4 class="modal-title">${memberDTO.nickname }(${user_id })님에게 후원하기</h4>
+						        <button type="button" class="close" data-dismiss="modal">&times;</button>
+						      </div>
+						
+						      <!-- Modal body -->
+						      <form action="?${_csrf.parameterName}=${_csrf.token}" method="post" onsubmit="return pointCheck();">
+						      <div class="modal-body">
+						        <div>${pageContext.request.userPrincipal.name}님의 잔여 포인트 :<span id="myPoint">${loginDTO.mypoint }원</span>&nbsp&nbsp
+						        	<button type="button" class="btn btn-info btn-sm" style="margin-bottom:5px"onclick="location.href='../chargeLog.do'">충전하기</button>
+						        </div>
+						        
+						        <div>후원하실 포인트를 입력해주세요 : <input type="text" id="donePoint" name="donePoint" style="width:7em"/> 원</div>
+								<div id="doneError"></div>
+						      </div>
+						
+						      <!-- Modal footer -->
+						      <div class="modal-footer">
+						        <button type="submit" class="btn btn-warning btn-sm">후원하기</button>
+						      </div>
+							</form>
+						    </div>
+						  </div>
+						</div>
+						</c:if>
 						<button type="button" onclick="logincheck(this)" id="follow" class="btn btn-success btn-sm">팔로우</button>
 						</c:when>
-						<c:otherwise>
-						<button type="button" onclick="location.href='../upload.do'">업로드하기</button>
-						</c:otherwise>
 						</c:choose>
 					</div>
 				</div>
