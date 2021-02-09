@@ -47,13 +47,13 @@
 		<c:choose>
 			<c:when test="${not empty sessionScope.siteUserInfo }">
 				<button class="btn btn-danger"
-					onclick="location.href='logout.do';">
+					>
 					로그아웃
 				</button>
 			</c:when>
 			<c:otherwise>
 				<button class="btn btn-info"
-					onclick="location.href='login.do';">
+					>
 					로그인	
 				</button>
 			</c:otherwise>
@@ -88,7 +88,7 @@
 		</div>
 	</c:forEach>
 <!-- 			</table> -->
-		</form>
+		
 	</div>
 						
 						
@@ -103,9 +103,9 @@
 				</div>
 			</div>
 			<!-- 오른쪽 컨텐츠종료 -->
-		</div>
+		
 		<!-- 본문종료 -->
-	</div>
+	
 
 	<!-- 상단 메뉴바(위치옮기면안됨!) -->
 	<header>
