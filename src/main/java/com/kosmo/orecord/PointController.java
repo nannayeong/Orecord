@@ -59,7 +59,6 @@ public class PointController {
 		}
 		
 //		model.addAttribute("loginId", loginId);
-		
 		// 결제시 필요한 정보 입력을 위해 MemberDTO 반환
 		MemberDTO memberDTO = sqlSession.getMapper(PointImpl.class).selectUserInfo(loginId);
 		
@@ -189,4 +188,6 @@ public class PointController {
 		sqlSession.getMapper(PointImpl.class).insertChargeLog(param);
 		
 	}
+	
+	// 후원시 포인트 이동 처리
 }

@@ -35,4 +35,8 @@ public interface PointImpl {
 	// 결제시 충전 내역 삽입 쿼리
 	public void insertChargeLog(Map<String, Object> obj);
 	
+	// 후원시 포인트 업데이트 쿼리
+	public void updateSponsorPoint(String loginId, int sponPoint);
+	public void updatePatronPoint(String patronId, int sponPoint);
+	
 }
