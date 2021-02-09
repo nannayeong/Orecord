@@ -13,32 +13,35 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
 </head>
+<style>
+#list tr:hover{
+background-color: #f2f2f2;cursor:pointer
+}
+#list tr{
+border:1px solid #f2f2f2
+}
+</style>
 <body>
 <!-- 앨범 -->
-<table style="width:95%;margin:auto;margin-bottom:1em">
+<table style="width:80%;margin:auto;margin-bottom:1em">
 <c:choose>
-<c:when test="${empty audioList }">
-	<tr>
-		<td style="text-align:center;border:2px #f2f2f2 solid;height:30em">
-			<div>생성된 플레이리스트가 없습니다</div><br />
-			<c:if test="${pageContext.request.userPrincipal.name ne user_id}">
-			<div><button type="button" onclick="location.href=''" class="btn btn-outline-dark">음악 찾으러 가기</button></div>
-			</c:if>
-		</td>
-	</tr>
+<c:when test="${empty plSet}">
+	<td style="text-align:center;border:2px #f2f2f2 solid;height:30em">
+		<div>등록된 앨범이 없습니다.</div><br />
+		<c:if test="${pageContext.request.userPrincipal.name ne user_id}">
+		<div><button type="button" onclick="location.href='../upload.do'" class="btn btn-outline-dark">음원 찾아보기</button></div>
+		</c:if>
+	</td>
 </c:when>
 <c:otherwise>
-<c:forEach items="${albumList }" var="album">
+<c:forEach items="${plSet }" var="plname">
 	<tr>
-		<td rowspan="2" style="width:7em;padding-left:1em;padding-right:1em;vertical-align:top;padding-top:1em">
-			<img src="../resources/img/default.jpg" alt="" style="width:6em"/>
-		</td>
-		<td style="padding-top:1em">
-			<div><h4>${album.albumName }</h4></div>
-			<audio controls style="background-color:white;width:420px;height:40px" id="">
-				<c:forEach items="${audioList }" var="audio">
-				<c:if test="${audio.albumName eq album.albumName }">
-    			<source src="${audio.audiofilename }" type="audio/mp4"/>
+		<td>
+			<div><h4>${plname }</h4></div>
+			<audio controls style="background-color:white;width:550px;height:40px" id="${plname }">
+				<c:forEach items="${plList }" var="pl">
+				<c:if test="${pl.plname eq plname }">
+    			<source src="${pl.audiofilename }" type="audio/mp4"/> 
     			</c:if>
     			</c:forEach>
     		</audio>
@@ -47,28 +50,77 @@
 	<tr>
 		<td>
 			<!-- 앨범 수록 음원 -->
-			<% int count = 0; %>
  			<div id="accordion">
-				<div id="col${album.albumName }" class="collapse show" data-parent="#accordion">
-					<table style="width:95%;font-size:15px">
-						<c:forEach items="${audioList }" var="audio" varStatus="status">
-						<c:if test="${audio.albumName eq album.albumName }">	
-						<% count += count; %>
+				<div id="col${plname }" class="collapse show" data-parent="#accordion">
+					<table style="width:100%;font-size:15px" id="list">
+						<c:forEach items="${plList }" var="pl" varStatus="status">
+						<c:if test="${plname eq pl.plname }">	
 						<tr>		
-							<td style="border:1px solid #f2f2f2"><img src="" alt="" /> ${status.count }. ${audio.audiotitle } - ${audio.artistname }</td>
+							<td onclick="location.href='../board/view.do?audio_idx=${pl.audio_idx}'" style="padding-left:0.7em">
+								<img src="${pl.imagename }" alt="" style="width:25px"/> 
+								${status.count }. ${pl.audiotitle } - ${pl.artistname }
+							</td>
+							<td style="padding-left:10em;text-align:center">
+								<!-- 플레이버튼 -->
+								<span id="play" onclick="clickAudio('${pl.audiofilename}','${plname }');" class="iconPoint"> 
+                   					<i class="fas fa-play"></i>
+                   				</span>&nbsp&nbsp 
+                   				
+                   				<!-- 플레이리스트추가 -->
+                   				<span id="addplaylist" class="iconPoint" onclick="logincheck(this);" data-toggle="modal" data-target="#play${audio.audio_idx}">
+                   					<i class="fas fa-plus fa-lg"></i>
+                   				</span>&nbsp&nbsp
+                   				<!-- The Modal -->
+								<c:if test="${not empty pageContext.request.userPrincipal.name}">
+								<div class="modal" id="play${pl.audio_idx}">
+								  <div class="modal-dialog">
+								    <div class="modal-content">
+								
+								      <!-- Modal Header -->
+								      <div class="modal-header">
+
+								        <h4 class="modal-title">플레이리스트 추가하기</h4>
+								        <button type="button" class="close" data-dismiss="modal">&times;</button>
+								      </div>
+								
+								      <!-- Modal body -->
+								      <form action="../addPlayList.do?${_csrf.parameterName}=${_csrf.token}" method="post">
+								      <input type="hidden" name="audio_idx" value="${pl.audio_idx }" />
+								      <div class="modal-body" style="text-align:center">
+								      	<div><img src="${pl.imagename }" alt="" style="width:25px"/> 
+											${pl.audiotitle } - ${pl.artistname }
+										</div><br />
+								      	<span>저장할 플레이리스트 폴더 선택</span><br />
+								      	<select name="plname" id="" style="width:8em;text-align:center">
+								      		<c:forEach items="${plList}" var="pl" varStatus="status">
+								      		<option value="${pl.plname}">${pl.plname }</option>
+								      		</c:forEach>
+								      	</select>
+								      </div>
+								
+								      <!-- Modal footer -->
+								      <div class="modal-footer">
+								        <button type="submit" class="btn btn-warning btn-sm">추가하기</button>
+								      </div>
+									</form>
+								    </div>
+								  </div>
+								</div>
+								</c:if>
+								
+                   				<!-- like -->
+                   				<span id="heart" class="iconPoint" onclick="logincheck(this);">
+                   					<i class="fas fa-heart"></i>
+                   				</span>	
+							</td>
 						</tr>
 						</c:if>
 						</c:forEach>
-						<c:if test="<%=count %>==0">
-						<tr>		
-							<td style="border:1px solid #f2f2f2">등록된 레코드가 없습니다.</td>
-						</tr>
-						</c:if>
 					</table>
 				</div>
 
-			    <div style="cursor:pointer;background-color:#f2f2f2;font-size:15px;text-align:center;margin-bottom:1em;width:95%">
-			    	<a class="card-link" data-toggle="collapse" href="#col${album.albumName }">
+			    <div style="cursor:pointer;background-color:#f2f2f2;font-size:15px;text-align:center;margin-bottom:1em;width:100%">
+			    	<a class="card-link" data-toggle="collapse" href="#col${pl.plname }">
 			    		트랙 리스트
 			    	</a>
 			    </div>
@@ -79,5 +131,6 @@
 </c:otherwise>
 </c:choose>
 </table>
+
 </body>
 </html>

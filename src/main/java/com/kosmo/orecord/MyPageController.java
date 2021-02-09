@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -29,9 +30,11 @@ import impl.AudioBoardImpl;
 import impl.FollowImpl;
 import impl.MemberImpl;
 import impl.MypageImpl;
+import impl.PlayListImpl;
 import model.AlbumDTO;
 import model.AudioBoardDTO;
 import model.MemberDTO;
+import model.PlayListDTO;
 
 @Controller
 public class MyPageController {
@@ -113,7 +116,7 @@ public class MyPageController {
 		MemberDTO loginDTO = null;
 		try {
 			login_id = principal.getName();
-			 loginDTO = sqlSession.getMapper(MemberImpl.class).memberInfo(login_id);
+			loginDTO = sqlSession.getMapper(MemberImpl.class).memberInfo(login_id);
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -122,7 +125,7 @@ public class MyPageController {
 		if(memberDTO.getImg()==null) {
 			memberDTO.setImg(path+"/resources/img/default.jpg");
 		}
-	
+
 		model.addAttribute("memberDTO", memberDTO);
 		model.addAttribute("loginDTO", loginDTO);
 		model.addAttribute("user_id", user_id);
@@ -298,7 +301,25 @@ public class MyPageController {
 			String fileName = audioDTO.getAudiofilename();
 			audioDTO.setAudiofilename(path+"/resources/upload/"+fileName);
 		}
-
+		
+		/*로그인유저의 플레이리스트 가져오기*/
+		String id = null;
+		ArrayList<PlayListDTO> plList = null;
+		try {
+			id = principal.getName();
+			plList = sqlSession.getMapper(PlayListImpl.class).select(id);
+			
+			if(plList.size()==0) {
+				PlayListDTO dto = new PlayListDTO();
+				dto.setPlname("default");
+				plList.add(dto);
+			}
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		model.addAttribute("plList", plList);
 		model.addAttribute("albumList", albumList);
 		model.addAttribute("audioList", audioList);
 		
@@ -310,45 +331,31 @@ public class MyPageController {
 		
 		String path = req.getContextPath();
 		String user_id = req.getParameter("user_id");	
-		ArrayList<AlbumDTO> albumList = sqlSession.getMapper(AlbumImpl.class).albumList(user_id);
-		ArrayList<AudioBoardDTO> audioList = sqlSession.getMapper(AudioBoardImpl.class).audioList(user_id);	
-		
-		/*나의 플레이리스트 가져와서 앨범명별로 분류한 후 map에 집어넣기*/
 		
 		/*1. 플레이리스트 가져오기*/
-		
+		ArrayList<PlayListDTO> plList = sqlSession.getMapper(PlayListImpl.class).myplaylist(user_id);
 		/*2. for문으로 플레이리스트의 앨범이름을 hashset에 넣은 후 map('albumName', albumList)에 넣기*/
-		
-		/*3.플레이리스트 DTO map에 넣기*/
-		
-		/*앨범*/
-		for(AlbumDTO albumDTO : albumList) {
-			if(albumDTO.getAlbumJacket()==null){
-				albumDTO.setAlbumJacket(path+"/resources/img/default.jpg");
+		HashSet<String> plSet = new HashSet<String>();
+		for(PlayListDTO plDTO : plList) {
+			plSet.add(plDTO.getPlname());
+			
+			if(plDTO.getImagename()==null) {
+				plDTO.setImagename(path+"/resources/img/default.jpg");
 			}
 			else {
-				String fileName = albumDTO.getAlbumJacket();
-				albumDTO.setAlbumJacket(path+"/resources/upload/"+fileName);
+				String fileName = plDTO.getImagename();
+				plDTO.setImagename(path+"/resources/upload/"+fileName);
 			}
+			String fileName = plDTO.getAudiofilename();
+			plDTO.setAudiofilename(path+"/resources/upload/"+fileName);
 		}
 		
-		/*음원*/
-		for(AudioBoardDTO audioDTO : audioList) {
-			
-			if(audioDTO.getImagename()==null){
-				audioDTO.setImagename(path+"/resources/img/default.jpg");
-			}
-			else {
-				String fileName = audioDTO.getImagename();
-				audioDTO.setImagename(path+"/resources/upload/"+fileName);
-			}
-			
-			String fileName = audioDTO.getAudiofilename();
-			audioDTO.setAudiofilename(path+"/resources/upload/"+fileName);
+		for(String a : plSet) {
+			System.out.println("리스트확인"+a);
 		}
-
-		model.addAttribute("albumList", albumList);
-		model.addAttribute("audioList", audioList);
+		/*3.플레이리스트 DTO map에 넣기*/		
+		model.addAttribute("plSet", plSet);//폴더명
+		model.addAttribute("plList",plList);//전체리스트
 		
 		return "mypage/mypagePlay";
 	}

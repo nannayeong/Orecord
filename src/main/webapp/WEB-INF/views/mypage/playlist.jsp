@@ -87,6 +87,10 @@ function logincheck(bt){
 	}
 }
 
+function clickAudio(audioFileName,playerName){
+	$('#'+playerName).attr('src',audioFileName).attr('autoplay',true);
+}
+
 function pointCheck(){
 	if($('#doneError').html()!=''){
 		alert('보유 포인트를 확인해주세요');

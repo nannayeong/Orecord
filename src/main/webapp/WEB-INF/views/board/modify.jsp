@@ -154,116 +154,116 @@ function colChoice(){
 	}
 }
 </script>
-	<div>
-		<div class="content">
-			<!-- 왼쪽 컨텐츠 -->
-			<form method="post" enctype="multipart/form-data" name="modiform"
-				onsubmit="return modiValidate(this);"
-				action="<c:url value="/board/modifyAction.do" />">
-				<s:csrfInput />
-				<input type="hidden" name="audio_idx" value="${modify.audio_idx}">
-				<input type="hidden" name="id" value="${pageContext.request.userPrincipal.name}" />
-				<div
-					style="background: linear-gradient(to right, #91888A, #5A5B82);"
-					class="jumbotron">
-					<div class="row">
-						<div class="col-8"
-							style="padding-left: 40px; font-size: 20px;">
-							<div class="row">
-								<!-- 가수명, 곡 이름 -->
-								<div class="col-6">
-									<div style="padding: 8px 0 5px 0;">
-										<label>아티스트 명</label>
-										<input type="text" class="form-control"
-											name="artistname" value="${modify.artistname }">
-									</div>
-									<div style="margin-top: 5px;">
-										<label>곡 이름</label> <input type="text" class="form-control"
-											name="audiotitle" value="${modify.audiotitle }">
-									</div>
+<div>
+	<div class="content">
+		<!-- 왼쪽 컨텐츠 -->
+		<form method="post" enctype="multipart/form-data" name="modiform"
+			onsubmit="return modiValidate(this);"
+			action="<c:url value="/board/modifyAction.do" />">
+			<s:csrfInput />
+			<input type="hidden" name="audio_idx" value="${modify.audio_idx}">
+			<input type="hidden" name="id" value="${pageContext.request.userPrincipal.name}" />
+			<div
+				style="background: linear-gradient(to right, #91888A, #5A5B82);"
+				class="jumbotron">
+				<div class="row">
+					<div class="col-8"
+						style="padding-left: 40px; font-size: 20px;">
+						<div class="row">
+							<!-- 가수명, 곡 이름 -->
+							<div class="col-6">
+								<div style="padding: 8px 0 5px 0;">
+									<label>아티스트 명</label>
+									<input type="text" class="form-control"
+										name="artistname" value="${modify.artistname }">
 								</div>
-								<!-- 작성일, 카테고리 -->
-								<div class="col-4 " style="padding-top: 8px;">
-									<label>작성일</label>
-									<input type="text" class="form-control" name="regidate" value="${modify.regidate }">
-									<!-- 국가별 카테고리 -->
-									<div class="form-group">
-										<label style="margin-top: 10px;">카테고리</label> <select
-											name="country" id="country" class="form-control">
-											<option style="color: black;" value="noValue">나라</option>
-											<option style="color: black;" value="Ghana">가나</option>
-											<option style="color: black;" value="Korea">대한민국</option>
-											<option style="color: black;" value="Germany">독일</option>
-											<option style="color: black;" value="US">미국</option>
-											<option style="color: black;" value="Brazil">브라질</option>
-											<option style="color: black;" value="Sweden">스웨덴</option>
-											<option style="color: black;" value="Singapore">싱가포르</option>
-											<option style="color: black;" value="Argentina">아르헨티나</option>
-											<option style="color: black;" value="UK">영국</option>
-											<option style="color: black;" value="Japan">일본</option>
-										</select>
-									</div>
-									<!-- 장르별 카테고리 -->
-									<div class="form-group">
-										<select name="genre" id="genre" class="form-control">
-											<option style="color: black;" value="noValue">장르</option>
-											<option style="color: black;" value="Dance">Dance</option>
-											<option style="color: black;" value="Rock">Rock</option>
-											<option style="color: black;" value="Jazz">Jazz</option>
-											<option style="color: black;" value="Classic">Classic</option>
-											<option style="color: black;" value="Ballad">Ballad</option>
-											<option style="color: black;" value="Hip-pop">Hip-pop</option>
-											<option style="color: black;" value="Pop">Pop</option>
-											<option style="color: black;" value="Trot">Trot</option>
-											<option style="color: black;" value="Reggae">Reggae</option>
-											<option style="color: black;" value="Blues">Blues</option>
-										</select>
-									</div>
+								<div style="margin-top: 5px;">
+									<label>곡 이름</label> <input type="text" class="form-control"
+										name="audiotitle" value="${modify.audiotitle }">
 								</div>
 							</div>
-							
-							<!-- 음원파일 -->
-							<div style="padding: 5px 80px 5px 0;">
-								<label>음원파일</label>
-								<input type="file" class="form-control"
-									name="audiofilename" id="audiofilename" accept=".mp4,.mp3,.wav">
+							<!-- 작성일, 카테고리 -->
+							<div class="col-4 " style="padding-top: 8px;">
+								<label>작성일</label>
+								<input type="text" class="form-control" name="regidate" value="${modify.regidate }">
+								<!-- 국가별 카테고리 -->
+								<div class="form-group">
+									<label style="margin-top: 10px;">카테고리</label> <select
+										name="country" id="country" class="form-control">
+										<option style="color: black;" value="noValue">나라</option>
+										<option style="color: black;" value="Ghana">가나</option>
+										<option style="color: black;" value="Korea">대한민국</option>
+										<option style="color: black;" value="Germany">독일</option>
+										<option style="color: black;" value="US">미국</option>
+										<option style="color: black;" value="Brazil">브라질</option>
+										<option style="color: black;" value="Sweden">스웨덴</option>
+										<option style="color: black;" value="Singapore">싱가포르</option>
+										<option style="color: black;" value="Argentina">아르헨티나</option>
+										<option style="color: black;" value="UK">영국</option>
+										<option style="color: black;" value="Japan">일본</option>
+									</select>
+								</div>
+								<!-- 장르별 카테고리 -->
+								<div class="form-group">
+									<select name="genre" id="genre" class="form-control">
+										<option style="color: black;" value="noValue">장르</option>
+										<option style="color: black;" value="Dance">Dance</option>
+										<option style="color: black;" value="Rock">Rock</option>
+										<option style="color: black;" value="Jazz">Jazz</option>
+										<option style="color: black;" value="Classic">Classic</option>
+										<option style="color: black;" value="Ballad">Ballad</option>
+										<option style="color: black;" value="Hip-pop">Hip-pop</option>
+										<option style="color: black;" value="Pop">Pop</option>
+										<option style="color: black;" value="Trot">Trot</option>
+										<option style="color: black;" value="Reggae">Reggae</option>
+										<option style="color: black;" value="Blues">Blues</option>
+									</select>
+								</div>
 							</div>
 						</div>
+						
+						<!-- 음원파일 -->
+						<div style="padding: 5px 80px 5px 0;">
+							<label>음원파일</label>
+							<input type="file" class="form-control"
+								name="audiofilename" id="audiofilename" accept=".mp4,.mp3,.wav">
+						</div>
+					</div>
 
-						<!-- 앨범사진 -->
-						<div class="col-4" style="padding: 0 30px 20px 20px;">
-							<label>앨범사진</label>
-							<input type="file" id="input_file" accept=".jpeg,.jpg,.png"
-								name="imagename" class="form-control"/>
-							<img id="img_preview" class="inline-block"/>
-						</div>
+					<!-- 앨범사진 -->
+					<div class="col-4" style="padding: 0 30px 20px 20px;">
+						<label>앨범사진</label>
+						<input type="file" id="input_file" accept=".jpeg,.jpg,.png"
+							name="imagename" class="form-control"/>
+						<img id="img_preview" class="inline-block"/>
 					</div>
 				</div>
-				<br>
-				<!-- 곡 설명 -->
-				<div style="padding-left: 50px;">
-					<textarea name="contents" id="" cols="120" rows="10"
-						placeholder="내용을 입력해주세요."></textarea>
+			</div>
+			<br>
+			<!-- 곡 설명 -->
+			<div style="padding-left: 50px;">
+				<textarea name="contents" id="" cols="120" rows="10"
+					placeholder="내용을 입력해주세요."></textarea>
+			</div>
+			<hr width="90%" align="center" color="gray" size="10px">
+			<!-- 수정, 삭제 버튼 -->
+			<div class="d-flex flex-row-reverse" style="margin-top: 15px;">
+				<div style="margin-right: 60px;">
+					<button type="submit" class="btn btn-outline-info">수정</button>
 				</div>
-				<hr width="90%" align="center" color="gray" size="10px">
-				<!-- 수정, 삭제 버튼 -->
-				<div class="d-flex flex-row-reverse" style="margin-top: 15px;">
-					<div style="margin-right: 60px;">
-						<button type="submit" class="btn btn-outline-info">수정</button>
-					</div>
-					<div style="margin-right: 10px;">
-						<button type="button" class="btn btn-outline-info"
-						onclick="location.href='view.do?audio_idx=${audio_idx}'">
-							취소
-						</button>
-					</div>
+				<div style="margin-right: 10px;">
+					<button type="button" class="btn btn-outline-info"
+					onclick="location.href='view.do?audio_idx=${audio_idx}'">
+						취소
+					</button>
 				</div>
-				<br> <br>
-			</form>
-			<!-- 왼쪽 컨텐츠 종료 -->
-		</div>
-		<!-- 본문종료 -->
+			</div>
+			<br> <br>
+		</form>
+		<!-- 왼쪽 컨텐츠 종료 -->
 	</div>
+	<!-- 본문종료 -->
+</div>
 
 
 	<!-- 상단 메뉴바(위치옮기면안됨!) -->
