@@ -137,7 +137,7 @@ h4 {
 					      </div>
 					
 					      <!-- Modal footer -->
-					      <div class="modal-footer">
+					      <div class="modal-footer"> 
 					        <button type="button" class="btn btn-primary" onClick="paymentConfirm(document.getElementById('totalAmountText').value);" data-dismiss="modal">확인</button>
 					        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
 					      </div>
@@ -145,8 +145,8 @@ h4 {
 					    </div>
 					  </div>
 					</div>
-					<h2>${loginId }님</h2> 
-					<h4>보유 포인트 : 2000Point</h4> <!-- 마이 포인트 얻어오기 -->
+					<h2>${MemberDTO.id }님</h2> 
+					<h4>보유 포인트 : ${MemberDTO.mypoint }Point</h4> <!-- 마이 포인트 얻어오기 -->
 				</div>
 				<div class="pointSubMenu" style="margin-top:20px;">
 					<div class="btn-group btn-group-sm">  

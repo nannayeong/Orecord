@@ -5,6 +5,13 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 	
 <mapper namespace="impl.PointImpl"> 
+	<!-- 유저 전체정보 조회 -->
+	
+	<select id="selectUserInfo" resultType="model.MemberDTO" parameterType="String">
+		SELECT * FROM member WHERE id=#{loginId}
+	</select>
+
+
 	<!-- 충전내역 건수 조회 -->
 	<select id="selectChargeLogTotalCount" resultType="int" parameterType="hashmap">
 		SELECT count(*)
