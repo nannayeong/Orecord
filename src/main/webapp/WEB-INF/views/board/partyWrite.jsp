@@ -142,8 +142,11 @@ var writeValidate = function(f){
 			<div class="row">
 				<div class="col-5">
 					<div class="form-group">
-						<label>음원파일 &nbsp; <span style="color: green;"> *
-								작곡 선택시</span></label> <input type="file" class="form-control"
+						<label>음원파일 &nbsp;
+						<span style="color: green;">
+							* 작곡 선택시</span>
+						</label>
+						<input type="file" class="form-control"
 							name="audiofilename" id="audiofilename" accept=".mp4,.mp3,.wav">
 					</div>
 				</div>

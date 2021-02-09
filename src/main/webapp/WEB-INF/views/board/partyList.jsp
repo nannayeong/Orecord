@@ -23,7 +23,7 @@
 <div>
 	<div class="content">
 		<!-- 페이지 제목 -->
-		<input type="hidden" name="audio_idx" value="${partyIdx}">
+		<input type="hidden" name="audio_idx" value="${audio_idx}">
 		<input type="hidden" name="name" value="${pageContext.request.userPrincipal.name}">
 		<div style="background: linear-gradient(to right, #91888A, #5A5B82);">
 			<div class="row">
@@ -69,7 +69,7 @@
 						<tr>
 							<td>${par.party_idx }</td>
 							<td>
-								<a href="./partyView.do?audio_idx=${par.audio_idx}&id=${par.id}">
+								<a href="./partyView.do?party_idx=${par.party_idx}&id=${par.id}">
 									${par.id }
 								</a>
 							</td>
@@ -88,7 +88,7 @@
 		<div class="d-flex flex-row-reverse" style="margin-top: 15px;">
 			<div style="margin-right: 30px;">
 				<button type="button" class="btn btn-outline-primary"
-					onclick="location.href='view.do?audio_idx=${partyIdx}'">이전으로</button>
+					onclick="location.href='view.do?audio_idx=${audio_idx}'">이전으로</button>
 			</div>
 		</div>
 		<br> <br>

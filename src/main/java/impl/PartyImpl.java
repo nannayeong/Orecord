@@ -37,6 +37,6 @@ public interface PartyImpl {
 			@Param("point") int point);
 	
 	//협업신청서 상세페이지
-	public PartyBoardDTO partyView(@Param("audio_idx") int audio_idx,
+	public PartyBoardDTO partyView(@Param("party_idx") int party_idx,
 			@Param("id") String id);
 }

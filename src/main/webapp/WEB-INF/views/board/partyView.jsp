@@ -3,6 +3,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="s" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,11 +20,27 @@
 <!-- layout js-->
 <script src="${pageContext.request.contextPath}/resources/js/layout.js"></script>
 
+<script type="text/javascript">
+function choiceAction(id, point){
+	if(confirm("채택하시겠습니까?")){
+		location.href="choiceAction.do?id="+id+"&point="+point;
+	}
+}
+// function choiceAction(){
+// 	if(confirm("채택하시겠습니까?")){
+		
+// 	}
+// }
+</script>
 </head>
 <body>
 <div>
 	<div class="content">
 		<!-- 본문 제목 -->
+		<form method="post"
+			action="<c:url value="/board/choiceAction.do"/>"
+			name="choiceFrm">
+			<s:csrfInput />
 		<div style="background: linear-gradient(to right, #91888A, #5A5B82);">
 			<div class="row">
 				<div style="margin: 50px 0 0 80px;">
@@ -36,7 +53,8 @@
 		<br>
 		<hr color="green">
 		<!-- 본문 제목 종료 -->
-		<input type="hidden" name="audio_idx" value="${audio_idx }">
+		<input type="hidden" name="audio_idx" value="${partyView.audio_idx }">
+		<input type="hidden" name="party_idx" value="${partyView.party_idx }" />
 		<input type="hidden" name="id" value="${partyView.id }">
 		<input type="hidden" name="name" value="${pageContext.request.userPrincipal.name}">
 
@@ -100,8 +118,10 @@
 						</div>
 					</div>
 					<div class="col-8">
-						<div class="form-group">
-							<audio src="${partyView.audiofilename }" controls style="width: 500px;"></audio>
+						<div>
+							<audio controls style="width: 500px;">
+								<source src="${partyView.audiofilename }"/>
+							</audio>
 						</div>
 					</div>
 				</div>
@@ -121,18 +141,20 @@
 			<div class="col-10">
 				<div class="form-group">
 					<div class="d-flex flex-row-reverse">
-						<button type="button" class="btn btn-outline-danger">
-							채택하기</button>
+						<button type="submit" class="btn btn-outline-danger"
+							>
+							채택하기
+						</button>
 						<button type="button" class="btn btn-outline-primary"
 							style="margin-right: 10px;"
-							onclick="location.href='partyList.do?audio_idx=${audio_idx}'">
+							onclick="location.href='partyList.do?audio_idx=${partyView.audio_idx}'">
 							뒤로가기
 						</button>
 					</div>
 				</div>
 			</div>
 		</div>
-
+		</form>
 		<br>
 		<hr color="green">
 		<br>

@@ -45,13 +45,13 @@ public class PartyController {
 			sqlSession.getMapper(PartyImpl.class).partyList(
 				Integer.parseInt(req.getParameter("audio_idx")));
 		
-		for(PartyBoardDTO dto : partyList) {
-			String temp = dto.getTitle().replace("\r\n", "<br/>");
-			dto.setTitle(temp);
-			String temp2 = dto.getContents().replace("\r\n", "<br/>");
-			dto.setContents(temp2);
-		}
-		model.addAttribute("partyIdx", partyIdx);
+//		for(PartyBoardDTO dto : partyList) {
+//			String temp = dto.getTitle().replace("\r\n", "<br/>");
+//			dto.setTitle(temp);
+//			String temp2 = dto.getContents().replace("\r\n", "<br/>");
+//			dto.setContents(temp2);
+//		}
+		model.addAttribute("audio_idx", partyIdx);
 		model.addAttribute("partyList", partyList);
 		
 		return "board/partyList";
@@ -73,6 +73,7 @@ public class PartyController {
 				Integer.parseInt(req.getParameter("audio_idx")));
 		
 		//모델객체에 저장
+		model.addAttribute("audio_idx", party1);
 		model.addAttribute("party", party);
 		
 		return "board/partyWrite";
@@ -95,8 +96,7 @@ public class PartyController {
 	//협업신청처리
 	@RequestMapping(value="/board/partyWriteAction.do", method=RequestMethod.POST)
 	public String partyWriteAction(Model model,
-			MultipartHttpServletRequest req, Principal principal,
-			HttpServletRequest request) {
+			MultipartHttpServletRequest req, Principal principal) {
 		
 		//서버의 물리적경로 얻어오기
 		String path = req.getSession().getServletContext().getRealPath("/resources/upload");
@@ -201,22 +201,22 @@ public class PartyController {
 	public String partyView(Model model, HttpServletRequest req, Principal principal) {
 		
 		//idx값이 넘어오는지 확인
-		String idx = req.getParameter("audio_idx");
-		System.out.println("audio_idx = "+ idx);
+		String idx = req.getParameter("party_idx");
+		System.out.println("party_idx = "+ idx);
+		
+		/*절대경로*/
+		String path = req.getContextPath();
 		
 		//Mapper 호출
 		PartyBoardDTO partyView =
 			sqlSession.getMapper(PartyImpl.class).partyView(
-				Integer.parseInt(req.getParameter("audio_idx")),
+				Integer.parseInt(req.getParameter("party_idx")),
 				req.getParameter("id"));
 			
-			String temp = partyView.getAudiocontents().replace("\r\n", "<br/>");
-			partyView.setAudiocontents(temp);
-			String temp2 = partyView.getContents().replace("\r\n", "<br/>");
-			partyView.setContents(temp2);
+		partyView.setAudiofilename(path+"/resources/upload/"+partyView.getAudiofilename());
 			
 		model.addAttribute("partyView", partyView);
-		model.addAttribute("audio_idx", idx);
+		model.addAttribute("party_idx", idx);
 		
 		return "board/partyView";
 	}
