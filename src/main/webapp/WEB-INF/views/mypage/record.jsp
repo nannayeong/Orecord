@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>${user_id}님의 페이지</title>
+<title>${memberDTO.nickname }(${user_id })님의 페이지</title>
 <!-- Jquery, BootStrap -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -56,7 +56,7 @@ function logincheck(bt){
 			     }    
 			});
 		}
-		else if(bt.innerHTML=='팔로워'){
+		else if(bt.innerHTML=='언팔로우'){
 			$.ajax({
 			     url : "../unFollow.do",
 			     type : "get",
@@ -88,6 +88,17 @@ function logincheck(bt){
 }
 
 $(function(){
+	$('#follow').mouseenter(function(){
+		if($('#follow').html()=='팔로워'){
+			$('#follow').html('언팔로우');
+		}
+	});
+	$('#follow').mouseleave(function(){
+		if($('#follow').html()=='언팔로우'){
+			$('#follow').html('팔로워');
+		}
+	});
+	
 	/*로그인 아이디의 팔로우여부 확인하기*/
 	$.ajax({
 	     url : "../checkFollow.do",
@@ -137,10 +148,10 @@ $(function(){
 });
 </script>
 </head>
-<body>
+<body style="background-color:#f2f2f2;">
 	<div>
 		<div class="content">
-			<div class="profile" style="background-color:brown;">
+					<div class="profile" style="background-color:brown;">
 				<table style="">
 					<tr>
 						<td rowspan="2" style="padding-top:2em;padding-left:2em">
@@ -165,7 +176,36 @@ $(function(){
 					<div style="float:right;margin-right:1em;">
 						<c:choose>
 						<c:when test="${user_id ne pageContext.request.userPrincipal.name}">
-						<button type="button" onclick="logincheck(this)" id="done" class="btn btn-warning btn-sm">후원하기</button>			
+						<button type="button" onclick="logincheck(this)" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#done">후원하기</button>
+						<!-- The Modal -->
+						<div class="modal" id="done">
+						  <div class="modal-dialog">
+						    <div class="modal-content">
+						
+						      <!-- Modal Header -->
+						      <div class="modal-header">
+						        <h4 class="modal-title">${memberDTO.nickname }(${user_id })님에게 후원하기</h4>
+						        <button type="button" class="close" data-dismiss="modal">&times;</button>
+						      </div>
+						
+						      <!-- Modal body -->
+						      <form action="">
+						      <div class="modal-body">
+						        <div>${pageContext.request.userPrincipal.name}님의 잔여 포인트 :<span id="point">${loginDTO.mypoint }원</span></div>
+						        
+						        <div>후원하실 포인트를 입력해주세요 : <input type="text" /></div>
+								
+						      </div>
+						
+						      <!-- Modal footer -->
+						      <div class="modal-footer">
+						        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+						        <input type="submit"  value="후원하기"/>
+						      </div>
+							</form>
+						    </div>
+						  </div>
+						</div>
 						<button type="button" onclick="logincheck(this)" id="follow" class="btn btn-success btn-sm">팔로우</button>
 						</c:when>
 						<c:otherwise>
@@ -175,6 +215,7 @@ $(function(){
 					</div>
 				</div>
 				<div class="my-content">
+					
 					<table style="width:100%;margin:1em 0 3em 0em;">
 						<tr>
 							<td class="my-con-left">
@@ -190,9 +231,8 @@ $(function(){
 				</div>
 			</div>
 		</div>
-		<!-- 본문종료 -->
 	</div>
-
+		<!-- 본문종료 -->
 	<!-- 상단 메뉴바(위치옮기면안됨!) -->
 	<header>
 		<%@include file="/resources/jsp/header.jsp" %>

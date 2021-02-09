@@ -64,7 +64,7 @@ function logincheck(bt){
 			     data : {followerId:"${user_id}"},
 			     dataType : "html",
 			     success : function sucFunc(resData) {
-			    	 bt.innerHTML = '팔로우';
+			    	 bt.innerHTML = '언팔로우';
 			    	 $('#follow').removeClass();
 			    	 $('#follow').addClass('btn btn-success btn-sm');
 			     }    
@@ -88,6 +88,18 @@ function logincheck(bt){
 }
 
 $(function(){
+	
+	$('#follow').mouseenter(function(){
+		if($('#follow').html()=='팔로워'){
+			$('#follow').html('언팔로우');
+		}
+	});
+	$('#follow').mouseleave(function(){
+		if($('#follow').html()=='언팔로우'){
+			$('#follow').html('팔로워');
+		}
+	});
+	
 	/*로그인 아이디의 팔로우여부 확인하기*/
 	$.ajax({
 	     url : "../checkFollow.do",
@@ -138,7 +150,7 @@ $(function(){
 });
 </script>
 </head>
-<body>
+<body style="background-color:#f2f2f2;">
 	<div>
 		<div class="content">
 			<div class="profile" style="background-color:brown;">

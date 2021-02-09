@@ -19,6 +19,10 @@
 <script src="${pageContext.request.contextPath}/resources/js/layout.js"></script>
 <script>
 
+function clickAudio(audioFileName,playerName){
+	$('#'+playerName).attr('src',audioFileName).attr('autoplay',true);
+}
+
 function logincheck(bt){
 	if("${pageContext.request.userPrincipal.name}"==""){
 		alert('로그인 후 이용해주세요');
@@ -56,7 +60,7 @@ function logincheck(bt){
 			     }    
 			});
 		}
-		else if(bt.innerHTML=='팔로워'){
+		else if(bt.innerHTML=='언팔로우'){
 			$.ajax({
 			     url : "../unFollow.do",
 			     type : "get",
@@ -92,6 +96,17 @@ function clickAudio(audioFileName,playerName){
 }
 
 $(function(){
+	$('#follow').mouseenter(function(){
+		if($('#follow').html()=='팔로워'){
+			$('#follow').html('언팔로우');
+		}
+	});
+	$('#follow').mouseleave(function(){
+		if($('#follow').html()=='언팔로우'){
+			$('#follow').html('팔로워');
+		}
+	});
+	
 	/*로그인 아이디의 팔로우여부 확인하기*/
 	$.ajax({
 	     url : "../checkFollow.do",
@@ -142,7 +157,7 @@ $(function(){
 });
 </script>
 </head>
-<body>
+<body style="background-color:#f2f2f2;">
 	<div>
 		<div class="content">
 			<div class="profile" style="background-color:brown;">
