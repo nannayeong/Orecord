@@ -44,7 +44,7 @@ public class PointController {
 	
 	
 	// 충전내역 조회 페이지 진입
-	@RequestMapping("/chargeLog.do")
+	@RequestMapping("/chargeLog.do")    
 	public String charge(Model model) {
 		UserDetails userInfo = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String loginId = null;
