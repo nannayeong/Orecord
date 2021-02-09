@@ -72,6 +72,16 @@
 		}
 	}
 	
+	 // 다른 확장자 업로드 시 경고창 
+    if($("#img").val != ""){
+    	var ext = $('#img').val().split('.').pop().toLowerCase();
+    	if($.inArray(ext, ['jpeg','jpg','png'])==-1){
+    		alert("지정된 확장자의 파일만 업로드 가능합니다.");
+    		$("#img").val("");
+    		return false;
+    	}
+    }
+	
 ////////주소입력은 DAUM우편번호 API 사용/////////////////////////////////
 	function zipcodeFind(){     
 	    new daum.Postcode({
@@ -224,7 +234,7 @@ $(function(){
             <div class="table-responsive">
               <form name="registFrm" onsubmit="return isValidate(this);" method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/admemberEditAction.do">
 				<s:csrfInput />
-					<input type="hid den" name="id" value="${dto.id }"/>
+					<input type="hidden" name="id" value="${dto.id }"/>
 					<!-- 아이디 -->
 					<div class="row">
 						<div class="col-md-6 pr-md-1">
@@ -247,7 +257,7 @@ $(function(){
 						</div>
 						<div class="input-field col-md-6 pl-md-1">
 							<label>비밀번호 확인</label>
-							<input type="password" class="form-control" id="pw2"
+							<input type="password" class="form-control" id="pw2" value="${dto.pw }"
 								name="pw2" min="4" maxlength="20" placeholder="비밀번호를 확인하세요">
 						</div>
 					</div>
