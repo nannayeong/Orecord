@@ -21,6 +21,13 @@ background-color: #f2f2f2;cursor:pointer
 border:1px solid #f2f2f2
 }
 </style>
+<script type="">
+$(function(){
+	$(window).scroll(function(){
+		if()
+	})
+});
+</script>
 <body>
 <!-- 앨범 -->
 <table style="width:95%;margin:auto;margin-bottom:1em">
@@ -134,6 +141,9 @@ border:1px solid #f2f2f2
 </c:otherwise>
 </c:choose>
 </table>
-
+<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+	<ul class="pagination justify-content-center">
+		${pagingStr }
+	</ul>			
 </body>
 </html>

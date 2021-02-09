@@ -16,7 +16,6 @@ public class AudioBoardDTO {
 	private int like_count; //좋아요 수
 	private int party; // 협업참여여부 
 	
-	
 	/*album table innerjoin*/
 	private String albumName;
 	private String albumJacket;
@@ -112,6 +111,7 @@ public class AudioBoardDTO {
 	public void setParty(int party) {
 		this.party = party;
 	}
+	
 	
 	public String getAlbumName() {
 		return albumName;

@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import model.AlbumDTO;
 import model.AudioBoardDTO;
@@ -83,12 +85,10 @@ public class HomeController {
 		
 		
 		//메인페이지에 출력할 오디오게시글 불러옴
-		ArrayList<AudioBoardDTO> audiolist = sqlSession.getMapper(AudioBoardImpl.class).mainAudioList();
-		
-		HashMap popMap = cal.calcuPop(audiolist);
+		ArrayList<AudioBoardDTO> audiolist = sqlSession.getMapper(AudioBoardImpl.class).mainAudioList(0,7,1,8);
 		HashMap<Integer, Integer> commentC = cal.cCount(audiolist,sqlSession);
 		//인기순정렬 맵으로넣음
-		model.addAttribute("popMap", popMap);
+		model.addAttribute("audiolist", audiolist);
 		//댓글수 카운트해서 넣음
 		model.addAttribute("commentC", commentC);
 		
@@ -106,6 +106,57 @@ public class HomeController {
 		model.addAttribute("likes",likes);
 		model.addAttribute("follows",follows);
 		return "main/main";
+		
+	}
+	
+	@RequestMapping("/mainload.do")
+	@ResponseBody
+	public Map<String, Object> mainload(Model model, HttpServletRequest req,
+			HttpSession session, Principal principal) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		int dateCheck = 0;
+		//현재 로드된 table수를 불러옴
+		int loadedCount = Integer.parseInt(req.getParameter("loadlength"));
+		int totalAudio = sqlSession.selectOne("audioCount");
+		String logId = req.getParameter("id");
+		
+		ArrayList<AudioBoardDTO> audiolist = sqlSession.getMapper(AudioBoardImpl.class).mainAudioList(dateCheck,dateCheck+6,loadedCount+1,loadedCount+8);
+		System.out.println(audiolist.size());
+		if(audiolist.size()==0) {
+				dateCheck+=7;
+				audiolist=sqlSession.getMapper(AudioBoardImpl.class).mainAudioList(dateCheck,dateCheck+6,loadedCount+1,loadedCount+8);
+				if(audiolist.size()==0) {
+					map.put("nomoreFeed", "이전 게시물이 없습니다.");
+				}
+		}else {
+		HashMap<Integer, Integer> commentC = cal.cCount(audiolist,sqlSession);
+		//인기순정렬 맵으로넣음
+		model.addAttribute("audiolist", audiolist); 
+		//댓글수 카운트해서 넣음
+		model.addAttribute("commentC", commentC);
+		
+		
+		//audio_idx별 앨범이름 넣음
+		ArrayList<AlbumDTO> album = new ArrayList<AlbumDTO>();
+		for(AudioBoardDTO dto : audiolist) {
+			album.add(sqlSession.selectOne("getalbum",dto.getAlbum_idx()));
+		}
+		model.addAttribute("album",album);
+		
+		
+		ArrayList<LikeDTO> likes = loadLike(audiolist);
+		ArrayList<FollowDTO>  follows = loadFollow(audiolist);
+		model.addAttribute("likes",likes);
+		model.addAttribute("follows",follows);
+		
+		map.put("audiolist", audiolist);
+		map.put("commentC", commentC);
+		map.put("album", album);
+		map.put("likes", likes);
+		map.put("follows", follows);
+		}
+		map.put("audiolist", audiolist);
+		return map;
 		
 	}
 	public ArrayList<FollowDTO>  loadFollow(ArrayList<AudioBoardDTO> audiolist) {

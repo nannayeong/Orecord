@@ -22,9 +22,12 @@ public class ViewController {
 	
 	@Autowired
 	private SqlSession sqlSession;
+	public void setSqlSession(SqlSession sqlSession) {
+		this.sqlSession = sqlSession;
+	}
 	
 	//상세보기 페이지
-	@RequestMapping("/board/view.do") 
+	@RequestMapping("/board/view.do")
 	public String View(Model model, HttpServletRequest req, Principal principal) {
 		
 		//idx값이 넘어오는지 확인
@@ -43,12 +46,12 @@ public class ViewController {
 		view.setContents(temp2);
 		
 		if(view.getImagename()==null) {
-			view.setImagename(path+"/default.jpg");
+			view.setImagename(path+"/resources/img/default.jpg");
 		}
 		else {
-			view.setImagename(path+"/resources/"+"/upload/"+view.getImagename());
+			view.setImagename(path+"/resources/upload/"+view.getImagename());
 		}
-		view.setAudiofilename(path+"/resources/"+"/upload/"+view.getAudiofilename());
+		view.setAudiofilename(path+"/resources/upload/"+view.getAudiofilename());
 		
 		
 		//모델객체에 데이터 저장
