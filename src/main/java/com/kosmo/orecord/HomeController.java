@@ -131,7 +131,7 @@ public class HomeController {
 		}else {
 		HashMap<Integer, Integer> commentC = cal.cCount(audiolist,sqlSession);
 		//인기순정렬 맵으로넣음
-		model.addAttribute("audiolist", audiolist);
+		model.addAttribute("audiolist", audiolist); 
 		//댓글수 카운트해서 넣음
 		model.addAttribute("commentC", commentC);
 		
