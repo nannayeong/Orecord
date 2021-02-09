@@ -36,7 +36,6 @@ public class ViewController {
 		
 		/*절대경로*/
 		String path = req.getContextPath();
-		System.out.println("절대경로"+path);
 		
 		//Mapper 호출
 		AudioBoardDTO view =
