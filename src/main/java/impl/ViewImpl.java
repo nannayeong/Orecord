@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import model.AudioBoardDTO;
 import model.MCommentDTO;
+import model.PartyBoardDTO;
  
 @Service
 public interface ViewImpl {
@@ -41,5 +42,8 @@ public interface ViewImpl {
 		@Param("category") String category,
 		@Param("audio_idx") int audio_idx,
 		@Param("id") String id);
+	
+	//협업자 불러오기
+	public ArrayList<PartyBoardDTO> partyMember(int audio_idx);
 	
 } 

@@ -45,7 +45,7 @@ function deleteRow(comment_idx, audio_idx){
 			<div class="row">
 				<div class="col-8" style="padding: 20px 0 0 40px; font-size: 20px;">
 					<div class="row">
-						<div class="col-2" width="50" style="margin-left: 15px;">
+						<div class="col-2" style="margin-left: 15px;">
 							<img src="../resources/img/play.png" alt="재생버튼" width="70"
 								height="70" style="padding: 5px 0 0 15px;">
 						</div>
@@ -109,6 +109,7 @@ function deleteRow(comment_idx, audio_idx){
 		<c:choose>
 			<c:when test="${pageContext.request.userPrincipal.name eq audio.id}">
 				<div class="d-flex flex-row-reverse" style="margin-top: 15px;">
+					<c:if test="${audio.party eq 1 }">
 					<div style="margin-right: 60px;">
 						<button type="button" class="btn btn-outline-info"
 							onclick="location.href='modify.do?audio_idx=${audio.audio_idx}'">
@@ -125,10 +126,25 @@ function deleteRow(comment_idx, audio_idx){
 							협업신청목록
 						</button>
 					</div>
+					</c:if>
+					<c:if test="${audio.party ne 1 }">
+					<div style="margin-right: 60px;">
+						<button type="button" class="btn btn-outline-info"
+							onclick="location.href='modify.do?audio_idx=${audio.audio_idx}'">
+							수정
+						</button>
+					</div>
+					<div style="margin-right: 10px;">
+						<button type="button" class="btn btn-outline-info"
+							onclick="location.href='/orecord/main.do'">목록</button>
+					</div>
+					</c:if>
 				</div>
 			</c:when>
 			<c:otherwise>
 				<div class="d-flex flex-row-reverse" style="margin-top: 15px;">
+					<c:choose>
+					<c:when test="${audio.party eq 1 }">
 					<div style="margin-right: 60px;">
 						<button type="button" class="btn btn-outline-info"
 							onclick="location.href='partyWrite.do?audio_idx=${audio.audio_idx}';">
@@ -141,6 +157,16 @@ function deleteRow(comment_idx, audio_idx){
 							목록
 						</button>
 					</div>
+					</c:when>
+					<c:otherwise>
+					<div style="margin-right: 60px;">
+						<button type="button" class="btn btn-outline-info"
+							onclick="location.href='/orecord/main.do'">
+							목록
+						</button>
+					</div>
+					</c:otherwise>
+					</c:choose>
 				</div>
 			</c:otherwise>
 		</c:choose>
@@ -159,13 +185,12 @@ function deleteRow(comment_idx, audio_idx){
 						class="rounded-circle" width="100">
 					<h6 style="margin-top: 8px;">${audio.id }</h6>
 					<hr width="100%" align="center" color="orange" size="10px">
-					<h6 style="color:gray;">협업자</h6>
-					<img src="../resources/img/2.png" alt="프로필사진"
+					<h6 style="color:gray;">참여자</h6>
+					<c:forEach items="${partyMember }" var="mem">
+						<img src="../resources/img/2.png" alt="프로필사진"
 						class="rounded-circle" width="100">
-					<h6 style="margin:8px 0 7px 0;">${audio.id }</h6>
-					<img src="../resources/img/2.png" alt="프로필사진"
-						class="rounded-circle" width="100">
-					<h6 style="margin-top: 8px;">${audio.id }</h6>
+					<h6 style="margin:8px 0 7px 0;">${mem.id }</h6>
+					</c:forEach>
 				</div>
 				<!-- 댓글 작성 -->
 				<div class="col-8">

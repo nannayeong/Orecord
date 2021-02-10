@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import impl.ViewImpl;
 import model.AudioBoardDTO;
 import model.MCommentDTO;
+import model.PartyBoardDTO;
 
 @Controller
 public class ViewController {
@@ -68,6 +69,13 @@ public class ViewController {
 			dto.setContents(temp);
 		}
 		model.addAttribute("comments", comments);
+		
+		//협업자 목록 불러오는 매퍼 호출
+		ArrayList<PartyBoardDTO> PartyMember =
+			sqlSession.getMapper(ViewImpl.class).partyMember(
+					Integer.parseInt(req.getParameter("audio_idx")));
+		
+		model.addAttribute("partyMember", PartyMember);
 		
 		return "board/view";
 		
