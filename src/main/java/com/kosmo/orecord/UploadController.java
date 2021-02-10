@@ -60,7 +60,7 @@ public class UploadController {
 		
 		model.addAttribute("albumList", albumList);
 		
-		return "upload/upload";
+		return "/upload/upload";
 	}
 	
 	/*
