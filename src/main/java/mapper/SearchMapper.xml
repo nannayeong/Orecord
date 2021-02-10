@@ -15,7 +15,6 @@
 	select count(*) from audioboard where ${param1} LIKE '%'||#{param2}||'%'
 	</select>
 	
-	
 	<select id="searchAudioM" parameterType="java.lang.String" resultType="model.AudioBoardDTO">
 		SELECT * FROM audioboard WHERE AUDIOTITLE LIKE '%'||#{0}||'%' AND <![CDATA[ ROWNUM<=5 ]]> ORDER BY REGIDATE DESC
 	</select>
@@ -29,12 +28,11 @@
 	SELECT count(*) FROM member WHERE NICKNAME LIKE '%'||#{param1}||'%' 
 	</select>
 	
-	
 	<select id="searchArtistM" parameterType="java.lang.String" resultType="model.MemberDTO">
 		SELECT * FROM member WHERE nickname LIKE '%'||#{param1}||'%' AND <![CDATA[ ROWNUM<=5 ]]>
 	</select>
 	
-	<!-- 아티스트명으로 곡찾기 -->
+<!-- 아티스트명으로 곡찾기 -->
 	<select id="searchAudioByArtist" parameterType="java.lang.String" resultType="model.AudioBoardDTO">
 		SELECT * FROM audioboard WHERE ARTISTNAME LIKE '%'||#{0}||'%' ORDER BY REGIDATE DESC
 	</select>
@@ -48,4 +46,5 @@
 	<select id="searchContentM" parameterType="java.lang.String" resultType="model.AudioBoardDTO">
 		SELECT * FROM audioboard WHERE CONTENTS LIKE '%'||#{0}||'%' AND <![CDATA[ ROWNUM<=5 ]]> ORDER BY REGIDATE DESC
 	</select>
+
 </mapper> 

@@ -45,6 +45,11 @@ public class ChoiceController {
 				point, id);
 		System.out.println("입력결과:"+ result2);
 		
+		//채택받은 사람의 게시글 choice값 1로 변경
+		int result3 = sqlSession.getMapper(ChoiceImpl.class).choiceAction3(
+				id, party_idx);
+		System.out.println("입력결과:"+ result3);
+		
 		
 		return "redirect:partyList.do?audio_idx="+idx;
 	}

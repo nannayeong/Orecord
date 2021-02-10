@@ -17,8 +17,8 @@
 	</update>
 	
 	<!-- 회원삭제 -->
-	<delete id="memberDelete">
-		DELETE FROM member WHERE id=#{param1}
+	<delete id="memberDelete" >
+		DELETE FROM member WHERE id=#{id}
 	</delete>
 
 </mapper>	 

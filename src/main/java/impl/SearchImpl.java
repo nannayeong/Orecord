@@ -1,3 +1,4 @@
+
 package impl;
 
 import java.util.ArrayList;
@@ -25,3 +26,4 @@ public interface SearchImpl {
 	public ArrayList<AudioBoardDTO> searchAudioByArtistM(String searchWord);
 	public ArrayList<AudioBoardDTO> searchContentM(String searchWord);
 } 
+

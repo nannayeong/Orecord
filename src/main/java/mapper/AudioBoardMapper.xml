@@ -7,7 +7,7 @@
 <mapper namespace="impl.AudioBoardImpl">
 
 	<select id="audioList" resultType="model.AudioBoardDTO">
-		select audio_idx, audiotitle, b.id, b.album_idx, audiofilename, artistname, albumName, regidate
+		select audio_idx, audiotitle, b.id, b.album_idx, audiofilename, artistname, albumName, regidate, imagename
 			from audioboard b inner join album a on b.album_idx=a.album_idx where b.id=#{param1} order by regidate desc
 	</select>
 	
@@ -26,10 +26,6 @@
 		select * from audioboard WHERE ID=#{0} AND <![CDATA[ ROWNUM=1 ]]> ORDER BY regidate DESC
 	</select>
 	<select id="audioCount" resultType="int">
-	select count(*) from audioboard
+		select count(*) from audioboard
 	</select>
-	
-	
 </mapper> 
-
-

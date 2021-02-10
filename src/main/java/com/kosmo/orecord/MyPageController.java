@@ -135,16 +135,24 @@ public class MyPageController {
 	
 	/*회원삭제하기*/
 	@RequestMapping("/memberDelete.do")
-	public String memberDelete(HttpServletRequest req, HttpSession session) {
+	public String memberDelete(HttpServletRequest req, Principal principal) {
 		
-		/*
-		if(session.getAttribute("siteUserInfo")==null){
-			return "./login.do";
+		String id = null;
+		/*로그인 없이 접근시 nullpointerexception발생, security로 접근권한 설정해야함.*/
+		try {
+			id = principal.getName();
 		}
-		*/
-		sqlSession.getMapper(MypageImpl.class).memberDelete(req.getParameter("id"));
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 		
-		return "main/main";
+		int delete = sqlSession.getMapper(MypageImpl.class).memberDelete(id);
+		
+		if(delete==1) {
+			System.out.println("회원삭제완료");
+		}
+		
+		return "redirect:/main.do";
 		
 	}
 	
@@ -154,6 +162,28 @@ public class MyPageController {
 		uuid = uuid.replaceAll("-", "");
 		System.out.println("생성된UUID-2:"+uuid);
 		return uuid;
+	}
+	
+	@RequestMapping("/pwCheck.do")
+	public String pwCheck(Principal principal, Model model, HttpServletRequest req) {
+		String id = null;
+		/*로그인 없이 접근시 nullpointerexception발생, security로 접근권한 설정해야함.*/
+		try {
+			id = principal.getName();
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		String pw = req.getParameter("pw");
+		String pw2 = req.getParameter("pw2");
+		
+		MemberDTO dto = sqlSession.getMapper(MypageImpl.class).memberView(id);
+		model.addAttribute("dto", dto);
+		
+		System.out.println(pw + " "+ pw2);
+		
+		return "mypage/pwCheck";
 	}
 	
 	/*회원수정폼*/
@@ -277,7 +307,7 @@ public class MyPageController {
 		//1. 앨범 토탈카운트
 		int albumTotalCount = sqlSession.getMapper(AlbumImpl.class).albumTotalCount(user_id);
 		
-		int pageSize = 3;
+		int pageSize = 5;
 		int blockPage = 5;
 		
 		int nowPage = Integer.parseInt(req.getParameter("nowPage"));
@@ -353,7 +383,7 @@ public class MyPageController {
 		/*음원*/
 		for(AudioBoardDTO audioDTO : audioList) {
 			
-			System.out.println(audioDTO.getImagename()); 
+			System.out.println("이미지이름"+audioDTO.getImagename()); 
 			if(audioDTO.getImagename()==null){
 				audioDTO.setImagename(path+"/resources/img/default.jpg");
 			}

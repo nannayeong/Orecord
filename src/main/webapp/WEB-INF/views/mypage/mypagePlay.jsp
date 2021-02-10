@@ -27,7 +27,7 @@ border:1px solid #f2f2f2
 <c:choose>
 <c:when test="${empty plSet}">
 	<td style="text-align:center;border:2px #f2f2f2 solid;height:30em">
-		<div>등록된 앨범이 없습니다.</div><br />
+		<div>등록된 플레이리스트가 없습니다.</div><br />
 		<c:if test="${pageContext.request.userPrincipal.name ne user_id}">
 		<div><button type="button" onclick="location.href='../upload.do'" class="btn btn-outline-dark">음원 찾아보기</button></div>
 		</c:if>

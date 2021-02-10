@@ -104,9 +104,11 @@ public class HomeController {
 			audioDTO.setAudiofilename(path+"/resources/upload/"+fileName);
 		}
 		
+		HashMap<Integer, Integer> commentC = cal.cCount(audiolist,sqlSession);
 		//인기순정렬 맵으로넣음
 		model.addAttribute("audiolist", audiolist);
-
+		//댓글수 카운트해서 넣음
+		model.addAttribute("commentC", commentC);
 		
 		
 		//audio_idx별 앨범이름 넣음
@@ -125,20 +127,39 @@ public class HomeController {
 		
 	}
 	
-	@RequestMapping("/audiolistAdd.do")
-	public String mainload(Model model, HttpServletRequest req,
+	@RequestMapping("/mainload.do")
+	@ResponseBody
+	public Map<String, Object> mainload(Model model, HttpServletRequest req,
 			HttpSession session, Principal principal) {
+		Map<String, Object> map = new HashMap<String, Object>();
 		int dateCheck = 0;
 		//현재 로드된 table수를 불러옴
 		int loadedCount = Integer.parseInt(req.getParameter("loadlength"));
 		int totalAudio = sqlSession.selectOne("audioCount");
 		String logId = req.getParameter("id");
-		ArrayList<AudioBoardDTO> audiolist = new ArrayList<AudioBoardDTO>();
-		if(loadedCount!=totalAudio){
-			audiolist = sqlSession.getMapper(AudioBoardImpl.class).mainAudioList(dateCheck,dateCheck+40,loadedCount+1,loadedCount+8);
-		}
+		
+		ArrayList<AudioBoardDTO> audiolist = sqlSession.getMapper(AudioBoardImpl.class).mainAudioList(dateCheck,dateCheck+6,loadedCount+1,loadedCount+8);
+		System.out.println(audiolist.size());
+		if(audiolist.size()==0) {
+				dateCheck+=7;
+				audiolist=sqlSession.getMapper(AudioBoardImpl.class).mainAudioList(dateCheck,dateCheck+6,loadedCount+1,loadedCount+8);
+				if(audiolist.size()==0) {
+					map.put("nomoreFeed", "이전 게시물이 없습니다.");
+				}
+		}else {
+		HashMap<Integer, Integer> commentC = cal.cCount(audiolist,sqlSession);
+		//인기순정렬 맵으로넣음
 		model.addAttribute("audiolist", audiolist); 
 		//댓글수 카운트해서 넣음
+		model.addAttribute("commentC", commentC);
+		
+		
+		//audio_idx별 앨범이름 넣음
+		ArrayList<AlbumDTO> album = new ArrayList<AlbumDTO>();
+		for(AudioBoardDTO dto : audiolist) {
+			album.add(sqlSession.selectOne("getalbum",dto.getAlbum_idx()));
+		}
+		model.addAttribute("album",album);
 		
 		
 		ArrayList<LikeDTO> likes = loadLike(audiolist);
@@ -146,22 +167,16 @@ public class HomeController {
 		model.addAttribute("likes",likes);
 		model.addAttribute("follows",follows);
 		
-		return "main/audiolistAdd";
+		map.put("audiolist", audiolist);
+		map.put("commentC", commentC);
+		map.put("album", album);
+		map.put("likes", likes);
+		map.put("follows", follows);
+		}
+		map.put("audiolist", audiolist);
+		return map;
 		
 	}
-	@RequestMapping("/loadCount.do")
-	@ResponseBody
-	public Map<String, String> countLoad(Model model, HttpServletRequest req, Principal principal, HttpSession session) {
-		int loaded = Integer.parseInt(req.getParameter("loadlength"));
-		int totalAudio = sqlSession.selectOne("audioCount");
-		Map<String, String> map = new HashMap<String, String>();
-		if(loaded==totalAudio) {
-		map.put("nomoreFeed", "이전 게시물이 없습니다.");
-		}
-		return map;
-
-	}
-	
 	public ArrayList<FollowDTO>  loadFollow(ArrayList<AudioBoardDTO> audiolist) {
 		//불러온 오디오 리스트에 있는 게시자 ID만 HashSet으로 만듦
 		HashSet<String> followIds = new HashSet<String>();
@@ -205,8 +220,5 @@ public class HomeController {
 			}
 		}
 		return likeList;
-		
 	}
-
-	
 }

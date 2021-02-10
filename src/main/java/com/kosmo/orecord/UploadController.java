@@ -60,7 +60,7 @@ public class UploadController {
 		
 		model.addAttribute("albumList", albumList);
 		
-		return "upload/upload";
+		return "/upload/upload";
 	}
 	
 	/*
@@ -102,42 +102,42 @@ public class UploadController {
 			String artistname = req.getParameter("artistname");
 			String contents = req.getParameter("contents");
 			String category = req.getParameter("country")+" "+req.getParameter("genre");
-			//int party = Integer.parseInt(req.getParameter("party"));
-			String col = req.getParameter("party");
-			int party = 0;
-			
-			if(col.equals("Y")) {
-				party = 1;
-			}
-			else{
+			int party = -1;
+
+			if(req.getParameter("party")==null) {
 				party = 0;
 			}
+			else {
+				if(req.getParameter("party").equals("Y")) {
+					party = 1;
+				}
+			}
+			
 			
 			String audiofilename = null;
 			String imagename = null;
 			int album_idx = -1;
 			
 			/*앨범*/
-			//내가 만든 앨범리스트 불러오기
+			//내가 앨범리스트 불러오기
 			ArrayList<AlbumDTO> albumList = sqlSession.getMapper(AlbumImpl.class).albumList(id);
 			
-			//사용자 입력 앨범이름 없을때 무조건 default앨범
-			if(albumName==null||albumName.equals("")) {
-				albumName="default";
-			}
-			
-			//사용자가 입력한 앨범이름 중복확인
-			for(AlbumDTO album : albumList) {
-				if(album.getAlbumName().equals(albumName)) {
-					album_idx = album.getAlbum_idx();
-					break;
+			if(albumList.size()==0) {//아무 앨범도 없는 경우
+				sqlSession.getMapper(AlbumImpl.class).addAlbum(id, albumName);
+				albumList = sqlSession.getMapper(AlbumImpl.class).albumList(id);
+				for(AlbumDTO adto : albumList) {
+					album_idx = adto.getAlbum_idx();
 				}
 			}
-			//중복되는게 없으면 새 앨범 만들고 idx select
-			if(album_idx==-1) {
-				int addAlbumResult = sqlSession.getMapper(AlbumImpl.class).addAlbum(id, albumName);
-				album_idx = sqlSession.getMapper(AlbumImpl.class).albumIdxSelect(id, albumName);
+			else {
+				for(AlbumDTO adto : albumList) {
+					if(adto.getAlbumName().equals(albumName)) {
+						album_idx = adto.getAlbum_idx();
+						break;
+					}
+				}
 			}
+			
 			
 			/*
 			 물리적경로를 기반으로 File객체를 생성한 후 지정된 디렉토리가 있는지 확인한다.
@@ -199,6 +199,6 @@ public class UploadController {
 		catch (Exception e) {
 			e.printStackTrace();
 		}
-		return "redirect:/orecord/"+id+"/record";
+		return "redirect:/"+id+"/record";
 	}
 }
