@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="impl.AlbumImpl">
+
+	<select id="albumList" resultType="model.AlbumDTO">
+		select * from album where id=#{param1}
+	</select>
+	<select id="albumListPaging" resultType="model.AlbumDTO">
+		select * from 
+		(select tb.*, rownum rnum from 
+		(select * from album where id=#{param1})tb) where rnum between #{param2} and #{param3}
+	</select>
+	
+	<insert id="addAlbum">
+		insert into album(album_idx, id, albumName) values(seq_album.nextval, #{param1}, #{param2})
+	</insert>
+	<delete id="deleteAlbum">
+		delete from album where id=#{param1} and album_idx=#{param2}
+	</delete>
+	
+	<select id="albumIdxSelect" resultType="int">
+		select album_idx from album where id=#{param1} and albumName=#{param2}
+	</select>
+	<select resultType="model.AlbumDTO" id="getalbum">
+	select * from album where album_idx=#{0} 
+	</select>
+	<select id="albumTotalCount" resultType="int">
+	select count(*) from album where id=#{param1} 
+	</select>
+	
+	<update id="modifyAlbum">
+		 update album set albumName=#{param4}, albumJacket=#{param3} where album_idx=#{param2} and id=#{param1}
+	</update>
+
+</mapper> 
