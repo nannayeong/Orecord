@@ -50,6 +50,7 @@ public class SearchController {
 		ArrayList<AudioBoardDTO> audioList = sqlSession.getMapper(SearchImpl.class).searchAudioM(searchWord);
 		//아티스트명으로 검색5개
 		HashMap popMap1 = cal.calcuPop(audioList);
+		System.out.println("searchAudioM="+ audioList.size());
 		//인기순정렬 맵으로넣음
 		model.addAttribute("popMap1", popMap1);
 		HashMap<Integer, Integer> commentC1 = cal.cCount(audioList,sqlSession);
