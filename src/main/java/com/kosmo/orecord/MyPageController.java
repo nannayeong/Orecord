@@ -28,6 +28,8 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import impl.AlbumImpl;
 import impl.AudioBoardImpl;
 import impl.FollowImpl;
+import impl.LikeImpl;
+import impl.McommentImpl;
 import impl.MemberImpl;
 import impl.MypageImpl;
 import impl.PlayListImpl;
@@ -414,11 +416,14 @@ public class MyPageController {
 			}
 			String fileName = plDTO.getAudiofilename();
 			plDTO.setAudiofilename(path+"/resources/upload/"+fileName);
+
 		}
 		
 		for(String a : plSet) {
 			System.out.println("리스트확인"+a);
 		}
+		
+		
 		/*3.플레이리스트 DTO map에 넣기*/		
 		model.addAttribute("plSet", plSet);//폴더명
 		model.addAttribute("plList",plList);//전체리스트
@@ -434,7 +439,23 @@ public class MyPageController {
 		
 		ArrayList<AudioBoardDTO> audioList = sqlSession.getMapper(AudioBoardImpl.class).audioList(user_id);	
 		
-		System.out.println(audioList);
+		/*로그인유저의 플레이리스트 가져오기*/
+		String login_id = null;
+		ArrayList<PlayListDTO> plList = null;
+		try {
+			login_id = principal.getName();
+			plList = sqlSession.getMapper(PlayListImpl.class).select(login_id);
+			
+			if(plList.size()==0) {
+				PlayListDTO dto = new PlayListDTO();
+				dto.setPlname("default");
+				plList.add(dto);
+			}
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		
 		/*음원*/
 		for(AudioBoardDTO audioDTO : audioList) {
 			
@@ -446,11 +467,30 @@ public class MyPageController {
 				audioDTO.setImagename(path+"/resources/upload/"+fileName);
 			}
 			
-			
 			String fileName = audioDTO.getAudiofilename();
 			audioDTO.setAudiofilename(path+"/resources/upload/"+fileName);
+			
+			/*음원에 달린 코맨트*/
+			int commentCount = sqlSession.getMapper(McommentImpl.class).audioCommentCount(audioDTO.getAudio_idx());
+			
+			audioDTO.setCommentCount(commentCount);
+			
+			System.out.println("좋아요:"+audioDTO.getLike_count());
+			
+			/*음원에 대한 로그인 유저의 좋아요*/
+			if(login_id!=null) {
+				int likeResult = sqlSession.getMapper(LikeImpl.class).myLike(audioDTO.getAudio_idx(), login_id);
+				System.out.println("likeResult"+likeResult);
+				
+				if(likeResult==1) {
+					audioDTO.setLike(true);
+				}
+				else {
+					audioDTO.setLike(false);
+				}
+			}	
 		}
-
+		model.addAttribute("plList", plList);
 		model.addAttribute("audioList", audioList);
 		
 		return "mypage/mypageRecord";

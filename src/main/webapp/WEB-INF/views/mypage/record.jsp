@@ -95,7 +95,60 @@ function pointCheck(){
 		return false;
 	}
 }
+
+function commentNcheck(c) {
+	if("${pageContext.request.userPrincipal.name}"==""){
+		   alert("로그인후 이용하세요");
+		   location.href='${pageContext.request.contextPath}/member/login.do';
+		   return false
+	}else if(c.cInput.value==""||c.cInput.value==null){
+		alert("내용을 입력하세요")
+		c.focus();
+		return false;
+	}
+}
+
+function likeFunc(a){
+	if("${pageContext.request.userPrincipal.name}"==""){
+		alert('로그인 후 이용해주세요');
+		location.href="../member/login.do"
+	}
+	else{
+		if($('#likeIcon').hasClass('on')){//이미 좋아요상태일 때
+			$.ajax({
+			      url : "../nolike.do",
+			      type : "get",
+			      contentType : "text/html;charset:utf-8",
+			      data : { audio_idx :a}, 
+			      dataType : "json",
+			      success : function sucFunc(resData){
+			    	  if(resData.result==1){
+			    	  	$('#likeIcon').removeClass('on');
+			    	  	$('#likecount').html(resData.likecount);
+			    	  }
+			      }
+			   });
+		}
+		else{
+			$.ajax({
+			     url : "../like.do",
+			     type : "get",
+			     contentType : "text/html;charset:utf-8",
+			     data : { audio_idx :a}, 
+			     dataType : "json",
+			     success : function sucFunc(resData) {
+			    	if(resData.result==1){
+						$('#likeIcon').addClass('on');
+						$('#likecount').html(resData.likecount);
+			    	}
+			     }    
+			});  
+		}
+	}
+}
+
 $(function(){
+	
 	$('#follow').mouseenter(function(){
 		if($('#follow').html()=='팔로워'){
 			$('#follow').html('언팔로우');
@@ -126,7 +179,7 @@ $(function(){
 	    		 $('#follow').addClass('btn btn-outline-success btn-sm');
 	    	 }	 
 	     }    
-	});		
+	});
 	
 	/* 팔로잉/팔로워/게시물 숫자 불러오기 */
 	$.ajax({
@@ -164,6 +217,9 @@ $(function(){
 	});
 });
 </script>
+<style>
+.on{color:red}
+</style>
 </head>
 <body style="background-color:#f2f2f2;">
 	<div>

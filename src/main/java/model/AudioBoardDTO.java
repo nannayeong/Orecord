@@ -26,6 +26,9 @@ public class AudioBoardDTO {
 	/*like table*/
 	private boolean like; 
 	
+	/*mcomment table*/
+	private int commentCount;
+	
 	//getter/setter
 	public String getImg() {
 		return img;
@@ -131,6 +134,13 @@ public class AudioBoardDTO {
 	}
 	public void setLike(boolean like) {
 		this.like = like;
+	}
+	
+	public int getCommentCount() {
+		return commentCount;
+	}
+	public void setCommentCount(int commentCount) {
+		this.commentCount = commentCount;
 	}
 	
 	

@@ -5,22 +5,31 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 	
 <mapper namespace="impl.LikeImpl">
-	<insert id="like"  parameterType="model.LikeDTO">
-		INSERT INTO like_board VALUES(#{audio_idx},#{like_id})
+	<insert id="like">
+		INSERT INTO like_board(audio_idx, like_id) VALUES(#{param1},#{param2})
 	</insert> 
-	<delete id="nolike" parameterType="model.LikeDTO">
-		DELETE FROM like_board WHERE AUDIO_IDX=#{audio_idx} AND LIKE_ID=#{like_id}
+	<delete id="nolike">
+		DELETE FROM like_board WHERE AUDIO_IDX=#{param1} AND LIKE_ID=#{param2}
 	</delete>
+	
+	<!-- 오디오보드 like수 -->
 	<update id="addlike" parameterType="int">
-	UPDATE audioboard SET LIKE_COUNT = LIKE_COUNT+1 WHERE AUDIO_IDX = #{0}
+	UPDATE audioboard SET LIKE_COUNT = LIKE_COUNT+1 WHERE AUDIO_IDX = #{param1}
 	</update>
 	<update id="removelike" parameterType="int">
-	UPDATE audioboard SET LIKE_COUNT = LIKE_COUNT-1 WHERE AUDIO_IDX = #{0}
+	UPDATE audioboard SET LIKE_COUNT = LIKE_COUNT-1 WHERE AUDIO_IDX = #{param1}
 	</update>
+
 	<select id="countlike" parameterType="int" resultType="int">
-	SELECT COUNT(*) FROM like_board WHERE AUDIO_IDX=#{0}
+	SELECT COUNT(*) FROM like_board WHERE AUDIO_IDX=#{param1}
 	</select>
+	
 	<select id="selectLike" resultType="int">
 	select a.audio_idx from like_board l inner join audioboard a on l.audio_idx=a.audio_idx where like_id=#{param1} and id=#{param2}
 	</select>
+
+	<select id="myLike" resultType="int">
+		select count(*) from like_board where audio_idx=#{param1} and like_id=#{param2}
+	</select>
+	
 </mapper>	 
