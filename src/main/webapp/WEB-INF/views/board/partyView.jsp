@@ -57,6 +57,7 @@ function choiceAction(id, point){
 		<input type="hidden" name="party_idx" value="${partyView.party_idx }" />
 		<input type="hidden" name="id" value="${partyView.id }">
 		<input type="hidden" name="name" value="${pageContext.request.userPrincipal.name}">
+		<input type="hidden" name="choice" value=${partyView.choice } />
 
 		<!-- content -->
 		<div class="row" style="margin-left:35px;">

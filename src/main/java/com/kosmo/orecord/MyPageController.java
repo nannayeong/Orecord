@@ -307,7 +307,7 @@ public class MyPageController {
 		//1. 앨범 토탈카운트
 		int albumTotalCount = sqlSession.getMapper(AlbumImpl.class).albumTotalCount(user_id);
 		
-		int pageSize = 3;
+		int pageSize = 5;
 		int blockPage = 5;
 		
 		int nowPage = Integer.parseInt(req.getParameter("nowPage"));
@@ -383,7 +383,7 @@ public class MyPageController {
 		/*음원*/
 		for(AudioBoardDTO audioDTO : audioList) {
 			
-			System.out.println(audioDTO.getImagename()); 
+			System.out.println("이미지이름"+audioDTO.getImagename()); 
 			if(audioDTO.getImagename()==null){
 				audioDTO.setImagename(path+"/resources/img/default.jpg");
 			}
