@@ -105,7 +105,7 @@ function deleteRow(comment_idx, audio_idx){
 		<div style="padding-left: 50px;">
 			<p>${audio.contents }</p>
 		</div>
-		<hr width="90%" align="center" color="gray" size="10px">
+		<hr align="center" color="gray" size="10px">
 		<c:choose>
 			<c:when test="${pageContext.request.userPrincipal.name eq audio.id}">
 				<div class="d-flex flex-row-reverse" style="margin-top: 15px;">
@@ -158,7 +158,14 @@ function deleteRow(comment_idx, audio_idx){
 					<img src="../resources/img/2.png" alt="프로필사진"
 						class="rounded-circle" width="100">
 					<h6 style="margin-top: 8px;">${audio.id }</h6>
-
+					<hr width="100%" align="center" color="orange" size="10px">
+					<h6 style="color:gray;">협업자</h6>
+					<img src="../resources/img/2.png" alt="프로필사진"
+						class="rounded-circle" width="100">
+					<h6 style="margin:8px 0 7px 0;">${audio.id }</h6>
+					<img src="../resources/img/2.png" alt="프로필사진"
+						class="rounded-circle" width="100">
+					<h6 style="margin-top: 8px;">${audio.id }</h6>
 				</div>
 				<!-- 댓글 작성 -->
 				<div class="col-8">
@@ -176,7 +183,7 @@ function deleteRow(comment_idx, audio_idx){
 							<input type="submit" class="btn btn-outline-secondary"
 								value="입력">
 						</div>
-						<hr width="90%" align="center" color="#17A2B8" size="10px">
+						<hr width="100%" align="center" color="#17A2B8" size="10px">
 					</div>
 
 					<!-- 댓글영역 -->
