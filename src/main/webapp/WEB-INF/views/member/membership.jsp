@@ -265,7 +265,7 @@ $(function(){
 						</div>
 						<div class="input-field col-md-6 pl-md-1"
 							style="margin-top: 15px;">
-							<input type="button" class="btn btn-fill btn-primary"
+							<input type="button" class="btn btn-warning"
 								 onclick="id_check_person()" name="idcheck" value="중복확인">
 						</div>
 					</div>
@@ -278,7 +278,7 @@ $(function(){
 						</div>
 						<div class="input-field col-md-6 pl-md-1"
 							style="margin-top: 15px;">
-							<input type="button" class="btn btn-fill btn-primary"
+							<input type="button" class="btn btn-warning"
 								id="nickname1" onclick="nick_check_person()" name="nicknamecheck" value="중복확인">
 						</div>
 					</div>
@@ -350,8 +350,9 @@ $(function(){
 						</div>
 						<div class="input-field col-md-4 pl-md-1"
 							style="margin-top: 30px;">
-							<a href="javascript:;" title="새 창으로 열림"
-								onclick="zipcodeFind()" onkeypress="">[우편번호검색]</a> <br />
+							<input type="button" value="우편번호검색" class="btn btn-warning" onclick="zipcodeFind()" onkeypress=""  />
+<!-- 							<a href="javascript:;" title="새 창으로 열림" -->
+<!-- 								onclick="zipcodeFind()" onkeypress="">[우편번호검색]</a> <br /> -->
 						</div>
 					</div>
 					
@@ -377,8 +378,8 @@ $(function(){
 					</div>
 					
 					<div align="center">
-						<input type="submit" class="btn btn-fill btn-primary" value="회원가입"> &nbsp;&nbsp;&nbsp;&nbsp;
-						<button type="reset" class="btn btn-fill btn-primary">RESET</button>
+						<input type="submit" class="btn btn-warning" value="회원가입"> &nbsp;&nbsp;&nbsp;&nbsp;
+						<button type="reset" class="btn btn-warning">RESET</button>
 					</div>
 				</form>
 						

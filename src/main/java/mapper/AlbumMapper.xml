@@ -18,6 +18,9 @@
 	<insert id="addAlbum">
 		insert into album(album_idx, id, albumName) values(seq_album.nextval, #{param1}, #{param2})
 	</insert>
+	<delete id="deleteAlbum">
+		delete from album where id=#{param1} and album_idx=#{param2}
+	</delete>
 	
 	<select id="albumIdxSelect" resultType="int">
 		select album_idx from album where id=#{param1} and albumName=#{param2}
@@ -28,4 +31,9 @@
 	<select id="albumTotalCount" resultType="int">
 	select count(*) from album where id=#{param1} 
 	</select>
+	
+	<update id="modifyAlbum">
+		 update album set albumName=#{param4}, albumJacket=#{param3} where album_idx=#{param2} and id=#{param1}
+	</update>
+
 </mapper> 

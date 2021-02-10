@@ -12,6 +12,30 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
+<script>
+function deleteAlbumFunc(albumidx){
+	if(confirm('앨범을 삭제하시겠습니까?')){
+		/* 리스트페이지 */
+		$.ajax({
+		     url : "../deleteAlbum.do",
+		     type : "get",
+		     contentType : "text/html;charset:utf-8",
+		     data : {album_idx:albumidx},
+		     dataType : "json",
+		     success : function sucFunc(resData) {
+		    	 if(resData.result==1){
+		    		 alert("정상적으로 삭제되었습니다.");
+		    		 location.href="../${pageContext.request.userPrincipal.name}/album";
+			   	 }
+		    	 else{
+		    		 alert("앨범 삭제 실패하였습니다.");
+		    	 }
+		     }     
+		});
+	}
+}
+
+</script>
 </head>
 <style>
 #list tr:hover{
@@ -21,13 +45,6 @@ background-color: #f2f2f2;cursor:pointer
 border:1px solid #f2f2f2
 }
 </style>
-<script type="">
-$(function(){
-	$(window).scroll(function(){
-		if()
-	})
-});
-</script>
 <body>
 <!-- 앨범 -->
 <table style="width:95%;margin:auto;margin-bottom:1em">
@@ -46,8 +63,40 @@ $(function(){
 		<td rowspan="2" style="width:7em;padding-left:1em;padding-right:1em;vertical-align:top;padding-top:1em">
 			<img src="${album.albumJacket }" alt="" style="width:6em"/>
 		</td>
-		<td style="padding-top:1em">
-			<div><h4>${album.albumName }</h4></div>
+		<td style="padding-top:1em"> 
+			<div>
+				<span style="font-size:30px">${album.albumName }</span>
+				<c:if test="${pageContext.request.userPrincipal.name ne user_id}">
+				<button type="button" data-toggle="modal" data-target="#albumEdit${album.album_idx }">앨범수정</button>
+				<!-- 수정 모달 -->
+				<div class="modal" id="albumEdit${album.album_idx }">
+				  <div class="modal-dialog">
+				    <div class="modal-content">
+				      <!-- Modal Header -->
+				      <div class="modal-header">
+				        <h4 class="modal-title">앨범 수정</h4>
+				        <button type="button" class="close" data-dismiss="modal">&times;</button>
+				      </div>
+				      <!-- Modal body -->
+				      <form action="../albumModify.do?${_csrf.parameterName}=${_csrf.token}" method="post" enctype="multipart/form-data" >
+				      <div class="modal-body" style="text-align:center">
+				      	<label>이미지</label>
+		                <input type="file" id="imgFile" accept=".jpeg,.jpg,.png" name="imagename" class="form-control"/>
+		                <img id="img_preview" class="inline-block"/>
+		                <span>앨범이름 : </span> <input type="text" name="albumName" value="${album.albumName }" />
+		                <input type="hidden" name="album_idx" value="${album.album_idx }" />
+				      </div>
+				      <!-- Modal footer -->
+				      <div class="modal-footer">
+				        <button type="submit" class="btn btn-warning btn-sm">수정하기</button>
+				      </div>
+					</form>
+				    </div>
+				  </div>
+				</div>
+				<button type="button" onclick="deleteAlbumFunc(${album.album_idx})">앨범삭제</button>
+				</c:if>
+			</div>
 			<audio controls style="background-color:white;width:495px;height:40px" id="${album.albumName }">
 				<c:forEach items="${audioList }" var="audio">
 				<c:if test="${audio.albumName eq album.albumName }">

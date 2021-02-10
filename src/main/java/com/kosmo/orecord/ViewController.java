@@ -134,7 +134,11 @@ public class ViewController {
 		return "redirect:view.do";
 	}
 	
+
+} 
+
 	//재생횟수 증가
 	
 	
-}
+
+
