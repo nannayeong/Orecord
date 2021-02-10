@@ -470,7 +470,9 @@ function userFunc(){
 	
 	<!-- 상단 메뉴바(위치옮기면안됨!) -->
 	<header>
-		<%@include file="/resources/jsp/header.jsp" %>
+		<div class="menu-back">
+			<%@include file="/resources/jsp/header.jsp" %>
+		</div>
 	</header>
 
 

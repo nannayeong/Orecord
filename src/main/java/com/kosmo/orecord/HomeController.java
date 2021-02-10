@@ -65,6 +65,8 @@ public class HomeController {
 	public String index(Model model, HttpServletRequest req,
 			HttpSession session, Principal principal) {
 		
+		String path = req.getContextPath();
+		
 		//로그인
 		String id="";
 		try {
@@ -86,11 +88,25 @@ public class HomeController {
 		
 		//메인페이지에 출력할 오디오게시글 불러옴
 		ArrayList<AudioBoardDTO> audiolist = sqlSession.getMapper(AudioBoardImpl.class).mainAudioList(0,7,1,8);
-		HashMap<Integer, Integer> commentC = cal.cCount(audiolist,sqlSession);
+		
+		for(AudioBoardDTO audioDTO : audiolist) {
+			
+			System.out.println(audioDTO.getImagename()); 
+			if(audioDTO.getImagename()==null){
+				audioDTO.setImagename(path+"/resources/img/default.jpg");
+			}
+			else {
+				String fileName = audioDTO.getImagename();
+				audioDTO.setImagename(path+"/resources/upload/"+fileName);
+			}
+			
+			String fileName = audioDTO.getAudiofilename();
+			audioDTO.setAudiofilename(path+"/resources/upload/"+fileName);
+		}
+		
 		//인기순정렬 맵으로넣음
 		model.addAttribute("audiolist", audiolist);
-		//댓글수 카운트해서 넣음
-		model.addAttribute("commentC", commentC);
+
 		
 		
 		//audio_idx별 앨범이름 넣음
@@ -112,7 +128,6 @@ public class HomeController {
 	@RequestMapping("/audiolistAdd.do")
 	public String mainload(Model model, HttpServletRequest req,
 			HttpSession session, Principal principal) {
-		Map<String, Object> map = new HashMap<String, Object>();
 		int dateCheck = 0;
 		//현재 로드된 table수를 불러옴
 		int loadedCount = Integer.parseInt(req.getParameter("loadlength"));
@@ -122,20 +137,8 @@ public class HomeController {
 		if(loadedCount!=totalAudio){
 			audiolist = sqlSession.getMapper(AudioBoardImpl.class).mainAudioList(dateCheck,dateCheck+40,loadedCount+1,loadedCount+8);
 		}
-		System.out.println(audiolist.size());
-		HashMap<Integer, Integer> commentC = cal.cCount(audiolist,sqlSession);
-		//인기순정렬 맵으로넣음
-		model.addAttribute("audiolist", audiolist);
+		model.addAttribute("audiolist", audiolist); 
 		//댓글수 카운트해서 넣음
-		model.addAttribute("commentC", commentC);
-		
-		
-		//audio_idx별 앨범이름 넣음
-		ArrayList<AlbumDTO> album = new ArrayList<AlbumDTO>();
-		for(AudioBoardDTO dto : audiolist) {
-			album.add(sqlSession.selectOne("getalbum",dto.getAlbum_idx()));
-		}
-		model.addAttribute("album",album);
 		
 		
 		ArrayList<LikeDTO> likes = loadLike(audiolist);

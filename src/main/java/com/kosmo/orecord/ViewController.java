@@ -42,7 +42,7 @@ public class ViewController {
 			sqlSession.getMapper(ViewImpl.class).View(
 			Integer.parseInt(req.getParameter("audio_idx")));
 		
-		String temp2 = view.getContents().replaceAll("\r\n", "<br/>");
+		String temp2 = view.getContents().replace("\r\n", "<br/>");
 		view.setContents(temp2);
 		
 		if(view.getImagename()==null) {
@@ -134,4 +134,11 @@ public class ViewController {
 		return "redirect:view.do";
 	}
 	
-}
+
+} 
+
+	//재생횟수 증가
+	
+	
+
+

@@ -16,6 +16,6 @@ public interface MemberImpl {
 	public int idChk(String id);
 	 
 	//닉네임 중복체크
-	public int nickChk(String nickName);
+	public int nickChk(String nickName); 
 }
 

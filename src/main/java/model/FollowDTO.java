@@ -1,7 +1,7 @@
 package model;
 
 public class FollowDTO {
-
+ 
 	private String user_id;
 	private String following_id;
 	//inner join

@@ -8,8 +8,12 @@ a:hover { color: blue; text-decoration: underline;}
 </style>
 <script type="text/javascript">
 function checkNull(t) {
-	alert(t.checkNull.value);
+	if(t.searchWord.value==""||t.searchWord.value==null){
+		alert("검색어를 입력하세요");
+		return false;
+	}
 	
+
 }
 </script>
 <div class="menu-back">
@@ -48,8 +52,10 @@ function checkNull(t) {
 			<li><a href="${pageContext.request.contextPath}/admin/main">어드민페이지</a></li>
 			</c:if>
 			<li><a href="${pageContext.request.contextPath}/${pageContext.request.userPrincipal.name}/record">마이페이지</a></li>
+			<li><a href="${pageContext.request.contextPath }/logout.do">로그아웃</a></li>
 		</div>
 	</div>
+	
 	<a href="${pageContext.request.contextPath}/upload.do"><div class="menu-r">Upload</div></a>
 	</c:when>
 	<c:otherwise>

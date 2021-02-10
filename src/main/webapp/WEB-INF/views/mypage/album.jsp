@@ -147,14 +147,14 @@ $(function(){
 	   	  $('#track').html(resData.trackCount);
 	     }    
 	});
-	
+
 	/* 리스트페이지 */
 	$.ajax({
 	     url : "../mypageAlbum.do",
 	     type : "get",
 	     contentType : "text/html;charset:utf-8",
 	     data : {user_id:"${user_id}", 
-	    	 	nowPage:"${nowPage==null?1:nowPage}"},
+	    	 	nowPage:"${nowPage eq null?1:nowPage}"},
 	     dataType : "html",
 	     success : function sucFunc(resData) {
 	    	 $('#albumList').html(resData);
@@ -231,7 +231,7 @@ $(function(){
 						<tr>
 							<td class="my-con-left">
 								<div id="albumList">
-								
+	
 								</div>
 							</td>
 							<td class="my-con-right">

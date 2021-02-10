@@ -543,10 +543,12 @@ li {
 				<tr>
 					<td style="padding-top: 1em; padding-bottom: 1em;">
 				<c:set var="followB" value="false"/>
-        		<c:forEach var="f" items="${follows4 }">
-        		<c:if test="${pageContext.request.userPrincipal.name eq f.user_id and a.id eq f.following_id}">
+        		<c:forEach var="f" items="${returnMap }">
+        		<c:forEach var="follower" items="${f.value }">
+        		<c:if test="${pageContext.request.userPrincipal.name eq follower and a.id eq f.key}">
         		<c:set var="followB" value="true"/>
         		</c:if>
+        		</c:forEach>
         		</c:forEach>
         		
         		     <c:choose>
@@ -560,7 +562,7 @@ li {
                
 						
 					<td style="text-align: center">
-						<h6 class="pCount ${b.value.audio_idx }">팔로워 : ${b.value.play_count}</h6>
+						<h6 class="pCount ${a.id }">팔로워 : ${memberMap[a]}</h6>
 					</td>
 				</tr>
 				<tr>
@@ -647,9 +649,14 @@ li {
 				</c:forEach>
 			</div>
 			<div class="sidebar myF"></div>
-			첫하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />
-			하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />
-			하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />막하이<br />
+			<ul>
+			<li><a href="./search.do?searchWord=${searchWord }">전체 검색</a></li>
+			<li><a href="./searchAudio.do?searchWord=${searchWord }">제목으로 검색</a></li>
+			<li><a href="./searchAudioByArtist.do?searchWord=${searchWord }">아티스트명으로 검색</a></li>
+			<li><a href="./searchArtist.do?searchWord=${searchWord }">아티스트 검색</a></li>
+			<li><a href="./searchContents.do?searchWord=${searchWord }">내용으로 검색</a></li>
+			</ul>
+
 		</div>
 	</div>
 </div>

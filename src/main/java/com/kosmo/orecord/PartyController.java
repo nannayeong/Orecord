@@ -1,5 +1,5 @@
 package com.kosmo.orecord;
-
+ 
 import java.io.File;
 import java.io.IOException;
 import java.security.Principal;
@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import impl.PartyImpl;
 import impl.ViewImpl;
 import model.AudioBoardDTO;
+import model.PartyBoardDTO;
 
 @Controller
 public class PartyController {
@@ -31,6 +32,29 @@ public class PartyController {
 	SqlSession sqlSession;
 	public void setSqlSession(SqlSession sqlSession) {
 		this.sqlSession = sqlSession;
+	}
+	
+	//협업신청목록
+	@RequestMapping("/board/partyList.do")
+	public String partyList(Model model, HttpServletRequest req, Principal principal) {
+		
+		String partyIdx = req.getParameter("audio_idx");
+		System.out.println("audio_idx????"+ partyIdx);
+		
+		ArrayList<PartyBoardDTO> partyList =
+			sqlSession.getMapper(PartyImpl.class).partyList(
+				Integer.parseInt(req.getParameter("audio_idx")));
+		
+//		for(PartyBoardDTO dto : partyList) {
+//			String temp = dto.getTitle().replace("\r\n", "<br/>");
+//			dto.setTitle(temp);
+//			String temp2 = dto.getContents().replace("\r\n", "<br/>");
+//			dto.setContents(temp2);
+//		}
+		model.addAttribute("audio_idx", partyIdx);
+		model.addAttribute("partyList", partyList);
+		
+		return "board/partyList";
 	}
 	
 	//협업신청폼
@@ -43,11 +67,13 @@ public class PartyController {
 		/*절대경로*/
 		String path = req.getContextPath();
 		
+		//매퍼 호출
 		AudioBoardDTO party =
 				sqlSession.getMapper(PartyImpl.class).partyWrite(
 				Integer.parseInt(req.getParameter("audio_idx")));
 		
-		
+		//모델객체에 저장
+		model.addAttribute("audio_idx", party1);
 		model.addAttribute("party", party);
 		
 		return "board/partyWrite";
@@ -70,8 +96,7 @@ public class PartyController {
 	//협업신청처리
 	@RequestMapping(value="/board/partyWriteAction.do", method=RequestMethod.POST)
 	public String partyWriteAction(Model model,
-			MultipartHttpServletRequest req, Principal principal,
-			HttpServletRequest request) {
+			MultipartHttpServletRequest req, Principal principal) {
 		
 		//서버의 물리적경로 얻어오기
 		String path = req.getSession().getServletContext().getRealPath("/resources/upload");
@@ -169,5 +194,30 @@ public class PartyController {
 		}
 		
 		return "redirect:view.do?audio_idx="+ party3;
+	}
+	
+	//협업신청서 상세페이지
+	@RequestMapping("/board/partyView.do")
+	public String partyView(Model model, HttpServletRequest req, Principal principal) {
+		
+		//idx값이 넘어오는지 확인
+		String idx = req.getParameter("party_idx");
+		System.out.println("party_idx = "+ idx);
+		
+		/*절대경로*/
+		String path = req.getContextPath();
+		
+		//Mapper 호출
+		PartyBoardDTO partyView =
+			sqlSession.getMapper(PartyImpl.class).partyView(
+				Integer.parseInt(req.getParameter("party_idx")),
+				req.getParameter("id"));
+			
+		partyView.setAudiofilename(path+"/resources/upload/"+partyView.getAudiofilename());
+			
+		model.addAttribute("partyView", partyView);
+		model.addAttribute("party_idx", idx);
+		
+		return "board/partyView";
 	}
 } 

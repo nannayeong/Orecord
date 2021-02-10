@@ -17,5 +17,5 @@ public void setLike_id(String like_id) {
 	this.like_id = like_id;
 }
 
-
+ 
 } 
