@@ -7,8 +7,15 @@
 <mapper namespace="impl.AudioBoardImpl">
 
 	<select id="audioList" resultType="model.AudioBoardDTO">
-		select audio_idx, audiotitle, b.id, b.album_idx, audiofilename, artistname, albumName, regidate
+		select audio_idx, audiotitle, b.id, b.album_idx, audiofilename, artistname, albumName, regidate, imagename, category, like_count, party
 			from audioboard b inner join album a on b.album_idx=a.album_idx where b.id=#{param1} order by regidate desc
+	</select>
+	
+	<select id="audioListPaging" resultType="model.AudioBoardDTO">
+		select * from 
+		(select tb.*, rownum rnum from
+		(select audio_idx, audiotitle, b.id, b.album_idx, audiofilename, artistname, albumName, regidate, imagename, category, like_count, party
+			from audioboard b inner join album a on b.album_idx=a.album_idx where b.id=#{param1} order by regidate desc)tb) where rnum between #{param2} and #{param3}
 	</select>
 	
 	<!-- 업로드 -->
@@ -26,10 +33,14 @@
 		select * from audioboard WHERE ID=#{0} AND <![CDATA[ ROWNUM=1 ]]> ORDER BY regidate DESC
 	</select>
 	<select id="audioCount" resultType="int">
-	select count(*) from audioboard
+		select count(*) from audioboard
 	</select>
 	
+	<select id="myAudioCount" resultType="int">
+		select count(*) from audioboard where id=#{param1}
+	</select>
 	
+	<delete id="recordDelete">
+		delete from audioboard where id=#{param1} and audio_idx=#{param2}
+	</delete>
 </mapper> 
-
-

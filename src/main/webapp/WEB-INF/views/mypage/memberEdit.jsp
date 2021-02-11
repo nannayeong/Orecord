@@ -112,6 +112,24 @@ $(function(){
         }
     });
 });
+
+function memberDeleteFunc(){
+	
+	var f = document.getElementById("delete").value;
+	
+	var answer = window.confirm("정말로 탈퇴하시겠습니까?");
+	
+    if(answer==true){
+    	
+        alert("탈퇴되었습니다.")
+        location.href="${pageContext.request.contextPath}/memberDelete.do";
+    }
+    else if(answer==false){
+        alert("탈퇴를 취소하였습니다.")
+       
+    }
+	
+}
 </script>
 
 
@@ -217,8 +235,8 @@ $(function(){
 					</div>
 					
 					<div align="center">
-						<input type="submit" class="btn btn-fill btn-primary" value="수정하기"> &nbsp;&nbsp;&nbsp;&nbsp;
-						<button type="reset" class="btn btn-fill btn-primary">RESET</button>
+						<input type="submit" class="btn btn-warning" value="수정하기" style="color: white;"> &nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="button" class="btn btn-warning" value="탈퇴하기" id="delete" name="delete" style="color: white;" onclick="memberDeleteFunc();"/>
 					</div>
 				</form>
 						

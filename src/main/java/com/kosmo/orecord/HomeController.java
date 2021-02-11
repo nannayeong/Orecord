@@ -220,8 +220,5 @@ public class HomeController {
 			}
 		}
 		return likeList;
-		
 	}
-
-	
 }

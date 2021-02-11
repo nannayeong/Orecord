@@ -42,7 +42,10 @@ public class ViewController {
 			sqlSession.getMapper(ViewImpl.class).View(
 			Integer.parseInt(req.getParameter("audio_idx")));
 		
-		String temp2 = view.getContents().replace("\r\n", "<br/>");
+		String temp2 = null;
+		if(view.getContents()!=null) {
+			temp2 = view.getContents().replace("\r\n", "<br/>");
+		}
 		view.setContents(temp2);
 		
 		if(view.getImagename()==null) {

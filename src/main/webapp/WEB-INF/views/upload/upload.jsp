@@ -140,17 +140,6 @@ $(document).ready(function(){
 	$('#input_file').setPreview(opt); 
 }); 
 
-function colChoice(){
-	var fn = document.regiform;
-	
-	if(fn.party.checked==true){
-		fn.party.value = "Y";
-	}
-	else{
-		fn.party.value = "N";
-	}
-}
-
 function addAlbumFunc(){
 	if($('#addAlbumName').val()==''){
 		alert('앨범명을 입력해주세요');
@@ -163,8 +152,8 @@ function addAlbumFunc(){
 		     data : {addAlbumName:$('#addAlbumName').val()},
 		     dataType : "json",
 		     success : function sucFunc(resData) {
-		    	 if(resData==1){
-			    	 $('#albumName').prepend('<option value="'+resData.addAlbumName+'style="color: black;">'+resData.addAlbumName+'</option>');
+		    	 if(resData.result==1){
+			    	 $('#albumName').prepend('<option value="'+resData.addAlbumName+'"style="color: black;" selected>'+resData.addAlbumName+'</option>');
 			    	 alert("새 앨범이 추가되었습니다");
 			    	 $('#addalbum').modal('hide');
 			   	 }
@@ -190,7 +179,7 @@ function addAlbumFunc(){
                 <div class="row"> 
 	                <div class="col-md-6 pr-md-1">
 	                	<label>이미지</label>
-		                <input type="file" id="input_file" accept=".jpeg,.jpg,.png" name="imagename" class="form-control"/>
+		                <input type="file" id="imagename" accept=".jpeg,.jpg,.png" name="imagename" class="form-control"/>
 		                <img id="img_preview" class="inline-block"/>
 					</div>
 					<div class="col-md-6 pr-md-1">
@@ -213,26 +202,29 @@ function addAlbumFunc(){
 							      <div class="modal-body" style="text-align:center">
 							      	<span>추가할 앨범명을 입력해주세요</span><br />
 							      	<input type="text" id="addAlbumName" />
-							      	<button type="button" id="aaButton" class="btn btn-warning btn-sm" onclick='addAlbumFunc();'>추가하기</button>
+							      	<div><button type="button" id="aaButton" class="btn btn-warning btn-sm" onclick='addAlbumFunc();'>추가하기</button></div>
+							      
 							      </div>
+							      <br />
 							    </div>
 							  </div>
 							</div>
-							
+			          	</div>
+	                      <div class="form-group">
 		                  	<select name="albumName" id="albumName" class="form-control">
 		                  	<!-- <option value="default" style="color: black;">default</option> -->
 	                  		<c:forEach items="${albumList}" var="album">
 	                  		<option value="${album.albumName}" style="color: black;">${album.albumName}</option>
 	                  		</c:forEach>
 		                  	</select>
-			          	<label>음원파일</label>
-                     		<input type="file" class="form-control" name="audiofilename" id="audiofilename" accept=".mp4,.mp3,.wav">
+			          		<label>음원파일</label>
+	                    		<input type="file" class="form-control" name="audiofilename" id="audiofilename" accept=".mp4,.mp3,.wav">
 			          </div>
 					</div>
 				</div>
 				<div class="row">
                     <div class="col-md-6">
-					        <div>다른 유저와 협업하기 <input type="checkbox" name="party" value="N" onclick="colChoice();"/></div>
+					        <div>다른 유저와 협업하기 <input type="checkbox" name="party" value="Y"/></div>
 					        <br />
 					</div>
 					<div class="col-md-6">

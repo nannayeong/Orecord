@@ -26,6 +26,14 @@ public class AudioBoardDTO {
 	/*like table*/
 	private boolean like; 
 	
+	/*mcomment table*/
+	private int commentCount;
+	
+	/*playlist*/
+	private int idx;
+	private String plid;
+	private String plname;
+	
 	//getter/setter
 	public String getImg() {
 		return img;
@@ -131,6 +139,31 @@ public class AudioBoardDTO {
 	}
 	public void setLike(boolean like) {
 		this.like = like;
+	}
+	
+	public int getCommentCount() {
+		return commentCount;
+	}
+	public void setCommentCount(int commentCount) {
+		this.commentCount = commentCount;
+	}
+	public int getIdx() {
+		return idx;
+	}
+	public void setIdx(int idx) {
+		this.idx = idx;
+	}
+	public String getPlid() {
+		return plid;
+	}
+	public void setPlid(String plid) {
+		this.plid = plid;
+	}
+	public String getPlname() {
+		return plname;
+	}
+	public void setPlname(String plname) {
+		this.plname = plname;
 	}
 	
 	

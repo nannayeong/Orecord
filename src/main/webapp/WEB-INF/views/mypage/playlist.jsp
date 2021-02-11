@@ -98,7 +98,67 @@ function pointCheck(){
 		return false;
 	}
 }
+
+function likeFunc(a){
+	if("${pageContext.request.userPrincipal.name}"==""){
+		alert('로그인 후 이용해주세요');
+		location.href="../member/login.do"
+	}
+	else{
+		if($('#likeIcon'+a).hasClass('on')){//이미 좋아요상태일 때
+			$.ajax({
+			      url : "../nolike.do",
+			      type : "get",
+			      contentType : "text/html;charset:utf-8",
+			      data : { audio_idx :a}, 
+			      dataType : "json",
+			      success : function sucFunc(resData){
+			    	  if(resData.result==1){
+			    	  	$('#likeIcon'+a).removeClass('on');
+			    	  	$('#likecount'+a).html(resData.likecount);
+			    	  }
+			      }
+			   });
+		}
+		else{
+			$.ajax({
+			     url : "../like.do",
+			     type : "get",
+			     contentType : "text/html;charset:utf-8",
+			     data : { audio_idx :a}, 
+			     dataType : "json",
+			     success : function sucFunc(resData) {
+			    	if(resData.result==1){
+						$('#likeIcon'+a).addClass('on');
+						$('#likecount'+a).html(resData.likecount);
+			    	}
+			     }    
+			});  
+		}
+	}
+}
 $(function(){
+	
+	/* 페이징 */
+	var nowP = 1;
+	$(window).scroll(function(){
+		var scrollHeight = $(document).height();
+		var scrollPosition = $(window).height() + $(window).scrollTop();		
+		if(scrollPosition > scrollHeight -1){
+			nowP = nowP + 1;
+			$.ajax({
+			     url : "../mypagePlay.do",
+			     type : "get",
+			     contentType : "text/html;charset:utf-8",
+			     data : {user_id:"${user_id}", 
+			    	 	nowPage:nowP},
+			     dataType : "html",
+			     success : function sucFunc(resData) {
+			    	 $('#albumList').append(resData);
+			     }    
+			});
+		}
+	});
 	
 	$('#follow').mouseenter(function(){
 		if($('#follow').html()=='팔로워'){

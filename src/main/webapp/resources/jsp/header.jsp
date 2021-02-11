@@ -6,15 +6,25 @@ a:link { color: red; text-decoration: none;}
 a:visited { color: black; text-decoration: none;}
 a:hover { color: blue; text-decoration: underline;}
 </style>
+<script type="text/javascript">
+function checkNull(t) {
+	if(t.searchWord.value==""||t.searchWord.value==null){
+		alert("검색어를 입력하세요");
+		return false;
+	}
+	
+
+}
+</script>
 <div class="menu-back">
 	<!-- 오른정렬 -->
 	<a href="${pageContext.request.contextPath}/main.do"><div class="logo">Orecord</div></a>
 	<a href=""><div class="menu">menu1</div></a>
 	<a href=""><div class="menu">menu2</div></a>
 	<div class="search">
-		<form action="">
-			<input type="text" value="" type="search" style="width:18em"/>
-			<button type="button" onclick="" class="btn btn-secondary btn-sm" style="margin-bottom:4px"><i class="fas fa-search"></i></button>
+		<form action="./search.do" onsubmit="return checkNull(this)">
+			<input type="text" value="" type="search" style="width:18em" name="searchWord"/>
+			<button type="submit" onclick="" class="btn btn-secondary btn-sm" style="margin-bottom:4px"><i class="fas fa-search"></i></button>
 		</form>
 	</div>
 	<!-- 왼정렬 -->
@@ -42,6 +52,7 @@ a:hover { color: blue; text-decoration: underline;}
 			<li><a href="${pageContext.request.contextPath}/admin/main">어드민페이지</a></li>
 			</c:if>
 			<li><a href="${pageContext.request.contextPath}/${pageContext.request.userPrincipal.name}/record">마이페이지</a></li>
+			<li><a href="${pageContext.request.contextPath }/pwCheck.do">정보수정</a></li>
 			<li><a href="${pageContext.request.contextPath }/logout.do">로그아웃</a></li>
 		</div>
 	</div>

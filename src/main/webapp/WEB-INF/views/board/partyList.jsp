@@ -66,7 +66,41 @@
 					<tbody>
 						<c:forEach items="${partyList }" var="par">
 						<input type="hidden" name="" />
-						<tr>
+						<c:choose>
+							<c:when test="${par.choice eq 1 }">
+								<tr class="table-success">
+									<td>${par.party_idx }</td>
+									<td>
+										<a href="./partyView.do?party_idx=${par.party_idx}&id=${par.id}">
+											${par.id }
+										</a>
+									</td>
+									<td>${par.title }</td>
+									<td>${par.contents }</td>
+									<td>${par.kind }</td>
+									<td>${par.point }</td>
+									<td>${par.regidate }</td>
+									<td>${par.exdate }</td>
+								</tr>
+							</c:when>
+							<c:otherwise>
+								<tr>
+									<td>${par.party_idx }</td>
+									<td>
+										<a href="./partyView.do?party_idx=${par.party_idx}&id=${par.id}">
+											${par.id }
+										</a>
+									</td>
+									<td>${par.title }</td>
+									<td>${par.contents }</td>
+									<td>${par.kind }</td>
+									<td>${par.point }</td>
+									<td>${par.regidate }</td>
+									<td>${par.exdate }</td>
+								</tr>
+							</c:otherwise>
+						</c:choose>
+						<%-- <tr>
 							<td>${par.party_idx }</td>
 							<td>
 								<a href="./partyView.do?party_idx=${par.party_idx}&id=${par.id}">
@@ -79,7 +113,7 @@
 							<td>${par.point }</td>
 							<td>${par.regidate }</td>
 							<td>${par.exdate }</td>
-						</tr>
+						</tr> --%>
 						</c:forEach>
 					</tbody>
 				</table>

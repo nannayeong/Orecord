@@ -21,6 +21,9 @@ public class PlayListDTO {
 	private int like_count; //좋아요 수
 	private int party; // 협업참여여부 
 	
+	/*like table*/
+	private boolean like;
+	
 	public int getIdx() {
 		return idx;
 	}
@@ -117,6 +120,12 @@ public class PlayListDTO {
 	}
 	public void setParty(int party) {
 		this.party = party;
+	}
+	public boolean isLike() {
+		return like;
+	}
+	public void setLike(boolean like) {
+		this.like = like;
 	}
 
 
