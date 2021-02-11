@@ -10,7 +10,7 @@ background-color: #f2f2f2;cursor:pointer
 border:1px solid #f2f2f2;
 }
 </style>
-
+ 
 <!-- 앨범 -->
 <table style="width:80%;margin:auto;">
 <c:choose>
