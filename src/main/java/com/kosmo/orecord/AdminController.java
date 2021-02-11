@@ -48,15 +48,16 @@ public class AdminController {
 	
 	/*회원삭제하기*/
 	@RequestMapping("/admemberDelete.do")
-	public String memberDelete(HttpServletRequest req, HttpSession session) {
+	public String memberDelete(HttpServletRequest req, Model model) {
 		
 		int delete = sqlSession.getMapper(AdminImpl.class).memberDelete(req.getParameter("id"));
+		model.addAttribute("delete", delete);
 		
 		if(delete == 1) {
 			System.out.println("삭제완료");			
 		}
 		
-		return "redirect:/memberList";
+		return "redirect:/memberList.do";
 		
 	}
 	
@@ -177,6 +178,6 @@ public class AdminController {
 			e.printStackTrace();
 		}
 		
-		return "redirect:/memberList";
+		return "redirect:/memberList.do";
 	}
 }

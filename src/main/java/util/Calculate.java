@@ -84,7 +84,6 @@ public class Calculate {
 	public String makeSearchText(String a,String searchWord) {
 		String key = searchWord;
 		int indexofkey = a.indexOf(key);
-		System.out.println(indexofkey);
 		int stringSize = 10;
 		int front = 0;
 		int back = 0;
@@ -110,7 +109,6 @@ public class Calculate {
 		}
 		String slice = a.substring(front, back);
 		String totalString = frontString+slice+backString;
-		System.out.println("결과물"+totalString);
 		return totalString;
 	}
 	
@@ -123,11 +121,13 @@ public class Calculate {
 		  before.add(c);
         }
 		if(before.size()>1) {
-		for(int i=0;i<before.size();i++) {
+		for(int i=before.size()-2;i>=0;i--) {
 			for(int j=0;j<=i;j++) {
-				if(before.get(i).followNum<before.get(i+1).followNum) {
-					before.add(i,before.get(i+1));
-					before.remove(i+2);
+				if(before.get(j).followNum<before.get(j+1).followNum) {
+					before.add(j,before.get(j+1));
+					before.remove(j+2);
+				
+					
 				}
 			}
 		}}

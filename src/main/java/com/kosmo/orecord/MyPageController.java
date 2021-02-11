@@ -137,16 +137,24 @@ public class MyPageController {
 	
 	/*회원삭제하기*/
 	@RequestMapping("/memberDelete.do")
-	public String memberDelete(HttpServletRequest req, HttpSession session) {
+	public String memberDelete(HttpServletRequest req, Principal principal) {
 		
-		/*
-		if(session.getAttribute("siteUserInfo")==null){
-			return "./login.do";
+		String id = null;
+		/*로그인 없이 접근시 nullpointerexception발생, security로 접근권한 설정해야함.*/
+		try {
+			id = principal.getName();
 		}
-		*/
-		sqlSession.getMapper(MypageImpl.class).memberDelete(req.getParameter("id"));
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 		
-		return "main/main";
+		int delete = sqlSession.getMapper(MypageImpl.class).memberDelete(id);
+		
+		if(delete==1) {
+			System.out.println("회원삭제완료");
+		}
+		
+		return "redirect:/main.do";
 		
 	}
 	
@@ -156,6 +164,28 @@ public class MyPageController {
 		uuid = uuid.replaceAll("-", "");
 		System.out.println("생성된UUID-2:"+uuid);
 		return uuid;
+	}
+	
+	@RequestMapping("/pwCheck.do")
+	public String pwCheck(Principal principal, Model model, HttpServletRequest req) {
+		String id = null;
+		/*로그인 없이 접근시 nullpointerexception발생, security로 접근권한 설정해야함.*/
+		try {
+			id = principal.getName();
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		String pw = req.getParameter("pw");
+		String pw2 = req.getParameter("pw2");
+		
+		MemberDTO dto = sqlSession.getMapper(MypageImpl.class).memberView(id);
+		model.addAttribute("dto", dto);
+		
+		System.out.println(pw + " "+ pw2);
+		
+		return "mypage/pwCheck";
 	}
 	
 	/*회원수정폼*/
@@ -338,6 +368,23 @@ public class MyPageController {
 				+ "<img src='../images/paging4.gif'></a>";
 		}		
 		
+		/*로그인유저의 플레이리스트 가져오기*/
+		String login_id = null;
+		ArrayList<PlayListDTO> plList = null;
+		try {
+			login_id = principal.getName();
+			plList = sqlSession.getMapper(PlayListImpl.class).select(login_id);
+			
+			if(plList.size()==0) {
+				PlayListDTO dto = new PlayListDTO();
+				dto.setPlname("default");
+				plList.add(dto);
+			}
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		
 		ArrayList<AlbumDTO> albumList = sqlSession.getMapper(AlbumImpl.class).albumListPaging(user_id, start, end);
 		ArrayList<AudioBoardDTO> audioList = sqlSession.getMapper(AudioBoardImpl.class).audioList(user_id);	
 		
@@ -366,25 +413,22 @@ public class MyPageController {
 			
 			String fileName = audioDTO.getAudiofilename();
 			audioDTO.setAudiofilename(path+"/resources/upload/"+fileName);
-		}
-		
-		/*로그인유저의 플레이리스트 가져오기*/
-		String id = null;
-		ArrayList<PlayListDTO> plList = null;
-		try {
-			id = principal.getName();
-			plList = sqlSession.getMapper(PlayListImpl.class).select(id);
 			
-			if(plList.size()==0) {
-				PlayListDTO dto = new PlayListDTO();
-				dto.setPlname("default");
-				plList.add(dto);
+
+			/*음원에 대한 로그인 유저의 좋아요*/
+			if(login_id!=null) {
+				int likeResult = sqlSession.getMapper(LikeImpl.class).myLike(audioDTO.getAudio_idx(), login_id);
+				System.out.println("likeResult"+likeResult);
+				
+				if(likeResult==1) {
+					audioDTO.setLike(true);
+				}
+				else {
+					audioDTO.setLike(false);
+				}
 			}
 		}
-		catch(Exception e) {
-			e.printStackTrace();
-		}
-		
+
 		model.addAttribute("plList", plList);
 		model.addAttribute("albumList", albumList);
 		model.addAttribute("audioList", audioList);
@@ -398,7 +442,14 @@ public class MyPageController {
 		
 		String path = req.getContextPath();
 		String user_id = req.getParameter("user_id");	
+		String login_id = null;
 		
+		try {
+			login_id = principal.getName();
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 
 		/*1. 플레이리스트 가져오기*/
 		ArrayList<PlayListDTO> plList = sqlSession.getMapper(PlayListImpl.class).myplaylist(user_id);
@@ -416,13 +467,21 @@ public class MyPageController {
 			}
 			String fileName = plDTO.getAudiofilename();
 			plDTO.setAudiofilename(path+"/resources/upload/"+fileName);
-
+			
+			
+			/*음원에 대한 로그인 유저의 좋아요*/
+			if(login_id!=null) {
+				int likeResult = sqlSession.getMapper(LikeImpl.class).myLike(plDTO.getAudio_idx(), login_id);
+				System.out.println("likeResult"+likeResult);
+				
+				if(likeResult==1) {
+					plDTO.setLike(true);
+				}
+				else {
+					plDTO.setLike(false);
+				}
+			}
 		}
-		
-		for(String a : plSet) {
-			System.out.println("리스트확인"+a);
-		}
-		
 		
 		/*3.플레이리스트 DTO map에 넣기*/		
 		model.addAttribute("plSet", plSet);//폴더명

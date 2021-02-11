@@ -98,6 +98,7 @@ public class FollowController {
 		FollowDTO follow = new FollowDTO();
 		String followId = principal.getName();//내아이디
 		String followerId = req.getParameter("followerId");//팔로우할아이디
+		
 		follow.setFollowing_id(followerId);
 		follow.setUser_id(followId);
 		//Follow 테이블에 insert하고 성공시 1을 반환받음
@@ -105,7 +106,9 @@ public class FollowController {
 
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("folSuc", suc);
-		
+		//팔로우 버튼옆 표시할 팔로워 수
+		int followCount = sqlSession.selectOne("followerCount",followerId);
+		map.put("followcount", followCount);
 		return map;
 
 	}
@@ -121,6 +124,9 @@ public class FollowController {
 		//Follow 테이블에 insert하고 성공시 1을 반환받음
 		int suc = sqlSession.delete("unFollow", follow);
 		Map<String, Object> map = new HashMap<String, Object>();
+		//팔로우 버튼옆 표시할 팔로워 수
+		int followCount = sqlSession.selectOne("followerCount",followerId);
+		map.put("followcount", followCount);
 		map.put("unfolSuc", suc);
 		
 		return map;

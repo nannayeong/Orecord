@@ -101,6 +101,45 @@ function pointCheck(){
 		return false;
 	}
 }
+
+function likeFunc(a){
+	if("${pageContext.request.userPrincipal.name}"==""){
+		alert('로그인 후 이용해주세요');
+		location.href="../member/login.do"
+	}
+	else{
+		if($('#likeIcon').hasClass('on')){//이미 좋아요상태일 때
+			$.ajax({
+			      url : "../nolike.do",
+			      type : "get",
+			      contentType : "text/html;charset:utf-8",
+			      data : { audio_idx :a}, 
+			      dataType : "json",
+			      success : function sucFunc(resData){
+			    	  if(resData.result==1){
+			    	  	$('#likeIcon').removeClass('on');
+			    	  	$('#likecount').html(resData.likecount);
+			    	  }
+			      }
+			   });
+		}
+		else{
+			$.ajax({
+			     url : "../like.do",
+			     type : "get",
+			     contentType : "text/html;charset:utf-8",
+			     data : { audio_idx :a}, 
+			     dataType : "json",
+			     success : function sucFunc(resData) {
+			    	if(resData.result==1){
+						$('#likeIcon').addClass('on');
+						$('#likecount').html(resData.likecount);
+			    	}
+			     }    
+			});  
+		}
+	}
+}
 $(function(){
 	$('#follow').mouseenter(function(){
 		if($('#follow').html()=='팔로워'){

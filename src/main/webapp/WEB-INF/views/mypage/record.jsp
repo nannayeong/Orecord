@@ -217,9 +217,6 @@ $(function(){
 	});
 });
 </script>
-<style>
-.on{color:red}
-</style>
 </head>
 <body style="background-color:#f2f2f2;">
 	<div>

@@ -1,5 +1,6 @@
 package com.kosmo.orecord;
 
+import java.security.Principal;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -7,6 +8,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -19,12 +21,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import model.AudioBoardDTO;
 import model.FollowDTO;
 import model.LikeDTO;
 import model.MemberDTO;
 import util.Calculate;
+import impl.FollowImpl;
 import impl.MainImpl;
 import impl.SearchImpl;
  
@@ -49,6 +53,20 @@ public class SearchController {
 		/////////제목으로검색 게시물5개  1번
 		ArrayList<AudioBoardDTO> audioList = sqlSession.getMapper(SearchImpl.class).searchAudioM(searchWord);
 		//아티스트명으로 검색5개
+		String path = req.getContextPath();
+		for(AudioBoardDTO audioDTO : audioList) {
+			
+			if(audioDTO.getImagename()==null){
+				audioDTO.setImagename(path+"/resources/img/default.jpg");
+			}
+			else {
+				String fileName = audioDTO.getImagename();
+				audioDTO.setImagename(path+"/resources/upload/"+fileName);
+			}
+			
+			String fileName = audioDTO.getAudiofilename();
+			audioDTO.setAudiofilename(path+"/resources/upload/"+fileName);
+		}
 		HashMap popMap1 = cal.calcuPop(audioList);
 		//인기순정렬 맵으로넣음
 		model.addAttribute("popMap1", popMap1);
@@ -64,6 +82,19 @@ public class SearchController {
 		/////////////아티스트명으로 게시글찾기 2번
 		ArrayList<AudioBoardDTO> audioByNameList = sqlSession.getMapper(SearchImpl.class).searchAudioByArtistM(searchWord);
 		//아티스트명으로 검색5개
+		for(AudioBoardDTO audioDTO : audioByNameList) {
+			
+			if(audioDTO.getImagename()==null){
+				audioDTO.setImagename(path+"/resources/img/default.jpg");
+			}
+			else {
+				String fileName = audioDTO.getImagename();
+				audioDTO.setImagename(path+"/resources/upload/"+fileName);
+			}
+			
+			String fileName = audioDTO.getAudiofilename();
+			audioDTO.setAudiofilename(path+"/resources/upload/"+fileName);
+		}
 		HashMap popMap2 = cal.calcuPop(audioByNameList);
 		//인기순정렬 맵으로넣음
 		model.addAttribute("popMap2", popMap2);
@@ -76,30 +107,46 @@ public class SearchController {
 		model.addAttribute("follows2",follows2);
 		
 		
-		//아이디 찾기위한 오디오 불러오기
-		ArrayList<AudioBoardDTO> findmember = sqlSession.getMapper(SearchImpl.class).searchAudioByArtist(searchWord);
-		HashSet<String> ids = new HashSet<String>();
-		HashMap<MemberDTO,Integer> memberMap = new HashMap<MemberDTO,Integer>();
-		for(int i=0;i<findmember.size();i++) {
-			ids.add(findmember.get(i).getId());
+		
+		HashMap<String, HashSet<String>> returnMap = new HashMap<String, HashSet<String>>();
+		HashMap<MemberDTO,Integer> memberMap = new HashMap<MemberDTO, Integer>();
+		//검색페이지에 출력할 오디오게시글 불러옴
+		ArrayList<MemberDTO> artists = sqlSession.getMapper(SearchImpl.class).searchArtistM(searchWord);
+		for(MemberDTO dto : artists) {
+			String followingId = dto.getId();
+			HashSet<String> followerSet = new HashSet<String>();
+			ArrayList<FollowDTO> follows = sqlSession.getMapper(FollowImpl.class).followers(followingId);
+			for(FollowDTO fdto : follows) {
+				followerSet.add(fdto.getUser_id());
+			}
+			returnMap.put(followingId, followerSet);
+			memberMap.put(dto, follows.size());
 		}
-		Iterator<String> it = ids.iterator();
-		while(it.hasNext()) {
-			String id1 = it.next(); 
-			ArrayList<MemberDTO> memberByArtist = sqlSession.getMapper(SearchImpl.class).searchArtistM(id1);
-		for(int i=0;i<memberByArtist.size();i++) {
-			String id2 = memberByArtist.get(i).getId();
-			int countF = sqlSession.selectOne("followerCount",id2);
-			memberMap.put( memberByArtist.get(i),countF);
+		ArrayList<MemberDTO> arrayByF = cal.arrayByFollow(memberMap);
+		if(arrayByF.size()>8) {
+		for(int i=arrayByF.size()-1;i>7;i--) {
+			arrayByF.remove(i);
 		}}
-		ArrayList<MemberDTO> artists=cal.arrayByFollow(memberMap);
-		ArrayList<FollowDTO> follows4 = loadFollow(findmember);
-		model.addAttribute("follows4",follows4);
-		model.addAttribute("artists",artists);
-		model.addAttribute("followset",memberMap);
+		model.addAttribute("followMap",returnMap);
+		model.addAttribute("artists",arrayByF);
+		model.addAttribute("memberMap",memberMap);
 		
 		//컨텐츠로 검색
 		ArrayList<AudioBoardDTO> byContents = sqlSession.getMapper(SearchImpl.class).searchContentM(searchWord);
+		for(AudioBoardDTO audioDTO : byContents) {
+			
+			if(audioDTO.getImagename()==null){
+				audioDTO.setImagename(path+"/resources/img/default.jpg");
+			}
+			else {
+				String fileName = audioDTO.getImagename();
+				audioDTO.setImagename(path+"/resources/upload/"+fileName);
+			}
+			
+			String fileName = audioDTO.getAudiofilename();
+			audioDTO.setAudiofilename(path+"/resources/upload/"+fileName);
+		}
+		
 		for(AudioBoardDTO audios : byContents) {
 			String contents = cal.makeSearchText(audios.getContents(),searchWord);
 			audios.setContents(contents);
@@ -108,8 +155,6 @@ public class SearchController {
 		HashMap<Integer,AudioBoardDTO> popMap3 = cal.calcuPop(byContents);
 		//인기순정렬 맵으로넣음
 		model.addAttribute("popMap3", popMap3);
-		HashMap<Integer, Integer> commentC3 = cal.cCount(byContents,sqlSession);
-		model.addAttribute("commentC3", commentC3);
 		//댓글수 카운트해서 넣음
 		ArrayList<LikeDTO> likes3 = loadLike(byContents);
 		ArrayList<FollowDTO> follows3 = loadFollow(byContents);
@@ -121,90 +166,159 @@ public class SearchController {
 	
 	@RequestMapping("/searchAudio.do")
 	public String searchAudio(Model model, HttpServletRequest req) {
+		
 		String searchWord = req.getParameter("searchWord");
-		ArrayList<AudioBoardDTO> audioList = sqlSession.getMapper(SearchImpl.class).searchAudioM(searchWord);
-		//아티스트명으로 검색5개
-		HashMap popMap1 = cal.calcuPop(audioList);
-		//인기순정렬 맵으로넣음
-		model.addAttribute("popMap1", popMap1);
+		ArrayList<AudioBoardDTO> audioList = sqlSession.getMapper(SearchImpl.class).search("AUDIOTITLE",searchWord,1,8);
+		//아티스트명으로 검색
 		HashMap<Integer, Integer> commentC1 = cal.cCount(audioList,sqlSession);
-		model.addAttribute("commentC1", commentC1);
 		//댓글수 카운트해서 넣음
 		ArrayList<LikeDTO> likes1 = loadLike(audioList);
 		ArrayList<FollowDTO> follows1 = loadFollow(audioList);
+		model.addAttribute("audioList",audioList);
 		model.addAttribute("likes1",likes1);
 		model.addAttribute("follows1",follows1);
 		model.addAttribute("searchType","title");
 		model.addAttribute("searchWord",searchWord);
 		return "main/search";
-		
 	}
+	
+	@RequestMapping("/searchAudioLoad.do")
+	public String searchAudioload(Model model, HttpServletRequest req) {
+		String searchWord = req.getParameter("searchWord");
+		int loadedCount = Integer.parseInt(req.getParameter("loadlength"));
+		int totalAudio = sqlSession.getMapper(SearchImpl.class).searchTotal("AUDIOTITLE", searchWord);
+		ArrayList<AudioBoardDTO> audioList = new ArrayList<AudioBoardDTO>();
+		if(totalAudio!=loadedCount) {
+			audioList = sqlSession.getMapper(SearchImpl.class).search("audiotitle",searchWord,loadedCount+1,loadedCount+8);
+		}
+		
+		//댓글수 카운트해서 넣음
+		ArrayList<LikeDTO> likes = loadLike(audioList);
+		ArrayList<FollowDTO> follows = loadFollow(audioList);
+		model.addAttribute("audiolist",audioList);
+		model.addAttribute("likes",likes);
+		model.addAttribute("follows",follows);
+		return "main/audiolistAdd";
+	}
+	////////아티스트명으로 곡찾기
 	@RequestMapping("/searchAudioByArtist.do")
 	public String searchAudioByArtist(Model model, HttpServletRequest req) {
 		//검색페이지에 출력할 오디오게시글 불러옴
 		String searchWord = req.getParameter("searchWord");
-		ArrayList<AudioBoardDTO> audioByNameList = sqlSession.getMapper(SearchImpl.class).searchAudioByArtistM(searchWord);
+		
+		ArrayList<AudioBoardDTO> audioByNameList = sqlSession.getMapper(SearchImpl.class).search("artistname",searchWord,1,8);
+		
+		
 		//아티스트명으로 검색5개
-		HashMap popMap2 = cal.calcuPop(audioByNameList);
-		//인기순정렬 맵으로넣음
-		model.addAttribute("popMap2", popMap2);
-		HashMap<Integer, Integer> commentC2 = cal.cCount(audioByNameList,sqlSession);
-		model.addAttribute("commentC2", commentC2);
 		//댓글수 카운트해서 넣음
 		ArrayList<LikeDTO> likes2 = loadLike(audioByNameList);
 		ArrayList<FollowDTO> follows2 = loadFollow(audioByNameList);
 		model.addAttribute("likes2",likes2);
 		model.addAttribute("follows2",follows2);
-		
+		model.addAttribute("audioByNameList",audioByNameList);
 		model.addAttribute("searchWord",searchWord);
 		model.addAttribute("searchType","byartist");
 		return "main/search";
 		
 	}
-	@RequestMapping("/searchArtist.do")
-	public String searchArtist(Model model, HttpServletRequest req) {
+	@RequestMapping("/searchAudioByArtistLoad.do")
+	public String searchAudioByArtistLoad(Model model, HttpServletRequest req) {
 		//검색페이지에 출력할 오디오게시글 불러옴
 		String searchWord = req.getParameter("searchWord");
-		ArrayList<AudioBoardDTO> findmember = sqlSession.getMapper(SearchImpl.class).searchAudioByArtist(searchWord);
-		HashSet<String> ids = new HashSet<String>();
-		HashMap<MemberDTO,Integer> memberMap = new HashMap<MemberDTO,Integer>();
-		for(int i=0;i<findmember.size();i++) {
-			ids.add(findmember.get(i).getId());
+		String searchType = req.getParameter("searchType");
+		int loadedCount = Integer.parseInt(req.getParameter("loadlength"));
+		int totalAudio = sqlSession.getMapper(SearchImpl.class).searchTotal(searchType, searchWord);
+		
+		ArrayList<AudioBoardDTO> audioByNameList = new ArrayList<AudioBoardDTO>();
+		if(totalAudio!=loadedCount) {
+			audioByNameList = sqlSession.getMapper(SearchImpl.class).search("artistname",searchWord,loadedCount+1,loadedCount+8);
 		}
-		Iterator<String> it = ids.iterator();
-		while(it.hasNext()) {
-			String id1 = it.next();
-			ArrayList<MemberDTO> memberByArtist = sqlSession.getMapper(SearchImpl.class).searchArtistM(id1);
-		for(int i=0;i<memberByArtist.size();i++) {
-			String id2 = memberByArtist.get(i).getId();
-			int countF = sqlSession.selectOne("followerCount",id2);
-			memberMap.put( memberByArtist.get(i),countF);
+		
+		//아티스트명으로 검색5개
+		//댓글수 카운트해서 넣음
+		model.addAttribute("audiolist",audioByNameList);
+		ArrayList<LikeDTO> likes2 = loadLike(audioByNameList);
+		ArrayList<FollowDTO> follows2 = loadFollow(audioByNameList);
+		model.addAttribute("likes",likes2);
+		model.addAttribute("follows",follows2);
+		return "main/audiolistAdd";
+		
+	}
+	////////아티스트 찾기
+	@RequestMapping("/searchArtist.do")
+	public String searchArtist(Model model, HttpServletRequest req) {
+		HashMap<String, HashSet<String>> returnMap = new HashMap<String, HashSet<String>>();
+		HashMap<MemberDTO,Integer> memberMap = new HashMap<MemberDTO, Integer>();
+		//검색페이지에 출력할 오디오게시글 불러옴
+		String searchWord = req.getParameter("searchWord");
+		ArrayList<MemberDTO> artists = sqlSession.getMapper(SearchImpl.class).searchArtist(searchWord);
+		for(MemberDTO dto : artists) {
+			String followingId = dto.getId();
+			HashSet<String> followerSet = new HashSet<String>();
+			ArrayList<FollowDTO> follows = sqlSession.getMapper(FollowImpl.class).followers(followingId);
+			for(FollowDTO fdto : follows) {
+				followerSet.add(fdto.getUser_id());
+			}
+			returnMap.put(followingId, followerSet);
+			memberMap.put(dto, follows.size());
+		}
+		ArrayList<MemberDTO> arrayByF = cal.arrayByFollow(memberMap);
+		if(arrayByF.size()>8) {
+		for(int i=arrayByF.size()-1;i>7;i--) {
+			arrayByF.remove(i);
 		}}
-		ArrayList<MemberDTO> artists=cal.arrayByFollow(memberMap);
-		ArrayList<FollowDTO> follows4 = loadFollow(findmember);
-		model.addAttribute("follows4",follows4);
-		model.addAttribute("artists",artists);
-		model.addAttribute("followset",memberMap);
+		model.addAttribute("followMap",returnMap);
+		model.addAttribute("artists",arrayByF);
 		model.addAttribute("searchWord",searchWord);
 		model.addAttribute("searchType","artist");
+		model.addAttribute("memberMap",memberMap);
 		return "main/search";
+		
+	}
+	@RequestMapping("/searchArtistLoad.do")
+	public String searchArtistLoad(Model model, HttpServletRequest req) {
+		HashMap<String, HashSet<String>> returnMap = new HashMap<String, HashSet<String>>();
+		HashMap<MemberDTO,Integer> memberMap = new HashMap<MemberDTO, Integer>();
+		//검색페이지에 출력할 오디오게시글 불러옴
+		String searchWord = req.getParameter("searchWord");
+		ArrayList<MemberDTO> artists = sqlSession.getMapper(SearchImpl.class).searchArtist(searchWord);
+		for(MemberDTO dto : artists) {
+			String followingId = dto.getId();
+			HashSet<String> followerSet = new HashSet<String>();
+			ArrayList<FollowDTO> follows = sqlSession.getMapper(FollowImpl.class).followers(followingId);
+			for(FollowDTO fdto : follows) {
+				followerSet.add(fdto.getUser_id());
+			}
+			returnMap.put(followingId, followerSet);
+			memberMap.put(dto, follows.size());
+		}
+		ArrayList<MemberDTO> arrayByF = cal.arrayByFollow(memberMap);
+		int loadedCount = Integer.parseInt(req.getParameter("loadlength"));
+		int totalMember = artists.size();
+		if(loadedCount<totalMember) {
+			for(int i=loadedCount-1;i>=0;i--) {
+				arrayByF.remove(i);
+			}
+		}else {
+			arrayByF.clear();
+		}
+		model.addAttribute("followMap",returnMap);
+		model.addAttribute("artists",arrayByF);
+		model.addAttribute("memberMap",memberMap);
+		return "main/artistAdd";
 		
 	}
 	@RequestMapping("/searchContents.do")
 	public String searchContents(Model model, HttpServletRequest req) {
 		//검색페이지에 출력할 오디오게시글 불러옴
 		String searchWord = req.getParameter("searchWord");
-		ArrayList<AudioBoardDTO> byContents = sqlSession.getMapper(SearchImpl.class).searchContentM(searchWord);
+		ArrayList<AudioBoardDTO> byContents = sqlSession.getMapper(SearchImpl.class).search("contents",searchWord,1,8);;
 		for(AudioBoardDTO audios : byContents) {
 			String contents = cal.makeSearchText(audios.getContents(),searchWord);
 			audios.setContents(contents);
 		}
 		
-		HashMap<Integer,AudioBoardDTO> popMap3 = cal.calcuPop(byContents);
-		//인기순정렬 맵으로넣음
-		model.addAttribute("popMap3", popMap3);
-		HashMap<Integer, Integer> commentC3 = cal.cCount(byContents,sqlSession);
-		model.addAttribute("commentC3", commentC3);
+		model.addAttribute("popMap3", byContents);
 		//댓글수 카운트해서 넣음
 		ArrayList<LikeDTO> likes3 = loadLike(byContents);
 		ArrayList<FollowDTO> follows3 = loadFollow(byContents);
@@ -215,7 +329,54 @@ public class SearchController {
 		return "main/search";
 		
 	}
-	
+	@RequestMapping("/searchContentsLoad.do")
+	public String searchContentsLoad(Model model, HttpServletRequest req) {
+		String searchWord = req.getParameter("searchWord");
+		String searchType = req.getParameter("searchType");
+		int loadedCount = Integer.parseInt(req.getParameter("loadlength"));
+		int totalAudio = sqlSession.getMapper(SearchImpl.class).searchTotal(searchType, searchWord);
+		System.out.println(loadedCount);
+		System.out.println(totalAudio);
+		System.out.println(searchType);
+		ArrayList<AudioBoardDTO> byContents = new ArrayList<AudioBoardDTO>();
+		if(totalAudio!=loadedCount) {
+			byContents = sqlSession.getMapper(SearchImpl.class).search(searchType,searchWord,loadedCount+1,loadedCount+8);
+		}
+		
+		model.addAttribute("audiolist", byContents);
+		//댓글수 카운트해서 넣음
+		ArrayList<LikeDTO> likes3 = loadLike(byContents);
+		ArrayList<FollowDTO> follows3 = loadFollow(byContents);
+		model.addAttribute("likes",likes3);
+		model.addAttribute("follows",follows3);
+		model.addAttribute("searchWord",searchWord);
+		model.addAttribute("searchType","contents");
+		return "main/audiolistContentsAdd";
+		
+	}
+	@RequestMapping("/loadsearchCount.do")
+	@ResponseBody 
+	public Map<String, String> countLoad(Model model, HttpServletRequest req, Principal principal, HttpSession session) {
+		int loaded = Integer.parseInt(req.getParameter("loadlength"));
+		String searchWord = req.getParameter("searchWord");
+		String searchType = req.getParameter("searchType");
+		int totalAudio = 0;
+		
+		if(searchType.equals("nickname")) {
+			totalAudio = sqlSession.getMapper(SearchImpl.class).searchArtistTotal(searchWord);	
+			
+		}else {
+		totalAudio = sqlSession.getMapper(SearchImpl.class).searchTotal(searchType, searchWord);
+		
+		}		
+		Map<String, String> map = new HashMap<String, String>();
+		if(loaded==totalAudio) {
+		map.put("nomoreFeed", "이전 게시물이 없습니다.");
+		
+		}
+		return map;
+
+	}
 	public ArrayList<FollowDTO>  loadFollow(ArrayList<AudioBoardDTO> audiolist) {
 		//불러온 오디오 리스트에 있는 게시자 ID만 HashSet으로 만듦
 		HashSet<String> followIds = new HashSet<String>();
@@ -235,7 +396,6 @@ public class SearchController {
 				followlist.add(follow.get(i));
 			}
 		}
-		System.out.println(followlist.size());
 
 		return followlist;
 		

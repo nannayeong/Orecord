@@ -5,20 +5,34 @@
   
 <mapper namespace="impl.SearchImpl">
 	<!-- 곡명으로 검색 -->
-	<select id="searchAudio" parameterType="java.lang.String" resultType="model.AudioBoardDTO">
-		SELECT * FROM audioboard WHERE AUDIOTITLE LIKE '%'||#{0}||'%' ORDER BY REGIDATE DESC
+	<select id="search" resultType="model.AudioBoardDTO">
+	select * from (select a.*,rownum as n from audioboard a where ${param1} LIKE '%'||#{param2}||'%' order by 
+	(((like_count/(select sum(like_count)+1 from audioboard))+(play_count/(select sum(play_count)+1 from audioboard)))*100 ) DESC) 
+	<![CDATA[where n>=${param3}]]> and <![CDATA[n<=${param4}]]> ORDER BY regidate desc
 	</select>
+	
+	<select id="searchTotal" resultType="int" parameterType="String">
+	select count(*) from audioboard where ${param1} LIKE '%'||#{param2}||'%'
+	</select>
+	
 	<select id="searchAudioM" parameterType="java.lang.String" resultType="model.AudioBoardDTO">
 		SELECT * FROM audioboard WHERE AUDIOTITLE LIKE '%'||#{0}||'%' AND <![CDATA[ ROWNUM<=5 ]]> ORDER BY REGIDATE DESC
 	</select>
+	
 	<!-- 아티스트명으로 사람찾기 -->
-	<select id="searchArtist" parameterType="java.lang.String" resultType="model.MemberDTO">
-		SELECT * FROM member WHERE ID=#{0} ORDER BY REGIDATE DESC
+	<select id="searchArtist" resultType="model.MemberDTO">
+	SELECT * from member where NICKNAME LIKE '%'||#{param1}||'%' 
 	</select>
+	<!-- 검색결과 총 갯수 -->
+		<select id="searchArtistTotal" resultType="int">
+	SELECT count(*) FROM member WHERE NICKNAME LIKE '%'||#{param1}||'%' 
+	</select>
+	
 	<select id="searchArtistM" parameterType="java.lang.String" resultType="model.MemberDTO">
-		SELECT * FROM member WHERE ID=#{0} AND <![CDATA[ ROWNUM<=5 ]]> ORDER BY REGIDATE DESC
+		SELECT * FROM member WHERE nickname LIKE '%'||#{param1}||'%' AND <![CDATA[ ROWNUM<=5 ]]>
 	</select>
-	<!-- 아티스트명으로 곡찾기 -->
+	
+<!-- 아티스트명으로 곡찾기 -->
 	<select id="searchAudioByArtist" parameterType="java.lang.String" resultType="model.AudioBoardDTO">
 		SELECT * FROM audioboard WHERE ARTISTNAME LIKE '%'||#{0}||'%' ORDER BY REGIDATE DESC
 	</select>
@@ -32,4 +46,5 @@
 	<select id="searchContentM" parameterType="java.lang.String" resultType="model.AudioBoardDTO">
 		SELECT * FROM audioboard WHERE CONTENTS LIKE '%'||#{0}||'%' AND <![CDATA[ ROWNUM<=5 ]]> ORDER BY REGIDATE DESC
 	</select>
+
 </mapper> 

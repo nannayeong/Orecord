@@ -119,7 +119,7 @@ border:1px solid #f2f2f2
 								<img src="${audio.imagename }" alt="" style="width:25px;"/> 
 								${status.count }. ${audio.audiotitle } - ${audio.artistname }
 							</td>
-							<td style="padding-left:10em;padding-right:0.7em">
+							<td style="padding-right:0.7em;text-align:right">
 								<!-- 플레이버튼 -->
 								<span id="play" onclick="clickAudio('${audio.audiofilename}','${album.albumName }');" class="iconPoint"> 
                    					<i class="fas fa-play"></i>
@@ -168,9 +168,10 @@ border:1px solid #f2f2f2
 								</c:if>
 								
                    				<!-- like -->
-                   				<span id="heart" class="iconPoint" onclick="logincheck(this);">
-                   					<i class="fas fa-heart"></i>
+                   				<span id="heart" class="iconPoint" onclick="likeFunc(${audio.audio_idx});">
+                   					<i id="likeIcon" class="fas fa-heart ${audio.like eq 'true' ? 'on' : '' }"></i>
                    				</span>	
+                   				<span id="likecount">${audio.like_count }</span>
 							</td>
 						</tr>
 						</c:if>
