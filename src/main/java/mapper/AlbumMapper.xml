@@ -33,7 +33,10 @@
 	</select>
 	
 	<update id="modifyAlbum">
-		 update album set albumName=#{param4}, albumJacket=#{param3} where album_idx=#{param2} and id=#{param1}
+		update album set albumName=#{param4}, albumJacket=#{param3} where album_idx=#{param2} and id=#{param1}
+	</update>
+	<update id="modifyAlbumNoJacket">
+		update album set albumName=#{param3} where album_idx=#{param2} and id=#{param1}
 	</update>
 
 </mapper> 

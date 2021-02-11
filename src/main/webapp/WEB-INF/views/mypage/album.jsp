@@ -18,6 +18,31 @@
 <!-- layout js-->
 <script src="${pageContext.request.contextPath}/resources/js/layout.js"></script>
 <script>
+
+function deleteAlbumFunc(aidx){
+	if("${pageContext.request.userPrincipal.name}"==""){
+		alert('로그인 후 이용해주세요');
+		location.href="../member/login.do"
+	}
+	else{
+		if(confirm('삭제하시겠습니까?')){
+			$.ajax({
+			     url : "../deleteAlbum.do",
+			     type : "get",
+			     contentType : "text/html;charset:utf-8",
+			     data : {album_idx:aidx}, 
+			     dataType : "json",
+			     success : function sucFunc(resData) {
+			    	 alert(resData.result);
+					 if(resData.result==1){
+						alert("정상적으로 삭제되었습니다");
+						location.href="./album";
+					 }
+			     }    
+			});
+		}
+	}
+}
 function clickAudio(audioFileName,playerName){
 	$('#'+playerName).attr('src',audioFileName).attr('autoplay',true);
 }

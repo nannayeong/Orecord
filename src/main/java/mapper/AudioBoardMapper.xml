@@ -39,4 +39,8 @@
 	<select id="myAudioCount" resultType="int">
 		select count(*) from audioboard where id=#{param1}
 	</select>
+	
+	<delete id="recordDelete">
+		delete from audioboard where id=#{param1} and audio_idx=#{param2}
+	</delete>
 </mapper> 

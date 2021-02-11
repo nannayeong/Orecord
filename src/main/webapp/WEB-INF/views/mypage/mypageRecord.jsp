@@ -11,11 +11,11 @@ background-color: #f2f2f2;cursor:pointer
 </style>
 <table style="width:95%;margin:auto;">
 <c:choose>
-<c:when test="${empty audioList and nowPage eq 1}">
+<c:when test="${empty audioList and nowPage eq null}">
 	<tr>
 		<td style="text-align:center;border:2px #f2f2f2 solid;height:30em">
 			<div>등록된 레코드가 없습니다.</div><br />
-			<c:if test="${pageContext.request.userPrincipal.name ne user_id}">
+			<c:if test="${pageContext.request.userPrincipal.name eq user_id}">
 			<div><button type="button" onclick="location.href='../upload.do'" class="btn btn-outline-dark">업로드하기</button></div>
 			</c:if>
 		</td>
@@ -39,6 +39,22 @@ background-color: #f2f2f2;cursor:pointer
 				<div>${audio.regidate }</div>
 				<div>${audio.category }</div>
 			</td>
+			<c:if test="${pageContext.request.userPrincipal.name eq user_id }">
+			<td style="padding-right:1em">
+				<div class="dropdown">
+				  <span data-toggle="dropdown" style="cursor:pointer">
+				    <i class="fas fa-bars"></i>
+				  </span>
+				  <div class="dropdown-menu">
+				    <a class="dropdown-item" href="javascript:recordDeleteFunc(${audio.audio_idx });">삭제하기</a>
+				    <a class="dropdown-item" href="#">수정하기</a>
+				    <c:if test="${audio.party eq 1}">
+				    <a class="dropdown-item" href="#">협업신청리스트</a>
+				    </c:if>
+				  </div>
+				</div>
+			</td>
+			</c:if>
 		</tr>
 		<tr>
 			<td colspan="2">
@@ -95,7 +111,9 @@ background-color: #f2f2f2;cursor:pointer
 				  </div>
 				</div>
 				</c:if>
+				<c:if test="${pageContext.request.userPrincipal.name ne user_id && audio.party eq 1}">
 				<button type="button" class="btn btn-secondary btn-sm" onclick="coOp('${b.audio_idx}')">참여</button>
+				</c:if>
 			</td>
 			<td style="text-align:center;color:#423e3e;font-size:14px">
 				재생 : ${audio.play_count} &nbsp&nbsp

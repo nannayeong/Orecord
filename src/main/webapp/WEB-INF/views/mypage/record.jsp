@@ -18,6 +18,29 @@
 <!-- layout js-->
 <script src="${pageContext.request.contextPath}/resources/js/layout.js"></script>
 <script>
+function recordDeleteFunc(aidx){
+	if("${pageContext.request.userPrincipal.name}"==""){
+		alert('로그인 후 이용해주세요');
+		location.href="../member/login.do"
+	}
+	else{
+		if(confirm('삭제하시겠습니까?')){
+			$.ajax({
+			     url : "../recordDelete.do",
+			     type : "get",
+			     contentType : "text/html;charset:utf-8",
+			     data : {audio_idx:aidx},
+			     dataType : "html",
+			     success : function sucFunc(resData) {
+			    	 if(resData.result==1){
+							alert("정상적으로 삭제되었습니다");
+							location.href="./record";
+					 }
+			     }    
+			});
+		}
+	}
+}
 function logincheck(bt){
 	if("${pageContext.request.userPrincipal.name}"==""){
 		alert('로그인 후 이용해주세요');

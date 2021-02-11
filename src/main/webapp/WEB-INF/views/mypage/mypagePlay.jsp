@@ -14,7 +14,7 @@ border:1px solid #f2f2f2;
 <!-- 앨범 -->
 <table style="width:80%;margin:auto;">
 <c:choose>
-<c:when test="${empty plSet and nowPage eq 1}">
+<c:when test="${empty plSet and nowPage eq null}">
 	<td style="text-align:center;border:2px #f2f2f2 solid;height:30em">
 		<div>등록된 플레이리스트가 없습니다.</div><br />
 		<c:if test="${pageContext.request.userPrincipal.name ne user_id}">
@@ -28,7 +28,7 @@ border:1px solid #f2f2f2;
 		<td style="padding-top:1em"> 
 			<div>
 				<span style="font-size:30px">${plName}</span>
-				<c:if test="${pageContext.request.userPrincipal.name ne user_id}">
+				<c:if test="${pageContext.request.userPrincipal.name eq user_id}">
 				
 				<button type="button" onclick="">리스트삭제</button>
 				</c:if>

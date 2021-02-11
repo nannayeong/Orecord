@@ -10,14 +10,13 @@ background-color: #f2f2f2;cursor:pointer
 border:1px solid #f2f2f2
 }
 </style>
-
 <!-- 앨범 -->
 <table style="width:95%;margin:auto;">
 <c:choose>
-<c:when test="${empty albumList and nowPage eq 1 }">
+<c:when test="${empty albumList and nowPage eq null}">
 	<td style="text-align:center;border:2px #f2f2f2 solid;height:30em">
 		<div>등록된 앨범이 없습니다.</div><br />
-		<c:if test="${pageContext.request.userPrincipal.name ne user_id}">
+		<c:if test="${pageContext.request.userPrincipal.name eq user_id}">
 		<div><button type="button" onclick="location.href='../upload.do'" class="btn btn-outline-dark">업로드하기</button></div>
 		</c:if>
 	</td>
@@ -31,7 +30,7 @@ border:1px solid #f2f2f2
 		<td style="padding-top:1em"> 
 			<div>
 				<span style="font-size:30px">${album.albumName }</span>
-				<c:if test="${pageContext.request.userPrincipal.name ne user_id}">
+				<c:if test="${pageContext.request.userPrincipal.name eq user_id}">
 				<button type="button" data-toggle="modal" data-target="#albumEdit${album.album_idx }">앨범수정</button>
 				<!-- 수정 모달 -->
 				<div class="modal" id="albumEdit${album.album_idx }">

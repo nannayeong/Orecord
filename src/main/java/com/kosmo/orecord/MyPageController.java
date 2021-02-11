@@ -314,8 +314,6 @@ public class MyPageController {
 		int start = (nowPage-1)*pageSize+1;
 		int end = nowPage * pageSize;
 
-		System.out.println("nowPage"+nowPage);
-		
 		/*로그인유저의 플레이리스트 가져오기*/
 		String login_id = null;
 		ArrayList<PlayListDTO> plList = null;
@@ -340,7 +338,6 @@ public class MyPageController {
 		if(albumList.size()==0) {
 			pageCheck = false;
 		}
-		System.out.println("pageCheck"+pageCheck);
 		
 		/*앨범*/
 		for(AlbumDTO albumDTO : albumList) {
@@ -372,7 +369,6 @@ public class MyPageController {
 			/*음원에 대한 로그인 유저의 좋아요*/
 			if(login_id!=null) {
 				int likeResult = sqlSession.getMapper(LikeImpl.class).myLike(audioDTO.getAudio_idx(), login_id);
-				System.out.println("likeResult"+likeResult);
 				
 				if(likeResult==1) {
 					audioDTO.setLike(true);
@@ -382,7 +378,8 @@ public class MyPageController {
 				}
 			}
 		}
-
+		
+		model.addAttribute("user_id", user_id);
 		model.addAttribute("plList", plList);
 		model.addAttribute("albumList", albumList);
 		model.addAttribute("audioList", audioList);
@@ -453,6 +450,7 @@ public class MyPageController {
 		}
 		
 		/*3.플레이리스트 DTO map에 넣기*/		
+		model.addAttribute("user_id", user_id);
 		model.addAttribute("plSet", plSet);//폴더명
 		model.addAttribute("plList",plList);//전체리스트
 		
@@ -532,7 +530,8 @@ public class MyPageController {
 				}
 			}	
 		}
-
+		
+		model.addAttribute("user_id", user_id);
 		model.addAttribute("plList", plList);
 		model.addAttribute("audioList", audioList);
 		
