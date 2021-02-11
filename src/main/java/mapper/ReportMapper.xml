@@ -5,10 +5,23 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 	
 <mapper namespace="impl.ReportImpl">
+	
+	<select id="listView" resultType="model.ReportDTO">
+		select * from report ORDER BY r_idx DESC
+	</select>
+
+	<select id="rpView" resultType="model.ReportDTO">
+		select * from report WHERE s_id=#{s_id}
+	</select>
 
 	<!-- 신고하기 -->
-	<insert id="reportInfo" >
-		insert into report (r_idx, s_id, r_id, kind, reason)
-			values (seq_report.nextval, #{1}, #{2}, #{3}, #{4})
+	<insert id="ReportInfo" >
+		insert into report (r_idx, s_id, r_id, kind, reason, regidate)
+			values (seq_report.nextval, #{s_id}, #{r_id}, #{kind}, #{reason}, sysdate)
 	</insert>
+	
+	<!-- 신고글 수정하기 -->
+	<update id="ReportModify">
+		UPDATE report SET r_id=#{0}, kind=#{1}, reason=#{2} WHERE r_idx=#{3}
+	</update>
 </mapper>

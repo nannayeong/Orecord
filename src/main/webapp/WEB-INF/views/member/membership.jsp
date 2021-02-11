@@ -317,7 +317,7 @@ $(function(){
 							style="margin-bottom: 30px; height: 25px;">
 							<select name="select_email" id="select_email"
 								class="form-control"
-								style="margin-top: 23px; background-color: black;"
+								style="margin-top: 23px; background-color: white;"
 								onchange="email(this.value);">
 								<option value="no">선택해주세요</option>
 								<option value="직접입력">직접입력</option>
@@ -396,11 +396,7 @@ $(function(){
 			<!-- 오른쪽 컨텐츠 -->
 			<div class="right-content-back">
 				<div class="right-content">
-					첫하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />
-					하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />
-					하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />
-					하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />
-					하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />막하이<br />
+					
 				</div>
 			</div>
 			<!-- 오른쪽 컨텐츠종료 -->

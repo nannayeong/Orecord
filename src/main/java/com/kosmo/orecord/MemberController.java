@@ -21,6 +21,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -62,6 +63,15 @@ public class MemberController {
 		
 		return "redirect:"+prv;
 	}
+	
+	/* 카카오로그인 테스트 */
+	@RequestMapping("/member/login")
+    public String kakao(@RequestParam(value = "code", required = false) String code) throws Exception{
+        System.out.println("#########" + code);
+        return "testPage";
+    }
+	
+	
 	
 	/*로그아웃@*/
 	@RequestMapping(value = "/logout.do", method = RequestMethod.GET) 

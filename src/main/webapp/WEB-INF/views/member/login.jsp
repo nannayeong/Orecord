@@ -48,6 +48,73 @@ if(cookies!=null){
 <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
 
 <script type="text/javascript">
+$(document).ready(function() {
+    var userInputId = getCookie("userInputId");
+    var setCookieYN = getCookie("setCookieYN");
+    
+    if(setCookieYN == 'Y') {
+        $("#idSaveCheck").prop("checked", true);
+    } else {
+        $("#idSaveCheck").prop("checked", false);
+    }
+    
+    $("#loginid").val(userInputId); 
+    
+    //로그인 버튼 클릭
+    $('#loginbtn').click(function() {
+        if($("#idSaveCheck").is(":checked")){ 
+            var userInputId = $("#loginid").val();
+            setCookie("userInputId", userInputId, 60); 
+            setCookie("setCookieYN", "Y", 60);
+        } else {
+            deleteCookie("userInputId");
+            deleteCookie("setCookieYN");
+        }
+        
+        document.fform.submit();
+    });
+});
+
+//쿠키값 Set
+function setCookie(cookieName, value, exdays){
+    var exdate = new Date();
+    exdate.setDate(exdate.getDate() + exdays);
+    var cookieValue = escape(value) + ((exdays==null) ? "" : "; expires=" + 
+    exdate.toGMTString());
+    document.cookie = cookieName + "=" + cookieValue;
+}
+
+//쿠키값 Delete
+function deleteCookie(cookieName){
+    var expireDate = new Date();
+    expireDate.setDate(expireDate.getDate() - 1);
+    document.cookie = cookieName + "= " + "; expires=" + expireDate.toGMTString();
+}
+
+//쿠키값 가져오기
+function getCookie(cookie_name) {
+    var x, y;
+    var val = document.cookie.split(';');
+    
+    for (var i = 0; i < val.length; i++) {
+        x = val[i].substr(0, val[i].indexOf('='));
+        y = val[i].substr(val[i].indexOf('=') + 1);
+        x = x.replace(/^\s+|\s+$/g, ''); // 앞과 뒤의 공백 제거하기
+        
+        if (x == cookie_name) {
+          return unescape(y); // unescape로 디코딩 후 값 리턴
+        }
+    }
+}
+</script>
+
+
+
+
+
+
+
+<script type="text/javascript">
 		
 		
 GET /oauth/authorize?client_id={e1dea648a00c2082d1e6c90ec387bf1e}&redirect_uri={http://localhost:8282, http://localhost:8080, http://localhost:9999}&response_type=code HTTP/1.1
@@ -119,23 +186,27 @@ https://kauth.kakao.com/oauth/authorize?response_type=code&client_id={e1dea648a0
 					
 					<div class="links">
 						<div class="kakaotalk">
-							<a id="kakao-login-btn" href="javascript:loginWithKakao()">
+<!-- 							<a id="kakao-login-btn" href="javascript:loginWithKakao()"> -->
+							<a id="kakao-login-btn" href="https://kauth.kakao.com/oauth/authorize
+							    ?client_id=5de051009d4dd68062be58fd9608a661
+							    &redirect_uri=http://localhost:8282/login
+							    &response_type=code">
 	 								<img src="//k.kakaocdn.net/14/dn/btqCn0WEmI3/nijroPfbpCa4at5EIsjyf0/o.jpg" width="222"/></a>
 							<script type='text/javascript'>
 							   <![CDATA[
 							   // 사용할 앱의 JavaScript 키를 설정해 주세요.
-							   Kakao.init('5de051009d4dd68062be58fd9608a661');
+							   Kakao.init('	5de051009d4dd68062be58fd9608a661');
 							   
 							   // 카카오 로그인 버튼을 생성합니다.
 							   Kakao.Auth.createLoginButton({
-							     container: '#kakao-login-btn',
-							     success: function(authObj) {
-							    alert(JSON.stringify(authObj));
-							     },
-							     fail: function(err) {
-							     alert(JSON.stringify(err));
-							     }
-							   });
+							    	container: '#kakao-login-btn',
+							    	success: function(authObj) {
+							    	alert(JSON.stringify(authObj));
+							    },
+						     	fail: function(err) {
+						     	alert(JSON.stringify(err));
+						     	}
+						    });
 							    
 							  </script>
 						</div>

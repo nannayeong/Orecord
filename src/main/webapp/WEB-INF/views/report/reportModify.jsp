@@ -73,21 +73,21 @@ function writeValidate(f)
 		<tr>
 			<th class="text-center" style="vertical-align:middle;">신고할사람 아이디</th>
 			<td>
-				<input type="text" class="form-control" style="width:100px;" name="r_id" value="" />
+				<input type="text" class="form-control" style="width:100px;" name="r_id" value="${rpView.r_id }" />
 			</td>
 		</tr>
 		<tr>
 			<th class="text-center" style="vertical-align:middle;">신고 사유</th>
 			<td>
-            <input type="radio" name="kind" value="욕설" id="rad_1" onclick="choiceOne(this.value);" />
+            <input type="radio" name="kind" value="${rpView.kind }" id="rad_1" />
             <label for="rad_1">욕설</label>
-            <input type="radio" name="kind" value="음란물" id="rad_2" onclick="choiceOne(this.value);" />
+            <input type="radio" name="kind" value="${rpView.kind }" id="rad_2" />
             <label for="rad_2">음란물</label>
-            <input type="radio" name="kind" value="불법/사기" id="rad_3" onclick="choiceOne(this.value);" />
+            <input type="radio" name="kind" value="${rpView.kind }" id="rad_3" />
             <label for="rad_3">불법/사기</label>
-            <input type="radio" name="kind" value="표절" id="rad_4" onclick="choiceOne(this.value);" />
+            <input type="radio" name="kind" value="${rpView.kind }" id="rad_4" />
             <label for="rad_4">표절</label>
-            <input type="radio" name="kind" value="기타" id="rad_5" onclick="choiceOne(this.value);" />
+            <input type="radio" name="kind" value="${rpView.kind }" id="rad_5" />
             <label for="rad_5">기타</label>
 			</td>
 		</tr>
@@ -95,7 +95,7 @@ function writeValidate(f)
 		<tr>
 			<th class="text-center" style="vertical-align:middle;">기타</th>
 			<td>
-				<textarea rows="10" class="form-control" name="reason"></textarea>
+				<textarea rows="10" class="form-control" name="reason" >${rpView.reason }</textarea>
 			</td>
 		</tr>	
 	</tbody>
