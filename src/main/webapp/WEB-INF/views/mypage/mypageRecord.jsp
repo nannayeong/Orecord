@@ -1,17 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<!-- Jquery, BootStrap -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
 <style>
 #list{
 border:2px #f2f2f2 solid
@@ -20,11 +9,9 @@ border:2px #f2f2f2 solid
 background-color: #f2f2f2;cursor:pointer
 }
 </style>
-</head>
-<body>
-<table style="width:95%;margin:auto;margin-bottom:1em;">
+<table style="width:95%;margin:auto;">
 <c:choose>
-<c:when test="${empty audioList }">
+<c:when test="${empty audioList and nowPage eq 1}">
 	<tr>
 		<td style="text-align:center;border:2px #f2f2f2 solid;height:30em">
 			<div>등록된 레코드가 없습니다.</div><br />
@@ -36,7 +23,7 @@ background-color: #f2f2f2;cursor:pointer
 </c:when>
 <c:otherwise>
 <c:forEach items="${audioList }" var="audio" varStatus="status">
-	<table style="width:95%;border:2px #f2f2f2 solid;margin:auto;margin-bottom:1em; class="pcount">
+	<table style="width:95%;border:2px #f2f2f2 solid;margin:auto;margin-bottom:1em;">
 		<tr>
 			<td rowspan="5" style="width:7em;padding-left:1em;padding-right:1em;padding-top:1.5em;vertical-align:top">
 				<img src="${audio.imagename }" alt="" style="width:6em"/>
@@ -127,6 +114,3 @@ background-color: #f2f2f2;cursor:pointer
 </c:otherwise> 
 </c:choose>
 </table>
-
-</body>
-</html>

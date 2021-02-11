@@ -12,7 +12,7 @@
 	<select id="albumListPaging" resultType="model.AlbumDTO">
 		select * from 
 		(select tb.*, rownum rnum from 
-		(select * from album where id=#{param1})tb) where rnum between #{param2} and #{param3}
+		(select * from album where id=#{param1} order by album_idx desc)tb) where rnum between #{param2} and #{param3}
 	</select>
 	
 	<insert id="addAlbum">

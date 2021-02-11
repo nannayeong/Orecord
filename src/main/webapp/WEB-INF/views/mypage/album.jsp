@@ -140,7 +140,29 @@ function likeFunc(a){
 		}
 	}
 }
+
 $(function(){
+	/* 페이징 */
+	var nowP = 1;
+	$(window).scroll(function(){
+		var scrollHeight = $(document).height();
+		var scrollPosition = $(window).height() + $(window).scrollTop();		
+		if(scrollPosition > scrollHeight -1){
+			nowP = nowP + 1;
+			$.ajax({
+			     url : "../mypageAlbum.do",
+			     type : "get",
+			     contentType : "text/html;charset:utf-8",
+			     data : {user_id:"${user_id}", 
+			    	 	nowPage:nowP},
+			     dataType : "html",
+			     success : function sucFunc(resData) {
+			    	 $('#albumList').append(resData);
+			     }    
+			});
+		}
+	});
+	
 	$('#follow').mouseenter(function(){
 		if($('#follow').html()=='팔로워'){
 			$('#follow').html('언팔로우');

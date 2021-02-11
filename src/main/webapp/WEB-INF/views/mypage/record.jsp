@@ -148,9 +148,13 @@ function likeFunc(a){
 }
 
 $(function(){
+	
+	/* 페이징 */
 	var nowP = 1;
 	$(window).scroll(function(){
-		if($(window).scrollTop() == ($(document).height() - $(window).height())){
+		var scrollHeight = $(document).height();
+		var scrollPosition = $(window).height() + $(window).scrollTop();		
+		if(scrollPosition > scrollHeight -1){
 			nowP = nowP + 1;
 			$.ajax({
 			     url : "../mypageRecord.do",
@@ -160,12 +164,7 @@ $(function(){
 			    	 	nowPage:nowP},
 			     dataType : "html",
 			     success : function sucFunc(resData) {
-			    	 if(resData.pageCheck=='true'){
-			    	 	$('#albumList').append(resData);
-			    	 }
-			    	 else{
-			    		 alert("더이상없음!");
-			    	 }
+			    	 $('#albumList').append(resData);
 			     }    
 			});
 		}
