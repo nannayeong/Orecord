@@ -496,7 +496,25 @@ public class MyPageController {
 		String path = req.getContextPath();
 		String user_id = req.getParameter("user_id");
 		
-		ArrayList<AudioBoardDTO> audioList = sqlSession.getMapper(AudioBoardImpl.class).audioList(user_id);	
+		/*페이징*/
+		//1. 나의 게시글 토탈카운트
+		int audioTotalCount = sqlSession.getMapper(AudioBoardImpl.class).myAudioCount(user_id);
+		
+		int pageSize = 10;
+		
+		int nowPage = Integer.parseInt(req.getParameter("nowPage"));
+		int start = (nowPage-1)*pageSize+1;
+		int end = nowPage * pageSize;
+
+		System.out.println("page"+nowPage);
+		
+		ArrayList<AudioBoardDTO> audioList = sqlSession.getMapper(AudioBoardImpl.class).audioListPaging(user_id, start, end);	
+		
+		boolean pageCheck = true;
+		if(audioList.size()==0) {
+			pageCheck = false;
+		}
+		
 		
 		/*로그인유저의 플레이리스트 가져오기*/
 		String login_id = null;
@@ -533,9 +551,7 @@ public class MyPageController {
 			int commentCount = sqlSession.getMapper(McommentImpl.class).audioCommentCount(audioDTO.getAudio_idx());
 			
 			audioDTO.setCommentCount(commentCount);
-			
-			System.out.println("좋아요:"+audioDTO.getLike_count());
-			
+
 			/*음원에 대한 로그인 유저의 좋아요*/
 			if(login_id!=null) {
 				int likeResult = sqlSession.getMapper(LikeImpl.class).myLike(audioDTO.getAudio_idx(), login_id);
@@ -549,6 +565,7 @@ public class MyPageController {
 				}
 			}	
 		}
+		model.addAttribute("pageCheck", pageCheck);
 		model.addAttribute("plList", plList);
 		model.addAttribute("audioList", audioList);
 		

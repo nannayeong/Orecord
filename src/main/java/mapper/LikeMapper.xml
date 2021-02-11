@@ -21,7 +21,7 @@
 	</update>
 
 	<select id="countlike" parameterType="int" resultType="int">
-	SELECT COUNT(*) FROM like_board WHERE AUDIO_IDX=#{param1}
+	SELECT like_count FROM audioBoard WHERE AUDIO_IDX=#{param1}
 	</select>
 	
 	<select id="selectLike" resultType="int">

@@ -46,7 +46,7 @@ background-color: #f2f2f2;cursor:pointer
 					<a href="../board/view.do?audio_idx=${audio.audio_idx }">${audio.audiotitle}</a>
 					- <a href="../${audio.id }/record">${audio.artistname}</a>
 				</div>
-				<span style="background-color:red">${audio.party eq 0 ? '' : '협업중'}</span>
+				<span style="background-color:yellow">${audio.party eq 1 ? '협업중' : ''}</span>
 			</td>
 			<td style="text-align:center; color:#423e3e; font-size:14px">
 				<div>${audio.regidate }</div>
@@ -68,7 +68,8 @@ background-color: #f2f2f2;cursor:pointer
 		<tr>
 			<td>
 				<button type="button" class="btn btn-secondary btn-sm" title="좋아요" onclick="likeFunc('${audio.audio_idx}')">
-					<i class="fas fa-heart ${audio.like eq 'true' ? 'on' : '' }" id="likeIcon"></i> &nbsp <span id="likecount">${audio.like_count }</span>
+					<i class="fas fa-heart ${audio.like eq 'true' ? 'on' : '' }" id="likeIcon${audio.audio_idx}"></i> &nbsp 
+					<span id="likecount${audio.audio_idx}">${audio.like_count }</span>
 				</button> 
 				<button type="button" class="btn btn-secondary btn-sm" id="addplaylist" onclick="logincheck(this);" data-toggle="modal" data-target="#play${audio.audio_idx}">
 					플레이리스트

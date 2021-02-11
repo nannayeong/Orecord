@@ -169,9 +169,9 @@ border:1px solid #f2f2f2
 								
                    				<!-- like -->
                    				<span id="heart" class="iconPoint" onclick="likeFunc(${audio.audio_idx});">
-                   					<i id="likeIcon" class="fas fa-heart ${audio.like eq 'true' ? 'on' : '' }"></i>
+                   					<i id="likeIcon${audio.audio_idx}" class="fas fa-heart ${audio.like eq 'true' ? 'on' : '' }"></i>
                    				</span>	
-                   				<span id="likecount">${audio.like_count }</span>
+<%--                    				<span id="likecount${audio.audio_idx}">${audio.like_count }</span> --%>
 							</td>
 						</tr>
 						</c:if>

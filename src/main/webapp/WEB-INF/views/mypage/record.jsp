@@ -114,7 +114,7 @@ function likeFunc(a){
 		location.href="../member/login.do"
 	}
 	else{
-		if($('#likeIcon').hasClass('on')){//이미 좋아요상태일 때
+		if($('#likeIcon'+a).hasClass('on')){//이미 좋아요상태일 때
 			$.ajax({
 			      url : "../nolike.do",
 			      type : "get",
@@ -123,8 +123,8 @@ function likeFunc(a){
 			      dataType : "json",
 			      success : function sucFunc(resData){
 			    	  if(resData.result==1){
-			    	  	$('#likeIcon').removeClass('on');
-			    	  	$('#likecount').html(resData.likecount);
+			    	  	$('#likeIcon'+a).removeClass('on');
+			    	  	$('#likecount'+a).html(resData.likecount);
 			    	  }
 			      }
 			   });
@@ -138,8 +138,8 @@ function likeFunc(a){
 			     dataType : "json",
 			     success : function sucFunc(resData) {
 			    	if(resData.result==1){
-						$('#likeIcon').addClass('on');
-						$('#likecount').html(resData.likecount);
+						$('#likeIcon'+a).addClass('on');
+						$('#likecount'+a).html(resData.likecount);
 			    	}
 			     }    
 			});  
@@ -148,7 +148,30 @@ function likeFunc(a){
 }
 
 $(function(){
+	var nowP = 1;
+	$(window).scroll(function(){
+		if($(window).scrollTop() == ($(document).height() - $(window).height())){
+			nowP = nowP + 1;
+			$.ajax({
+			     url : "../mypageRecord.do",
+			     type : "get",
+			     contentType : "text/html;charset:utf-8",
+			     data : {user_id:"${user_id}", 
+			    	 	nowPage:nowP},
+			     dataType : "html",
+			     success : function sucFunc(resData) {
+			    	 if(resData.pageCheck=='true'){
+			    	 	$('#albumList').append(resData);
+			    	 }
+			    	 else{
+			    		 alert("더이상없음!");
+			    	 }
+			     }    
+			});
+		}
+	});
 	
+	/*팔로우*/
 	$('#follow').mouseenter(function(){
 		if($('#follow').html()=='팔로워'){
 			$('#follow').html('언팔로우');

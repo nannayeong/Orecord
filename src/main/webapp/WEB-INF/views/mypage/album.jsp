@@ -108,7 +108,7 @@ function likeFunc(a){
 		location.href="../member/login.do"
 	}
 	else{
-		if($('#likeIcon').hasClass('on')){//이미 좋아요상태일 때
+		if($('#likeIcon'+a).hasClass('on')){//이미 좋아요상태일 때
 			$.ajax({
 			      url : "../nolike.do",
 			      type : "get",
@@ -117,8 +117,8 @@ function likeFunc(a){
 			      dataType : "json",
 			      success : function sucFunc(resData){
 			    	  if(resData.result==1){
-			    	  	$('#likeIcon').removeClass('on');
-			    	  	$('#likecount').html(resData.likecount);
+			    	  	$('#likeIcon'+a).removeClass('on');
+			    	  	$('#likecount'+a).html(resData.likecount);
 			    	  }
 			      }
 			   });
@@ -132,8 +132,8 @@ function likeFunc(a){
 			     dataType : "json",
 			     success : function sucFunc(resData) {
 			    	if(resData.result==1){
-						$('#likeIcon').addClass('on');
-						$('#likecount').html(resData.likecount);
+						$('#likeIcon'+a).addClass('on');
+						$('#likecount'+a).html(resData.likecount);
 			    	}
 			     }    
 			});  
