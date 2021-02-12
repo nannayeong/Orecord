@@ -18,6 +18,29 @@
 <!-- layout js-->
 <script src="${pageContext.request.contextPath}/resources/js/layout.js"></script>
 <script>
+function plAudioDeleteFunc(pidx, aidx){
+	if("${pageContext.request.userPrincipal.name}"==""){
+		alert('로그인 후 이용해주세요');
+		location.href="../member/login.do"
+	}
+	else{
+		if(confirm('플레이리스트를 삭제하시겠습니까?')){
+			$.ajax({
+			     url : "../plAudioDelete.do",
+			     type : "get",
+			     contentType : "text/html;charset:utf-8",
+			     data : {idx:pidx, audio_idx:aidx}, 
+			     dataType : "json",
+			     success : function sucFunc(resData) {
+					 if(resData.result==1){
+						alert("정상적으로 삭제되었습니다");
+						location.href="./playlist";
+					 }
+			     }    
+			});
+		}
+	}
+}
 function logincheck(bt){
 	if("${pageContext.request.userPrincipal.name}"==""){
 		alert('로그인 후 이용해주세요');
