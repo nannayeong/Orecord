@@ -14,10 +14,18 @@ public class PartyBoardDTO {
 	private int choice; //채택유무
 	private java.sql.Date exdate; //채택전까지 노출기간
 	private java.sql.Date regidate; //참여일
-	private String img;
+	private String img; //프로필사진
+	private int count; //협업신청수 카운트
 	
 	//getter/setter
 	
+	
+	public int getCount() {
+		return count;
+	}
+	public void setCount(int count) {
+		this.count = count;
+	}
 	public String getImg() {
 		return img;
 	}

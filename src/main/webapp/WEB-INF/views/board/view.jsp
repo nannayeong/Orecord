@@ -119,21 +119,40 @@ function deleteRow(comment_idx, audio_idx){
 						<li class="list-group-item active">
 							작성자 <br />
 							<a href="/orecord/${audio.id }/myFollowing" style="color:white;">
-								<span style="color:white;	">${audio.id }</span>
+								<span style="color:white;">${audio.id }</span>
 							</a> <br />
 						</li>
-						<li class="list-group-item">
-							참여자 <br />
-							<c:forEach items="${partyMember }" var="mem">
-							<a href="/orecord/${mem.id}/myFollowing">${mem.id }</a> <br />
-							</c:forEach>
-						</li>
+						<c:choose>
+							<c:when test="${audio.party eq 1 and notChoice.count ne 0 }">
+							<li class="list-group-item">
+								참여자 <br />
+								<c:forEach items="${partyMember }" var="mem">
+								<a href="/orecord/${mem.id}/myFollowing">${mem.id }</a> <br />
+								</c:forEach>
+							</li>
+							</c:when>
+							<c:when test="${notParty.count ne 0 and audio.party eq 1 }">
+								<li class="list-group-item">
+									<p style="color:gray; font-size:10px;">
+										참여자가 없습니다. <br />
+										참여를 해주세요.
+									</p>
+								</li>
+							</c:when>
+							<c:otherwise>
+								<li class="list-group-item">
+									<p style="color:gray; font-size:10px;">
+										협업신청 불가
+									</p>
+								</li>
+							</c:otherwise>
+						</c:choose>
 					</ul>
 				</div>
 			</div>
 		</div>
-		
-		<hr align="center" color="#17A2B8" size="10px">
+		<!-- #17A2B8 -->
+		<hr align="center" width="90%" style="border:outset 1px gray;">
 		<!-- 협업신청, 목록, 수정 버튼 -->
 		<c:choose>
 			<c:when test="${pageContext.request.userPrincipal.name eq audio.id}">
@@ -227,12 +246,12 @@ function deleteRow(comment_idx, audio_idx){
 								value="입력">
 						</div>
 					</div>
-						<hr width="90%" align="center" color="#17A2B8" size="10px">
+						<hr align="center" width="90%" style="border:outset 1px gray;">
 					<!-- 댓글영역 -->
 					<c:forEach items="${comments}" var="row">
 						<input type="hidden" name="comment_idx"
 							value="${row.comment_idx }" />
-						<div class="row" align="center">
+						<div class="row">
 							<div class="col-2" style="padding:23px 0 0 90px;"
 								align="center">
 								<img src="../resources/img/4.png" alt="작성자프로필" width="50"
