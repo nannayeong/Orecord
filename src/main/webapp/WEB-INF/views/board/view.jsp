@@ -14,6 +14,8 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 <!-- layout css -->
 <link href="${pageContext.request.contextPath}/resources/css/layout.css" rel="stylesheet" />
@@ -45,7 +47,7 @@ function deleteRow(comment_idx, audio_idx){
 			<div class="row">
 				<div class="col-8" style="padding: 20px 0 0 40px; font-size: 20px;">
 					<div class="row">
-						<div class="col-2" width="50" style="margin-left: 15px;">
+						<div class="col-2" style="margin-left: 15px;">
 							<img src="../resources/img/play.png" alt="재생버튼" width="70"
 								height="70" style="padding: 5px 0 0 15px;">
 						</div>
@@ -102,13 +104,60 @@ function deleteRow(comment_idx, audio_idx){
 			</div>
 		</div>
 		<br>
-		<div style="padding-left: 50px;">
-			<p>${audio.contents }</p>
+		<!-- 참여자 목록 -->
+		<div class="row">
+			<div class="col-8">
+				<div style="padding-left: 50px;">
+					<textarea name="contents" cols="80" rows="10" readonly>${audio.contents }</textarea>
+				</div>
+			</div>
+			<div class="col-4" style="padding-left:70px;">
+				<button type="button" class="btn btn-outline-primary" data-toggle="collapse"
+					data-target="#demo" style="width:170px;">참여자 목록</button>
+				<div id="demo" class="collapse" style="padding-left:23px;">
+					<ul class="list-group">
+						<li class="list-group-item active">
+							작성자 <br />
+							<a href="/orecord/${audio.id }/myFollowing" style="color:white;">
+								<span style="color:white;">${audio.id }</span>
+							</a> <br />
+						</li>
+						<c:choose>
+							<c:when test="${audio.party eq 1 and notChoice.count ne 0 }">
+							<li class="list-group-item">
+								참여자 <br />
+								<c:forEach items="${partyMember }" var="mem">
+								<a href="/orecord/${mem.id}/myFollowing">${mem.id }</a> <br />
+								</c:forEach>
+							</li>
+							</c:when>
+							<c:when test="${notParty.count ne 0 and audio.party eq 1 }">
+								<li class="list-group-item">
+									<p style="color:gray; font-size:10px;">
+										참여자가 없습니다. <br />
+										참여를 해주세요.
+									</p>
+								</li>
+							</c:when>
+							<c:otherwise>
+								<li class="list-group-item">
+									<p style="color:gray; font-size:10px;">
+										협업신청 불가
+									</p>
+								</li>
+							</c:otherwise>
+						</c:choose>
+					</ul>
+				</div>
+			</div>
 		</div>
-		<hr align="center" color="gray" size="10px">
+		<!-- #17A2B8 -->
+		<hr align="center" width="90%" style="border:outset 1px gray;">
+		<!-- 협업신청, 목록, 수정 버튼 -->
 		<c:choose>
 			<c:when test="${pageContext.request.userPrincipal.name eq audio.id}">
 				<div class="d-flex flex-row-reverse" style="margin-top: 15px;">
+					<c:if test="${audio.party eq 1 }">
 					<div style="margin-right: 60px;">
 						<button type="button" class="btn btn-outline-info"
 							onclick="location.href='modify.do?audio_idx=${audio.audio_idx}'">
@@ -125,10 +174,26 @@ function deleteRow(comment_idx, audio_idx){
 							협업신청목록
 						</button>
 					</div>
+					</c:if>
+					<!-- 협업하기 불가능일때 -->
+					<c:if test="${audio.party ne 1 }">
+					<div style="margin-right: 60px;">
+						<button type="button" class="btn btn-outline-info"
+							onclick="location.href='modify.do?audio_idx=${audio.audio_idx}'">
+							수정
+						</button>
+					</div>
+					<div style="margin-right: 10px;">
+						<button type="button" class="btn btn-outline-info"
+							onclick="location.href='/orecord/main.do'">목록</button>
+					</div>
+					</c:if>
 				</div>
 			</c:when>
 			<c:otherwise>
 				<div class="d-flex flex-row-reverse" style="margin-top: 15px;">
+					<c:choose>
+					<c:when test="${audio.party eq 1 }">
 					<div style="margin-right: 60px;">
 						<button type="button" class="btn btn-outline-info"
 							onclick="location.href='partyWrite.do?audio_idx=${audio.audio_idx}';">
@@ -141,6 +206,16 @@ function deleteRow(comment_idx, audio_idx){
 							목록
 						</button>
 					</div>
+					</c:when>
+					<c:otherwise>
+					<div style="margin-right: 60px;">
+						<button type="button" class="btn btn-outline-info"
+							onclick="location.href='/orecord/main.do'">
+							목록
+						</button>
+					</div>
+					</c:otherwise>
+					</c:choose>
 				</div>
 			</c:otherwise>
 		</c:choose>
@@ -153,23 +228,10 @@ function deleteRow(comment_idx, audio_idx){
 			<s:csrfInput />
 			<input type="hidden" name="audio_idx" value="${audio.audio_idx}">
 			<!-- 작성자 프로필 -->
-			<div class="row">
-				<div class="col-3" style="text-align: center; padding-left: 50px;">
-					<img src="../resources/img/2.png" alt="프로필사진"
-						class="rounded-circle" width="100">
-					<h6 style="margin-top: 8px;">${audio.id }</h6>
-					<hr width="100%" align="center" color="orange" size="10px">
-					<h6 style="color:gray;">협업자</h6>
-					<img src="../resources/img/2.png" alt="프로필사진"
-						class="rounded-circle" width="100">
-					<h6 style="margin:8px 0 7px 0;">${audio.id }</h6>
-					<img src="../resources/img/2.png" alt="프로필사진"
-						class="rounded-circle" width="100">
-					<h6 style="margin-top: 8px;">${audio.id }</h6>
-				</div>
+<!-- 			<div class="row"> -->
 				<!-- 댓글 작성 -->
-				<div class="col-8">
-					<div class="row" style="padding-top: 10px;">
+<!-- 				<div class="col-12"> -->
+					<div class="row" style="padding:10px 0 0 70px;">
 						<div class="col-2" style="padding: 0px; margin-left: 50px;">
 							<input type="text" readonly class="form-control"
 								value="${pageContext.request.userPrincipal.name}"
@@ -183,35 +245,34 @@ function deleteRow(comment_idx, audio_idx){
 							<input type="submit" class="btn btn-outline-secondary"
 								value="입력">
 						</div>
-						<hr width="100%" align="center" color="#17A2B8" size="10px">
 					</div>
-
+						<hr align="center" width="90%" style="border:outset 1px gray;">
 					<!-- 댓글영역 -->
 					<c:forEach items="${comments}" var="row">
 						<input type="hidden" name="comment_idx"
 							value="${row.comment_idx }" />
 						<div class="row">
-							<div class="col-2" style="padding: 15px 0 0 30px;"
+							<div class="col-2" style="padding:23px 0 0 90px;"
 								align="center">
 								<img src="../resources/img/4.png" alt="작성자프로필" width="50"
 									class="rounded-circle">
 								<p style="font-size: 12px;">${row.id}</p>
 							</div>
 							<div class="col-8" style="padding-top: 22px;">
+								<p style="margin-bottom:1px; font-size:10px; color:gray;">${row.regidate }</p>
 								<input type="text" class="form-control" readonly
 									value="${row.contents}">
 							</div>
 							<c:if test="${pageContext.request.userPrincipal.name eq row.id}">
-							<div class="col-2" style="padding: 22px 0 0 0;" align="left">
+							<div class="col-2" style="padding:37px 0 0 0;" align="left">
 								<img src="../resources/img/delete.png" alt="삭제" width="20" style="padding-top:5px; cursor:pointer;"
 									onclick="javascript:deleteRow(${row.comment_idx}, ${row.audio_idx });" />
 							</div>
 							</c:if>
 						</div>
 					</c:forEach>
-
-				</div>
-			</div>
+<!-- 				</div> -->
+<!-- 			</div> -->
 		</form>
 		<!-- 왼쪽 컨텐츠 종료 -->
 	</div>

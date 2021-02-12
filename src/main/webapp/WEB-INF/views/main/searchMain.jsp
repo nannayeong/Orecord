@@ -6,11 +6,17 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<!-- Jquery, BootStrap -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
+
+<!-- layout css -->
+<link href="${pageContext.request.contextPath}/resources/css/layout.css" rel="stylesheet" />
+<!-- layout js-->
+<script src="${pageContext.request.contextPath}/resources/js/layout.js"></script>
 <style>
 body {
 	background-color: #f2f2f2;
@@ -44,22 +50,23 @@ a {
 	padding-bottom: 1em;
 }
 
-.right-content-back {
-	background-color: white;
-	width: 30%;
-	display: inline-block;
-}
-
-.right-content {
-	background-color: white;
-	width: 100%;
-	max-width: 288px;
-	margin: auto;
-	padding-top: 3em;
-	padding-bottom: 1em;
+.right-content-back{
+	background-color:white;
+	max-width:288px;
+	height : 100%;
+	width:30%;
+	display:inline-block;
 	position: fixed;
 	top: 0px;
 	float: left;
+}
+.right-content{
+	background-color:white;
+	width:100%;
+	height : 960px!;
+	margin:auto;
+	padding-top:3em;
+	padding-bottom:1em;
 	text-align: center;
 }
 
@@ -280,6 +287,8 @@ li {
 					var sec1 = section1s.item(i);
 					sec1.className = "btn btn-outline-secondary btn-sm follow " + f;
 				}
+				count = resData.followcount;
+				$('.pCount.' + f).html('팔로워 : ' + count);
 			}
 
 		});
@@ -302,6 +311,8 @@ li {
 					var sec1 = section1s.item(i);
 					sec1.className = "btn btn-secondary btn-sm follow " + f;
 				}
+				count = resData.followcount;
+				$('.pCount.' + f).html('팔로워 : ' + count);
 			}
 		});
 	}
@@ -392,7 +403,7 @@ li {
 			<c:if test="${a eq b.key }">
 				<table
 					style="width: 100%; border: 2px #f2f2f2 solid; margin: auto; margin-bottom: 1em"
-					class="pcount">
+					class="feed">
 					<tr>
 						<td rowspan="4"
 							style="width: 7em; padding-left: 1em; padding-right: 1em">
@@ -462,7 +473,7 @@ li {
 			<c:if test="${a eq b.key }">
 				<table
 					style="width: 100%; border: 2px #f2f2f2 solid; margin: auto; margin-bottom: 1em"
-					class="pcount">
+					class="feed">
 					<tr>
 						<td rowspan="4"
 							style="width: 7em; padding-left: 1em; padding-right: 1em">
@@ -529,7 +540,7 @@ li {
 	
 			<table
 				style="width: 100%; border: 2px #f2f2f2 solid; margin: auto; margin-bottom: 1em"
-				class="pcount">
+				class="feed">
 				<tr>
 					<td rowspan="4"
 						style="width: 7em; padding-left: 1em; padding-right: 1em">
@@ -543,12 +554,10 @@ li {
 				<tr>
 					<td style="padding-top: 1em; padding-bottom: 1em;">
 				<c:set var="followB" value="false"/>
-        		<c:forEach var="f" items="${returnMap }">
-        		<c:forEach var="follower" items="${f.value }">
-        		<c:if test="${pageContext.request.userPrincipal.name eq follower and a.id eq f.key}">
+        		<c:forEach var="f" items="${follows }">
+        		<c:if test="${a.id eq f.following_id}">
         		<c:set var="followB" value="true"/>
         		</c:if>
-        		</c:forEach>
         		</c:forEach>
         		
         		     <c:choose>
@@ -580,7 +589,7 @@ li {
 			<c:if test="${a eq b.key }">
 				<table
 					style="width: 100%; border: 2px #f2f2f2 solid; margin: auto; margin-bottom: 1em"
-					class="pcount">
+					class="feed">
 					<tr>
 						<td rowspan="4"
 							style="width: 7em; padding-left: 1em; padding-right: 1em">
@@ -656,7 +665,49 @@ li {
 			<li><a href="./searchArtist.do?searchWord=${searchWord }">아티스트 검색</a></li>
 			<li><a href="./searchContents.do?searchWord=${searchWord }">내용으로 검색</a></li>
 			</ul>
-
+			<c:if test="${recFollow.size() ne 0}">
+					<h5>친구가 팔로우중인 아티스트</h5>
+					</c:if>
+			<c:forEach var="r" items="${recFollow}">
+				<table
+				style="width: 100%; border: 2px #f2f2f2 solid; margin: auto; margin-bottom: 1em"
+				class="pcount">
+				<tr>
+					<td rowspan="4"
+						style="width: 7em; padding-left: 1em; padding-right: 1em">
+						<img src="${r.img }" alt="" style="width: 6em" />
+					</td>
+					<td><h4 style="padding-top: 1em;"><a href="./${r.id }/record">${r.nickname}</a></h4></td>
+				</tr>
+				<tr>
+					<td colspan="2"></td>
+				</tr>
+				<tr>
+					<td style="padding-top: 1em; padding-bottom: 1em;">
+				<c:set var="followB" value="false"/>
+        		<c:forEach var="f" items="${follows }">
+        		<c:if test="${r.id eq f.following_id}">
+        		<c:set var="followB" value="true"/>
+        		</c:if>
+        		</c:forEach>
+        		     <c:choose>
+               <c:when test="${followB}">
+               <button type="button" class="btn btn-outline-secondary btn-sm follow ${r.id}" onclick="fBtn('${r.id}')" >팔로우</button>
+                 </c:when>
+                 <c:otherwise>
+                   <button type="button" class="btn btn-secondary btn-sm follow ${r.id}" onclick="fBtn('${r.id}')" >팔로우</button>
+                 </c:otherwise>
+               </c:choose>	
+					<td style="text-align: center">
+						<h6 class="pCount ${r.id }">팔로워 : ${recMemberMap[r]}</h6>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+					</td>
+				</tr>
+			</table>
+		</c:forEach>
 		</div>
 	</div>
 </div>

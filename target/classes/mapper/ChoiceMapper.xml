@@ -25,4 +25,5 @@
     		SET choice = 1
 		WHERE id=#{param1} AND party_idx=#{param2}
 	</update>
+	
 </mapper>

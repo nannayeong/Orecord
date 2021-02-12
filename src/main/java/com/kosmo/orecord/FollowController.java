@@ -35,61 +35,6 @@ public class FollowController {
 		this.sqlSession = sqlSession;
 	} 
 	
-	
-	/*팔로잉페이지 리스트*/
-	@RequestMapping("/{user_id}/following")
-	public String following(@PathVariable String user_id, Model model) {
-		
-		//계정정보가져오기
-		MemberDTO memberDTO = sqlSession.getMapper(MemberImpl.class).memberInfo(user_id);
-		
-		if(memberDTO.getImg()==null) {
-			memberDTO.setImg("../default.jpg");
-		}
-		
-		model.addAttribute("memberDTO", memberDTO);
-		
-		//팔로잉리스트가져오기
-		ArrayList<FollowDTO> lists = sqlSession.getMapper(FollowImpl.class).following(user_id);
-		
-		//팔로잉유저 이미지 없는경우 기본이미지로 바꾸기
-		for(FollowDTO dto : lists) {
-			if(dto.getImg()==null) {
-				dto.setImg("../default.jpg");
-			}
-		}
-		
-		model.addAttribute("followingList", lists);
-
-		return "follow/following";
-	}
-	
-	/*팔로우페이지 리스트*/
-	@RequestMapping("/{user_id}/followers")
-	public String followers(@PathVariable String user_id, Model model) {
-		
-		//계정정보가져오기
-		MemberDTO memberDTO = sqlSession.getMapper(MemberImpl.class).memberInfo(user_id);
-		
-		if(memberDTO.getImg()==null) {
-			memberDTO.setImg("../default.jpg");
-		}
-		
-		model.addAttribute("memberDTO", memberDTO);
-		
-		//팔로우리스트가져오기
-		ArrayList<FollowDTO> lists = sqlSession.getMapper(FollowImpl.class).followers(user_id);
-		for(FollowDTO dto : lists) {
-			if(dto.getImg()==null) {
-				dto.setImg("../default.jpg");
-			}
-		}
-		
-		model.addAttribute("followersList", lists);
-		
-		return "follow/followers";
-	}
-	
 	//팔로우하기
 	@RequestMapping("/addFollower.do")
 	@ResponseBody
@@ -157,40 +102,130 @@ public class FollowController {
 		
 		return map;
 	}
-//	
-//	@RequestMapping("/addF.do")
-//	public String addF(HttpServletRequest req, Principal principal, RedirectAttributes rttr) {
-//		
-//		FollowDTO follow = new FollowDTO();
-//		String referer = req.getHeader("Referer");
-//		
-//		String followId = principal.getName();//내아이디
-//		String followerId = req.getParameter("followerId");//팔로우할아이디
-//		
-//		follow.setFollowing_id(followerId);
-//		follow.setUser_id(followId);
-//		
-//		//Follow 테이블에 insert하고 성공시 1을 반환받음
-//		int suc = sqlSession.insert("follow", follow);
-//		
-//		return "redirect:"+referer;
-//	}
-//	
-//	@RequestMapping("/unF.do")
-//	public String unF(HttpServletRequest req, Principal principal, RedirectAttributes rttr) {
-//		FollowDTO follow = new FollowDTO();
-//		String referer = req.getHeader("Referer");
-//		
-//		String followId = principal.getName();
-//		String followerId = req.getParameter("followerId");
-//		
-//		follow.setFollowing_id(followerId);
-//		follow.setUser_id(followId);
-//		
-//		//Follow 테이블에 insert하고 성공시 1을 반환받음
-//		int suc = sqlSession.delete("unFollow", follow);
-//		
-//		return "redirect:"+referer;
-//	}
+	
+	@RequestMapping("/{user_id}/myFollowing")
+	public String myFollowing(@PathVariable String user_id, Model model, Principal principal, HttpServletRequest req) {
+		
+		String path = req.getContextPath();
+		String login_id = null;
+		
+		/*계정정보*/
+		MemberDTO memberDTO = sqlSession.getMapper(MemberImpl.class).memberInfo(user_id);	
+		
+		/*로그인 유저의 계정정보*/
+		MemberDTO loginDTO = null;
+		try {
+			login_id = principal.getName();
+			 loginDTO = sqlSession.getMapper(MemberImpl.class).memberInfo(login_id);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 
+		if(memberDTO.getImg()==null) {
+			memberDTO.setImg(path+"/resources/img/default.jpg");
+		}else {
+			String fileName = memberDTO.getImg();
+			memberDTO.setImg(path+"/resources/upload/"+fileName);
+		}
+		
+		ArrayList<FollowDTO> follows = sqlSession.getMapper(FollowImpl.class).following(user_id);
+		ArrayList<MemberDTO> artists = new ArrayList<MemberDTO>();
+		HashMap<MemberDTO,Integer> memberMap = new HashMap<MemberDTO, Integer>();
+		for(MemberDTO recMemberDTO : artists) {
+			
+			if(recMemberDTO.getImg()==null){
+				recMemberDTO.setImg(path+"/resources/img/default.jpg");
+			}
+			else {
+				String fileName = recMemberDTO.getImg();
+				recMemberDTO.setImg(path+"/resources/upload/"+fileName);
+			}
+		}
+		for(FollowDTO dto : follows) {
+			String following = dto.getFollowing_id();
+			MemberDTO followingMember = sqlSession.getMapper(MemberImpl.class).memberInfo(following);	
+			ArrayList<FollowDTO> followers = sqlSession.getMapper(FollowImpl.class).followers(followingMember.getId());
+			memberMap.put(followingMember, followers.size());
+			artists.add(followingMember);
+		}
+		for(MemberDTO recMemberDTO : artists) {
+			
+			if(recMemberDTO.getImg()==null){
+				recMemberDTO.setImg(path+"/resources/img/default.jpg");
+			}
+			else {
+				String fileName = recMemberDTO.getImg();
+				recMemberDTO.setImg(path+"/resources/upload/"+fileName);
+			}
+		}
+		model.addAttribute("artists",artists);
+		model.addAttribute("memberDTO", memberDTO);
+		model.addAttribute("loginDTO", loginDTO);
+		model.addAttribute("user_id", user_id);
+		model.addAttribute("memberMap",memberMap);
+		
+		
+		return "mypage/following";
+	}
+	
+	@RequestMapping("/{user_id}/myFollowers")
+	public String myFollowers(@PathVariable String user_id, Model model, Principal principal, HttpServletRequest req) {
+		
+		String path = req.getContextPath();
+		String login_id = null;
+		
+		/*계정정보*/
+		MemberDTO memberDTO = sqlSession.getMapper(MemberImpl.class).memberInfo(user_id);	
+		
+		/*로그인 유저의 계정정보*/
+		MemberDTO loginDTO = null;
+		try {
+			login_id = principal.getName();
+			 loginDTO = sqlSession.getMapper(MemberImpl.class).memberInfo(login_id);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+
+		if(memberDTO.getImg()==null) {
+			memberDTO.setImg(path+"/resources/img/default.jpg");
+		}else {
+			String fileName = memberDTO.getImg();
+			memberDTO.setImg(path+"/resources/upload/"+fileName);
+		}
+		
+		ArrayList<FollowDTO> myfollower = sqlSession.getMapper(FollowImpl.class).followers(user_id);
+		ArrayList<MemberDTO> artists = new ArrayList<MemberDTO>();
+		HashMap<MemberDTO,Integer> memberMap = new HashMap<MemberDTO, Integer>();
+		
+		
+		//나를 팔로우한 사람들
+		for(FollowDTO dto : myfollower) {
+			String following = dto.getUser_id();
+			MemberDTO followingMember = sqlSession.getMapper(MemberImpl.class).memberInfo(following);	
+			ArrayList<FollowDTO> followers = sqlSession.getMapper(FollowImpl.class).followers(followingMember.getId());
+			memberMap.put(followingMember, followers.size());
+			artists.add(followingMember);
+		}
+		for(MemberDTO recMemberDTO : artists) {
+			
+			if(recMemberDTO.getImg()==null){
+				recMemberDTO.setImg(path+"/resources/img/default.jpg");
+			}
+			else {
+				String fileName = recMemberDTO.getImg();
+				recMemberDTO.setImg(path+"/resources/upload/"+fileName);
+			}
+		}
+		
+		model.addAttribute("artists",artists);
+		model.addAttribute("memberDTO", memberDTO);
+		model.addAttribute("loginDTO", loginDTO);
+		model.addAttribute("user_id", user_id);
+		model.addAttribute("memberMap",memberMap);
+		
+		
+		return "mypage/followers";
+	}
 }

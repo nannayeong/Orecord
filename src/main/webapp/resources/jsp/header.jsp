@@ -22,7 +22,7 @@ function checkNull(t) {
 	<a href=""><div class="menu">menu1</div></a>
 	<a href=""><div class="menu">menu2</div></a>
 	<div class="search">
-		<form action="./search.do" onsubmit="return checkNull(this)">
+		<form action="${pageContext.request.contextPath}/search.do" onsubmit="return checkNull(this)">
 			<input type="text" value="" type="search" style="width:18em" name="searchWord"/>
 			<button type="submit" onclick="" class="btn btn-secondary btn-sm" style="margin-bottom:4px"><i class="fas fa-search"></i></button>
 		</form>

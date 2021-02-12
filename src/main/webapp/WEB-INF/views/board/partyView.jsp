@@ -21,17 +21,20 @@
 <script src="${pageContext.request.contextPath}/resources/js/layout.js"></script>
 
 <script type="text/javascript">
-function choiceAction(id, point){
-	if(confirm("채택하시겠습니까?")){
-		location.href="choiceAction.do?id="+id+"&point="+point;
-	}
+function choiceAction(f){
+	var youPoint = f.point.value;
+	var myPoint = f.myPoint.value;
+	if(myPoint < youPoint){
+		alert("포인트가 부족합니다.");
+		return false;
+	}	
 }
-// function choiceAction(){
-// 	if(confirm("채택하시겠습니까?")){
-		
-// 	}
-// }
 </script>
+<style>
+.form-group label{
+	color:blue;
+}
+</style>
 </head>
 <body>
 <div>
@@ -39,7 +42,7 @@ function choiceAction(id, point){
 		<!-- 본문 제목 -->
 		<form method="post"
 			action="<c:url value="/board/choiceAction.do"/>"
-			name="choiceFrm">
+			name="choiceFrm" onsubmit="return choiceAction(this);">
 			<s:csrfInput />
 		<div style="background: linear-gradient(to right, #91888A, #5A5B82);">
 			<div class="row">
@@ -53,6 +56,7 @@ function choiceAction(id, point){
 		<br>
 		<hr color="green">
 		<!-- 본문 제목 종료 -->
+		<input type="hi dden" name="myPoint" value="${myPoint.mypoint }" />
 		<input type="hidden" name="audio_idx" value="${partyView.audio_idx }">
 		<input type="hidden" name="party_idx" value="${partyView.party_idx }" />
 		<input type="hidden" name="id" value="${partyView.id }">
@@ -88,7 +92,7 @@ function choiceAction(id, point){
 				<div class="form-group">
 					<label>요청 포인트</label>
 					<input type="text" class="form-control"
-						readonly name="point" value="${partyView.point }">
+						readonly name="point" id="point" value="${partyView.point }">
 				</div>
 			</div>
 		</div>
@@ -113,18 +117,24 @@ function choiceAction(id, point){
 		<div class="row" style="margin: 30px 0 30px 0;">
 			<div class="col-10">
 				<div class="row">
-					<div class="col-2" align="center" style="margin: 10px 0 0 27px;">
+					<div class="col-8" align="center" style="margin: 10px 0 0 35px;">
 						<div class="form-group">
-							<p>음원파일</p>
-						</div>
-					</div>
-					<div class="col-8">
-						<div>
+							<span style="color:blue;">음원파일</span>
+							<p style="color:gray; font-size:12px;"> * 채택시 다운로드가 가능합니다.</p>
 							<audio controls style="width: 500px;">
 								<source src="${partyView.audiofilename }"/>
 							</audio>
 						</div>
 					</div>
+					<c:if test="${partyView.choice eq 1 }">
+					<div class="col-2" style="padding-top:80px;" align="center">
+						<div>
+							<a href="download.do?audiofilename=${partyView.audiofilename }&oriFileName=${partyView.id}님의작곡">
+								[다운로드]
+							</a>
+						</div>
+					</div>
+					</c:if>
 				</div>
 			</div>
 		</div>
@@ -142,8 +152,7 @@ function choiceAction(id, point){
 			<div class="col-10">
 				<div class="form-group">
 					<div class="d-flex flex-row-reverse">
-						<button type="submit" class="btn btn-outline-danger"
-							>
+						<button type="submit" class="btn btn-outline-danger">
 							채택하기
 						</button>
 						<button type="button" class="btn btn-outline-primary"

@@ -44,9 +44,17 @@ public class SearchController {
 	/* 프레임 메인 */
 	@RequestMapping("/search.do") 
 	////////////검색메인(각5개항목 나열)
-	public String search(Model model, HttpServletRequest req) { //테스트용 ID
+	public String search(Model model, HttpServletRequest req, Principal principal) {
 		String searchWord = req.getParameter("searchWord");
 		//아티스트명으로 검색한 오디오의 id모음
+		//로그인
+		String id="";
+		try {
+			 id = principal.getName();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
 		
 		
 		
@@ -74,9 +82,7 @@ public class SearchController {
 		model.addAttribute("commentC1", commentC1);
 		//댓글수 카운트해서 넣음
 		ArrayList<LikeDTO> likes1 = loadLike(audioList);
-		ArrayList<FollowDTO> follows1 = loadFollow(audioList);
 		model.addAttribute("likes1",likes1);
-		model.addAttribute("follows1",follows1);
 		
 
 		/////////////아티스트명으로 게시글찾기 2번
@@ -102,13 +108,10 @@ public class SearchController {
 		model.addAttribute("commentC2", commentC2);
 		//댓글수 카운트해서 넣음
 		ArrayList<LikeDTO> likes2 = loadLike(audioByNameList);
-		ArrayList<FollowDTO> follows2 = loadFollow(audioByNameList);
 		model.addAttribute("likes2",likes2);
-		model.addAttribute("follows2",follows2);
 		
 		
 		
-		HashMap<String, HashSet<String>> returnMap = new HashMap<String, HashSet<String>>();
 		HashMap<MemberDTO,Integer> memberMap = new HashMap<MemberDTO, Integer>();
 		//검색페이지에 출력할 오디오게시글 불러옴
 		ArrayList<MemberDTO> artists = sqlSession.getMapper(SearchImpl.class).searchArtistM(searchWord);
@@ -119,7 +122,6 @@ public class SearchController {
 			for(FollowDTO fdto : follows) {
 				followerSet.add(fdto.getUser_id());
 			}
-			returnMap.put(followingId, followerSet);
 			memberMap.put(dto, follows.size());
 		}
 		ArrayList<MemberDTO> arrayByF = cal.arrayByFollow(memberMap);
@@ -127,9 +129,13 @@ public class SearchController {
 		for(int i=arrayByF.size()-1;i>7;i--) {
 			arrayByF.remove(i);
 		}}
-		model.addAttribute("followMap",returnMap);
 		model.addAttribute("artists",arrayByF);
 		model.addAttribute("memberMap",memberMap);
+
+		ArrayList<FollowDTO> follows = sqlSession.getMapper(FollowImpl.class).following(id);
+		model.addAttribute("follows",follows);
+		
+		
 		
 		//컨텐츠로 검색
 		ArrayList<AudioBoardDTO> byContents = sqlSession.getMapper(SearchImpl.class).searchContentM(searchWord);
@@ -152,26 +158,68 @@ public class SearchController {
 			audios.setContents(contents);
 		}
 		
+		
 		HashMap<Integer,AudioBoardDTO> popMap3 = cal.calcuPop(byContents);
 		//인기순정렬 맵으로넣음
 		model.addAttribute("popMap3", popMap3);
 		//댓글수 카운트해서 넣음
 		ArrayList<LikeDTO> likes3 = loadLike(byContents);
-		ArrayList<FollowDTO> follows3 = loadFollow(byContents);
 		model.addAttribute("likes3",likes3);
-		model.addAttribute("follows3",follows3);
 		model.addAttribute("searchWord",searchWord);
+		
+		
+		//팔로우추천 4명
+		ArrayList<MemberDTO> recFollow = new ArrayList<MemberDTO>();
+		HashMap<MemberDTO,Integer> recMemberMap = new HashMap<MemberDTO, Integer>();
+		if(id!=null) {
+			recMemberMap = cal.recommandFollowByFollowing(sqlSession,id);
+			recFollow = cal.arrayByFollow(recMemberMap);
+		}
+		model.addAttribute("recFollow",recFollow);
+		model.addAttribute("recMemberMap",recMemberMap);
+		for(MemberDTO recMemberDTO : recFollow) {
+			
+			if(recMemberDTO.getImg()==null){
+				recMemberDTO.setImg(path+"/resources/img/default.jpg");
+			}
+			else {
+				String fileName = recMemberDTO.getImg();
+				recMemberDTO.setImg(path+"/resources/upload/"+fileName);
+			}
+		}
+		
 		return "main/searchMain";
 	}
 	
 	@RequestMapping("/searchAudio.do")
-	public String searchAudio(Model model, HttpServletRequest req) {
+	public String searchAudio(Model model, HttpServletRequest req, Principal principal) {
+		String id="";
+		try {
+			 id = principal.getName();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
 		
 		String searchWord = req.getParameter("searchWord");
 		ArrayList<AudioBoardDTO> audioList = sqlSession.getMapper(SearchImpl.class).search("AUDIOTITLE",searchWord,1,8);
+		String path = req.getContextPath();
+		for(AudioBoardDTO audioDTO : audioList) {
+			
+			if(audioDTO.getImagename()==null){
+				audioDTO.setImagename(path+"/resources/img/default.jpg");
+			}
+			else {
+				String fileName = audioDTO.getImagename();
+				audioDTO.setImagename(path+"/resources/upload/"+fileName);
+			}
+			
+			String fileName = audioDTO.getAudiofilename();
+			audioDTO.setAudiofilename(path+"/resources/upload/"+fileName);
+		}
+		
+		
 		//아티스트명으로 검색
-		HashMap<Integer, Integer> commentC1 = cal.cCount(audioList,sqlSession);
-		//댓글수 카운트해서 넣음
 		ArrayList<LikeDTO> likes1 = loadLike(audioList);
 		ArrayList<FollowDTO> follows1 = loadFollow(audioList);
 		model.addAttribute("audioList",audioList);
@@ -179,50 +227,157 @@ public class SearchController {
 		model.addAttribute("follows1",follows1);
 		model.addAttribute("searchType","title");
 		model.addAttribute("searchWord",searchWord);
+		ArrayList<FollowDTO> follows = sqlSession.getMapper(FollowImpl.class).following(id);
+		model.addAttribute("follows",follows);
+		
+		//팔로우추천 4명
+		ArrayList<MemberDTO> recFollow = new ArrayList<MemberDTO>();
+		HashMap<MemberDTO,Integer> recMemberMap = new HashMap<MemberDTO, Integer>();
+		if(id!=null) {
+			recMemberMap = cal.recommandFollowByFollowing(sqlSession,id);
+			recFollow = cal.arrayByFollow(recMemberMap);
+		}
+		model.addAttribute("recFollow",recFollow);
+		model.addAttribute("recMemberMap",recMemberMap);
+		for(MemberDTO recMemberDTO : recFollow) {
+			
+			if(recMemberDTO.getImg()==null){
+				recMemberDTO.setImg(path+"/resources/img/default.jpg");
+			}
+			else {
+				String fileName = recMemberDTO.getImg();
+				recMemberDTO.setImg(path+"/resources/upload/"+fileName);
+			}
+		}
 		return "main/search";
 	}
 	
 	@RequestMapping("/searchAudioLoad.do")
-	public String searchAudioload(Model model, HttpServletRequest req) {
+	public String searchAudioload(Model model, HttpServletRequest req, Principal principal) {
+		String id="";
+		try {
+			 id = principal.getName();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+		
 		String searchWord = req.getParameter("searchWord");
 		int loadedCount = Integer.parseInt(req.getParameter("loadlength"));
 		int totalAudio = sqlSession.getMapper(SearchImpl.class).searchTotal("AUDIOTITLE", searchWord);
 		ArrayList<AudioBoardDTO> audioList = new ArrayList<AudioBoardDTO>();
+		
 		if(totalAudio!=loadedCount) {
 			audioList = sqlSession.getMapper(SearchImpl.class).search("audiotitle",searchWord,loadedCount+1,loadedCount+8);
 		}
 		
+		String path = req.getContextPath();
+		for(AudioBoardDTO audioDTO : audioList) {
+			
+			if(audioDTO.getImagename()==null){
+				audioDTO.setImagename(path+"/resources/img/default.jpg");
+			}
+			else {
+				String fileName = audioDTO.getImagename();
+				audioDTO.setImagename(path+"/resources/upload/"+fileName);
+			}
+			
+			String fileName = audioDTO.getAudiofilename();
+			audioDTO.setAudiofilename(path+"/resources/upload/"+fileName);
+		}
+		
 		//댓글수 카운트해서 넣음
 		ArrayList<LikeDTO> likes = loadLike(audioList);
-		ArrayList<FollowDTO> follows = loadFollow(audioList);
 		model.addAttribute("audiolist",audioList);
 		model.addAttribute("likes",likes);
+		ArrayList<FollowDTO> follows = sqlSession.getMapper(FollowImpl.class).following(id);
 		model.addAttribute("follows",follows);
+		
+		//팔로우추천 4명
+		ArrayList<MemberDTO> recFollow = new ArrayList<MemberDTO>();
+		HashMap<MemberDTO,Integer> recMemberMap = new HashMap<MemberDTO, Integer>();
+		if(id!=null) {
+			recMemberMap = cal.recommandFollowByFollowing(sqlSession,id);
+			recFollow = cal.arrayByFollow(recMemberMap);
+		}
+		model.addAttribute("recFollow",recFollow);
+		model.addAttribute("recMemberMap",recMemberMap);
+		
 		return "main/audiolistAdd";
 	}
 	////////아티스트명으로 곡찾기
 	@RequestMapping("/searchAudioByArtist.do")
-	public String searchAudioByArtist(Model model, HttpServletRequest req) {
+	public String searchAudioByArtist(Model model, HttpServletRequest req, Principal principal) {
+		String id="";
+		try {
+			 id = principal.getName();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+		
 		//검색페이지에 출력할 오디오게시글 불러옴
 		String searchWord = req.getParameter("searchWord");
 		
-		ArrayList<AudioBoardDTO> audioByNameList = sqlSession.getMapper(SearchImpl.class).search("artistname",searchWord,1,8);
+		ArrayList<AudioBoardDTO> audioList = sqlSession.getMapper(SearchImpl.class).search("artistname",searchWord,1,8);
 		
+		String path = req.getContextPath();
+		for(AudioBoardDTO audioDTO : audioList) {
+			
+			if(audioDTO.getImagename()==null){
+				audioDTO.setImagename(path+"/resources/img/default.jpg");
+			}
+			else {
+				String fileName = audioDTO.getImagename();
+				audioDTO.setImagename(path+"/resources/upload/"+fileName);
+			}
+			
+			String fileName = audioDTO.getAudiofilename();
+			audioDTO.setAudiofilename(path+"/resources/upload/"+fileName);
+		}
 		
 		//아티스트명으로 검색5개
 		//댓글수 카운트해서 넣음
-		ArrayList<LikeDTO> likes2 = loadLike(audioByNameList);
-		ArrayList<FollowDTO> follows2 = loadFollow(audioByNameList);
+		ArrayList<LikeDTO> likes2 = loadLike(audioList);
 		model.addAttribute("likes2",likes2);
-		model.addAttribute("follows2",follows2);
-		model.addAttribute("audioByNameList",audioByNameList);
+		ArrayList<FollowDTO> follows = sqlSession.getMapper(FollowImpl.class).following(id);
+		model.addAttribute("follows",follows);
+		model.addAttribute("audioByNameList",audioList);
 		model.addAttribute("searchWord",searchWord);
 		model.addAttribute("searchType","byartist");
+		
+		//팔로우추천 4명
+		ArrayList<MemberDTO> recFollow = new ArrayList<MemberDTO>();
+		HashMap<MemberDTO,Integer> recMemberMap = new HashMap<MemberDTO, Integer>();
+		if(id!=null) {
+			recMemberMap = cal.recommandFollowByFollowing(sqlSession,id);
+			recFollow = cal.arrayByFollow(recMemberMap);
+		}
+		model.addAttribute("recFollow",recFollow);
+		model.addAttribute("recMemberMap",recMemberMap);
+		for(MemberDTO recMemberDTO : recFollow) {
+			
+			if(recMemberDTO.getImg()==null){
+				recMemberDTO.setImg(path+"/resources/img/default.jpg");
+			}
+			else {
+				String fileName = recMemberDTO.getImg();
+				recMemberDTO.setImg(path+"/resources/upload/"+fileName);
+			}
+		}
 		return "main/search";
 		
 	}
 	@RequestMapping("/searchAudioByArtistLoad.do")
-	public String searchAudioByArtistLoad(Model model, HttpServletRequest req) {
+	public String searchAudioByArtistLoad(Model model, HttpServletRequest req, Principal principal) {
+		String id="";
+		try {
+			 id = principal.getName();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+		
 		//검색페이지에 출력할 오디오게시글 불러옴
 		String searchWord = req.getParameter("searchWord");
 		String searchType = req.getParameter("searchType");
@@ -234,22 +389,54 @@ public class SearchController {
 			audioByNameList = sqlSession.getMapper(SearchImpl.class).search("artistname",searchWord,loadedCount+1,loadedCount+8);
 		}
 		
+		String path = req.getContextPath();
+		for(AudioBoardDTO audioDTO : audioByNameList) {
+			
+			if(audioDTO.getImagename()==null){
+				audioDTO.setImagename(path+"/resources/img/default.jpg");
+			}
+			else {
+				String fileName = audioDTO.getImagename();
+				audioDTO.setImagename(path+"/resources/upload/"+fileName);
+			}
+			
+			String fileName = audioDTO.getAudiofilename();
+			audioDTO.setAudiofilename(path+"/resources/upload/"+fileName);
+		}
+		
+		
+		
 		//아티스트명으로 검색5개
 		//댓글수 카운트해서 넣음
 		model.addAttribute("audiolist",audioByNameList);
 		ArrayList<LikeDTO> likes2 = loadLike(audioByNameList);
-		ArrayList<FollowDTO> follows2 = loadFollow(audioByNameList);
 		model.addAttribute("likes",likes2);
-		model.addAttribute("follows",follows2);
+		ArrayList<FollowDTO> follows = sqlSession.getMapper(FollowImpl.class).following(id);
+		model.addAttribute("follows",follows);
+		
+		//팔로우추천 4명
+		ArrayList<MemberDTO> recFollow = new ArrayList<MemberDTO>();
+		HashMap<MemberDTO,Integer> recMemberMap = new HashMap<MemberDTO, Integer>();
+		if(id!=null) {
+			recMemberMap = cal.recommandFollowByFollowing(sqlSession,id);
+			recFollow = cal.arrayByFollow(recMemberMap);
+		}
+		model.addAttribute("recFollow",recFollow);
+		model.addAttribute("recMemberMap",recMemberMap);
 		return "main/audiolistAdd";
 		
 	}
 	////////아티스트 찾기
 	@RequestMapping("/searchArtist.do")
-	public String searchArtist(Model model, HttpServletRequest req) {
-		HashMap<String, HashSet<String>> returnMap = new HashMap<String, HashSet<String>>();
+	public String searchArtist(Model model, HttpServletRequest req, Principal principal) {
+		String id="";
+		try {
+			 id = principal.getName();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
 		HashMap<MemberDTO,Integer> memberMap = new HashMap<MemberDTO, Integer>();
-		//검색페이지에 출력할 오디오게시글 불러옴
 		String searchWord = req.getParameter("searchWord");
 		ArrayList<MemberDTO> artists = sqlSession.getMapper(SearchImpl.class).searchArtist(searchWord);
 		for(MemberDTO dto : artists) {
@@ -259,7 +446,6 @@ public class SearchController {
 			for(FollowDTO fdto : follows) {
 				followerSet.add(fdto.getUser_id());
 			}
-			returnMap.put(followingId, followerSet);
 			memberMap.put(dto, follows.size());
 		}
 		ArrayList<MemberDTO> arrayByF = cal.arrayByFollow(memberMap);
@@ -267,17 +453,46 @@ public class SearchController {
 		for(int i=arrayByF.size()-1;i>7;i--) {
 			arrayByF.remove(i);
 		}}
-		model.addAttribute("followMap",returnMap);
+		ArrayList<FollowDTO> follows = sqlSession.getMapper(FollowImpl.class).following(id);
+		model.addAttribute("follows",follows);
 		model.addAttribute("artists",arrayByF);
 		model.addAttribute("searchWord",searchWord);
 		model.addAttribute("searchType","artist");
 		model.addAttribute("memberMap",memberMap);
+		
+		//팔로우추천 4명
+		ArrayList<MemberDTO> recFollow = new ArrayList<MemberDTO>();
+		HashMap<MemberDTO,Integer> recMemberMap = new HashMap<MemberDTO, Integer>();
+		if(id!=null) {
+			recMemberMap = cal.recommandFollowByFollowing(sqlSession,id);
+			recFollow = cal.arrayByFollow(recMemberMap);
+		}
+		model.addAttribute("recFollow",recFollow);
+		model.addAttribute("recMemberMap",recMemberMap);
+		String path = req.getContextPath();
+		for(MemberDTO recMemberDTO : recFollow) {
+			
+			if(recMemberDTO.getImg()==null){
+				recMemberDTO.setImg(path+"/resources/img/default.jpg");
+			}
+			else {
+				String fileName = recMemberDTO.getImg();
+				recMemberDTO.setImg(path+"/resources/upload/"+fileName);
+			}
+		}
 		return "main/search";
 		
 	}
 	@RequestMapping("/searchArtistLoad.do")
-	public String searchArtistLoad(Model model, HttpServletRequest req) {
-		HashMap<String, HashSet<String>> returnMap = new HashMap<String, HashSet<String>>();
+	public String searchArtistLoad(Model model, HttpServletRequest req, Principal principal) {
+		String id="";
+		try {
+			 id = principal.getName();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+		
 		HashMap<MemberDTO,Integer> memberMap = new HashMap<MemberDTO, Integer>();
 		//검색페이지에 출력할 오디오게시글 불러옴
 		String searchWord = req.getParameter("searchWord");
@@ -289,7 +504,6 @@ public class SearchController {
 			for(FollowDTO fdto : follows) {
 				followerSet.add(fdto.getUser_id());
 			}
-			returnMap.put(followingId, followerSet);
 			memberMap.put(dto, follows.size());
 		}
 		ArrayList<MemberDTO> arrayByF = cal.arrayByFollow(memberMap);
@@ -302,14 +516,34 @@ public class SearchController {
 		}else {
 			arrayByF.clear();
 		}
-		model.addAttribute("followMap",returnMap);
+		ArrayList<FollowDTO> follows = sqlSession.getMapper(FollowImpl.class).following(id);
+		model.addAttribute("follows",follows);
 		model.addAttribute("artists",arrayByF);
 		model.addAttribute("memberMap",memberMap);
+		
+		//팔로우추천 4명
+		ArrayList<MemberDTO> recFollow = new ArrayList<MemberDTO>();
+		HashMap<MemberDTO,Integer> recMemberMap = new HashMap<MemberDTO, Integer>();
+		if(id!=null) {
+			recMemberMap = cal.recommandFollowByFollowing(sqlSession,id);
+			recFollow = cal.arrayByFollow(recMemberMap);
+		}
+		model.addAttribute("recFollow",recFollow);
+		model.addAttribute("recMemberMap",recMemberMap);
+		
 		return "main/artistAdd";
 		
 	}
 	@RequestMapping("/searchContents.do")
-	public String searchContents(Model model, HttpServletRequest req) {
+	public String searchContents(Model model, HttpServletRequest req, Principal principal) {
+		String id="";
+		try {
+			 id = principal.getName();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+		
 		//검색페이지에 출력할 오디오게시글 불러옴
 		String searchWord = req.getParameter("searchWord");
 		ArrayList<AudioBoardDTO> byContents = sqlSession.getMapper(SearchImpl.class).search("contents",searchWord,1,8);;
@@ -318,45 +552,112 @@ public class SearchController {
 			audios.setContents(contents);
 		}
 		
+		String path = req.getContextPath();
+		for(AudioBoardDTO audioDTO : byContents) {
+			
+			if(audioDTO.getImagename()==null){
+				audioDTO.setImagename(path+"/resources/img/default.jpg");
+			}
+			else {
+				String fileName = audioDTO.getImagename();
+				audioDTO.setImagename(path+"/resources/upload/"+fileName);
+			}
+			
+			String fileName = audioDTO.getAudiofilename();
+			audioDTO.setAudiofilename(path+"/resources/upload/"+fileName);
+		}
+		
 		model.addAttribute("popMap3", byContents);
 		//댓글수 카운트해서 넣음
 		ArrayList<LikeDTO> likes3 = loadLike(byContents);
-		ArrayList<FollowDTO> follows3 = loadFollow(byContents);
 		model.addAttribute("likes3",likes3);
-		model.addAttribute("follows3",follows3);
+		ArrayList<FollowDTO> follows = sqlSession.getMapper(FollowImpl.class).following(id);
+		model.addAttribute("follows",follows);
 		model.addAttribute("searchWord",searchWord);
 		model.addAttribute("searchType","contents");
+		
+		//팔로우추천 4명
+		ArrayList<MemberDTO> recFollow = new ArrayList<MemberDTO>();
+		HashMap<MemberDTO,Integer> recMemberMap = new HashMap<MemberDTO, Integer>();
+		if(id!=null) {
+			recMemberMap = cal.recommandFollowByFollowing(sqlSession,id);
+			recFollow = cal.arrayByFollow(recMemberMap);
+		}
+		model.addAttribute("recFollow",recFollow);
+		model.addAttribute("recMemberMap",recMemberMap);
+		for(MemberDTO recMemberDTO : recFollow) {
+			
+			if(recMemberDTO.getImg()==null){
+				recMemberDTO.setImg(path+"/resources/img/default.jpg");
+			}
+			else {
+				String fileName = recMemberDTO.getImg();
+				recMemberDTO.setImg(path+"/resources/upload/"+fileName);
+			}
+		}
 		return "main/search";
 		
 	}
 	@RequestMapping("/searchContentsLoad.do")
-	public String searchContentsLoad(Model model, HttpServletRequest req) {
+	public String searchContentsLoad(Model model, HttpServletRequest req, Principal principal) {
+		String id="";
+		try {
+			 id = principal.getName();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+		
 		String searchWord = req.getParameter("searchWord");
 		String searchType = req.getParameter("searchType");
 		int loadedCount = Integer.parseInt(req.getParameter("loadlength"));
 		int totalAudio = sqlSession.getMapper(SearchImpl.class).searchTotal(searchType, searchWord);
-		System.out.println(loadedCount);
-		System.out.println(totalAudio);
-		System.out.println(searchType);
 		ArrayList<AudioBoardDTO> byContents = new ArrayList<AudioBoardDTO>();
 		if(totalAudio!=loadedCount) {
 			byContents = sqlSession.getMapper(SearchImpl.class).search(searchType,searchWord,loadedCount+1,loadedCount+8);
 		}
 		
+		String path = req.getContextPath();
+		for(AudioBoardDTO audioDTO : byContents) {
+			
+			if(audioDTO.getImagename()==null){
+				audioDTO.setImagename(path+"/resources/img/default.jpg");
+			}
+			else {
+				String fileName = audioDTO.getImagename();
+				audioDTO.setImagename(path+"/resources/upload/"+fileName);
+			}
+			
+			String fileName = audioDTO.getAudiofilename();
+			audioDTO.setAudiofilename(path+"/resources/upload/"+fileName);
+		}
+		
 		model.addAttribute("audiolist", byContents);
 		//댓글수 카운트해서 넣음
 		ArrayList<LikeDTO> likes3 = loadLike(byContents);
-		ArrayList<FollowDTO> follows3 = loadFollow(byContents);
 		model.addAttribute("likes",likes3);
-		model.addAttribute("follows",follows3);
+		ArrayList<FollowDTO> follows = sqlSession.getMapper(FollowImpl.class).following(id);
+		model.addAttribute("follows",follows);
+		
 		model.addAttribute("searchWord",searchWord);
 		model.addAttribute("searchType","contents");
+		
+		//팔로우추천 4명
+		ArrayList<MemberDTO> recFollow = new ArrayList<MemberDTO>();
+		HashMap<MemberDTO,Integer> recMemberMap = new HashMap<MemberDTO, Integer>();
+		if(id!=null) {
+			recMemberMap = cal.recommandFollowByFollowing(sqlSession,id);
+			recFollow = cal.arrayByFollow(recMemberMap);
+		}
+		model.addAttribute("recFollow",recFollow);
+		model.addAttribute("recMemberMap",recMemberMap);
 		return "main/audiolistContentsAdd";
 		
 	}
 	@RequestMapping("/loadsearchCount.do")
 	@ResponseBody 
-	public Map<String, String> countLoad(Model model, HttpServletRequest req, Principal principal, HttpSession session) {
+	public Map<String, String> countLoad(Model model, HttpServletRequest req, HttpSession session) {
+		
 		int loaded = Integer.parseInt(req.getParameter("loadlength"));
 		String searchWord = req.getParameter("searchWord");
 		String searchType = req.getParameter("searchType");

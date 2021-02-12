@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import impl.ViewImpl;
 import model.AudioBoardDTO;
 import model.MCommentDTO;
+import model.PartyBoardDTO;
 
 @Controller
 public class ViewController {
@@ -42,14 +43,20 @@ public class ViewController {
 			sqlSession.getMapper(ViewImpl.class).View(
 			Integer.parseInt(req.getParameter("audio_idx")));
 		
-		String temp2 = null;
-		if(view.getContents()!=null) {
-			temp2 = view.getContents().replace("\r\n", "<br/>");
-		}
-		view.setContents(temp2);
+//		String temp2 = null;
+//		if(view.getContents()!=null) {
+//			temp2 = view.getContents().replace("\r\n", "<br/>");
+//		}
+//		view.setContents(temp2);
 		
+		if(view.getImg()==null) {
+			view.setImg("../resources/img/default.jpg");
+		}
+		else {
+			view.setImg(path+"/resources/upload/"+view.getImg());
+		}
 		if(view.getImagename()==null) {
-			view.setImagename(path+"/resources/img/default.jpg");
+			view.setImagename("../resources/img/default.jpg");
 		}
 		else {
 			view.setImagename(path+"/resources/upload/"+view.getImagename());
@@ -71,6 +78,37 @@ public class ViewController {
 			dto.setContents(temp);
 		}
 		model.addAttribute("comments", comments);
+		
+		//협업자 목록 불러오는 매퍼 호출
+		ArrayList<PartyBoardDTO> PartyMember =
+			sqlSession.getMapper(ViewImpl.class).partyMember(
+					Integer.parseInt(req.getParameter("audio_idx")));
+		
+		for(PartyBoardDTO dto2 : PartyMember) {
+			
+			if(dto2.getImg()==null) {
+				dto2.setImg("../resources/img/default.jpg");
+			}
+			else {
+				dto2.setImg(path+"/resources/upload/"+dto2.getImg());
+			}
+		}
+		
+		model.addAttribute("partyMember", PartyMember);
+		
+		//참여자가 없을때를 위한 쿼리문
+		PartyBoardDTO notParty =
+			sqlSession.getMapper(ViewImpl.class).notParty(
+				Integer.parseInt(req.getParameter("audio_idx")));
+		
+		model.addAttribute("notParty", notParty);
+		
+		//채택한 글이 없을때 참여자 목록을 위한 쿼리문
+		PartyBoardDTO notChoice =
+			sqlSession.getMapper(ViewImpl.class).notChoice(
+				Integer.parseInt(req.getParameter("audio_idx")));
+		
+		model.addAttribute("notChoice", notChoice);
 		
 		return "board/view";
 		
@@ -136,12 +174,6 @@ public class ViewController {
 		
 		return "redirect:view.do";
 	}
-	
-
 } 
-
-	//재생횟수 증가
-	
-	
 
 

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import impl.ChoiceImpl;
+import model.MemberDTO;
 
 @Controller
 public class ChoiceController {
@@ -49,7 +50,6 @@ public class ChoiceController {
 		int result3 = sqlSession.getMapper(ChoiceImpl.class).choiceAction3(
 				id, party_idx);
 		System.out.println("입력결과:"+ result3);
-		
 		
 		return "redirect:partyList.do?audio_idx="+idx;
 	}
