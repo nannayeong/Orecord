@@ -428,11 +428,11 @@ function userFunc(){
 								<img src="${b.imagename }" alt="" style="width:6em"/>
 							</td>
 							<td style="padding-left:1em">
-								<div style="font-size:14px;cursor:pointer" onclick="location.href='../${audio.id }/record'">
+								<div style="font-size:14px;cursor:pointer" onclick="location.href='./${audio.id }/record'">
 									${b.id }
 								</div>
 								<div style="font-size:18px">
-									<a href="../board/view.do?audio_idx=${b.audio_idx}">${b.audiotitle}</a>
+									<a href="./board/view.do?audio_idx=${b.audio_idx}">${b.audiotitle}</a>
 									- <a href="${pageContext.request.contextPath}/search.do?searchWord=${b.artistname}">${b.artistname}</a>
 								</div>
 							</td>
