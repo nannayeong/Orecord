@@ -569,7 +569,7 @@ function userFunc(){
 				<tr>
 					<td rowspan="4"
 						style="width: 7em; padding-left: 1em; padding-right: 1em">
-						<img src="./resources/default.jpg" alt="" style="width: 6em" />
+						<img src="${r.img }" alt="" style="width: 6em" />
 					</td>
 					<td><h4 style="padding-top: 1em;"><a href="./${r.id }/record">${r.nickname}</a></h4></td>
 				</tr>

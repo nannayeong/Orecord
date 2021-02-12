@@ -90,16 +90,6 @@ public class HomeController {
 		} 
 		model.addAttribute("plList", plList);
 		
-		//내 팔로잉목록 최대 4개 출력
-		ArrayList<FollowDTO> following = new ArrayList<FollowDTO>();
-		if(id!="") {
-				following = sqlSession.getMapper(FollowImpl.class).following(id);
-		HashSet<String> followings = new HashSet<String>();
-		for( FollowDTO f : following) {
-			followings.add(f.getFollowing_id());
-		}}
-		
-		
 		//메인페이지에 출력할 오디오게시글 불러옴
 		ArrayList<AudioBoardDTO> audiolist = sqlSession.getMapper(AudioBoardImpl.class).mainAudioList(0,7,1,8);
 		

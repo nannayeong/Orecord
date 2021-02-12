@@ -324,10 +324,10 @@ $(function(){
 					<table style="width:100%;margin:1em 0 3em 0em;">
 						<tr>
 							<td class="my-con-left">
-								<div style="text-align:left">
+								<div style="text-align:center">
 									<div class="btn-group" style="margin-bottom:1em;margin-left:1em;text-size:16px;">
-									  <button type="button" class="btn btn-dark" onclick="location.href='./getParty'">getParty</button>
-									  <button type="button" class="btn btn-outline-dark" onclick="location.href='./doParty'">doParty</button>
+									  <button type="button" class="btn btn-dark" onclick="location.href='./getParty'" style="width:10em">getParty</button>
+									  <button type="button" class="btn btn-outline-dark" onclick="location.href='./doParty'" style="width:10em">doParty</button>
 									</div>
 								</div>
 								<div id="albumList">
