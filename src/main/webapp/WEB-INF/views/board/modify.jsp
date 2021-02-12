@@ -183,12 +183,10 @@ function colChoice(){
 								</div>
 							</div>
 							<!-- 작성일, 카테고리 -->
-							<div class="col-4 " style="padding-top: 8px;">
-								<label>작성일</label>
-								<input type="text" class="form-control" name="regidate" value="${modify.regidate }">
+							<div class="col-4 ">
 								<!-- 국가별 카테고리 -->
 								<div class="form-group">
-									<label style="margin-top: 10px;">카테고리</label> <select
+									<label style="margin-top: 7px;">카테고리</label> <select
 										name="country" id="country" class="form-control">
 										<option style="color: black;" value="noValue">나라</option>
 										<option style="color: black;" value="Ghana">가나</option>
@@ -223,15 +221,14 @@ function colChoice(){
 						</div>
 						
 						<!-- 음원파일 -->
-						<div style="padding: 5px 80px 5px 0;">
+						<div style="padding: 10px 80px 5px 0;">
 							<label>음원파일</label>
 							<input type="file" class="form-control"
 								name="audiofilename" id="audiofilename" accept=".mp4,.mp3,.wav">
 						</div>
 					</div>
-
 					<!-- 앨범사진 -->
-					<div class="col-4" style="padding: 0 30px 20px 20px;">
+					<div class="col-4" style="padding: 10px 30px 20px 20px;">
 						<label>앨범사진</label>
 						<input type="file" id="input_file" accept=".jpeg,.jpg,.png"
 							name="imagename" class="form-control"/>

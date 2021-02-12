@@ -5,23 +5,22 @@ import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.servlet.ModelAndView;
 
 import impl.PartyImpl;
-import impl.ViewImpl;
 import model.AudioBoardDTO;
 import model.PartyBoardDTO;
 
@@ -41,9 +40,13 @@ public class PartyController {
 		String partyIdx = req.getParameter("audio_idx");
 		System.out.println("audio_idx????"+ partyIdx);
 		
-		ArrayList<PartyBoardDTO> partyList =
-			sqlSession.getMapper(PartyImpl.class).partyList(
-				Integer.parseInt(req.getParameter("audio_idx")));
+		ArrayList<PartyBoardDTO> partyList = null;
+		
+		if(partyIdx!=null) {
+			partyList =
+				sqlSession.getMapper(PartyImpl.class).partyList(
+					Integer.parseInt(partyIdx));
+		}
 		
 //		for(PartyBoardDTO dto : partyList) {
 //			String temp = dto.getTitle().replace("\r\n", "<br/>");
@@ -114,11 +117,6 @@ public class PartyController {
 			System.out.println("오디오파일 = "+fileName);
 			
 			
-			//파일외에 폼값 받음.
-//			String idx = req.getParameter("audio_idx");
-//			System.out.println("idx = "+ idx);
-//			int party2 = Integer.parseInt(req.getParameter("audio_idx"));
-//			System.out.println("audio_idx = "+ party2);
 			name = principal.getName();
 			String id = req.getParameter("id");
 			//String regidate = req.getParameter("regidate");
@@ -198,14 +196,17 @@ public class PartyController {
 	
 	//협업신청서 상세페이지
 	@RequestMapping("/board/partyView.do")
-	public String partyView(Model model, HttpServletRequest req, Principal principal) {
+	public String partyView(Model model, HttpServletRequest req, Principal principal,
+			HttpServletResponse resp) {
 		
 		//idx값이 넘어오는지 확인
 		String idx = req.getParameter("party_idx");
 		System.out.println("party_idx = "+ idx);
+		String audiofilename = req.getParameter("audiofilename");
 		
 		/*절대경로*/
 		String path = req.getContextPath();
+		
 		
 		//Mapper 호출
 		PartyBoardDTO partyView =
@@ -219,5 +220,38 @@ public class PartyController {
 		model.addAttribute("party_idx", idx);
 		
 		return "board/partyView";
+	}
+	
+	//파일 다운로드
+	@RequestMapping("/board/download.do")
+	public ModelAndView downLoad(HttpServletRequest req,
+			HttpServletResponse resp) throws Exception {
+		
+		//저장된 파일명
+		String fileName = req.getParameter("audiofilename");
+		System.out.println("저장된 파일명 : "+ fileName);
+		String[] file2 = fileName.split("/");
+		String[] file3 = fileName.split("\\.");
+		
+		//원본 파일명
+		String oriFileName = req.getParameter("oriFileName");
+		String oriFileName2 = oriFileName+"."+file3[1];
+		System.out.println("원본 파일명 : "+ oriFileName2);
+		
+		//서버의 물리적경로 얻어오기
+		String path = req.getSession().getServletContext().getRealPath("/resources/upload");
+		//경로와 파일명을 통해 File객체 생성
+		File downloadFile = new File(path+"/"+file2[4]);
+		//해당 경로에 파일이 있는지 확인
+		if(!downloadFile.canRead()) {
+			throw new Exception("파일을 찾을수 없습니다.");
+		}
+		
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("fileDownloadView");//다운로드 할 View명
+		mv.addObject("downloadFile", downloadFile);//저장된파일명
+		mv.addObject("oriFileName", oriFileName2);//원본파일명
+		
+		return mv;
 	}
 } 

@@ -5,7 +5,11 @@ import java.util.HashMap;
 
 import org.apache.ibatis.session.SqlSession;
 
+import impl.AudioBoardImpl;
+import impl.FollowImpl;
+import impl.MemberImpl;
 import model.AudioBoardDTO;
+import model.FollowDTO;
 import model.MemberDTO;
 
 public class Calculate {
@@ -140,8 +144,50 @@ public class Calculate {
 		}
 		return ret;
 	}
-	
+	public HashMap<MemberDTO,Integer> recommandFollowByFollowing(SqlSession sqlSession,String id){
+		HashMap<MemberDTO,Integer> memberMap = new HashMap<MemberDTO, Integer>();
+		
+		//유저가 팔로우중인 아이디들
+		ArrayList<FollowDTO> followings = sqlSession.getMapper(FollowImpl.class).following(id);
+
+		for (FollowDTO followDTO : followings) {
+			String followingId = followDTO.getFollowing_id();
+			ArrayList<FollowDTO> followrec = sqlSession.getMapper(FollowImpl.class).following(followingId);
+			for(FollowDTO rec : followrec) {
+				if(rec.getFollowing_id()!=id) {
+					int audioCount = sqlSession.getMapper(AudioBoardImpl.class).audioList(rec.getFollowing_id()).size();
+					if(audioCount>0) {
+						int  followCount = sqlSession.getMapper(FollowImpl.class).followerCount(rec.getFollowing_id());
+						MemberDTO recmember = sqlSession.getMapper(MemberImpl.class).memberInfo(rec.getFollowing_id());
+						memberMap.put(recmember, followCount);
+					}
+				}
+			}
+		}
+		for (FollowDTO fDTO : followings) {
+			for(MemberDTO mdto : memberMap.keySet()) {
+				System.out.println(mdto.getId());
+				System.out.println(fDTO.getFollowing_id());
+				System.out.println();
+				if(mdto.getId().equals(fDTO.getFollowing_id())) {
+					System.out.println("왜 실행안되냐고");
+					memberMap.remove(mdto);
+					break;
+				}
+			}
+		}
+		
+		for(MemberDTO dto:memberMap.keySet()) {
+			if(memberMap.size()<=4) {
+				break;
+			}else {
+				memberMap.remove(dto);
+			}
+		}
+		return memberMap;
+	}
 }
+
 class ToCal{
 	public int followNum;
 	public String id;

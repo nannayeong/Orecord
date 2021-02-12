@@ -32,6 +32,11 @@ function choiceAction(id, point){
 // 	}
 // }
 </script>
+<style>
+.form-group label{
+	color:blue;
+}
+</style>
 </head>
 <body>
 <div>
@@ -113,18 +118,24 @@ function choiceAction(id, point){
 		<div class="row" style="margin: 30px 0 30px 0;">
 			<div class="col-10">
 				<div class="row">
-					<div class="col-2" align="center" style="margin: 10px 0 0 27px;">
+					<div class="col-8" align="center" style="margin: 10px 0 0 35px;">
 						<div class="form-group">
-							<p>음원파일</p>
-						</div>
-					</div>
-					<div class="col-8">
-						<div>
+							<span style="color:blue;">음원파일</span>
+							<p style="color:gray; font-size:12px;"> * 채택시 다운로드가 가능합니다.</p>
 							<audio controls style="width: 500px;">
 								<source src="${partyView.audiofilename }"/>
 							</audio>
 						</div>
 					</div>
+					<c:if test="${partyView.choice eq 1 }">
+					<div class="col-2" style="padding-top:80px;" align="center">
+						<div>
+							<a href="download.do?audiofilename=${partyView.audiofilename }&oriFileName=${partyView.id}님의작곡">
+								[다운로드]
+							</a>
+						</div>
+					</div>
+					</c:if>
 				</div>
 			</div>
 		</div>

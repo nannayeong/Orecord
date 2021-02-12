@@ -6,11 +6,17 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<!-- Jquery, BootStrap -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
+
+<!-- layout css -->
+<link href="${pageContext.request.contextPath}/resources/css/layout.css" rel="stylesheet" />
+<!-- layout js-->
+<script src="${pageContext.request.contextPath}/resources/js/layout.js"></script>
 <style>
 body {
 	background-color: #f2f2f2;
@@ -44,22 +50,23 @@ a {
 	padding-bottom: 1em;
 }
 
-.right-content-back {
-	background-color: white;
-	width: 30%;
-	display: inline-block;
-}
-
-.right-content {
-	background-color: white;
-	width: 100%;
-	max-width: 288px;
-	margin: auto;
-	padding-top: 3em;
-	padding-bottom: 1em;
+.right-content-back{
+	background-color:white;
+	max-width:288px;
+	height : 100%;
+	width:30%;
+	display:inline-block;
 	position: fixed;
 	top: 0px;
 	float: left;
+}
+.right-content{
+	background-color:white;
+	width:100%;
+	height : 960px!;
+	margin:auto;
+	padding-top:3em;
+	padding-bottom:1em;
 	text-align: center;
 }
 
@@ -189,7 +196,7 @@ $(window).on("scroll", function() {
 			      data : { loadlength :loadedSize,searchWord:'${searchWord}',searchType:'audiotitle'}, 
 			      dataType : "html",
 			      success : function(resData) {
-			    	  $('table').last().after(resData);
+			    	  $('.feed').last().after(resData);
 			    	  checktotalLoad('audiotitle');
 			      },
 			      error : function(e) {
@@ -206,7 +213,7 @@ $(window).on("scroll", function() {
 			      data : { loadlength :loadedSize,searchWord:'${searchWord}',searchType:'artistname'}, 
 			      dataType : "html",
 			      success : function(resData) {
-			    	  $('table').last().after(resData);
+			    	  $('.feed').last().after(resData);
 			    	  checktotalLoad('artistname');
 			      },
 			      error : function(e) {
@@ -222,7 +229,7 @@ $(window).on("scroll", function() {
 			      data : { loadlength :loadedSize,searchWord:'${searchWord}'}, 
 			      dataType : "html",
 			      success : function(resData) {
-			    	  $('table').last().after(resData);
+			    	  $('.feed').last().after(resData);
 			    	  checktotalLoad('nickname');
 			      },
 			      error : function(e) {
@@ -238,7 +245,7 @@ $(window).on("scroll", function() {
 			      data : { loadlength :loadedSize,searchWord:'${searchWord}',searchType:'contents'}, 
 			      dataType : "html",
 			      success : function(resData) {
-			    	  $('table').last().after(resData);
+			    	  $('.feed').last().after(resData);
 			    	  checktotalLoad('contents');
 			      },
 			      error : function(e) {
@@ -262,7 +269,7 @@ function checktotalLoad(type) {
 	      success : function(resData) {
 	    	  if(resData.nomoreFeed!=null){
 	    	  if(end==undefined){
-	    		  $('table').last().after("<h3 class='end'>"+resData.nomoreFeed+"</h3>");
+	    		  $('.feed').last().after("<h3 class='end'>"+resData.nomoreFeed+"</h3>");
 	    	  }}
 	    	  
 	      },
@@ -411,18 +418,6 @@ function checktotalLoad(type) {
 			}
 		});
 	}
-
-	function donatebtn(audio_idx) {
-		if ("${pageContext.request.userPrincipal.name}" == ""
-				|| "${pageContext.request.userPrincipal.name}" == null) {
-			alert("로그인후 이용하세요");
-			location.href = "${pageContext.request.contextPath}/member/login.do";
-		} else {
-			var win = window.open("./" + "/donate.do", "PopupWin",
-					"width=500,height=600");
-		}
-	}
-
 	function commentNcheck(c) {
 		if ("${pageContext.request.userPrincipal.name}" == ""
 				|| "${pageContext.request.userPrincipal.name}" == null) {
@@ -497,7 +492,7 @@ function checktotalLoad(type) {
 	
 				<table
 					style="width: 100%; border: 2px #f2f2f2 solid; margin: auto; margin-bottom: 1em"
-					class="pcount">
+					class="feed">
 					<tr>
 						<td rowspan="4"
 							style="width: 7em; padding-left: 1em; padding-right: 1em">
@@ -564,7 +559,7 @@ function checktotalLoad(type) {
 		<c:forEach var="a" items="${audioByNameList }">
 				<table
 					style="width: 100%; border: 2px #f2f2f2 solid; margin: auto; margin-bottom: 1em"
-					class="pcount">
+					class=feed>
 					<tr>
 						<td rowspan="4"
 							style="width: 7em; padding-left: 1em; padding-right: 1em">
@@ -630,7 +625,7 @@ function checktotalLoad(type) {
 		<c:forEach var="a" items="${artists}">
 			<table
 				style="width: 100%; border: 2px #f2f2f2 solid; margin: auto; margin-bottom: 1em"
-				class="pcount">
+				class="feed">
 				<tr>
 					<td rowspan="4"
 						style="width: 7em; padding-left: 1em; padding-right: 1em">
@@ -644,13 +639,12 @@ function checktotalLoad(type) {
 				<tr>
 					<td style="padding-top: 1em; padding-bottom: 1em;">
 				<c:set var="followB" value="false"/>
-        		<c:forEach var="f" items="${followMap }">
-        		<c:forEach var="follower" items="${f.value }">
-        		<c:if test="${pageContext.request.userPrincipal.name eq follower and a.id eq f.key}">
+        		<c:forEach var="f" items="${follows }">
+        		<c:if test="${a.id eq f.following_id}">
         		<c:set var="followB" value="true"/>
         		</c:if>
         		</c:forEach>
-        		</c:forEach>
+
         		     <c:choose>
                <c:when test="${followB}">
                <button type="button" class="btn btn-outline-secondary btn-sm follow ${a.id}" onclick="fBtn('${a.id}')" >팔로우</button>
@@ -659,8 +653,6 @@ function checktotalLoad(type) {
                    <button type="button" class="btn btn-secondary btn-sm follow ${a.id}" onclick="fBtn('${a.id}')" >팔로우</button>
                  </c:otherwise>
                </c:choose>
-               
-						
 					<td style="text-align: center">
 						<h6 class="pCount ${a.id }">팔로워 : ${memberMap[a]}</h6>
 					</td>
@@ -680,7 +672,7 @@ function checktotalLoad(type) {
 			<c:forEach var="b" items="${popMap3}">
 				<table
 					style="width: 100%; border: 2px #f2f2f2 solid; margin: auto; margin-bottom: 1em"
-					class="pcount">
+					class="feed">
 					<tr>
 						<td rowspan="4"
 							style="width: 7em; padding-left: 1em; padding-right: 1em">
@@ -701,7 +693,8 @@ function checktotalLoad(type) {
 									test="${b.audio_idx eq l.audio_idx and pageContext.request.userPrincipal.name eq l.like_id}">
 									<c:set var="likeB" value="true" />
 								</c:if>
-							</c:forEach> <c:choose>
+							</c:forEach> 
+							<c:choose>
 								<c:when test="${likeB}">
 									<button type="button"
 										class="btn btn-outline-secondary btn-sm heart ${b.audio_idx}"
@@ -762,6 +755,46 @@ function checktotalLoad(type) {
 			<li><a href="./searchArtist.do?searchWord=${searchWord }">아티스트 검색</a></li>
 			<li><a href="./searchContents.do?searchWord=${searchWord }">내용으로 검색</a></li>
 			</ul>
+					<c:forEach var="r" items="${recFollow}">
+				<table
+				style="width: 100%; border: 2px #f2f2f2 solid; margin: auto; margin-bottom: 1em"
+				class="feed">
+				<tr>
+					<td rowspan="4"
+						style="width: 7em; padding-left: 1em; padding-right: 1em">
+						<img src="./resources/default.jpg" alt="" style="width: 6em" />
+					</td>
+					<td><h4 style="padding-top: 1em;"><a href="./${r.id }/record">${r.nickname}</a></h4></td>
+				</tr>
+				<tr>
+					<td colspan="2"></td>
+				</tr>
+				<tr>
+					<td style="padding-top: 1em; padding-bottom: 1em;">
+				<c:set var="followB" value="false"/>
+        		<c:forEach var="f" items="${follows }">
+        		<c:if test="${r.id eq f.following_id}">
+        		<c:set var="followB" value="true"/>
+        		</c:if>
+        		</c:forEach>
+        		     <c:choose>
+               <c:when test="${followB}">
+               <button type="button" class="btn btn-outline-secondary btn-sm follow ${r.id}" onclick="fBtn('${r.id}')" >팔로우</button>
+                 </c:when>
+                 <c:otherwise>
+                   <button type="button" class="btn btn-secondary btn-sm follow ${r.id}" onclick="fBtn('${r.id}')" >팔로우</button>
+                 </c:otherwise>
+               </c:choose>	
+					<td style="text-align: center">
+						<h6 class="pCount ${r.id }">팔로워 : ${recMemberMap[r]}</h6>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+					</td>
+				</tr>
+			</table>
+		</c:forEach>
 		</div>
 	</div>
 </div>

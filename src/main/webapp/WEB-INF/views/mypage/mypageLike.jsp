@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <style>
 #list{
 border:2px #f2f2f2 solid
@@ -9,7 +8,6 @@ border:2px #f2f2f2 solid
 #list:hover{
 background-color: #f2f2f2;cursor:pointer
 }
-</style>
 </style>
 <table style="width:95%;margin:auto;">
 <c:choose>

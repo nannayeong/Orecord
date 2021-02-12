@@ -14,10 +14,10 @@ border:1px solid #f2f2f2;
 <!-- 앨범 -->
 <table style="width:80%;margin:auto;">
 <c:choose>
-<c:when test="${empty plSet and nowPage eq null}">
+<c:when test="${empty plSet and nowPage eq '1'}">
 	<td style="text-align:center;border:2px #f2f2f2 solid;height:30em">
 		<div>등록된 플레이리스트가 없습니다.</div><br />
-		<c:if test="${pageContext.request.userPrincipal.name ne user_id}">
+		<c:if test="${pageContext.request.userPrincipal.name eq user_id}">
 		<div><button type="button" onclick="location.href='../main.do'" class="btn btn-outline-dark">음악찾으러가기</button></div>
 		</c:if>
 	</td>
@@ -26,13 +26,18 @@ border:1px solid #f2f2f2;
 <c:forEach items="${plSet }" var="plName">
 	<tr>
 		<td style="padding-top:1em"> 
-			<div>
-				<span style="font-size:30px">${plName}</span>
-				<c:if test="${pageContext.request.userPrincipal.name eq user_id}">
-				
-				<button type="button" onclick="">리스트삭제</button>
-				</c:if>
-			</div>
+			<table style="width:100%">
+				<tr>
+					<td><span style="font-size:30px">${plName}</span></td>
+					<td style="padding-right:1em;text-align:right">
+						<div>
+							<c:if test="${pageContext.request.userPrincipal.name eq user_id}">
+							<button type="button" class="btn btn-outline-dark btn-sm" onclick="">삭제</button>
+							</c:if>
+						</div>
+					</td>
+				</tr>
+			</table>
 			<audio controls style="background-color:white;width:560px;height:40px" id="${plName }">
 				<c:forEach items="${plList }" var="pl">
 				<c:if test="${plName eq pl.plname }">
@@ -100,10 +105,21 @@ border:1px solid #f2f2f2;
 								</c:if>
 								
                    				<!-- like -->
+                   				<c:if test="${pageContext.request.userPrincipal.name ne user_id}">
                    				<span id="heart" class="iconPoint" onclick="likeFunc(${audio.audio_idx});">
                    					<i id="likeIcon${audio.audio_idx}" class="fas fa-heart ${audio.like eq 'true' ? 'on' : '' }"></i>
-                   				</span>	
-<%--                    				<span id="likecount${audio.audio_idx}">${audio.like_count }</span> --%>
+                   				</span>
+                   				</c:if>	
+                   				<c:if test="${pageContext.request.userPrincipal.name eq user_id}">
+                   				<span class="dropdown">
+								  <span data-toggle="dropdown" style="cursor:pointer">
+								    <i class="fas fa-ellipsis-h fa-lg"></i>
+								  </span>
+								  <div class="dropdown-menu">
+								    <a class="dropdown-item" href="javascript:plAudioDeleteFunc(${audio.idx}, ${audio.audio_idx });">삭제하기</a>
+								  </div>
+								</span>
+								</c:if>
 							</td>
 						</tr>
 						</c:if>

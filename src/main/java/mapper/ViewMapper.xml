@@ -45,4 +45,11 @@
 		comment_idx=#{comment_idx} AND id=#{id}
 	</delete>
 	
+	<!-- 협업자 불러오기 -->
+	<select id="partyMember" resultType="model.PartyBoardDTO">
+		SELECT * FROM member M INNER JOIN partyboard P ON M.id=P.id
+		    WHERE audio_idx=#{param1} AND choice = 1
+	    	ORDER BY party_idx ASC
+	</select>
+	
 </mapper>

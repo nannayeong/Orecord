@@ -48,19 +48,25 @@ var writeValidate = function(f){
 		f.contents.focus();
 		return false;
 	}
+	var point = f.point.value;
+	if(point < "0" || point > "9"){
+		alert("숫자만 입력 가능합니다.");
+		f.point.focus();
+		return false;
+	}
 	
 	/* if($("#audiofilename").val != ""){ */
-    	var ext = $('#audiofilename').val().split('.').pop().toLowerCase();
-    	if($.inArray(ext, ['mp4','mp3','wav'])==-1){
-    		if($("#audiofilename").val() = null){
-    			return true;
-    		}
-    		else{
-	    		alert("지정된 확장자의 파일만 업로드 가능합니다.");
-	    		$("#audiofilename").val("");
-	    		return false;
-    		}
-    	}
+   	var ext = $('#audiofilename').val().split('.').pop().toLowerCase();
+   	if($.inArray(ext, ['mp4','mp3','wav'])==-1){
+   		if($("#audiofilename").val() = null){
+   			return true;
+   		}
+   		else{
+    		alert("지정된 확장자의 파일만 업로드 가능합니다.");
+    		$("#audiofilename").val("");
+    		return false;
+   		}
+   	}
     /* } */
 }
 /* function partyRow(audio_idx){
@@ -130,7 +136,7 @@ var writeValidate = function(f){
 				<div class="col-5">
 					<div class="form-group">
 						<label>포인트</label> <input type="text" class="form-control"
-							name="point" value="" placeholder="포인트를 입력해주세요">
+							name="point" id="point" value="" placeholder="포인트를 입력해주세요">
 					</div>
 				</div>
 				<div class="col-5">

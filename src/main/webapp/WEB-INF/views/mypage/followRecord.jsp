@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>${user_id}님의 페이지</title>
+<title>${memberDTO.nickname }(${user_id })님의 페이지</title>
 <!-- Jquery, BootStrap -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -18,32 +18,28 @@
 <!-- layout js-->
 <script src="${pageContext.request.contextPath}/resources/js/layout.js"></script>
 <script>
-
-function deleteAlbumFunc(aidx){
+function recordDeleteFunc(aidx){
 	if("${pageContext.request.userPrincipal.name}"==""){
 		alert('로그인 후 이용해주세요');
 		location.href="../member/login.do"
 	}
 	else{
-		if(confirm('앨범을 삭제하시겠습니까?')){
+		if(confirm('삭제하시겠습니까?')){
 			$.ajax({
-			     url : "../deleteAlbum.do",
+			     url : "../recordDelete.do",
 			     type : "get",
 			     contentType : "text/html;charset:utf-8",
-			     data : {album_idx:aidx}, 
+			     data : {audio_idx:aidx},
 			     dataType : "json",
 			     success : function sucFunc(resData) {
-					 if(resData.result==1){
-						alert("정상적으로 삭제되었습니다");
-						location.href="./album";
+			    	 if(resData.result==1){
+							alert("정상적으로 삭제되었습니다");
+							location.href="./record";
 					 }
 			     }    
 			});
 		}
 	}
-}
-function clickAudio(audioFileName,playerName){
-	$('#'+playerName).attr('src',audioFileName).attr('autoplay',true);
 }
 function logincheck(bt){
 	if("${pageContext.request.userPrincipal.name}"==""){
@@ -112,9 +108,6 @@ function logincheck(bt){
 		}		 
 	}
 }
-function clickAudio(audioFileName,playerName){
-	$('#'+playerName).attr('src',audioFileName).attr('autoplay',true);
-}
 function pointCheck(){
 	if($('#doneError').html()!=''){
 		alert('보유 포인트를 확인해주세요');
@@ -122,6 +115,18 @@ function pointCheck(){
 	}
 	if($('#donePoint').val()==''){
 		alert('후원 포인트를 입력해주세요');
+		return false;
+	}
+}
+
+function commentNcheck(c) {
+	if("${pageContext.request.userPrincipal.name}"==""){
+		   alert("로그인후 이용하세요");
+		   location.href='${pageContext.request.contextPath}/member/login.do';
+		   return false
+	}else if(c.cInput.value==""||c.cInput.value==null){
+		alert("내용을 입력하세요")
+		c.focus();
 		return false;
 	}
 }
@@ -166,6 +171,7 @@ function likeFunc(a){
 }
 
 $(function(){
+	
 	/* 페이징 */
 	var nowP = 1;
 	$(window).scroll(function(){
@@ -174,7 +180,7 @@ $(function(){
 		if(scrollPosition > scrollHeight -1){
 			nowP = nowP + 1;
 			$.ajax({
-			     url : "../mypageAlbum.do",
+			     url : "../mypageFollow.do",
 			     type : "get",
 			     contentType : "text/html;charset:utf-8",
 			     data : {user_id:"${user_id}", 
@@ -187,6 +193,7 @@ $(function(){
 		}
 	});
 	
+	/*팔로우*/
 	$('#follow').mouseenter(function(){
 		if($('#follow').html()=='팔로워'){
 			$('#follow').html('언팔로우');
@@ -217,7 +224,7 @@ $(function(){
 	    		 $('#follow').addClass('btn btn-outline-success btn-sm');
 	    	 }	 
 	     }    
-	});		
+	});
 	
 	/* 팔로잉/팔로워/게시물 숫자 불러오기 */
 	$.ajax({
@@ -232,14 +239,13 @@ $(function(){
 	   	  $('#track').html(resData.trackCount);
 	     }    
 	});
-
-	/* 리스트페이지 */
+	
 	$.ajax({
-	     url : "../mypageAlbum.do",
+	     url : "../mypageFollow.do",
 	     type : "get",
 	     contentType : "text/html;charset:utf-8",
 	     data : {user_id:"${user_id}", 
-	    	 	nowPage:"${nowPage eq null?1:nowPage}"},
+	    	 	nowPage:"${nowPage==null?1:nowPage}"},
 	     dataType : "html",
 	     success : function sucFunc(resData) {
 	    	 $('#albumList').html(resData);
@@ -254,7 +260,7 @@ $(function(){
 			$('#doneError').html('');
 		}
 	});
-});
+}); 
 </script>
 </head>
 <body style="background-color:#f2f2f2;">
@@ -265,12 +271,9 @@ $(function(){
 			</div>
 			<div>
 				<div class="my-menu">
-					<span onclick="location.href='../${user_id}/record'">record</span>
-					<span onclick="location.href='../${user_id}/album'" style="color:orange;">album</span>
+					<span onclick="location.href='../${user_id}/record'" style="color:orange;">record</span>
+					<span onclick="location.href='../${user_id}/album'">album</span>
 					<span onclick="location.href='../${user_id}/playlist'">playlist</span>
-					<c:if test="${user_id eq pageContext.request.userPrincipal.name}">
-					<span onclick="location.href='../${user_id}/getParty">party</span>
-					</c:if>
 					
 					<div style="float:right;margin-right:1em;">
 						<c:choose>
@@ -314,11 +317,19 @@ $(function(){
 					</div>
 				</div>
 				<div class="my-content">
+					
 					<table style="width:100%;margin:1em 0 3em 0em;">
 						<tr>
 							<td class="my-con-left">
+								<div style="text-align:left">
+									<div class="btn-group" style="margin-bottom:1em;margin-left:1em;text-size:16px;">
+									  <button type="button" class="btn btn-outline-dark" onclick="location.href='./record'">myRecord</button>
+									  <button type="button" class="btn btn-outline-dark" onclick="location.href='./likeRecord'">like</button>
+									  <button type="button" class="btn btn-dark" onclick="location.href='./followRecord'">followers</button>
+									</div>
+								</div>
 								<div id="albumList">
-	
+								
 								</div>
 							</td>
 							<td class="my-con-right">
@@ -329,13 +340,12 @@ $(function(){
 				</div>
 			</div>
 		</div>
-		<!-- 본문종료 -->
 	</div>
-
+		<!-- 본문종료 -->
 	<!-- 상단 메뉴바(위치옮기면안됨!) -->
 	<header>
 		<%@include file="/resources/jsp/header.jsp" %>
 	</header>
 
 </body>
-</html> 
+</html>
