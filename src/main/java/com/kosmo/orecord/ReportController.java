@@ -157,7 +157,7 @@ public class ReportController {
 		catch(Exception e) {
 			e.printStackTrace();
 		}
-		
+		 
 		return "redirect:/report/reportlist.do";
 		
 	}
