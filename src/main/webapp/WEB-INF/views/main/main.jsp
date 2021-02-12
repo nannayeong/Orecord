@@ -565,11 +565,11 @@ function userFunc(){
 				<c:forEach var="r" items="${recFollow}">
 				<table
 				style="width: 100%; border: 2px #f2f2f2 solid; margin: auto; margin-bottom: 1em"
-				class="pcount">
+				class="artist">
 				<tr>
 					<td rowspan="4"
 						style="width: 7em; padding-left: 1em; padding-right: 1em">
-						<img src="./resources/default.jpg" alt="" style="width: 6em" />
+						<img src="${r.img }" alt="" style="width: 6em" />
 					</td>
 					<td><h4 style="padding-top: 1em;"><a href="./${r.id }/record">${r.nickname}</a></h4></td>
 				</tr>
@@ -577,7 +577,7 @@ function userFunc(){
 					<td colspan="2"></td>
 				</tr>
 				<tr>
-					<td style="padding-top: 1em; padding-bottom: 1em;">
+					<td style="padding-top: 1em; padding-bottom: 1em; text-align: left;">
 				<c:set var="followB" value="false"/>
         		<c:forEach var="f" items="${follows }">
         		<c:if test="${r.id eq f.following_id}">
@@ -591,8 +591,8 @@ function userFunc(){
                  <c:otherwise>
                    <button type="button" class="btn btn-secondary btn-sm follow ${r.id}" onclick="fBtn('${r.id}')" >팔로우</button>
                  </c:otherwise>
-               </c:choose>	
-					<td style="text-align: center">
+               </c:choose>	</td>
+					<td style="text-align: center; padding-right: 5px;">
 						<h6 class="pCount ${r.id }">팔로워 : ${recMemberMap[r]}</h6>
 					</td>
 				</tr>

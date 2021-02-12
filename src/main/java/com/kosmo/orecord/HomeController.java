@@ -89,16 +89,7 @@ public class HomeController {
 			e.printStackTrace();
 		} 
 		model.addAttribute("plList", plList);
-		
-		//내 팔로잉목록 최대 4개 출력
-		ArrayList<FollowDTO> following = new ArrayList<FollowDTO>();
-		if(id!="") {
-				following = sqlSession.getMapper(FollowImpl.class).following(id);
-		HashSet<String> followings = new HashSet<String>();
-		for( FollowDTO f : following) {
-			followings.add(f.getFollowing_id());
-		}}
-		
+
 		
 		//메인페이지에 출력할 오디오게시글 불러옴
 		ArrayList<AudioBoardDTO> audiolist = sqlSession.getMapper(AudioBoardImpl.class).mainAudioList(0,7,1,8);
@@ -141,6 +132,16 @@ public class HomeController {
 			recMemberMap = cal.recommandFollowByFollowing(sqlSession,id);
 			recFollow = cal.arrayByFollow(recMemberMap);
 		}
+		for(MemberDTO recMemberDTO : recFollow) {
+			
+			if(recMemberDTO.getImg()==null){
+				recMemberDTO.setImg(path+"/resources/img/default.jpg");
+			}
+			else {
+				String fileName = recMemberDTO.getImg();
+				recMemberDTO.setImg(path+"/resources/upload/"+fileName);
+			}
+		}
 		model.addAttribute("recFollow",recFollow);
 		model.addAttribute("recMemberMap",recMemberMap);
 		
@@ -156,14 +157,27 @@ public class HomeController {
 		//현재 로드된 table수를 불러옴
 		int loadedCount = Integer.parseInt(req.getParameter("loadlength"));
 		int totalAudio = sqlSession.selectOne("audioCount");
-		String logId = req.getParameter("id");
 		ArrayList<AudioBoardDTO> audiolist = new ArrayList<AudioBoardDTO>();
 		if(loadedCount!=totalAudio){
 			audiolist = sqlSession.getMapper(AudioBoardImpl.class).mainAudioList(dateCheck,dateCheck+40,loadedCount+1,loadedCount+8);
 		}
+		
 		model.addAttribute("audiolist", audiolist); 
 		//댓글수 카운트해서 넣음
-		
+		String path = req.getContextPath();
+		for(AudioBoardDTO audioDTO : audiolist) {
+			
+			System.out.println(audioDTO.getImagename()); 
+			if(audioDTO.getImagename()==null){
+				audioDTO.setImagename(path+"/resources/img/default.jpg");
+			}
+			else {
+				String fileName = audioDTO.getImagename();
+				audioDTO.setImagename(path+"/resources/upload/"+fileName);
+			}
+			String fileName = audioDTO.getAudiofilename();
+			audioDTO.setAudiofilename(path+"/resources/upload/"+fileName);
+		}
 		
 		ArrayList<LikeDTO> likes = loadLike(audiolist);
 		ArrayList<FollowDTO>  follows = loadFollow(audiolist);

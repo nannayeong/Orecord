@@ -762,7 +762,7 @@ function checktotalLoad(type) {
 				<tr>
 					<td rowspan="4"
 						style="width: 7em; padding-left: 1em; padding-right: 1em">
-						<img src="./resources/default.jpg" alt="" style="width: 6em" />
+						<img src="${r.img }" alt="" style="width: 6em" />
 					</td>
 					<td><h4 style="padding-top: 1em;"><a href="./${r.id }/record">${r.nickname}</a></h4></td>
 				</tr>
@@ -784,7 +784,7 @@ function checktotalLoad(type) {
                  <c:otherwise>
                    <button type="button" class="btn btn-secondary btn-sm follow ${r.id}" onclick="fBtn('${r.id}')" >팔로우</button>
                  </c:otherwise>
-               </c:choose>	
+               </c:choose>	</td>
 					<td style="text-align: center">
 						<h6 class="pCount ${r.id }">팔로워 : ${recMemberMap[r]}</h6>
 					</td>

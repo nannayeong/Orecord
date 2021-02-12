@@ -18,7 +18,69 @@
 <!-- layout js-->
 <script src="${pageContext.request.contextPath}/resources/js/layout.js"></script>
 <script>
+function fBtn(follow) {
+	var f = follow;
+	var clas = document.getElementsByClassName("btn btn-outline-secondary btn-sm follow " + f);
+	if ("${pageContext.request.userPrincipal.name}" == ""
+			|| "${pageContext.request.userPrincipal.name}" == null) {
+		alert("로그인후 이용하세요");
+		location.href = "${pageContext.request.contextPath}/member/login.do";
+	} else {
+		if (clas.length == 0) {
+			followbtn(f);
+		} else {
+			unfollowbtn(f);
+		}
+	}
+}
+function followbtn(follow) {
+	var f = follow;
 
+	$.ajax({
+		url : "../addFollower.do",
+		type : "get",
+		contentType : "text/html;charset:utf-8",
+		data : {
+			followId : "${pageContext.request.userPrincipal.name}",
+			followerId : f
+		},
+		dataType : "json",
+		success : function sucFunc(resData) {
+			var section1s = document
+					.getElementsByClassName("btn btn-secondary btn-sm follow " + f);
+			for (var i = section1s.length - 1; i >= 0; i--) {
+				var sec1 = section1s.item(i);
+				sec1.className = "btn btn-outline-secondary btn-sm follow " + f;
+			}
+			count = resData.followcount;
+			$('.pCount.' + f).html('팔로워 : ' + count);
+		}
+
+	});
+}
+function unfollowbtn(follow) {
+	var f = follow;
+	$.ajax({
+		url : "../unFollow.do",
+		type : "get",
+		contentType : "text/html;charset:utf-8",
+		data : {
+			followId : "${pageContext.request.userPrincipal.name}",
+			followerId : f
+		},
+		dataType : "json",
+		success : function sucFunc(resData) {
+			var section1s = document
+					.getElementsByClassName("btn btn-outline-secondary btn-sm follow " + f);
+			for (var i = section1s.length - 1; i >= 0; i--) {
+				var sec1 = section1s.item(i);
+				sec1.className = "btn btn-secondary btn-sm follow " + f;
+			}
+			count = resData.followcount;
+			$('.pCount.' + f).html('팔로워 : ' + count);
+		}
+	});
+}
 </script>
 </head>
 <body style="background-color:#f2f2f2;">

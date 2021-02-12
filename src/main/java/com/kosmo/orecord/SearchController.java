@@ -177,7 +177,16 @@ public class SearchController {
 		}
 		model.addAttribute("recFollow",recFollow);
 		model.addAttribute("recMemberMap",recMemberMap);
-		
+		for(MemberDTO recMemberDTO : recFollow) {
+			
+			if(recMemberDTO.getImg()==null){
+				recMemberDTO.setImg(path+"/resources/img/default.jpg");
+			}
+			else {
+				String fileName = recMemberDTO.getImg();
+				recMemberDTO.setImg(path+"/resources/upload/"+fileName);
+			}
+		}
 		
 		return "main/searchMain";
 	}
@@ -194,6 +203,22 @@ public class SearchController {
 		
 		String searchWord = req.getParameter("searchWord");
 		ArrayList<AudioBoardDTO> audioList = sqlSession.getMapper(SearchImpl.class).search("AUDIOTITLE",searchWord,1,8);
+		String path = req.getContextPath();
+		for(AudioBoardDTO audioDTO : audioList) {
+			
+			if(audioDTO.getImagename()==null){
+				audioDTO.setImagename(path+"/resources/img/default.jpg");
+			}
+			else {
+				String fileName = audioDTO.getImagename();
+				audioDTO.setImagename(path+"/resources/upload/"+fileName);
+			}
+			
+			String fileName = audioDTO.getAudiofilename();
+			audioDTO.setAudiofilename(path+"/resources/upload/"+fileName);
+		}
+		
+		
 		//아티스트명으로 검색
 		ArrayList<LikeDTO> likes1 = loadLike(audioList);
 		ArrayList<FollowDTO> follows1 = loadFollow(audioList);
@@ -214,6 +239,16 @@ public class SearchController {
 		}
 		model.addAttribute("recFollow",recFollow);
 		model.addAttribute("recMemberMap",recMemberMap);
+		for(MemberDTO recMemberDTO : recFollow) {
+			
+			if(recMemberDTO.getImg()==null){
+				recMemberDTO.setImg(path+"/resources/img/default.jpg");
+			}
+			else {
+				String fileName = recMemberDTO.getImg();
+				recMemberDTO.setImg(path+"/resources/upload/"+fileName);
+			}
+		}
 		return "main/search";
 	}
 	
@@ -231,8 +266,24 @@ public class SearchController {
 		int loadedCount = Integer.parseInt(req.getParameter("loadlength"));
 		int totalAudio = sqlSession.getMapper(SearchImpl.class).searchTotal("AUDIOTITLE", searchWord);
 		ArrayList<AudioBoardDTO> audioList = new ArrayList<AudioBoardDTO>();
+		
 		if(totalAudio!=loadedCount) {
 			audioList = sqlSession.getMapper(SearchImpl.class).search("audiotitle",searchWord,loadedCount+1,loadedCount+8);
+		}
+		
+		String path = req.getContextPath();
+		for(AudioBoardDTO audioDTO : audioList) {
+			
+			if(audioDTO.getImagename()==null){
+				audioDTO.setImagename(path+"/resources/img/default.jpg");
+			}
+			else {
+				String fileName = audioDTO.getImagename();
+				audioDTO.setImagename(path+"/resources/upload/"+fileName);
+			}
+			
+			String fileName = audioDTO.getAudiofilename();
+			audioDTO.setAudiofilename(path+"/resources/upload/"+fileName);
 		}
 		
 		//댓글수 카운트해서 넣음
@@ -251,6 +302,7 @@ public class SearchController {
 		}
 		model.addAttribute("recFollow",recFollow);
 		model.addAttribute("recMemberMap",recMemberMap);
+		
 		return "main/audiolistAdd";
 	}
 	////////아티스트명으로 곡찾기
@@ -267,16 +319,30 @@ public class SearchController {
 		//검색페이지에 출력할 오디오게시글 불러옴
 		String searchWord = req.getParameter("searchWord");
 		
-		ArrayList<AudioBoardDTO> audioByNameList = sqlSession.getMapper(SearchImpl.class).search("artistname",searchWord,1,8);
+		ArrayList<AudioBoardDTO> audioList = sqlSession.getMapper(SearchImpl.class).search("artistname",searchWord,1,8);
 		
+		String path = req.getContextPath();
+		for(AudioBoardDTO audioDTO : audioList) {
+			
+			if(audioDTO.getImagename()==null){
+				audioDTO.setImagename(path+"/resources/img/default.jpg");
+			}
+			else {
+				String fileName = audioDTO.getImagename();
+				audioDTO.setImagename(path+"/resources/upload/"+fileName);
+			}
+			
+			String fileName = audioDTO.getAudiofilename();
+			audioDTO.setAudiofilename(path+"/resources/upload/"+fileName);
+		}
 		
 		//아티스트명으로 검색5개
 		//댓글수 카운트해서 넣음
-		ArrayList<LikeDTO> likes2 = loadLike(audioByNameList);
+		ArrayList<LikeDTO> likes2 = loadLike(audioList);
 		model.addAttribute("likes2",likes2);
 		ArrayList<FollowDTO> follows = sqlSession.getMapper(FollowImpl.class).following(id);
 		model.addAttribute("follows",follows);
-		model.addAttribute("audioByNameList",audioByNameList);
+		model.addAttribute("audioByNameList",audioList);
 		model.addAttribute("searchWord",searchWord);
 		model.addAttribute("searchType","byartist");
 		
@@ -289,6 +355,16 @@ public class SearchController {
 		}
 		model.addAttribute("recFollow",recFollow);
 		model.addAttribute("recMemberMap",recMemberMap);
+		for(MemberDTO recMemberDTO : recFollow) {
+			
+			if(recMemberDTO.getImg()==null){
+				recMemberDTO.setImg(path+"/resources/img/default.jpg");
+			}
+			else {
+				String fileName = recMemberDTO.getImg();
+				recMemberDTO.setImg(path+"/resources/upload/"+fileName);
+			}
+		}
 		return "main/search";
 		
 	}
@@ -312,6 +388,23 @@ public class SearchController {
 		if(totalAudio!=loadedCount) {
 			audioByNameList = sqlSession.getMapper(SearchImpl.class).search("artistname",searchWord,loadedCount+1,loadedCount+8);
 		}
+		
+		String path = req.getContextPath();
+		for(AudioBoardDTO audioDTO : audioByNameList) {
+			
+			if(audioDTO.getImagename()==null){
+				audioDTO.setImagename(path+"/resources/img/default.jpg");
+			}
+			else {
+				String fileName = audioDTO.getImagename();
+				audioDTO.setImagename(path+"/resources/upload/"+fileName);
+			}
+			
+			String fileName = audioDTO.getAudiofilename();
+			audioDTO.setAudiofilename(path+"/resources/upload/"+fileName);
+		}
+		
+		
 		
 		//아티스트명으로 검색5개
 		//댓글수 카운트해서 넣음
@@ -376,6 +469,17 @@ public class SearchController {
 		}
 		model.addAttribute("recFollow",recFollow);
 		model.addAttribute("recMemberMap",recMemberMap);
+		String path = req.getContextPath();
+		for(MemberDTO recMemberDTO : recFollow) {
+			
+			if(recMemberDTO.getImg()==null){
+				recMemberDTO.setImg(path+"/resources/img/default.jpg");
+			}
+			else {
+				String fileName = recMemberDTO.getImg();
+				recMemberDTO.setImg(path+"/resources/upload/"+fileName);
+			}
+		}
 		return "main/search";
 		
 	}
@@ -426,6 +530,7 @@ public class SearchController {
 		}
 		model.addAttribute("recFollow",recFollow);
 		model.addAttribute("recMemberMap",recMemberMap);
+		
 		return "main/artistAdd";
 		
 	}
@@ -447,6 +552,21 @@ public class SearchController {
 			audios.setContents(contents);
 		}
 		
+		String path = req.getContextPath();
+		for(AudioBoardDTO audioDTO : byContents) {
+			
+			if(audioDTO.getImagename()==null){
+				audioDTO.setImagename(path+"/resources/img/default.jpg");
+			}
+			else {
+				String fileName = audioDTO.getImagename();
+				audioDTO.setImagename(path+"/resources/upload/"+fileName);
+			}
+			
+			String fileName = audioDTO.getAudiofilename();
+			audioDTO.setAudiofilename(path+"/resources/upload/"+fileName);
+		}
+		
 		model.addAttribute("popMap3", byContents);
 		//댓글수 카운트해서 넣음
 		ArrayList<LikeDTO> likes3 = loadLike(byContents);
@@ -465,6 +585,16 @@ public class SearchController {
 		}
 		model.addAttribute("recFollow",recFollow);
 		model.addAttribute("recMemberMap",recMemberMap);
+		for(MemberDTO recMemberDTO : recFollow) {
+			
+			if(recMemberDTO.getImg()==null){
+				recMemberDTO.setImg(path+"/resources/img/default.jpg");
+			}
+			else {
+				String fileName = recMemberDTO.getImg();
+				recMemberDTO.setImg(path+"/resources/upload/"+fileName);
+			}
+		}
 		return "main/search";
 		
 	}
@@ -485,6 +615,21 @@ public class SearchController {
 		ArrayList<AudioBoardDTO> byContents = new ArrayList<AudioBoardDTO>();
 		if(totalAudio!=loadedCount) {
 			byContents = sqlSession.getMapper(SearchImpl.class).search(searchType,searchWord,loadedCount+1,loadedCount+8);
+		}
+		
+		String path = req.getContextPath();
+		for(AudioBoardDTO audioDTO : byContents) {
+			
+			if(audioDTO.getImagename()==null){
+				audioDTO.setImagename(path+"/resources/img/default.jpg");
+			}
+			else {
+				String fileName = audioDTO.getImagename();
+				audioDTO.setImagename(path+"/resources/upload/"+fileName);
+			}
+			
+			String fileName = audioDTO.getAudiofilename();
+			audioDTO.setAudiofilename(path+"/resources/upload/"+fileName);
 		}
 		
 		model.addAttribute("audiolist", byContents);
