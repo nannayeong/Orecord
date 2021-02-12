@@ -37,6 +37,7 @@ public class ViewController {
 		
 		/*절대경로*/
 		String path = req.getContextPath();
+		System.out.println("절대경로"+ path);
 		
 		//Mapper 호출
 		AudioBoardDTO view =
@@ -46,8 +47,15 @@ public class ViewController {
 		String temp2 = view.getContents().replace("\r\n", "<br/>");
 		view.setContents(temp2);
 		
+		if(view.getImg()==null) {
+			view.setImg("../resources/img/default.jpg");
+		}
+		else {
+			view.setImg(path+"/resources/upload/"+view.getImg());
+		}
+		
 		if(view.getImagename()==null) {
-			view.setImagename(path+"/resources/img/default.jpg");
+			view.setImagename("../resources/img/default.jpg");
 		}
 		else {
 			view.setImagename(path+"/resources/upload/"+view.getImagename());
