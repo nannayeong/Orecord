@@ -44,23 +44,23 @@ a {
 	padding-bottom: 1em;
 }
 
-.right-content-back {
-	background-color: white;
-	height : 1000px;
-	width: 30%;
-	display: inline-block;
-}
-
-.right-content {
-	background-color: white;
-	width: 100%;
-	max-width: 288px;
-	margin: auto;
-	padding-top: 3em;
-	padding-bottom: 1em;
+.right-content-back{
+	background-color:white;
+	max-width:288px;
+	height : 100%;
+	width:30%;
+	display:inline-block;
 	position: fixed;
 	top: 0px;
 	float: left;
+}
+.right-content{
+	background-color:white;
+	width:100%;
+	height : 960px!;
+	margin:auto;
+	padding-top:3em;
+	padding-bottom:1em;
 	text-align: center;
 }
 
@@ -190,7 +190,7 @@ $(window).on("scroll", function() {
 			      data : { loadlength :loadedSize,searchWord:'${searchWord}',searchType:'audiotitle'}, 
 			      dataType : "html",
 			      success : function(resData) {
-			    	  $('table').last().after(resData);
+			    	  $('.feed').last().after(resData);
 			    	  checktotalLoad('audiotitle');
 			      },
 			      error : function(e) {
@@ -207,7 +207,7 @@ $(window).on("scroll", function() {
 			      data : { loadlength :loadedSize,searchWord:'${searchWord}',searchType:'artistname'}, 
 			      dataType : "html",
 			      success : function(resData) {
-			    	  $('table').last().after(resData);
+			    	  $('.feed').last().after(resData);
 			    	  checktotalLoad('artistname');
 			      },
 			      error : function(e) {
@@ -223,7 +223,7 @@ $(window).on("scroll", function() {
 			      data : { loadlength :loadedSize,searchWord:'${searchWord}'}, 
 			      dataType : "html",
 			      success : function(resData) {
-			    	  $('table').last().after(resData);
+			    	  $('.feed').last().after(resData);
 			    	  checktotalLoad('nickname');
 			      },
 			      error : function(e) {
@@ -239,7 +239,7 @@ $(window).on("scroll", function() {
 			      data : { loadlength :loadedSize,searchWord:'${searchWord}',searchType:'contents'}, 
 			      dataType : "html",
 			      success : function(resData) {
-			    	  $('table').last().after(resData);
+			    	  $('.feed').last().after(resData);
 			    	  checktotalLoad('contents');
 			      },
 			      error : function(e) {
@@ -263,7 +263,7 @@ function checktotalLoad(type) {
 	      success : function(resData) {
 	    	  if(resData.nomoreFeed!=null){
 	    	  if(end==undefined){
-	    		  $('table').last().after("<h3 class='end'>"+resData.nomoreFeed+"</h3>");
+	    		  $('.feed').last().after("<h3 class='end'>"+resData.nomoreFeed+"</h3>");
 	    	  }}
 	    	  
 	      },
@@ -486,7 +486,7 @@ function checktotalLoad(type) {
 	
 				<table
 					style="width: 100%; border: 2px #f2f2f2 solid; margin: auto; margin-bottom: 1em"
-					class="pcount">
+					class="feed">
 					<tr>
 						<td rowspan="4"
 							style="width: 7em; padding-left: 1em; padding-right: 1em">
@@ -553,7 +553,7 @@ function checktotalLoad(type) {
 		<c:forEach var="a" items="${audioByNameList }">
 				<table
 					style="width: 100%; border: 2px #f2f2f2 solid; margin: auto; margin-bottom: 1em"
-					class="pcount">
+					class=feed>
 					<tr>
 						<td rowspan="4"
 							style="width: 7em; padding-left: 1em; padding-right: 1em">
@@ -619,7 +619,7 @@ function checktotalLoad(type) {
 		<c:forEach var="a" items="${artists}">
 			<table
 				style="width: 100%; border: 2px #f2f2f2 solid; margin: auto; margin-bottom: 1em"
-				class="pcount">
+				class="feed">
 				<tr>
 					<td rowspan="4"
 						style="width: 7em; padding-left: 1em; padding-right: 1em">
@@ -666,7 +666,7 @@ function checktotalLoad(type) {
 			<c:forEach var="b" items="${popMap3}">
 				<table
 					style="width: 100%; border: 2px #f2f2f2 solid; margin: auto; margin-bottom: 1em"
-					class="pcount">
+					class="feed">
 					<tr>
 						<td rowspan="4"
 							style="width: 7em; padding-left: 1em; padding-right: 1em">
@@ -752,7 +752,7 @@ function checktotalLoad(type) {
 					<c:forEach var="r" items="${recFollow}">
 				<table
 				style="width: 100%; border: 2px #f2f2f2 solid; margin: auto; margin-bottom: 1em"
-				class="pcount">
+				class="feed">
 				<tr>
 					<td rowspan="4"
 						style="width: 7em; padding-left: 1em; padding-right: 1em">
