@@ -617,7 +617,6 @@ public class MyPageController {
 		System.out.println("page"+nowPage);
 		
 		ArrayList<AudioBoardDTO> audioList = sqlSession.getMapper(AudioBoardImpl.class).recordFollow(user_id, start, end);	
-		System.out.println("오디오"+audioList);
 		
 		boolean pageCheck = true;
 		if(audioList.size()==0) {

@@ -29,16 +29,15 @@ background-color: #f2f2f2;cursor:pointer
 				<img src="${audio.imagename }" alt="" style="width:6em"/>
 			</td>
 			<td>
-				<div style="font-size:21px;cursor:pointer" onclick="location.href='../${audio.id }/record'">
+				<div style="font-size:14px;cursor:pointer" onclick="location.href='../${audio.id }/record'">
 					${audio.id }
 				</div>
 				<div style="font-size:18px">
 					<a href="../board/view.do?audio_idx=${audio.audio_idx }">${audio.audiotitle}</a>
 					- ${audio.artistname}
 				</div>
-				<span style="background-color:yellow">${audio.party eq 1 ? '협업중' : ''}</span>
 			</td>
-			<td style="text-align:center; color:#423e3e; font-size:14px">
+			<td style="text-align:right; color:#423e3e; font-size:14px; padding-right:2em">
 				<div>${audio.regidate }</div>
 				<div>${audio.category }</div>
 			</td>
@@ -61,7 +60,7 @@ background-color: #f2f2f2;cursor:pointer
 		</tr>
 		<tr>
 			<td colspan="2">
-				<audio controls style="width:95%" id="${audio.albumName }">
+				<audio controls style="width:97%" id="${audio.albumName }">
 					<source src="${audio.audiofilename }" type="audio/mp4">
 				</audio>
 			</td>

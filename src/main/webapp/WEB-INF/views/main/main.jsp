@@ -418,7 +418,7 @@ function userFunc(){
 					<table style="width:100%;border:2px #f2f2f2 solid;margin:auto;margin-bottom:1em" class="pcount">
 						<tr>
 							<td rowspan="4" style="width:7em;padding-left:1em;padding-right:1em">
-								<img src="./resources/default.jpg" alt="" style="width:6em"/>
+								<img src="${b.imagename}" alt="" style="width:6em"/>
 							</td>
 							<td><a href="./board/view.do?audio_idx=${b.audio_idx }">${ b.audiotitle}</a> - <a href="./${b.id }/record">${b.artistname}</a></td>
 						</tr>
