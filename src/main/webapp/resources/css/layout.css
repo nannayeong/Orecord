@@ -158,4 +158,8 @@ a{color:black;}
 	padding-bottom:1em;
 
 }
-.on{color:red}
+.on{color:red
+}
+ a:link { color: black!important; text-decoration: none;}
+ a:visited { color: black!important; text-decoration: none;}
+ a:hover { color: gray!important; text-decoration: none!important;}

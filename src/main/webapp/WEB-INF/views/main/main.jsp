@@ -22,8 +22,7 @@
 body{
 	background-color:#f2f2f2;
 }
-a{
-color: #333333;}
+
 .content{
 	background-color:white;
 	margin:auto;
