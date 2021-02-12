@@ -157,4 +157,64 @@ public class FollowController {
 		
 		return map;
 	}
+	
+	@RequestMapping("/{user_id}/myFollowing")
+	public String myFollowing(@PathVariable String user_id, Model model, Principal principal, HttpServletRequest req) {
+		
+		String path = req.getContextPath();
+		String login_id = null;
+		
+		/*계정정보*/
+		MemberDTO memberDTO = sqlSession.getMapper(MemberImpl.class).memberInfo(user_id);	
+		
+		/*로그인 유저의 계정정보*/
+		MemberDTO loginDTO = null;
+		try {
+			login_id = principal.getName();
+			 loginDTO = sqlSession.getMapper(MemberImpl.class).memberInfo(login_id);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+
+		if(memberDTO.getImg()==null) {
+			memberDTO.setImg(path+"/resources/img/default.jpg");
+		}
+		
+		model.addAttribute("memberDTO", memberDTO);
+		model.addAttribute("loginDTO", loginDTO);
+		model.addAttribute("user_id", user_id);
+		
+		return "mypage/following";
+	}
+	
+	@RequestMapping("/{user_id}/myFollowers")
+	public String myFollowers(@PathVariable String user_id, Model model, Principal principal, HttpServletRequest req) {
+		
+		String path = req.getContextPath();
+		String login_id = null;
+		
+		/*계정정보*/
+		MemberDTO memberDTO = sqlSession.getMapper(MemberImpl.class).memberInfo(user_id);	
+		
+		/*로그인 유저의 계정정보*/
+		MemberDTO loginDTO = null;
+		try {
+			login_id = principal.getName();
+			 loginDTO = sqlSession.getMapper(MemberImpl.class).memberInfo(login_id);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+
+		if(memberDTO.getImg()==null) {
+			memberDTO.setImg(path+"/resources/img/default.jpg");
+		}
+		
+		model.addAttribute("memberDTO", memberDTO);
+		model.addAttribute("loginDTO", loginDTO);
+		model.addAttribute("user_id", user_id);
+		
+		return "mypage/followers";
+	}
 }

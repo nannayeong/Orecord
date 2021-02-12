@@ -9,11 +9,11 @@
 		</td>
 		<td style="border-right:2px solid #f2f2f2;width:40px;padding-left:15px">
 			<div style="font-size:0.8em">Following</div>
-			<div id="following">0</div>
+			<div id="following" onclick="location.href='./myFollowers'" style="cursor:pointer">0</div>
 		</td>
 		<td style="width:40px;padding-left:15px">
-			<div style="font-size:0.8em;">Tracks</div>
-			<div id="track">0</div>
+			<div style="font-size:0.8em;" >Tracks</div>
+			<div id="track" onclick="location.href='./myFollowing'" style="cursor:pointer">0</div>
 		</td>
 	</tr>
 </table>

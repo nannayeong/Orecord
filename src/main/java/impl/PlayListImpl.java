@@ -14,4 +14,6 @@ public interface PlayListImpl {
 	public ArrayList<PlayListDTO> myplaylist(String plid);
 	
 	public ArrayList<String> myplaylistPaging(String plid, int start, int end);
+	
+	public int plAudioDelete(String plid, String idx, String audio_idx);
 }

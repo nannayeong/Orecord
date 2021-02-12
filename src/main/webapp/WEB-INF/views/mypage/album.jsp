@@ -25,7 +25,7 @@ function deleteAlbumFunc(aidx){
 		location.href="../member/login.do"
 	}
 	else{
-		if(confirm('삭제하시겠습니까?')){
+		if(confirm('앨범을 삭제하시겠습니까?')){
 			$.ajax({
 			     url : "../deleteAlbum.do",
 			     type : "get",
