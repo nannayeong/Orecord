@@ -43,11 +43,11 @@ public class ViewController {
 			sqlSession.getMapper(ViewImpl.class).View(
 			Integer.parseInt(req.getParameter("audio_idx")));
 		
-		String temp2 = null;
-		if(view.getContents()!=null) {
-			temp2 = view.getContents().replace("\r\n", "<br/>");
-		}
-		view.setContents(temp2);
+//		String temp2 = null;
+//		if(view.getContents()!=null) {
+//			temp2 = view.getContents().replace("\r\n", "<br/>");
+//		}
+//		view.setContents(temp2);
 		
 		if(view.getImg()==null) {
 			view.setImg("../resources/img/default.jpg");
@@ -95,6 +95,20 @@ public class ViewController {
 		}
 		
 		model.addAttribute("partyMember", PartyMember);
+		
+		//참여자가 없을때를 위한 쿼리문
+		PartyBoardDTO notParty =
+			sqlSession.getMapper(ViewImpl.class).notParty(
+				Integer.parseInt(req.getParameter("audio_idx")));
+		
+		model.addAttribute("notParty", notParty);
+		
+		//채택한 글이 없을때 참여자 목록을 위한 쿼리문
+		PartyBoardDTO notChoice =
+			sqlSession.getMapper(ViewImpl.class).notChoice(
+				Integer.parseInt(req.getParameter("audio_idx")));
+		
+		model.addAttribute("notChoice", notChoice);
 		
 		return "board/view";
 		
