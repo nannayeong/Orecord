@@ -17,4 +17,5 @@ public interface AlbumImpl {
 	public int albumTotalCount(String id);
 	public int deleteAlbum(String id, int album_idx);
     public int modifyAlbum(String id, int album_idx, String albumJacket, String albumName);
+    public int modifyAlbumNoJacket(String id, int album_idx, String albumName);
 } 

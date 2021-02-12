@@ -38,6 +38,7 @@ color: #333333;}
 }
 .right-content-back{
 	background-color:white;
+	height : 1000px;
 	width:30%;
 	display:inline-block;
 }

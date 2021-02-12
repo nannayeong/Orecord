@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import impl.ViewImpl;
 import model.AudioBoardDTO;
 import model.MCommentDTO;
+import model.PartyBoardDTO;
 
 @Controller
 public class ViewController {
@@ -36,6 +37,7 @@ public class ViewController {
 		
 		/*절대경로*/
 		String path = req.getContextPath();
+		System.out.println("절대경로"+ path);
 		
 		//Mapper 호출
 		AudioBoardDTO view =
@@ -48,8 +50,15 @@ public class ViewController {
 		}
 		view.setContents(temp2);
 		
+		if(view.getImg()==null) {
+			view.setImg("../resources/img/default.jpg");
+		}
+		else {
+			view.setImg(path+"/resources/upload/"+view.getImg());
+		}
+		
 		if(view.getImagename()==null) {
-			view.setImagename(path+"/resources/img/default.jpg");
+			view.setImagename("../resources/img/default.jpg");
 		}
 		else {
 			view.setImagename(path+"/resources/upload/"+view.getImagename());
@@ -71,6 +80,13 @@ public class ViewController {
 			dto.setContents(temp);
 		}
 		model.addAttribute("comments", comments);
+		
+		//협업자 목록 불러오는 매퍼 호출
+		ArrayList<PartyBoardDTO> PartyMember =
+			sqlSession.getMapper(ViewImpl.class).partyMember(
+					Integer.parseInt(req.getParameter("audio_idx")));
+		
+		model.addAttribute("partyMember", PartyMember);
 		
 		return "board/view";
 		

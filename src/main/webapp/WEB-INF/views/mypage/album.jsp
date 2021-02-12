@@ -18,6 +18,30 @@
 <!-- layout js-->
 <script src="${pageContext.request.contextPath}/resources/js/layout.js"></script>
 <script>
+
+function deleteAlbumFunc(aidx){
+	if("${pageContext.request.userPrincipal.name}"==""){
+		alert('로그인 후 이용해주세요');
+		location.href="../member/login.do"
+	}
+	else{
+		if(confirm('삭제하시겠습니까?')){
+			$.ajax({
+			     url : "../deleteAlbum.do",
+			     type : "get",
+			     contentType : "text/html;charset:utf-8",
+			     data : {album_idx:aidx}, 
+			     dataType : "json",
+			     success : function sucFunc(resData) {
+					 if(resData.result==1){
+						alert("정상적으로 삭제되었습니다");
+						location.href="./album";
+					 }
+			     }    
+			});
+		}
+	}
+}
 function clickAudio(audioFileName,playerName){
 	$('#'+playerName).attr('src',audioFileName).attr('autoplay',true);
 }
@@ -108,7 +132,7 @@ function likeFunc(a){
 		location.href="../member/login.do"
 	}
 	else{
-		if($('#likeIcon').hasClass('on')){//이미 좋아요상태일 때
+		if($('#likeIcon'+a).hasClass('on')){//이미 좋아요상태일 때
 			$.ajax({
 			      url : "../nolike.do",
 			      type : "get",
@@ -117,8 +141,8 @@ function likeFunc(a){
 			      dataType : "json",
 			      success : function sucFunc(resData){
 			    	  if(resData.result==1){
-			    	  	$('#likeIcon').removeClass('on');
-			    	  	$('#likecount').html(resData.likecount);
+			    	  	$('#likeIcon'+a).removeClass('on');
+			    	  	$('#likecount'+a).html(resData.likecount);
 			    	  }
 			      }
 			   });
@@ -132,15 +156,37 @@ function likeFunc(a){
 			     dataType : "json",
 			     success : function sucFunc(resData) {
 			    	if(resData.result==1){
-						$('#likeIcon').addClass('on');
-						$('#likecount').html(resData.likecount);
+						$('#likeIcon'+a).addClass('on');
+						$('#likecount'+a).html(resData.likecount);
 			    	}
 			     }    
 			});  
 		}
 	}
 }
+
 $(function(){
+	/* 페이징 */
+	var nowP = 1;
+	$(window).scroll(function(){
+		var scrollHeight = $(document).height();
+		var scrollPosition = $(window).height() + $(window).scrollTop();		
+		if(scrollPosition > scrollHeight -1){
+			nowP = nowP + 1;
+			$.ajax({
+			     url : "../mypageAlbum.do",
+			     type : "get",
+			     contentType : "text/html;charset:utf-8",
+			     data : {user_id:"${user_id}", 
+			    	 	nowPage:nowP},
+			     dataType : "html",
+			     success : function sucFunc(resData) {
+			    	 $('#albumList').append(resData);
+			     }    
+			});
+		}
+	});
+	
 	$('#follow').mouseenter(function(){
 		if($('#follow').html()=='팔로워'){
 			$('#follow').html('언팔로우');
@@ -222,7 +268,6 @@ $(function(){
 					<span onclick="location.href='../${user_id}/record'">record</span>
 					<span onclick="location.href='../${user_id}/album'" style="color:orange;">album</span>
 					<span onclick="location.href='../${user_id}/playlist'">playlist</span>
-					<span onclick="location.href='../${user_id}/like'">like</span>
 					
 					<div style="float:right;margin-right:1em;">
 						<c:choose>

@@ -7,8 +7,15 @@
 <mapper namespace="impl.AudioBoardImpl">
 
 	<select id="audioList" resultType="model.AudioBoardDTO">
-		select audio_idx, audiotitle, b.id, b.album_idx, audiofilename, artistname, albumName, regidate, imagename, category, like_count
+		select audio_idx, audiotitle, b.id, b.album_idx, audiofilename, artistname, albumName, regidate, imagename, category, like_count, party
 			from audioboard b inner join album a on b.album_idx=a.album_idx where b.id=#{param1} order by regidate desc
+	</select>
+	
+	<select id="audioListPaging" resultType="model.AudioBoardDTO">
+		select * from 
+		(select tb.*, rownum rnum from
+		(select audio_idx, audiotitle, b.id, b.album_idx, audiofilename, artistname, albumName, regidate, imagename, category, like_count, party
+			from audioboard b inner join album a on b.album_idx=a.album_idx where b.id=#{param1} order by regidate desc)tb) where rnum between #{param2} and #{param3}
 	</select>
 	
 	<!-- 업로드 -->
@@ -27,5 +34,20 @@
 	</select>
 	<select id="audioCount" resultType="int">
 		select count(*) from audioboard
+	</select>
+	
+	<select id="myAudioCount" resultType="int">
+		select count(*) from audioboard where id=#{param1}
+	</select>
+	
+	<delete id="recordDelete">
+		delete from audioboard where id=#{param1} and audio_idx=#{param2}
+	</delete>
+	
+	<select id="recordFollow" resultType="model.AudioBoardDTO">
+		select * from
+		(select tb.*, rownum rnum from 
+		(select a.audio_idx, audiotitle, a.id, album_idx, audiofilename, artistname, regidate, imagename, category, like_count, party 
+		from follow f inner join audioboard a on f.following_id=a.id where user_id=#{param1} order by regidate desc)tb) where rnum between #{param2} and #{param3}
 	</select>
 </mapper> 

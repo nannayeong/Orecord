@@ -1,7 +1,10 @@
 package impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import model.AudioBoardDTO;
 
 public interface LikeImpl {
 	public int like(String audio_idx,String like_id);
@@ -15,4 +18,6 @@ public interface LikeImpl {
 	
 	public int addlike(int audio_idx);
 	public int removelike(int audio_idx);
+	
+	public ArrayList<AudioBoardDTO> myLikeSelect(String like_id, int start, int end);
 } 

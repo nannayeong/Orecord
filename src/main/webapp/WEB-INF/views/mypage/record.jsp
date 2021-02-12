@@ -18,6 +18,29 @@
 <!-- layout js-->
 <script src="${pageContext.request.contextPath}/resources/js/layout.js"></script>
 <script>
+function recordDeleteFunc(aidx){
+	if("${pageContext.request.userPrincipal.name}"==""){
+		alert('로그인 후 이용해주세요');
+		location.href="../member/login.do"
+	}
+	else{
+		if(confirm('삭제하시겠습니까?')){
+			$.ajax({
+			     url : "../recordDelete.do",
+			     type : "get",
+			     contentType : "text/html;charset:utf-8",
+			     data : {audio_idx:aidx},
+			     dataType : "json",
+			     success : function sucFunc(resData) {
+			    	 if(resData.result==1){
+							alert("정상적으로 삭제되었습니다");
+							location.href="./record";
+					 }
+			     }    
+			});
+		}
+	}
+}
 function logincheck(bt){
 	if("${pageContext.request.userPrincipal.name}"==""){
 		alert('로그인 후 이용해주세요');
@@ -114,7 +137,7 @@ function likeFunc(a){
 		location.href="../member/login.do"
 	}
 	else{
-		if($('#likeIcon').hasClass('on')){//이미 좋아요상태일 때
+		if($('#likeIcon'+a).hasClass('on')){//이미 좋아요상태일 때
 			$.ajax({
 			      url : "../nolike.do",
 			      type : "get",
@@ -123,8 +146,8 @@ function likeFunc(a){
 			      dataType : "json",
 			      success : function sucFunc(resData){
 			    	  if(resData.result==1){
-			    	  	$('#likeIcon').removeClass('on');
-			    	  	$('#likecount').html(resData.likecount);
+			    	  	$('#likeIcon'+a).removeClass('on');
+			    	  	$('#likecount'+a).html(resData.likecount);
 			    	  }
 			      }
 			   });
@@ -138,8 +161,8 @@ function likeFunc(a){
 			     dataType : "json",
 			     success : function sucFunc(resData) {
 			    	if(resData.result==1){
-						$('#likeIcon').addClass('on');
-						$('#likecount').html(resData.likecount);
+						$('#likeIcon'+a).addClass('on');
+						$('#likecount'+a).html(resData.likecount);
 			    	}
 			     }    
 			});  
@@ -149,6 +172,28 @@ function likeFunc(a){
 
 $(function(){
 	
+	/* 페이징 */
+	var nowP = 1;
+	$(window).scroll(function(){
+		var scrollHeight = $(document).height();
+		var scrollPosition = $(window).height() + $(window).scrollTop();		
+		if(scrollPosition > scrollHeight -1){
+			nowP = nowP + 1;
+			$.ajax({
+			     url : "../mypageRecord.do",
+			     type : "get",
+			     contentType : "text/html;charset:utf-8",
+			     data : {user_id:"${user_id}", 
+			    	 	nowPage:nowP},
+			     dataType : "html",
+			     success : function sucFunc(resData) {
+			    	 $('#albumList').append(resData);
+			     }    
+			});
+		}
+	});
+	
+	/*팔로우*/
 	$('#follow').mouseenter(function(){
 		if($('#follow').html()=='팔로워'){
 			$('#follow').html('언팔로우');
@@ -229,7 +274,6 @@ $(function(){
 					<span onclick="location.href='../${user_id}/record'" style="color:orange;">record</span>
 					<span onclick="location.href='../${user_id}/album'">album</span>
 					<span onclick="location.href='../${user_id}/playlist'">playlist</span>
-					<span onclick="location.href='../${user_id}/like'">like</span>
 					
 					<div style="float:right;margin-right:1em;">
 						<c:choose>
@@ -277,6 +321,13 @@ $(function(){
 					<table style="width:100%;margin:1em 0 3em 0em;">
 						<tr>
 							<td class="my-con-left">
+								<div style="text-align:left">
+									<div class="btn-group" style="margin-bottom:1em;margin-left:1em;text-size:16px;">
+									  <button type="button" class="btn btn-dark" onclick="location.href='./record'">myRecord</button>
+									  <button type="button" class="btn btn-outline-dark" onclick="location.href='./likeRecord'">like</button>
+									  <button type="button" class="btn btn-outline-dark" onclick="location.href='./followRecord'">followers</button>
+									</div>
+								</div>
 								<div id="albumList">
 								
 								</div>
