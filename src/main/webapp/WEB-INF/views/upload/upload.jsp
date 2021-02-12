@@ -18,7 +18,15 @@
 <link href="${pageContext.request.contextPath}/resources/css/layout.css" rel="stylesheet" />
 <!-- layout js-->
 <script src="${pageContext.request.contextPath}/resources/js/layout.js"></script>
-
+<style>
+.col-5{
+  margin:15px 0 0 50px;
+}
+.form-group p {
+  margin-top:37px; color:gray;
+  font-size:16px;
+}
+</style>
   	<script>	
 		var isValidate = function(frm){
 			
@@ -167,22 +175,26 @@ function addAlbumFunc(){
 </script>
 	<div>
 		<div class="content">
+		<div style="background: linear-gradient(to right, #91888A, #5A5B82);">
+			<div class="row">
+				<div style="margin: 50px 0 0 80px;">
+					<h5 style="margin-left: 5px;">upload</h5>
+					<h2>업로드</h2>
+				</div>
+			</div>
+		</div>
+		<br>
+		<hr color="gray">
 			<!-- 왼쪽 컨텐츠 -->
-			<div class="left-content-back">
-				<div class="left-content">
-				<div class="col-lg-6 text-left">
-                 <h5 class="card-category"></h5>
-                 <h2 class="card-title"></h2>
-               </div>
 				<form name="regiform" onsubmit="return isValidate(this);" method="post" enctype="multipart/form-data" action="./uploadAction.do?${_csrf.parameterName}=${_csrf.token}">
                 
                 <div class="row"> 
-	                <div class="col-md-6 pr-md-1">
+	                <div class="col-5">
 	                	<label>이미지</label>
 		                <input type="file" id="imagename" accept=".jpeg,.jpg,.png" name="imagename" class="form-control"/>
 		                <img id="img_preview" class="inline-block"/>
 					</div>
-					<div class="col-md-6 pr-md-1">
+					<div class="col-5">
 	                      <div class="form-group">
 	                        <label>곡명</label>
 	                        <tr><input type="text" class="form-control" name="audiotitle" id="audiotitle" value=""></tr>
@@ -223,16 +235,16 @@ function addAlbumFunc(){
 					</div>
 				</div>
 				<div class="row">
-                    <div class="col-md-6">
+                    <div class="col-5">
 					        <div>다른 유저와 협업하기 <input type="checkbox" name="party" value="Y"/></div>
 					        <br />
 					</div>
-					<div class="col-md-6">
+					<div class="col-5">
                         <input type="hidden" class="form-control" name="id" value="${pageContext.request.userPrincipal.name}">
 	                </div>
 				</div>
                 <div class="row">
-                  <div class="col-md-6 pr-md-1">
+                  <div class="col-5">
                     <div class="form-group">
                       	<label>카테고리</label>
                       	<select name="country" id="country" class="form-control">
@@ -250,7 +262,7 @@ function addAlbumFunc(){
                 		</select>                        
                     </div>
                   </div>
-                  <div class="col-md-6 pl-md-1">
+                  <div class="col-5">
                     <div class="form-group">
                     	<select name="genre" id="genre" class="form-control" style="margin-top: 30px;">
 			                <option style="color: black;" value="noValue" >장르</option> 
@@ -270,34 +282,25 @@ function addAlbumFunc(){
                 </div>
                   
                   <div class="row">
-                    <div class="col-md-12">
-                      <div class="form-group">
+                    <div class="col-11">
+                      <div class="form-group" style="margin: 15px -15px 0 50px;">
                         <label>곡설명</label>
-                        <textarea rows="4" cols="80" class="form-control" placeholder="내용을 적어주세요." name="contents"></textarea>
+                        <textarea rows="4" class="form-control" placeholder="내용을 적어주세요." name="contents"></textarea>
                       </div>
+                      <br />
+                      <br />
                     </div>
                   </div>
-                  	<div class="card-footer" align="center">
+                  	<div class="form-group" align="center">
                 		<input type="submit" class="btn btn-fill btn-warning" style="color: white;" value="업로드">
               		</div>
-              </form>
-				</div>
-			</div>
-			<!-- 오른쪽 컨텐츠 -->
-			<div class="right-content-back">
-				<div class="right-content">
-					첫하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />
-					하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />
-					하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />
-					하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />
-					하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />막하이<br />
-				</div>
-			</div>
-			<!-- 오른쪽 컨텐츠종료 -->
+              	<br>
+			<br>
+			<hr color="gray">
+            </form>
 		</div>
-		<!-- 본문종료 -->
 	</div>
-
+		<!-- 본문종료 -->
 	<!-- 상단 메뉴바(위치옮기면안됨!) -->
 	<header>
 		<%@include file="/resources/jsp/header.jsp" %>

@@ -25,4 +25,55 @@
 		DELETE FROM member WHERE id=#{param1}
 	</delete>
 
+	<!-- 오디오보드 리스트보기 -->
+	<select id="adAudioList" resultType="model.AudioBoardDTO">
+		select audio_idx, audiotitle, b.id, b.album_idx, audiofilename, artistname, albumName, regidate, imagename, category, like_count, party
+			from audioboard b inner join album a on b.album_idx=a.album_idx ORDER BY audio_idx DESC
+	</select>
+	
+	<!-- 앨범리스트 보기 -->
+	<select id="adalbumList" resultType="model.AlbumDTO">
+		select * from album ORDER BY album_idx DESC
+	</select>
+	
+	<!-- 후원리스트 보기 -->
+	<select id="sponsorshipList" resultType="model.SponsorshipDTO">
+		SELECT * FROM sponsorshipLog ORDER BY idx DESC
+	</select>
+	
+	<!-- 충전리스트 -->
+	<select id="chargeList" resultType="model.ChargeDTO">
+		SELECT * FROM chargeLog ORDER BY idx DESC
+	</select>
+	
+	<!-- 환전리스트 -->
+	<select id="exchangeList" resultType="model.ExchangeDTO">
+		SELECT * FROM exchageLog ORDER BY idx DESC
+	</select>
+	
+	<!-- 댓글리스트 -->
+	<select id="mCommentList" resultType="model.MCommentDTO">
+		SELECT * FROM m_comment ORDER BY comment_idx DESC
+	</select>
+	
+	<!-- 협업리스트 -->
+	<select id="partyList" resultType="model.PartyBoardDTO">
+		SELECT * FROM partyboard ORDER BY party_idx DESC
+	</select>
+	
+	<!-- 신고리스트 -->
+	<select id="reportList" resultType="model.ReportDTO">
+		SELECT * FROM report ORDER BY r_idx DESC
+	</select>
 </mapper>
+
+
+
+
+
+
+
+
+
+
+

@@ -22,7 +22,15 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import impl.AdminImpl;
+import model.AlbumDTO;
+import model.AudioBoardDTO;
+import model.ChargeDTO;
+import model.ExchangeDTO;
+import model.MCommentDTO;
 import model.MemberDTO;
+import model.PartyBoardDTO;
+import model.ReportDTO;
+import model.SponsorshipDTO;
 
 @Controller
 public class AdminController {
@@ -30,24 +38,19 @@ public class AdminController {
 	@Autowired
 	private SqlSession sqlSession;
 	
+	//회원리스트보기
 	@RequestMapping("/admin/main")
-	public String main() {
-		
-		return "admin/main";
-	}
-	
-	//회원 리스트 
-	@RequestMapping("/memberList.do")
-	public String list(Model model, HttpServletRequest req, MemberDTO memberDTO) {
+	public String main(Model model, HttpServletRequest req, MemberDTO memberDTO) {
 		
 		ArrayList<MemberDTO> lists = sqlSession.getMapper(AdminImpl.class).listPage(memberDTO);
 		
 		model.addAttribute("lists", lists);
-		return "admin/memberList";
+		
+		return "admin/main";
 	}
 	
 	/*회원삭제하기*/
-	@RequestMapping("/admemberDelete.do")
+	@RequestMapping("/admin/admemberDelete.do")
 	public String memberDelete(HttpServletRequest req, Model model) {
 		
 		int delete = sqlSession.getMapper(AdminImpl.class).memberDelete(req.getParameter("id"));
@@ -57,7 +60,7 @@ public class AdminController {
 			System.out.println("삭제완료");			
 		}
 		
-		return "redirect:/memberList.do";
+		return "redirect:/admin/main";
 		
 	}
 	
@@ -70,7 +73,7 @@ public class AdminController {
 	}
 	
 	/*회원수정폼*/
-	@RequestMapping("/admemberEdit.do")
+	@RequestMapping("/admin/admemberEdit.do")
 	public String memberEdit(Principal principal, Model model, HttpServletRequest req) {
 		String id1 = null;
 		/*로그인 없이 접근시 nullpointerexception발생, security로 접근권한 설정해야함.*/
@@ -98,7 +101,7 @@ public class AdminController {
 	}
 	
 	/*회원 수정하기*/
-	@RequestMapping(value = "/admemberEditAction.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/admin/admemberEditAction.do", method = RequestMethod.POST)
 	public String memberEditAction(Principal principal, MultipartHttpServletRequest req)
 	{		
 		
@@ -178,6 +181,94 @@ public class AdminController {
 			e.printStackTrace();
 		}
 		
-		return "redirect:/memberList.do";
+		return "redirect:/admin/main";
+	}
+	
+	/*오디오리스트*/
+	@RequestMapping("/admin/adaudioboardList.do")
+	public String adaudioboardList(Model model, AudioBoardDTO audioBoardDTO) {
+		
+		ArrayList<AudioBoardDTO> adaudio = sqlSession.getMapper(AdminImpl.class).adAudioList(audioBoardDTO);
+		
+		model.addAttribute("adaudio", adaudio);
+		
+		return "admin/adaudioboardList";
+	}
+	
+	/*앨범리스트*/
+	@RequestMapping("/admin/adalbumList.do")
+	public String adalbumList(Model model, AlbumDTO albumDTO) {
+		
+		ArrayList<AlbumDTO> adalbum = sqlSession.getMapper(AdminImpl.class).adalbumList(albumDTO);
+		
+		model.addAttribute("adalbum", adalbum);
+		
+		return "admin/adalbumList";
+	}
+	
+	/*후원리스트*/
+	@RequestMapping("/admin/sponsorshipList.do")
+	public String sponsorshipList(Model model, SponsorshipDTO sponsorshipDTO) {
+		
+		ArrayList<SponsorshipDTO> sponsorshipList = sqlSession.getMapper(AdminImpl.class).sponsorshipList(sponsorshipDTO);
+		
+		model.addAttribute("sponsorshipList", sponsorshipList);
+		
+		return "admin/sponsorshipList";
+	}
+	
+	/*충전리스트*/
+	@RequestMapping("/admin/chargeList.do")
+	public String chargeList(Model model, ChargeDTO chargeDTO) {
+		
+		ArrayList<ChargeDTO> chargeList = sqlSession.getMapper(AdminImpl.class).chargeList(chargeDTO);
+		
+		model.addAttribute("chargeList", chargeList);
+		
+		return "admin/chargeList";
+	}
+	
+	/*환전리스트*/
+	@RequestMapping("/admin/exchangeList.do")
+	public String exchangeList(Model model, ExchangeDTO exchangeDTO) {
+		
+		ArrayList<ExchangeDTO> exchangeList = sqlSession.getMapper(AdminImpl.class).exchangeList(exchangeDTO);
+		
+		model.addAttribute("exchangeList", exchangeList);
+		
+		return "admin/exchangeList";
+	}
+	
+	/*댓글리스트*/
+	@RequestMapping("/admin/mCommentList.do")
+	public String mCommentList(Model model, MCommentDTO mCommentDTO) {
+		
+		ArrayList<MCommentDTO> mCommentList = sqlSession.getMapper(AdminImpl.class).mCommentList(mCommentDTO);
+		
+		model.addAttribute("mCommentList", mCommentList);
+		
+		return "admin/mCommentList";
+	}
+	
+	/*협업리스트*/
+	@RequestMapping("admin/partyList.do")
+	public String partyList(Model model, PartyBoardDTO partyBoardDTO) {
+		
+		ArrayList<PartyBoardDTO> partyList = sqlSession.getMapper(AdminImpl.class).partyList(partyBoardDTO);
+		
+		model.addAttribute("partyList", partyList);
+		
+		return "admin/partyList";
+	}
+	
+	/*신고리스트*/
+	@RequestMapping("admin/reportList.do")
+	public String reportList(Model model, ReportDTO reportDTO) {
+		
+		ArrayList<ReportDTO> reportList = sqlSession.getMapper(AdminImpl.class).reportList(reportDTO);
+		
+		model.addAttribute("reportList", reportList);
+		
+		return "admin/reportList";
 	}
 }
