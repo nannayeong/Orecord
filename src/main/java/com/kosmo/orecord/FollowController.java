@@ -157,40 +157,4 @@ public class FollowController {
 		
 		return map;
 	}
-//	
-//	@RequestMapping("/addF.do")
-//	public String addF(HttpServletRequest req, Principal principal, RedirectAttributes rttr) {
-//		
-//		FollowDTO follow = new FollowDTO();
-//		String referer = req.getHeader("Referer");
-//		
-//		String followId = principal.getName();//내아이디
-//		String followerId = req.getParameter("followerId");//팔로우할아이디
-//		
-//		follow.setFollowing_id(followerId);
-//		follow.setUser_id(followId);
-//		
-//		//Follow 테이블에 insert하고 성공시 1을 반환받음
-//		int suc = sqlSession.insert("follow", follow);
-//		
-//		return "redirect:"+referer;
-//	}
-//	
-//	@RequestMapping("/unF.do")
-//	public String unF(HttpServletRequest req, Principal principal, RedirectAttributes rttr) {
-//		FollowDTO follow = new FollowDTO();
-//		String referer = req.getHeader("Referer");
-//		
-//		String followId = principal.getName();
-//		String followerId = req.getParameter("followerId");
-//		
-//		follow.setFollowing_id(followerId);
-//		follow.setUser_id(followId);
-//		
-//		//Follow 테이블에 insert하고 성공시 1을 반환받음
-//		int suc = sqlSession.delete("unFollow", follow);
-//		
-//		return "redirect:"+referer;
-//	}
-
 }
