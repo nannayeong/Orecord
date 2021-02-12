@@ -33,7 +33,7 @@ function checkNull(t) {
 	<div class="noti" id="setting" onclick="settingFunc();">
 		<i class="fas fa-ellipsis-h fa-lg"></i>
 		<div style="position:relative;background-color:red;visibility:hidden" class="setting-down">
-			<li><a href="${pageContext.request.contextPath}/report/write.do">신고하기</a></li>
+			<li><a href="${pageContext.request.contextPath}/report/reportlist.do">신고하기</a></li>
 			<li>2</li>
 		</div>
 	</div>

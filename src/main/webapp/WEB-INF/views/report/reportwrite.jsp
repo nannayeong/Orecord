@@ -62,7 +62,7 @@ function writeValidate(f)
 		<form name="writeFrm" method="post" onsubmit="return writeValidate(this);" action="../report/writeAction.do" >
 		<s:csrfInput />
 		<table class="table table-bordered">
-	
+		<td><input type="hidden" name="r_idx" value="${ret.r_idx}"></td>
 	<tbody>
 		<tr>
 			<th class="text-center" style="vertical-align:middle;">신고한사람 아이디</th>

@@ -35,8 +35,9 @@ public class ReportController {
 			e.printStackTrace();
 		}
 		
-		ArrayList<ReportDTO> report = sqlSession.getMapper(ReportImpl.class).listView(reportDTO);
-		//ReportDTO report = sqlSession.getMapper(ReportImpl.class).reportView();
+		String s_id = principal.getName();
+		
+		ArrayList<ReportDTO> report = sqlSession.getMapper(ReportImpl.class).listView(s_id);
 		
 		model.addAttribute("report", report);
 		
@@ -55,6 +56,9 @@ public class ReportController {
 		catch(Exception e) {
 			e.printStackTrace();
 		}
+		
+		ReportDTO ret = sqlSession.getMapper(ReportImpl.class).View(principal.getName());
+		model.addAttribute("ret", ret);
 		
 		return "report/reportwrite";
 	}
@@ -98,6 +102,11 @@ public class ReportController {
 	@RequestMapping("/report/reportModify.do")
 	public String modify(Model model, HttpServletRequest req, Principal principal)
 	{
+		ReportDTO reportDTO = new ReportDTO();
+		String r_idx = req.getParameter("r_idx");
+		
+		System.out.println("idx"+r_idx);
+		
 		String id = null;
 		/*로그인 없이 접근시 nullpointerexception발생, security로 접근권한 설정해야함.*/
 		try {
@@ -107,9 +116,8 @@ public class ReportController {
 			e.printStackTrace();
 		}
 		
-		String s_id = principal.getName();
-		
-		ReportDTO rpView = sqlSession.getMapper(ReportImpl.class).rpView(s_id);
+		ReportDTO rpView = sqlSession.getMapper(ReportImpl.class).rpView(Integer.parseInt(r_idx));
+		model.addAttribute("r_idx", r_idx);
 		model.addAttribute("rpView", rpView);
 		
 		return "report/reportModify"; 
@@ -120,51 +128,73 @@ public class ReportController {
 	@RequestMapping(value = "/report/modifyAction.do", method = RequestMethod.POST)
 	public String modifyAction(Model model , Principal principal, HttpServletRequest req)
 	{
+		
+		ReportDTO reportDTO = new ReportDTO();
+		String r_idx = req.getParameter("r_idx");
+		
+		System.out.println("r_idx"+r_idx);
+		
 		String id = null;
 		/*로그인 없이 접근시 nullpointerexception발생, security로 접근권한 설정해야함.*/
+		try {
+			id = principal.getName();
+			
+			String r_id = req.getParameter("r_id");
+			String kind = req.getParameter("kind");
+			String reason = req.getParameter("reason");
+			String s_id = principal.getName();
+			
+			int reportModify = sqlSession.getMapper(ReportImpl.class).ReportModify(kind, reason, r_id, Integer.parseInt(r_idx));
+			System.out.println("입력결과:"+reportModify);
+			
+			if(reportModify==1) {
+				System.out.println("수정완료");			
+			}
+		}
+		catch (NumberFormatException e) {
+			e.printStackTrace();
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return "redirect:/report/reportlist.do";
+		
+	}
+	
+	/* 신고글 삭제하기 */
+	@RequestMapping("/report/deleteAction.do")
+	public String deleteAction(Model model, HttpServletRequest req, Principal principal, ReportDTO reportDTO) {
+		
+		String id = null;
+		
 		try {
 			id = principal.getName();
 		}
 		catch(Exception e) {
 			e.printStackTrace();
 		}
-		
-		String r_id = req.getParameter("r_id");
-		String kind = req.getParameter("kind");
-		String reason = req.getParameter("reason");
+
 		String s_id = principal.getName();
 		
-		ReportDTO rpView = sqlSession.getMapper(ReportImpl.class).rpView(s_id);
-		model.addAttribute("rpView", rpView);
+		int rp = sqlSession.getMapper(ReportImpl.class).ReportDelete(s_id,
+				Integer.parseInt(req.getParameter("r_idx")));
+		System.out.println("삭제완료:"+rp);
+//		model.addAttribute("rp", rp);
+
+//		int r_idx = rp.getR_idx();
+		//int r_idx = reportDTO.getR_idx();
 		
-		int r_idx = rpView.getR_idx();
+		//int delete = sqlSession.getMapper(ReportImpl.class).ReportDelete(r_idx);
 		
-		int reportModify = sqlSession.getMapper(ReportImpl.class).ReportModify(r_id, kind, reason, r_idx);
-		
-		if(reportModify==1) {
-			System.out.println("수정완료");			
-		}
-		
-		return "report/reportlist";
-		
-	}
-//	/* 신고글 삭제하기 */
-//	@RequestMapping("/report/deleteAction.do")
-//	public String deleteAtion(Model model, HttpServletRequest req) {
-//		
-//		int delte = sqlSession.getMapper(ReportImpl.class).deleteAction
-//		
-//		
-//		//로그인확인
-//		if(delete.getAttribute("siteUserInfo")==null) {
-//			return "redirect:login.do";
+//		if(delete==1) {
+//			System.out.println("삭제완료..!");
 //		}
-//		
-//		//Mybatis 사용
-//		sqlSession.getMapper(ReportImpl.class).delete(
-//			req.getParameter("idx"),
-//			((MemberVO)session.getAttribute("siteUserInfo")).getId());
-//		
-//		return "redirect:list.do";
-//	}
+//		else {
+//			System.out.println("신고삭제실패");
+//		}
+		
+		
+		return "redirect:/report/reportlist.do";
+	}
 }

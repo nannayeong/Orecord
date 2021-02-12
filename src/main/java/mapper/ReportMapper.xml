@@ -6,15 +6,20 @@
 	
 <mapper namespace="impl.ReportImpl">
 	
+	<!-- 리스트보기 -->
 	<select id="listView" resultType="model.ReportDTO">
-		select * from report ORDER BY r_idx DESC
+		select * from report WHERE s_id=#{s_id} ORDER BY r_idx DESC
 	</select>
 
-	<select id="rpView" resultType="model.ReportDTO">
+	<select id="View" resultType="model.ReportDTO">
 		select * from report WHERE s_id=#{s_id}
 	</select>
+	
+	<select id="rpView" resultType="model.ReportDTO">
+		select * from report WHERE r_idx=#{param1}
+	</select>
 
-	<!-- 신고하기 -->
+	<!-- 신고하기 작성 -->
 	<insert id="ReportInfo" >
 		insert into report (r_idx, s_id, r_id, kind, reason)
 			values (seq_report.nextval, #{s_id}, #{r_id}, #{kind}, #{reason})
@@ -22,9 +27,11 @@
 	
 	<!-- 신고글 수정하기 -->
 	<update id="ReportModify">
-		UPDATE report SET r_id=#{0}, kind=#{1}, reason=#{2} WHERE r_idx=#{3}
+		UPDATE report SET  kind=#{param1}, reason=#{param2} WHERE r_id=#{param3} AND r_idx=#{param4}
 	</update>
 	
 	<!-- 신고글 삭제하기 -->
-	
+	<delete id="ReportDelete">
+		DELETE FROM report WHERE s_id=#{param1} AND r_idx=#{param2}
+	</delete>
 </mapper>

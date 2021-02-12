@@ -42,6 +42,7 @@
                     <th class="text-center">수정</th>
                     <th class="text-center">삭제</th>
                   </tr>
+                </tfoot>
                 <tbody>
                 
                 <!-- 방명록 반복 부분 s -->
@@ -52,14 +53,19 @@
 							 	<td class="text-center">${row.r_idx }</td>
 							 	<td class="text-center">${row.r_id }</td>
 							 	<td class="text-center">${row.kind }</td>
-							 	<td class="text-center"><button class="btn btn-primary" onclick="location.href='${pageContext.request.contextPath}/report/reportModify.do?idx=${row.r_idx}';">수정</button></td>
-								<td class="text-center"><button class="btn btn-danger" onclick="location.href='${pageContext.request.contextPath}/report/reportDelete.do?id=${row.id}';">삭제</button></td>
+							 	<td class="text-center"><button class="btn btn-primary" onclick="location.href='reportModify.do?r_idx=${row.r_idx}'">수정</button></td>
+								<td class="text-center"><button class="btn btn-danger" onclick="location.href='./deleteAction.do?r_idx=${row.r_idx}&s_id=${pageContext.request.userPrincipal.name}'">삭제</button></td>
 							 </tr>
 							</div>	
 						</div>
 				</c:forEach>
 	             </tbody>
 	            </table>
+	            <div>
+					<tr>
+						<td><input type="button" class="btn btn-warning" style="color: white; align-content: center; margin-left: 540px;" value="신고하기" onclick="location.href='${pageContext.request.contextPath}/report/write.do';"></td>
+					</tr>
+				</div>
 				
 				</div>
 			</div>

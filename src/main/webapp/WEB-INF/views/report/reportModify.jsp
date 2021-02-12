@@ -59,7 +59,7 @@ function writeValidate(f)
 			<div class="left-content-back">
 				<div class="left-content">
 <!-- <table style="width:100%;border:2px #f2f2f2 solid;margin:auto;margin-bottom:1em"> -->
-		<form name="writeFrm" method="post" onsubmit="return writeValidate(this);" action="${pageContext.request.contextPath}/report/writeAction.do" >
+		<form name="writeFrm" method="post" onsubmit="return writeValidate(this);" action="<c:url value="/report/modifyAction.do" />" >
 		<s:csrfInput />
 		<table class="table table-bordered">
 	
@@ -69,6 +69,7 @@ function writeValidate(f)
 			<td>
 				${pageContext.request.userPrincipal.name}
 			</td>
+			<td><input type="hidden" name="r_idx" value="${rpView.r_idx}"></td>
 		</tr>
 		<tr>
 			<th class="text-center" style="vertical-align:middle;">신고할사람 아이디</th>
@@ -97,13 +98,14 @@ function writeValidate(f)
 			<td>
 				<textarea rows="10" class="form-control" name="reason" >${rpView.reason }</textarea>
 			</td>
+			
 		</tr>	
 	</tbody>
 	</table>
 	
 	<div class="row text-center" style="">
 		<!-- 각종 버튼 부분 -->
-		<button type="submit" class="btn btn-danger">전송하기</button><br />
+		<button type="submit" class="btn btn-danger">수정하기</button><br />
 		<button type="reset" class="btn btn-info">Reset</button><br />
 		<button type="button" class="btn btn-warning">리스트보기</button>
 	</div>
