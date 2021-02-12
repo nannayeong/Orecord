@@ -19,6 +19,4 @@ public interface ChoiceImpl {
 	public int choiceAction3(String id,
 			int choice);
 	
-	//나의 포인트를 조회
-	public MemberDTO myPoint(String id);
 }

@@ -56,7 +56,7 @@ function choiceAction(f){
 		<br>
 		<hr color="green">
 		<!-- 본문 제목 종료 -->
-		<input type="hidden" name="myPoint" value="${myPoint.mypoint }" />
+		<input type="hi dden" name="myPoint" value="${myPoint.mypoint }" />
 		<input type="hidden" name="audio_idx" value="${partyView.audio_idx }">
 		<input type="hidden" name="party_idx" value="${partyView.party_idx }" />
 		<input type="hidden" name="id" value="${partyView.id }">

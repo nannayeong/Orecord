@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import model.AudioBoardDTO;
+import model.MemberDTO;
 import model.PartyBoardDTO;
 
 @Service
@@ -39,4 +40,7 @@ public interface PartyImpl {
 	//협업신청서 상세페이지
 	public PartyBoardDTO partyView(@Param("party_idx") int party_idx,
 			@Param("id") String id);
+	
+	//나의 포인트 조회
+	public MemberDTO myPoint(String id);
 }

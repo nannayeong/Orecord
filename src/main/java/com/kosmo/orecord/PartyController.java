@@ -20,8 +20,10 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import impl.ChoiceImpl;
 import impl.PartyImpl;
 import model.AudioBoardDTO;
+import model.MemberDTO;
 import model.PartyBoardDTO;
 
 @Controller
@@ -48,12 +50,6 @@ public class PartyController {
 					Integer.parseInt(partyIdx));
 		}
 		
-//		for(PartyBoardDTO dto : partyList) {
-//			String temp = dto.getTitle().replace("\r\n", "<br/>");
-//			dto.setTitle(temp);
-//			String temp2 = dto.getContents().replace("\r\n", "<br/>");
-//			dto.setContents(temp2);
-//		}
 		model.addAttribute("audio_idx", partyIdx);
 		model.addAttribute("partyList", partyList);
 		
@@ -218,6 +214,16 @@ public class PartyController {
 			
 		model.addAttribute("partyView", partyView);
 		model.addAttribute("party_idx", idx);
+		
+		
+		//내가 가진 포인트가 요구포인트보다 낮을때
+		//나의 포인트를 조회한다.
+		String name = principal.getName();
+		System.out.println("본인 아이디:"+ name);
+		MemberDTO myPoint =
+				sqlSession.getMapper(PartyImpl.class).myPoint(
+					name);
+		model.addAttribute("myPoint", myPoint);
 		
 		return "board/partyView";
 	}

@@ -39,4 +39,9 @@
 	<select id="partyView" resultType="model.PartyBoardDTO">
 		SELECT * FROM partyboard WHERE party_idx=#{party_idx} AND id=#{id}
 	</select>
+	
+	<!-- 나의 포인트 가져오기 -->
+	<select id="myPoint" resultType="model.MemberDTO">
+		select * from member where id=#{param1}
+	</select>
 </mapper>
