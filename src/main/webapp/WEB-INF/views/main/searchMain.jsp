@@ -1,492 +1,672 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
 <style>
-body{
-	background-color:#f2f2f2;
+body {
+	background-color: #f2f2f2;
 }
-a{
-color: #333333;}
-.content{
-	background-color:white;
-	margin:auto;
-	width:960px;
+
+a {
+	color: #333333;
+}
+
+.content {
+	background-color: white;
+	margin: auto;
+	width: 960px;
 	margin-top: 3em;
 }
-.left-content-back{
-	background-color:white;
-	width:70%;
-	float:left;
-	display:inline-block;
+
+.left-content-back {
+	background-color: white;
+	width: 70%;
+	float: left;
+	display: inline-block;
 }
-.left-content{
-	background-color:white;
-	width:95%;
+
+.left-content {
+	background-color: white;
+	width: 95%;
 	max-width: 800px;
-	margin:auto;
-	padding-top:1em;
-	content-align:center;
-	padding-bottom:1em;
+	margin: auto;
+	padding-top: 1em;
+	content-align: center;
+	padding-bottom: 1em;
 }
-.right-content-back{
-	background-color:white;
-	width:30%;
-	display:inline-block;
+
+.right-content-back {
+	background-color: white;
+	width: 30%;
+	display: inline-block;
 }
-.right-content{
-	background-color:white;
-	width:100%;
-	max-width:288px;
-	margin:auto;
-	padding-top:3em;
-	padding-bottom:1em;
+
+.right-content {
+	background-color: white;
+	width: 100%;
+	max-width: 288px;
+	margin: auto;
+	padding-top: 3em;
+	padding-bottom: 1em;
 	position: fixed;
 	top: 0px;
 	float: left;
 	text-align: center;
-	
 }
-.fix{ 
- 	position:fixed;
- 	right:0;
-}
-header{
-	background-color:#333333;
-	height:3em;
-	position:fixed;
-	top:0;
-	left:0;
-	right:0;
-}
-.menu-back{
-	width:960px;
-	margin:auto;
-}
-.logo{
-	color: white;
-    background-color:orange;
-    height:3em;
-    width:6em;
-    float:left;
-    vertical-align:middle;
-    padding-top:0.5em;
-    text-align:center;
-}
-.menu{
-    color: white;
-    background-color:#333333;
-    height:3em;
-    width:6em;
-    float:left;
-    vertical-align:middle;
-    padding-top:0.5em;
-    text-align:center;
-}
-.menu-r{
-    color: white;
-    background-color:#333333;
-    height:3em;
-    width:6em;
-    float:right;
-    vertical-align:middle;
-    padding-top:0.5em;
-    text-align:center;
-}
-.search{
-	color: white;
-    background-color:#333333;
-    height:3em;
-    float:left;
-    padding-top:0.5em;
-    padding-left:7px;
-    text-align:center;
-}
-.noti{
-	color:white;
-	background-color:#333333;
-	height:3em;
-	width:4em;
-	float:right;
-    vertical-align:middle;
-    padding-top:0.6em;
-    text-align:center;
-}
-.menu-unlogin{
-	color:white;
-	background-color:#333333;
-	height:3em;
-	float:right;
-    vertical-align:middle;
-    padding-top:0.6em;
-    text-align:center;
-    padding-right:1em;
-}
-.sidebar{
-width: 100%;
 
+.fix {
+	position: fixed;
+	right: 0;
 }
-h6{
-display: inline;}
-li{list-style:none;color:black;background-color:white;width:8em;border:2px #f2f2f2 solid;}
+
+header {
+	background-color: #333333;
+	height: 3em;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+}
+
+.menu-back {
+	width: 960px;
+	margin: auto;
+}
+
+.logo {
+	color: white;
+	background-color: orange;
+	height: 3em;
+	width: 6em;
+	float: left;
+	vertical-align: middle;
+	padding-top: 0.5em;
+	text-align: center;
+}
+
+.menu {
+	color: white;
+	background-color: #333333;
+	height: 3em;
+	width: 6em;
+	float: left;
+	vertical-align: middle;
+	padding-top: 0.5em;
+	text-align: center;
+}
+
+.menu-r {
+	color: white;
+	background-color: #333333;
+	height: 3em;
+	width: 6em;
+	float: right;
+	vertical-align: middle;
+	padding-top: 0.5em;
+	text-align: center;
+}
+
+.search {
+	color: white;
+	background-color: #333333;
+	height: 3em;
+	float: left;
+	padding-top: 0.5em;
+	padding-left: 7px;
+	text-align: center;
+}
+
+.noti {
+	color: white;
+	background-color: #333333;
+	height: 3em;
+	width: 4em;
+	float: right;
+	vertical-align: middle;
+	padding-top: 0.6em;
+	text-align: center;
+}
+
+.menu-unlogin {
+	color: white;
+	background-color: #333333;
+	height: 3em;
+	float: right;
+	vertical-align: middle;
+	padding-top: 0.6em;
+	text-align: center;
+	padding-right: 1em;
+}
+
+.sidebar {
+	width: 100%;
+}
+
+h6 {
+	display: inline;
+}
+
+li {
+	list-style: none;
+	color: black;
+	background-color: white;
+	width: 8em;
+	border: 2px #f2f2f2 solid;
+}
 </style>
-
+<script>
+	function checknull(form) {
+		if (form.searchWord.value == null || form.searchWord.value == "") {
+			alert("검색어를 입력하세요");
+			return false;
+		}
+	}
+</script>
 <script type="text/javascript">
-function heartbtn(audioIdx) {
-	var a = audioIdx;
-	var clas = document.getElementsByClassName("btn btn-outline-secondary btn-sm heart "+a);
-	if("${pageContext.request.userPrincipal.name}"==""||"${pageContext.request.userPrincipal.name}"==null){
-		alert("로그인후 이용하세요");
-		location.href="${pageContext.request.contextPath}/member/login.do";
-	}else{
-   		if(clas.length==0){
-   			like(a);
-   		}else{
-   			nolike(a);
-   		}
+	function heartbtn(audioIdx) {
+		var a = audioIdx;
+		var clas = document
+				.getElementsByClassName("btn btn-outline-secondary btn-sm heart "
+						+ a);
+		if ("${pageContext.request.userPrincipal.name}" == ""
+				|| "${pageContext.request.userPrincipal.name}" == null) {
+			alert("로그인후 이용하세요");
+			location.href = "${pageContext.request.contextPath}/member/login.do";
+		} else {
+			if (clas.length == 0) {
+				like(a);
+			} else {
+				nolike(a);
+			}
+		}
 	}
-}
-function like(audioIdx){
- 	var a = audioIdx;
-	var count;
-	 $.ajax({
-	      url : "./like.do",
-	      type : "get",
-	      contentType : "text/html;charset:utf-8",
-	      data : { audio_idx :a,like_id:"${pageContext.request.userPrincipal.name}"}, 
-	      dataType : "json",
-	      success : function sucFunc(resData) {
-	    	 var section1s = document.getElementsByClassName("btn btn-secondary btn-sm heart "+a);
-	    	 for(var i = section1s.length-1; i>=0; i--){
-	         var sec1 = section1s.item(0);
-	         sec1.className="btn btn-outline-secondary btn-sm heart "+a;
-	          count = resData.likecount;
-	          $( '.lCount.'+a ).html( '좋아요 : '+count );
-	    	  }
-	      }    
-	 });   
-}
-function nolike(audioIdx){
-   var a = audioIdx;  
-   var count;
-   $.ajax({
-      url : "./nolike.do",
-      type : "get",
-      contentType : "text/html;charset:utf-8",
-      data : { audio_idx :a,like_id:"${pageContext.request.userPrincipal.name}"}, 
-      dataType : "json",
-      success : function sucFunc(resData){
-    	 var section1s = document.getElementsByClassName("btn btn-outline-secondary btn-sm heart "+a);
-    	 for(var i = section1s.length-1; i>=0; i--){
-         var sec1 = section1s.item(0);
-         sec1.className="btn btn-secondary btn-sm heart "+a;
-          count = resData.likecount;
-          $( '.lCount.'+a ).html( '좋아요 : '+count );
-    	 }
-      }
-   });
-}
-	</script>
-	<script type="text/javascript">
+	function like(audioIdx) {
+		var a = audioIdx;
+		var count;
+		$
+				.ajax({
+					url : "./like.do",
+					type : "get",
+					contentType : "text/html;charset:utf-8",
+					data : {
+						audio_idx : a,
+						like_id : "${pageContext.request.userPrincipal.name}"
+					},
+					dataType : "json",
+					success : function sucFunc(resData) {
+						var section1s = document
+								.getElementsByClassName("btn btn-secondary btn-sm heart "
+										+ a);
+						for (var i = section1s.length - 1; i >= 0; i--) {
+							var sec1 = section1s.item(0);
+							sec1.className = "btn btn-outline-secondary btn-sm heart "
+									+ a;
+							count = resData.likecount;
+							$('.lCount.' + a).html('좋아요 : ' + count);
+						}
+					}
+				});
+	}
+	function nolike(audioIdx) {
+		var a = audioIdx;
+		var count;
+		$
+				.ajax({
+					url : "./nolike.do",
+					type : "get",
+					contentType : "text/html;charset:utf-8",
+					data : {
+						audio_idx : a,
+						like_id : "${pageContext.request.userPrincipal.name}"
+					},
+					dataType : "json",
+					success : function sucFunc(resData) {
+						var section1s = document
+								.getElementsByClassName("btn btn-outline-secondary btn-sm heart "
+										+ a);
+						for (var i = section1s.length - 1; i >= 0; i--) {
+							var sec1 = section1s.item(0);
+							sec1.className = "btn btn-secondary btn-sm heart "
+									+ a;
+							count = resData.likecount;
+							$('.lCount.' + a).html('좋아요 : ' + count);
+						}
+					}
+				});
+	}
+</script>
+<script type="text/javascript">
 	/* 버튼눌렀을때 팔로잉중인경우 언팔로우, 팔로우 안하는중이면 팔로우 함수로 이동 */
-function fBtn(follow) {
-	var f = follow;
-	var clas = document.getElementsByClassName("btn btn-secondary btn-sm follow "+f);
-	if("${pageContext.request.userPrincipal.name}"==""||"${pageContext.request.userPrincipal.name}"==null){
-	alert("로그인후 이용하세요");
-	location.href="${pageContext.request.contextPath}/member/login.do";
-	}else{
-		if(clas.length==0){
-			followbtn(f);
-		}else{
-			unfollowbtn(f);
+	function fBtn(follow) {
+		var f = follow;
+		var clas = document.getElementsByClassName("btn btn-outline-secondary btn-sm follow " + f);
+		if ("${pageContext.request.userPrincipal.name}" == ""
+				|| "${pageContext.request.userPrincipal.name}" == null) {
+			alert("로그인후 이용하세요");
+			location.href = "${pageContext.request.contextPath}/member/login.do";
+		} else {
+			if (clas.length == 0) {
+				followbtn(f);
+			} else {
+				unfollowbtn(f);
+			}
 		}
 	}
-}
-function followbtn(follow){
-  var f = follow;
-     
-	$.ajax({
-		url : "./addFollower.do",
-		type : "get",
-		contentType : "text/html;charset:utf-8",
-		data : { followId :"${pageContext.request.userPrincipal.name}",followerId:f}, 
-		dataType : "json",
-		success : function a(resData) {
-			var section1s = document.getElementsByClassName("btn btn-outline-secondary btn-sm follow "+f);
-			  for(var i = section1s.length-1; i>=0; i--){
-				  var sec1 = section1s.item(i);
-				  sec1.className="btn btn-secondary btn-sm follow "+f;
-				  }
-		} 
-		
-	});	
-}
-function unfollowbtn(follow){
-	var f = follow;
-	$.ajax({
-		url : "./unFollow.do",
-		type : "get",
-		contentType : "text/html;charset:utf-8",
-		data : { followId :"${pageContext.request.userPrincipal.name}",followerId:f}, 
-		dataType : "json",
-		success : function sucFunc(resData){
-			 var section1s = document.getElementsByClassName("btn btn-secondary btn-sm follow "+f);
-			  for(var i = section1s.length-1; i>=0; i--){
-			    var sec1 = section1s.item(i);
-			    sec1.className="btn btn-outline-secondary btn-sm follow "+f;
-			  }
-		}
-	});
-}
+	function followbtn(follow) {
+		var f = follow;
 
-	
-function donatebtn(audio_idx){
-	 if("${pageContext.request.userPrincipal.name}"==""||"${pageContext.request.userPrincipal.name}"==null){
-		   alert("로그인후 이용하세요");
-		   location.href="${pageContext.request.contextPath}/member/login.do";
-	 }else{
-		 var win = window.open("./"+"/donate.do", "PopupWin", "width=500,height=600");
-	 }
-}
+		$.ajax({
+			url : "./addFollower.do",
+			type : "get",
+			contentType : "text/html;charset:utf-8",
+			data : {
+				followId : "${pageContext.request.userPrincipal.name}",
+				followerId : f
+			},
+			dataType : "json",
+			success : function a(resData) {
+				var section1s = document
+						.getElementsByClassName("btn btn-secondary btn-sm follow " + f);
+				for (var i = section1s.length - 1; i >= 0; i--) {
+					var sec1 = section1s.item(i);
+					sec1.className = "btn btn-outline-secondary btn-sm follow " + f;
+				}
+			}
 
-function commentNcheck(c) {
-	if("${pageContext.request.userPrincipal.name}"==""||"${pageContext.request.userPrincipal.name}"==null){
-		   alert("로그인후 이용하세요");
-		   location.href='${pageContext.request.contextPath}/member/login.do';
-		   return false
-	}else if(c.cInput.value==""||c.cInput.value==null){
-		alert("내용을 입력하세요")
-		c.focus();
-		return false;
+		});
 	}
-	
-}
+	function unfollowbtn(follow) {
+		var f = follow;
+		$.ajax({
+			url : "./unFollow.do",
+			type : "get",
+			contentType : "text/html;charset:utf-8",
+			data : {
+				followId : "${pageContext.request.userPrincipal.name}",
+				followerId : f
+			},
+			dataType : "json",
+			success : function sucFunc(resData) {
+				var section1s = document
+						.getElementsByClassName("btn btn-outline-secondary btn-sm follow " + f);
+				for (var i = section1s.length - 1; i >= 0; i--) {
+					var sec1 = section1s.item(i);
+					sec1.className = "btn btn-secondary btn-sm follow " + f;
+				}
+			}
+		});
+	}
+
+	function donatebtn(audio_idx) {
+		if ("${pageContext.request.userPrincipal.name}" == ""
+				|| "${pageContext.request.userPrincipal.name}" == null) {
+			alert("로그인후 이용하세요");
+			location.href = "${pageContext.request.contextPath}/member/login.do";
+		} else {
+			var win = window.open("./" + "/donate.do", "PopupWin",
+					"width=500,height=600");
+		}
+	}
+
+	function commentNcheck(c) {
+		if ("${pageContext.request.userPrincipal.name}" == ""
+				|| "${pageContext.request.userPrincipal.name}" == null) {
+			alert("로그인후 이용하세요");
+			location.href = '${pageContext.request.contextPath}/member/login.do';
+			return false
+		} else if (c.cInput.value == "" || c.cInput.value == null) {
+			alert("내용을 입력하세요")
+			c.focus();
+			return false;
+		}
+
+	}
 </script>
 <script>
-$(function(){
-	if($('.right-content').height()>$('.left-content').height()){
-		$('.right-content-back').css("border-left","3px #f2f2f2 solid");
-	}
-	else{
-		$('.left-content-back').css("border-right","3px #f2f2f2 solid");
-	}
-});
+	$(function() {
+		if ($('.right-content').height() > $('.left-content').height()) {
+			$('.right-content-back').css("border-left", "3px #f2f2f2 solid");
+		} else {
+			$('.left-content-back').css("border-right", "3px #f2f2f2 solid");
+		}
+	});
 
-var count_setting = 0;
-function settingFunc(){
-	count_setting = count_setting+1;
-	if(count_setting%2==1){
-		$('.setting-down').css('visibility','');
-		$('.setting-down').css('visibility','visibility');
+	var count_setting = 0;
+	function settingFunc() {
+		count_setting = count_setting + 1;
+		if (count_setting % 2 == 1) {
+			$('.setting-down').css('visibility', '');
+			$('.setting-down').css('visibility', 'visibility');
+		} else {
+			$('.setting-down').css('visibility', '');
+			$('.setting-down').css('visibility', 'hidden');
+		}
 	}
-	else{
-		$('.setting-down').css('visibility','');
-		$('.setting-down').css('visibility','hidden');
+	var count_noti = 0;
+	function notiFunc() {
+		count_noti = count_noti + 1;
+		if (count_noti % 2 == 1) {
+			$('.noti-down').css('visibility', '');
+			$('.noti-down').css('visibility', 'visibility');
+		} else {
+			$('.noti-down').css('visibility', '');
+			$('.noti-down').css('visibility', 'hidden');
+		}
 	}
-}
-var count_noti = 0;
-function notiFunc(){
-	count_noti = count_noti+1;
-	if(count_noti%2==1){
-		$('.noti-down').css('visibility','');
-		$('.noti-down').css('visibility','visibility');
-	}
-	else{
-		$('.noti-down').css('visibility','');
-		$('.noti-down').css('visibility','hidden');
-	}
-}
 
-var count_user = 0;
-function userFunc(){
-	count_user = count_user+1;
-	if(count_user%2==1){
-		$('.user-down').css('visibility','');
-		$('.user-down').css('visibility','visibility');
+	var count_user = 0;
+	function userFunc() {
+		count_user = count_user + 1;
+		if (count_user % 2 == 1) {
+			$('.user-down').css('visibility', '');
+			$('.user-down').css('visibility', 'visibility');
+		} else {
+			$('.user-down').css('visibility', '');
+			$('.user-down').css('visibility', 'hidden');
+		}
 	}
-	else{
-		$('.user-down').css('visibility','');
-		$('.user-down').css('visibility','hidden');
-	}
-}
-
 </script>
 
 </head>
 <body>
-	<div>
-		<div class="content">
-			<div class="left-content-back">
-				<div class="left-content">
-				<h2>제목으로 검색 결과</h2>
-				    <c:forEach var="a" begin="0" end="${popMap1.size()}" step="1">
-			        <c:forEach var="b" items="${popMap1}">
-			        <c:if test="${a eq b.key }">
-					<table style="width:100%;border:2px #f2f2f2 solid;margin:auto;margin-bottom:1em">
-						<tr>
-							<td rowspan="4" style="width:7em;padding-left:1em;padding-right:1em">
-								<img src="./resources/default.jpg" alt="" style="width:6em"/>
-							</td>
-							<td><a href="./board/view.do?audio_idx=${b.value.audio_idx }">${ b.value.audiotitle}</a> - <a href="./${b.value.id }/record">${ b.value.artistname}</a></td>
-						</tr>
-						<tr>
-							<td colspan="2">
-								<audio src="" controls style="width:95%" >
-									<source src="">
-								</audio>
-							</td>
-						</tr>
-						<tr>
-							<td>
-							<c:set var="likeB" value="false"/>
-								<c:forEach var="l" items="${likes1 }">
-        		<c:if test="${b.value.audio_idx eq l.audio_idx and pageContext.request.userPrincipal.name eq l.like_id}">
-        		<c:set var="likeB" value="true"/>
-        		</c:if>
-        		</c:forEach>
-					<c:choose>
-               			<c:when test="${likeB}">
-                      		<button type="button" class="btn btn-outline-secondary btn-sm heart ${b.value.audio_idx}" title="좋아요" onclick="heartbtn('${b.value.audio_idx}')" name="minibtn">좋아요</button> 
-                 		</c:when>
-                 <c:otherwise>
-                      <button type="button" class="btn btn-secondary btn-sm heart ${b.value.audio_idx}" title="좋아요" onclick="heartbtn('${b.value.audio_idx}')"  name="minibtn">좋아요</button> 
-                 </c:otherwise>
-               		</c:choose>
-								<button type="button" class="btn btn-secondary btn-sm">플레이리스트</button>
-								<button type="button" class="btn btn-secondary btn-sm">참여</button>
-							</td>
-							<td style="text-align:center">
-								<h6 class="pCount ${b.value.audio_idx }">재생 : ${b.value.play_count} </h6> <h6 class="lCount ${b.value.audio_idx }">좋아요 : ${b.value.like_count }</h6> 
-							</td>
-						</tr>
-						<tr>
-							<td colspan="2">
-							<form action="${pageContext.request.contextPath}/board/commentAction.do?audio_idx=${b.value.audio_idx}" method="post" onsubmit="return commentNcheck(this)">
-								<input type="text" name="contents" style="width:80%;"/>&nbsp&nbsp<input type="submit" value="댓글달기" class="btn btn-secondary btn-sm" style="margin-bottom:5px"/>
-								
-								</form>
-							</td>
-						</tr>
-					</table>
-				</c:if>
-           </c:forEach>
-         </c:forEach>
-         <h2>아티스트 검색결과</h2>
-         <c:forEach var="a" items="${ artists}">
-					<table style="width:100%;border:2px #f2f2f2 solid;margin:auto;margin-bottom:1em;">
-						<tr>
-							<td rowspan="4" style="width:7em;padding: 0.5em;">
-								<img src="./resources/default.jpg" alt="" style="width:6em"/>
-							</td>
-							<td rowspan="2" colspan="2"><h3 style="margin-top: .5rem; padding-left:0.5em;"> ${a.nickname } </h3></td>
-						</tr>
-						<tr>
-			
-						</tr>
-						<tr>
-							<td style="padding-left:1em; padding-bottom:1em; pa">
-							<c:set var="likeB" value="false"/>
-								<c:forEach var="l" items="${likes1 }">
-        		<c:if test="${b.value.audio_idx eq l.audio_idx and pageContext.request.userPrincipal.name eq l.like_id}">
-        		<c:set var="likeB" value="true"/>
-        		</c:if>
-        		</c:forEach>
-					<c:choose>
-               			<c:when test="${likeB}">
-                      		<button type="button" class="btn btn-outline-secondary btn-sm follow ${b.value.audio_idx}" title="좋아요" onclick="heartbtn('${b.value.audio_idx}')" name="minibtn">팔로우</button> 
-                 		</c:when>
-                 <c:otherwise>
-                      <button type="button" class="btn btn-secondary btn-sm follow ${b.value.audio_idx}" title="좋아요" onclick="heartbtn('${b.value.audio_idx}')"  name="minibtn">팔로우</button> 
-                 </c:otherwise>
-               		</c:choose>
-							</td>
-							<td style="text-align:center; padding-left: 15em;" >
-								<h6 class="pCount ${b.value.audio_idx }">팔로워 : ${b.value.play_count} </h6> 
-							</td>
-						</tr>
-						<tr>
-							<td colspan="2">
-
-							</td>
-						</tr>
-					</table>
-				</c:forEach>
-				</div>
-			</div>
-			<div class="right-content-back">
-				<div class="right-content">
-					<div class="sidebar recF">
-					<c:forEach var="rf" items="recommendF">
-					<div class=""></div>
-					</c:forEach>
-					</div>
-					<div class="sidebar myF"> 
-					</div>
-					첫하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />
-					하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />
-					하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />막하이<br />
-				</div>
-			</div>
-		</div>
-			 
-	</div>
+<div>
+<div class="content">
+<div class="left-content-back">
+	<div class="left-content">
+		<h2>제목으로 검색결과</h2>
+		<c:if test="${popMap1.size() eq 0}">
+		<h4>검색 결과가 없습니다.</h4>
+		</c:if>
+		<c:forEach var="a" begin="0" end="${popMap1.size()}" step="1">
+			<c:forEach var="b" items="${popMap1}">
 	
+			<c:if test="${a eq b.key }">
+				<table
+					style="width: 100%; border: 2px #f2f2f2 solid; margin: auto; margin-bottom: 1em"
+					class="pcount">
+					<tr>
+						<td rowspan="4"
+							style="width: 7em; padding-left: 1em; padding-right: 1em">
+							<img src="./resources/default.jpg" alt="" style="width: 6em" />
+						</td>
+						<td><a
+							href="./board/view.do?audio_idx=${b.value.audio_idx }">${ b.value.audiotitle}</a>
+							- <a href="./${b.value.id }/record">${b.value.artistname}</a></td>
+					</tr>
+					<tr>
+						<td colspan="2"><audio src="" controls style="width: 95%">
+								<source src="">
+							</audio></td>
+					</tr>
+					<tr>
+						<td><c:set var="likeB" value="false" /> <c:forEach var="l"
+								items="${likes1 }">
+								<c:if
+									test="${b.value.audio_idx eq l.audio_idx and pageContext.request.userPrincipal.name eq l.like_id}">
+									<c:set var="likeB" value="true" />
+								</c:if>
+							</c:forEach> <c:choose>
+								<c:when test="${likeB}">
+									<button type="button"
+										class="btn btn-outline-secondary btn-sm heart ${b.value.audio_idx}"
+										title="좋아요" onclick="heartbtn('${b.value.audio_idx}')"
+										name="minibtn">좋아요</button>
+								</c:when>
+								<c:otherwise>
+									<button type="button"
+										class="btn btn-secondary btn-sm heart ${b.value.audio_idx}"
+										title="좋아요" onclick="heartbtn('${b.value.audio_idx}')"
+										name="minibtn">좋아요</button>
+								</c:otherwise>
+							</c:choose>
+							<button type="button" class="btn btn-secondary btn-sm">플레이리스트</button>
+							<button type="button" class="btn btn-secondary btn-sm"
+								onclick="coOp('${b.value.audio_idx}')">참여</button></td>
+						<td style="text-align: center">
+							<h6 class="pCount ${b.value.audio_idx }">재생 : ${b.value.play_count}</h6>
+							<h6 class="lCount ${b.value.audio_idx }">좋아요 : ${b.value.like_count }</h6>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<form
+								action="${pageContext.request.contextPath}/board/commentAction.do?audio_idx=${b.value.audio_idx}"
+								method="post" onsubmit="return commentNcheck(this)">
+								<input type="text" name="contents" style="width: 80%;" />&nbsp&nbsp<input
+									type="submit" value="댓글달기" class="btn btn-secondary btn-sm"
+									style="margin-bottom: 5px" />
+
+							</form>
+						</td>
+					</tr>
+				</table>
+				</c:if>
+			</c:forEach>
+		</c:forEach>
+		<h3>아티스트명으로 곡 검색결과</h3>
+					<c:if test="${popMap2.size() eq 0}">
+			<h4>검색 결과가 없습니다.</h4>
+			</c:if>
+		<c:forEach var="a" begin="0" end="${popMap2.size()}" step="1">
+			<c:forEach var="b" items="${popMap2}">
+
+			<c:if test="${a eq b.key }">
+				<table
+					style="width: 100%; border: 2px #f2f2f2 solid; margin: auto; margin-bottom: 1em"
+					class="pcount">
+					<tr>
+						<td rowspan="4"
+							style="width: 7em; padding-left: 1em; padding-right: 1em">
+							<img src="./resources/default.jpg" alt="" style="width: 6em" />
+						</td>
+						<td><a href="./board/view.do?audio_idx=${b.value.audio_idx }">${ b.value.audiotitle}</a>
+							- <a href="./${b.value.id }/record">${b.value.artistname}</a></td>
+					</tr>
+					<tr>
+						<td colspan="2"><audio src="" controls style="width: 95%">
+								<source src="">
+							</audio></td>
+					</tr>
+					<tr>
+						<td><c:set var="likeB" value="false" /> <c:forEach var="l"
+								items="${likes2 }">
+								<c:if
+									test="${b.value.audio_idx eq l.audio_idx and pageContext.request.userPrincipal.name eq l.like_id}">
+									<c:set var="likeB" value="true" />
+								</c:if>
+							</c:forEach> <c:choose>
+								<c:when test="${likeB}">
+									<button type="button"
+										class="btn btn-outline-secondary btn-sm heart ${b.value.audio_idx}"
+										title="좋아요" onclick="heartbtn('${b.value.audio_idx}')"
+										name="minibtn">좋아요</button>
+								</c:when>
+								<c:otherwise>
+									<button type="button"
+										class="btn btn-secondary btn-sm heart ${b.value.audio_idx}"
+										title="좋아요" onclick="heartbtn('${b.value.audio_idx}')"
+										name="minibtn">좋아요</button>
+								</c:otherwise>
+							</c:choose>
+							<button type="button" class="btn btn-secondary btn-sm">플레이리스트</button>
+							<button type="button" class="btn btn-secondary btn-sm"
+								onclick="coOp('${b.value.audio_idx}')">참여</button></td>
+						<td style="text-align: center">
+							<h6 class="pCount ${b.value.audio_idx }">재생 : ${b.value.play_count}</h6>
+							<h6 class="lCount ${b.value.audio_idx }">좋아요 : ${b.value.like_count }</h6>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<form
+								action="${pageContext.request.contextPath}/board/commentAction.do?audio_idx=${b.value.audio_idx}"
+								method="post" onsubmit="return commentNcheck(this)">
+								<input type="text" name="contents" style="width: 80%;" />&nbsp&nbsp<input
+									type="submit" value="댓글달기" class="btn btn-secondary btn-sm"
+									style="margin-bottom: 5px" />
+
+							</form>
+						</td>
+					</tr>
+				</table>
+				</c:if>
+			</c:forEach>
+		</c:forEach>
+		<h3>아티스트 검색결과</h3>
+			<c:if test="${ artists.size() eq 0}">
+		<h4>검색 결과가 없습니다.</h4>
+		</c:if>
+		<c:forEach var="a" items="${ artists}">
+	
+			<table
+				style="width: 100%; border: 2px #f2f2f2 solid; margin: auto; margin-bottom: 1em"
+				class="pcount">
+				<tr>
+					<td rowspan="4"
+						style="width: 7em; padding-left: 1em; padding-right: 1em">
+						<img src="./resources/default.jpg" alt="" style="width: 6em" />
+					</td>
+					<td><h3 style="padding-top: 1em;"><a href="./${a.id }/record">${a.nickname}</a></h3></td>
+				</tr>
+				<tr>
+					<td colspan="2"></td>
+				</tr>
+				<tr>
+					<td style="padding-top: 1em; padding-bottom: 1em;">
+				<c:set var="followB" value="false"/>
+        		<c:forEach var="f" items="${returnMap }">
+        		<c:forEach var="follower" items="${f.value }">
+        		<c:if test="${pageContext.request.userPrincipal.name eq follower and a.id eq f.key}">
+        		<c:set var="followB" value="true"/>
+        		</c:if>
+        		</c:forEach>
+        		</c:forEach>
+        		
+        		     <c:choose>
+               <c:when test="${followB}">
+               <button type="button" class="btn btn-outline-secondary btn-sm follow ${a.id}" onclick="fBtn('${a.id}')" >팔로우</button>
+                 </c:when>
+                 <c:otherwise>
+                   <button type="button" class="btn btn-secondary btn-sm follow ${a.id}" onclick="fBtn('${a.id}')" >팔로우</button>
+                 </c:otherwise>
+               </c:choose>
+               
+						
+					<td style="text-align: center">
+						<h6 class="pCount ${a.id }">팔로워 : ${memberMap[a]}</h6>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+					</td>
+				</tr>
+			</table>
+		</c:forEach>
+		<h3>내용으로 검색결과</h3>
+		<c:if test="${popMap3.size() eq 0}">
+		<h4>검색 결과가 없습니다.</h4>
+		</c:if>
+		<c:forEach var="a" begin="0" end="${popMap3.size()}" step="1">
+			<c:forEach var="b" items="${popMap3}">
+			<c:if test="${a eq b.key }">
+				<table
+					style="width: 100%; border: 2px #f2f2f2 solid; margin: auto; margin-bottom: 1em"
+					class="pcount">
+					<tr>
+						<td rowspan="4"
+							style="width: 7em; padding-left: 1em; padding-right: 1em">
+							<img src="./resources/default.jpg" alt="" style="width: 6em" />
+						</td>
+						<td><a href="./board/view.do?audio_idx=${b.value.audio_idx }">${ b.value.audiotitle}</a>
+							- <a href="./${b.value.id }/record">${b.value.artistname}</a></td>
+					</tr>
+					<tr>
+						<td colspan="2"><audio src="" controls style="width: 95%">
+								<source src="">
+							</audio></td>
+					</tr>
+					<tr>
+						<td><c:set var="likeB" value="false" /> <c:forEach var="l"
+								items="${likes3 }">
+								<c:if
+									test="${b.value.audio_idx eq l.audio_idx and pageContext.request.userPrincipal.name eq l.like_id}">
+									<c:set var="likeB" value="true" />
+								</c:if>
+							</c:forEach> <c:choose>
+								<c:when test="${likeB}">
+									<button type="button"
+										class="btn btn-outline-secondary btn-sm heart ${b.value.audio_idx}"
+										title="좋아요" onclick="heartbtn('${b.value.audio_idx}')"
+										name="minibtn">좋아요</button>
+								</c:when>
+								<c:otherwise>
+									<button type="button"
+										class="btn btn-secondary btn-sm heart ${b.value.audio_idx}"
+										title="좋아요" onclick="heartbtn('${b.value.audio_idx}')"
+										name="minibtn">좋아요</button>
+								</c:otherwise>
+							</c:choose>
+							<button type="button" class="btn btn-secondary btn-sm">플레이리스트</button>
+							<button type="button" class="btn btn-secondary btn-sm"
+								onclick="coOp('${b.value.audio_idx}')">참여</button></td>
+						<td style="text-align: center">
+							<h6 class="pCount ${b.value.audio_idx }">재생 : ${b.value.play_count}</h6>
+							<h6 class="lCount ${b.value.audio_idx }">좋아요 : ${b.value.like_count }</h6>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<form
+								action="${pageContext.request.contextPath}/board/commentAction.do?audio_idx=${b.value.audio_idx}"
+								method="post" onsubmit="return commentNcheck(this)">
+								<input type="text" name="contents" style="width: 80%;" />&nbsp&nbsp<input
+									type="submit" value="댓글달기" class="btn btn-secondary btn-sm"
+									style="margin-bottom: 5px" />
+
+							</form>
+						</td>
+					</tr>
+				</table>
+				</c:if>
+			</c:forEach>
+		</c:forEach>
+	</div>
+</div>
+	<div class="right-content-back">
+		<div class="right-content">
+			<div class="sidebar recF">
+				<c:forEach var="rf" items="recommendF">
+					<div class=""></div>
+				</c:forEach>
+			</div>
+			<div class="sidebar myF"></div>
+			<ul>
+			<li><a href="./search.do?searchWord=${searchWord }">전체 검색</a></li>
+			<li><a href="./searchAudio.do?searchWord=${searchWord }">제목으로 검색</a></li>
+			<li><a href="./searchAudioByArtist.do?searchWord=${searchWord }">아티스트명으로 검색</a></li>
+			<li><a href="./searchArtist.do?searchWord=${searchWord }">아티스트 검색</a></li>
+			<li><a href="./searchContents.do?searchWord=${searchWord }">내용으로 검색</a></li>
+			</ul>
+
+		</div>
+	</div>
+</div>
+</div>
+
 	<!-- 상단 메뉴바(위치옮기면안됨!) -->
 	<header>
-		<div class="menu-back">
-			<!-- 오른정렬 -->
-			<a href=""><div class="logo">Orecord</div></a>
-			<a href=""><div class="menu">menu1</div></a>
-			<a href=""><div class="menu">menu2</div></a>
-			<div class="search">
-				<form action="">
-					<input type="text" value="" type="search" style="width:18em"/>
-					<button type="button" onclick="" class="btn btn-secondary btn-sm" style="margin-bottom:4px"><i class="fas fa-search"></i></button>
-				</form>
-			</div>
-			<!-- 왼정렬 -->
-			
-			<c:choose>
-			<c:when test="${not empty pageContext.request.userPrincipal.name}">
-			<div class="noti" id="setting" onclick="settingFunc();">
-				<i class="fas fa-ellipsis-h fa-lg"></i>
-				<div style="position:relative;background-color:red;visibility:hidden" class="setting-down">
-					<li>1</li>
-					<li>2</li>
-				</div>
-			</div>
-			<div class="noti" id="noti" onclick="notiFunc();">
-				<i class="fas fa-bell fa-lg"></i>
-				<div style="position:relative;background-color:red;visibility:hidden" class="noti-down">
-					<li>1</li>
-					<li>2</li>
-				</div>
-			</div>
-			<div class="noti" id="user"onclick="userFunc();">
-				<img src="./resources/default.jpg" alt="" style="width:1.5em;border-radius:15px;margin-left:5px" />
-				<i class="fas fa-caret-down"></i>
-				<div style="position:relative;background-color:red;visibility:hidden" class="user-down">
-					<li>1</li>
-					<li>2</li>
-				</div>
-			</div>
-			<a href=""><div class="menu-r">Upload</div></a>
-			</c:when>
-			<c:otherwise>
-			<div class="menu-unlogin"><button type="button" class="btn btn-secondary btn-sm">회원가입</button></div>
-			<div class="menu-unlogin"><button type="button" class="btn btn-primary btn-sm" onclick="location.href='${pageContext.request.contextPath}/member/login.do'">로그인</button></div>
-			</c:otherwise>
-			</c:choose>
-		</div>
+		<%@include file="/resources/jsp/header.jsp"%>
 	</header>
-	
+
+
 </body>
 </html>

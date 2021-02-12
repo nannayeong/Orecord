@@ -1,42 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<!-- Jquery, BootStrap -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
-<script>
-function deleteAlbumFunc(albumidx){
-	if(confirm('앨범을 삭제하시겠습니까?')){
-		/* 리스트페이지 */
-		$.ajax({
-		     url : "../deleteAlbum.do",
-		     type : "get",
-		     contentType : "text/html;charset:utf-8",
-		     data : {album_idx:albumidx},
-		     dataType : "json",
-		     success : function sucFunc(resData) {
-		    	 if(resData.result==1){
-		    		 alert("정상적으로 삭제되었습니다.");
-		    		 location.href="../${pageContext.request.userPrincipal.name}/album";
-			   	 }
-		    	 else{
-		    		 alert("앨범 삭제 실패하였습니다.");
-		    	 }
-		     }     
-		});
-	}
-}
 
-</script>
-</head>
 <style>
 #list tr:hover{
 background-color: #f2f2f2;cursor:pointer
@@ -45,14 +10,13 @@ background-color: #f2f2f2;cursor:pointer
 border:1px solid #f2f2f2
 }
 </style>
-<body>
 <!-- 앨범 -->
-<table style="width:95%;margin:auto;margin-bottom:1em">
+<table style="width:95%;margin:auto;">
 <c:choose>
-<c:when test="${empty albumList }">
+<c:when test="${empty albumList and nowPage eq 1}">
 	<td style="text-align:center;border:2px #f2f2f2 solid;height:30em">
 		<div>등록된 앨범이 없습니다.</div><br />
-		<c:if test="${pageContext.request.userPrincipal.name ne user_id}">
+		<c:if test="${pageContext.request.userPrincipal.name eq user_id}">
 		<div><button type="button" onclick="location.href='../upload.do'" class="btn btn-outline-dark">업로드하기</button></div>
 		</c:if>
 	</td>
@@ -66,7 +30,7 @@ border:1px solid #f2f2f2
 		<td style="padding-top:1em"> 
 			<div>
 				<span style="font-size:30px">${album.albumName }</span>
-				<c:if test="${pageContext.request.userPrincipal.name ne user_id}">
+				<c:if test="${pageContext.request.userPrincipal.name eq user_id}">
 				<button type="button" data-toggle="modal" data-target="#albumEdit${album.album_idx }">앨범수정</button>
 				<!-- 수정 모달 -->
 				<div class="modal" id="albumEdit${album.album_idx }">
@@ -119,7 +83,7 @@ border:1px solid #f2f2f2
 								<img src="${audio.imagename }" alt="" style="width:25px;"/> 
 								${status.count }. ${audio.audiotitle } - ${audio.artistname }
 							</td>
-							<td style="padding-left:10em;padding-right:0.7em">
+							<td style="padding-right:0.7em;text-align:right">
 								<!-- 플레이버튼 -->
 								<span id="play" onclick="clickAudio('${audio.audiofilename}','${album.albumName }');" class="iconPoint"> 
                    					<i class="fas fa-play"></i>
@@ -168,9 +132,23 @@ border:1px solid #f2f2f2
 								</c:if>
 								
                    				<!-- like -->
-                   				<span id="heart" class="iconPoint" onclick="logincheck(this);">
-                   					<i class="fas fa-heart"></i>
-                   				</span>	
+                   				<c:if test="${pageContext.request.userPrincipal.name ne user_id}">
+                   				<span id="heart" class="iconPoint" onclick="likeFunc(${audio.audio_idx});">
+                   					<i id="likeIcon${audio.audio_idx}" class="fas fa-heart ${audio.like eq 'true' ? 'on' : '' }"></i>
+                   				</span>
+                   				</c:if>	
+                   				<c:if test="${pageContext.request.userPrincipal.name eq user_id}">
+                   				<span class="dropdown">
+								  <span data-toggle="dropdown" style="cursor:pointer">
+								    <i class="fas fa-ellipsis-h fa-lg"></i>
+								  </span>
+								  <div class="dropdown-menu">
+								  	
+								    <a class="dropdown-item" href="javascript:recordDeleteFunc(${audio.audio_idx });">삭제하기</a>
+								    <a class="dropdown-item" href="#">수정하기</a>
+								  </div>
+								</span>
+								</c:if>
 							</td>
 						</tr>
 						</c:if>
@@ -189,10 +167,4 @@ border:1px solid #f2f2f2
 </c:forEach>
 </c:otherwise>
 </c:choose>
-</table>
-<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
-	<ul class="pagination justify-content-center">
-		${pagingStr }
-	</ul>			
-</body>
-</html>
+</table>		

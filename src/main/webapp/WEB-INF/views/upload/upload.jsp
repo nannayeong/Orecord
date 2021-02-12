@@ -202,20 +202,23 @@ function addAlbumFunc(){
 							      <div class="modal-body" style="text-align:center">
 							      	<span>추가할 앨범명을 입력해주세요</span><br />
 							      	<input type="text" id="addAlbumName" />
-							      	<button type="button" id="aaButton" class="btn btn-warning btn-sm" onclick='addAlbumFunc();'>추가하기</button>
+							      	<div><button type="button" id="aaButton" class="btn btn-warning btn-sm" onclick='addAlbumFunc();'>추가하기</button></div>
+							      
 							      </div>
+							      <br />
 							    </div>
 							  </div>
 							</div>
-							
+			          	</div>
+	                      <div class="form-group">
 		                  	<select name="albumName" id="albumName" class="form-control">
 		                  	<!-- <option value="default" style="color: black;">default</option> -->
 	                  		<c:forEach items="${albumList}" var="album">
 	                  		<option value="${album.albumName}" style="color: black;">${album.albumName}</option>
 	                  		</c:forEach>
 		                  	</select>
-			          	<label>음원파일</label>
-                     		<input type="file" class="form-control" name="audiofilename" id="audiofilename" accept=".mp4,.mp3,.wav">
+			          		<label>음원파일</label>
+	                    		<input type="file" class="form-control" name="audiofilename" id="audiofilename" accept=".mp4,.mp3,.wav">
 			          </div>
 					</div>
 				</div>

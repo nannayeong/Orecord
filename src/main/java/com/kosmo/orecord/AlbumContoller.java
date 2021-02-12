@@ -112,8 +112,7 @@ public class AlbumContoller {
 		String albumJacket = null;
 		String login_id = null;
 		
-		
-		
+		System.out.println("앨범수정");
 		try {
 			login_id = principal.getName();
 			
@@ -159,11 +158,15 @@ public class AlbumContoller {
 				mfile.transferTo(serverFullName);
 			}
 			
-			System.out.println(albumName + album_idx + login_id + albumJacket);
-			int result = sqlSession.getMapper(AlbumImpl.class).modifyAlbum(login_id, album_idx, albumJacket, albumName);
+			System.out.println("앨범이름:"+albumName +"번호"+ album_idx + "아이디"+login_id + "이미지"+albumJacket);
+			if(albumJacket==null) {
+				sqlSession.getMapper(AlbumImpl.class).modifyAlbumNoJacket(login_id, album_idx, albumName);
+			}
+			sqlSession.getMapper(AlbumImpl.class).modifyAlbum(login_id, album_idx, albumJacket, albumName);
+
 		}
 		catch(Exception e) {
-			e.printStackTrace();
+			System.out.println("로그인"+e.getMessage());
 		}
 		
 		return "redirect:/"+login_id+"/album";

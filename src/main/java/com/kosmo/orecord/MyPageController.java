@@ -28,6 +28,8 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import impl.AlbumImpl;
 import impl.AudioBoardImpl;
 import impl.FollowImpl;
+import impl.LikeImpl;
+import impl.McommentImpl;
 import impl.MemberImpl;
 import impl.MypageImpl;
 import impl.PlayListImpl;
@@ -73,6 +75,66 @@ public class MyPageController {
 		return "mypage/record";
 	}
 
+	@RequestMapping("/{user_id}/likeRecord")
+	public String likeRecord(@PathVariable String user_id, Model model, Principal principal, HttpServletRequest req) { 
+		
+		String path = req.getContextPath();
+		String login_id = null;
+		
+		/*계정정보*/
+		MemberDTO memberDTO = sqlSession.getMapper(MemberImpl.class).memberInfo(user_id);	
+		
+		/*로그인 유저의 계정정보*/
+		MemberDTO loginDTO = null;
+		try {
+			login_id = principal.getName();
+			loginDTO = sqlSession.getMapper(MemberImpl.class).memberInfo(login_id);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+
+		if(memberDTO.getImg()==null) {
+			memberDTO.setImg(path+"/resources/img/default.jpg");
+		}
+		
+		model.addAttribute("memberDTO", memberDTO);
+		model.addAttribute("loginDTO", loginDTO);
+		model.addAttribute("user_id", user_id);
+		
+		return "mypage/likeRecord";
+	}
+	
+	@RequestMapping("/{user_id}/followRecord")
+	public String followRecord(@PathVariable String user_id, Model model, Principal principal, HttpServletRequest req) { 
+		
+		String path = req.getContextPath();
+		String login_id = null;
+		
+		/*계정정보*/
+		MemberDTO memberDTO = sqlSession.getMapper(MemberImpl.class).memberInfo(user_id);	
+		
+		/*로그인 유저의 계정정보*/
+		MemberDTO loginDTO = null;
+		try {
+			login_id = principal.getName();
+			 loginDTO = sqlSession.getMapper(MemberImpl.class).memberInfo(login_id);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+
+		if(memberDTO.getImg()==null) {
+			memberDTO.setImg(path+"/resources/img/default.jpg");
+		}
+		
+		model.addAttribute("memberDTO", memberDTO);
+		model.addAttribute("loginDTO", loginDTO);
+		model.addAttribute("user_id", user_id);
+		
+		return "mypage/followRecord";
+	}
+	
 	@RequestMapping("/{user_id}/album")
 	public String album(@PathVariable String user_id, Model model, HttpServletRequest req, Principal principal) {
 		
@@ -135,16 +197,24 @@ public class MyPageController {
 	
 	/*회원삭제하기*/
 	@RequestMapping("/memberDelete.do")
-	public String memberDelete(HttpServletRequest req, HttpSession session) {
+	public String memberDelete(HttpServletRequest req, Principal principal) {
 		
-		/*
-		if(session.getAttribute("siteUserInfo")==null){
-			return "./login.do";
+		String id = null;
+		/*로그인 없이 접근시 nullpointerexception발생, security로 접근권한 설정해야함.*/
+		try {
+			id = principal.getName();
 		}
-		*/
-		sqlSession.getMapper(MypageImpl.class).memberDelete(req.getParameter("id"));
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 		
-		return "main/main";
+		int delete = sqlSession.getMapper(MypageImpl.class).memberDelete(id);
+		
+		if(delete==1) {
+			System.out.println("회원삭제완료");
+		}
+		
+		return "redirect:/main.do";
 		
 	}
 	
@@ -154,6 +224,28 @@ public class MyPageController {
 		uuid = uuid.replaceAll("-", "");
 		System.out.println("생성된UUID-2:"+uuid);
 		return uuid;
+	}
+	
+	@RequestMapping("/pwCheck.do")
+	public String pwCheck(Principal principal, Model model, HttpServletRequest req) {
+		String id = null;
+		/*로그인 없이 접근시 nullpointerexception발생, security로 접근권한 설정해야함.*/
+		try {
+			id = principal.getName();
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		String pw = req.getParameter("pw");
+		String pw2 = req.getParameter("pw2");
+		
+		MemberDTO dto = sqlSession.getMapper(MypageImpl.class).memberView(id);
+		model.addAttribute("dto", dto);
+		
+		System.out.println(pw + " "+ pw2);
+		
+		return "mypage/pwCheck";
 	}
 	
 	/*회원수정폼*/
@@ -274,8 +366,6 @@ public class MyPageController {
 		String user_id = req.getParameter("user_id");	
 		
 		/*페이징*/
-		//1. 앨범 토탈카운트
-		int albumTotalCount = sqlSession.getMapper(AlbumImpl.class).albumTotalCount(user_id);
 		
 		int pageSize = 5;
 		int blockPage = 5;
@@ -283,61 +373,31 @@ public class MyPageController {
 		int nowPage = Integer.parseInt(req.getParameter("nowPage"));
 		int start = (nowPage-1)*pageSize+1;
 		int end = nowPage * pageSize;
-		
-		String pagingStr = "";
-		
-		//1.전체페이지 구하기
-		int totalPage = 
-		(int)(Math.ceil(((double)albumTotalCount/pageSize)));
-		
-		/*2.현재페이지번호를 통해 이전 페이지블럭에
-		해당하는 페이지를 구한다.
-		*/
-		int intTemp = 
-			(((nowPage-1) / blockPage) * blockPage) + 1;
-		
-		if(intTemp != 1) {
-			//첫번째 페이지 블럭에서는 출력되지 않음
-			//두번째 페이지 블럭부터 출력됨.
-			pagingStr += ""
-				+ "<a href='javascript:paging(1);'>"
-				+ "<img src='../images/paging1.gif'></a>";
-			pagingStr += "&nbsp;";
-			pagingStr += ""
-				+ "<a href='javascript:paging("+(intTemp-blockPage)+");'>"
-				+ "<img src='../images/paging2.gif'></a>";
-		}
-					
-		//페이지표시 제어를 위한 변수
-		int blockCount = 1;
-		/*
-		4.페이지를 뿌려주는 로직 : blockPage의 수만큼 또는
-			마지막페이지가 될때까지 페이지를 출력한다.
-		*/
-		while(blockCount<=blockPage && intTemp<=totalPage)
-		{
-			if(intTemp==nowPage) {
-				pagingStr += "&nbsp;"+intTemp+"&nbsp;";
+
+		/*로그인유저의 플레이리스트 가져오기*/
+		String login_id = null;
+		ArrayList<PlayListDTO> plList = null;
+		try {
+			login_id = principal.getName();
+			plList = sqlSession.getMapper(PlayListImpl.class).select(login_id);
+			
+			if(plList.size()==0) {
+				PlayListDTO dto = new PlayListDTO();
+				dto.setPlname("default");
+				plList.add(dto);
 			}
-			else {
-				pagingStr += "&nbsp;<a href='javascript:paging("+intTemp+");'>"+
-					intTemp+"</a>&nbsp;";
-			}
-			intTemp++;
-			blockCount++;
 		}
-		
-		//5.다음페이지블럭 & 마지막페이지 바로가기
-		if(intTemp <= totalPage) {
-			pagingStr += "<a href='javascript:paging("+intTemp+");'>"
-				+ "<img src='../images/paging3.gif'></a>";
-			pagingStr += "&nbsp;";
-			pagingStr += "<a href='javascript:paging("+totalPage+");'>"
-				+ "<img src='../images/paging4.gif'></a>";
-		}		
+		catch(Exception e) {
+			System.out.println("로그인"+e.getMessage());
+		}
 		
 		ArrayList<AlbumDTO> albumList = sqlSession.getMapper(AlbumImpl.class).albumListPaging(user_id, start, end);
 		ArrayList<AudioBoardDTO> audioList = sqlSession.getMapper(AudioBoardImpl.class).audioList(user_id);	
+		
+		boolean pageCheck = true;
+		if(albumList.size()==0) {
+			pageCheck = false;
+		}
 		
 		/*앨범*/
 		for(AlbumDTO albumDTO : albumList) {
@@ -364,29 +424,26 @@ public class MyPageController {
 			
 			String fileName = audioDTO.getAudiofilename();
 			audioDTO.setAudiofilename(path+"/resources/upload/"+fileName);
-		}
-		
-		/*로그인유저의 플레이리스트 가져오기*/
-		String id = null;
-		ArrayList<PlayListDTO> plList = null;
-		try {
-			id = principal.getName();
-			plList = sqlSession.getMapper(PlayListImpl.class).select(id);
 			
-			if(plList.size()==0) {
-				PlayListDTO dto = new PlayListDTO();
-				dto.setPlname("default");
-				plList.add(dto);
+
+			/*음원에 대한 로그인 유저의 좋아요*/
+			if(login_id!=null) {
+				int likeResult = sqlSession.getMapper(LikeImpl.class).myLike(audioDTO.getAudio_idx(), login_id);
+				
+				if(likeResult==1) {
+					audioDTO.setLike(true);
+				}
+				else {
+					audioDTO.setLike(false);
+				}
 			}
 		}
-		catch(Exception e) {
-			e.printStackTrace();
-		}
 		
+		model.addAttribute("user_id", user_id);
 		model.addAttribute("plList", plList);
 		model.addAttribute("albumList", albumList);
 		model.addAttribute("audioList", audioList);
-		model.addAttribute("pagingStr", pagingStr);
+		model.addAttribute("nowPage", nowPage);
 		
 		return "mypage/mypageAlbum";
 	}
@@ -396,15 +453,38 @@ public class MyPageController {
 		
 		String path = req.getContextPath();
 		String user_id = req.getParameter("user_id");	
+		String login_id = null;
 		
+		try {
+			login_id = principal.getName();
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 
+		/*페이징*/
+		//1. 플레이리스트
+		int pageSize = 10;
+		
+		int nowPage = Integer.parseInt(req.getParameter("nowPage"));
+		int start = (nowPage-1)*pageSize+1;
+		int end = nowPage * pageSize;
+
+		System.out.println("page"+nowPage);
+
+		
 		/*1. 플레이리스트 가져오기*/
-		ArrayList<PlayListDTO> plList = sqlSession.getMapper(PlayListImpl.class).myplaylist(user_id);
-		/*2. for문으로 플레이리스트의 앨범이름을 hashset에 넣은 후 map('albumName', albumList)에 넣기*/
-		HashSet<String> plSet = new HashSet<String>();
+		ArrayList<String> plSet = sqlSession.getMapper(PlayListImpl.class).myplaylistPaging(user_id, start, end);//나의 플레이리스트 이름(페이징)
+		
+		ArrayList<PlayListDTO> plList = sqlSession.getMapper(PlayListImpl.class).myplaylist(user_id);//나의 모든 플레이리스트
+		
+		boolean pageCheck = true;
+		if(plList.size()==0) {
+			pageCheck = false;
+		}
+		System.out.println("pageCheck"+pageCheck);
+		
 		for(PlayListDTO plDTO : plList) {
-			plSet.add(plDTO.getPlname());
-			
 			if(plDTO.getImagename()==null) {
 				plDTO.setImagename(path+"/resources/img/default.jpg");
 			}
@@ -414,14 +494,27 @@ public class MyPageController {
 			}
 			String fileName = plDTO.getAudiofilename();
 			plDTO.setAudiofilename(path+"/resources/upload/"+fileName);
+			
+			
+			/*음원에 대한 로그인 유저의 좋아요*/
+			if(login_id!=null) {
+				int likeResult = sqlSession.getMapper(LikeImpl.class).myLike(plDTO.getAudio_idx(), login_id);
+				System.out.println("likeResult"+likeResult);
+				
+				if(likeResult==1) {
+					plDTO.setLike(true);
+				}
+				else {
+					plDTO.setLike(false);
+				}
+			}
 		}
 		
-		for(String a : plSet) {
-			System.out.println("리스트확인"+a);
-		}
 		/*3.플레이리스트 DTO map에 넣기*/		
+		model.addAttribute("user_id", user_id);
 		model.addAttribute("plSet", plSet);//폴더명
 		model.addAttribute("plList",plList);//전체리스트
+		model.addAttribute("nowPage", nowPage);
 		
 		return "mypage/mypagePlay";
 	}
@@ -432,9 +525,41 @@ public class MyPageController {
 		String path = req.getContextPath();
 		String user_id = req.getParameter("user_id");
 		
-		ArrayList<AudioBoardDTO> audioList = sqlSession.getMapper(AudioBoardImpl.class).audioList(user_id);	
+		/*페이징*/
+		int pageSize = 10;
 		
-		System.out.println(audioList);
+		int nowPage = Integer.parseInt(req.getParameter("nowPage"));
+		int start = (nowPage-1)*pageSize+1;
+		int end = nowPage * pageSize;
+
+		System.out.println("page"+nowPage);
+		
+		ArrayList<AudioBoardDTO> audioList = sqlSession.getMapper(AudioBoardImpl.class).audioListPaging(user_id, start, end);	
+		System.out.println("오디오"+audioList);
+		
+		boolean pageCheck = true;
+		if(audioList.size()==0) {
+			pageCheck = false;
+		}
+		
+		System.out.println("pageCheck"+pageCheck);
+		/*로그인유저의 플레이리스트 가져오기*/
+		String login_id = null;
+		ArrayList<PlayListDTO> plList = null;
+		try {
+			login_id = principal.getName();
+			plList = sqlSession.getMapper(PlayListImpl.class).select(login_id);
+			
+			if(plList.size()==0) {
+				PlayListDTO dto = new PlayListDTO();
+				dto.setPlname("default");
+				plList.add(dto);
+			}
+		}
+		catch(Exception e) {
+			System.out.println("로그인"+e.getMessage());
+		}
+		
 		/*음원*/
 		for(AudioBoardDTO audioDTO : audioList) {
 			
@@ -446,14 +571,198 @@ public class MyPageController {
 				audioDTO.setImagename(path+"/resources/upload/"+fileName);
 			}
 			
-			
 			String fileName = audioDTO.getAudiofilename();
 			audioDTO.setAudiofilename(path+"/resources/upload/"+fileName);
-		}
+			
+			/*음원에 달린 코맨트*/
+			int commentCount = sqlSession.getMapper(McommentImpl.class).audioCommentCount(audioDTO.getAudio_idx());
+			
+			audioDTO.setCommentCount(commentCount);
 
+			/*음원에 대한 로그인 유저의 좋아요*/
+			if(login_id!=null) {
+				int likeResult = sqlSession.getMapper(LikeImpl.class).myLike(audioDTO.getAudio_idx(), login_id);
+				System.out.println("likeResult"+likeResult);
+				
+				if(likeResult==1) {
+					audioDTO.setLike(true);
+				}
+				else {
+					audioDTO.setLike(false);
+				}
+			}	
+		}
+		
+		model.addAttribute("nowPage", nowPage);
+		model.addAttribute("user_id", user_id);
+		model.addAttribute("plList", plList);
 		model.addAttribute("audioList", audioList);
 		
 		return "mypage/mypageRecord";
+	}
+	
+	@RequestMapping("/mypageFollow.do")
+	public String mypageF(Principal principal, HttpServletRequest req, Model model){
+		
+		String path = req.getContextPath();
+		String user_id = req.getParameter("user_id");
+		
+		/*페이징*/
+		int pageSize = 10;
+		
+		int nowPage = Integer.parseInt(req.getParameter("nowPage"));
+		int start = (nowPage-1)*pageSize+1;
+		int end = nowPage * pageSize;
+
+		System.out.println("page"+nowPage);
+		
+		ArrayList<AudioBoardDTO> audioList = sqlSession.getMapper(AudioBoardImpl.class).recordFollow(user_id, start, end);	
+		System.out.println("오디오"+audioList);
+		
+		boolean pageCheck = true;
+		if(audioList.size()==0) {
+			pageCheck = false;
+		}
+		
+		System.out.println("pageCheck"+pageCheck);
+		/*로그인유저의 플레이리스트 가져오기*/
+		String login_id = null;
+		ArrayList<PlayListDTO> plList = null;
+		try {
+			login_id = principal.getName();
+			plList = sqlSession.getMapper(PlayListImpl.class).select(login_id);
+			
+			if(plList.size()==0) {
+				PlayListDTO dto = new PlayListDTO();
+				dto.setPlname("default");
+				plList.add(dto);
+			}
+		}
+		catch(Exception e) {
+			System.out.println("로그인"+e.getMessage());
+		}
+		
+		/*음원*/
+		for(AudioBoardDTO audioDTO : audioList) {
+			
+			if(audioDTO.getImagename()==null){
+				audioDTO.setImagename(path+"/resources/img/default.jpg");
+			}
+			else {
+				String fileName = audioDTO.getImagename();
+				audioDTO.setImagename(path+"/resources/upload/"+fileName);
+			}
+			
+			String fileName = audioDTO.getAudiofilename();
+			audioDTO.setAudiofilename(path+"/resources/upload/"+fileName);
+			
+			/*음원에 달린 코맨트*/
+			int commentCount = sqlSession.getMapper(McommentImpl.class).audioCommentCount(audioDTO.getAudio_idx());
+			
+			audioDTO.setCommentCount(commentCount);
+
+			/*음원에 대한 로그인 유저의 좋아요*/
+			if(login_id!=null) {
+				int likeResult = sqlSession.getMapper(LikeImpl.class).myLike(audioDTO.getAudio_idx(), login_id);
+				System.out.println("likeResult"+likeResult);
+				
+				if(likeResult==1) {
+					audioDTO.setLike(true);
+				}
+				else {
+					audioDTO.setLike(false);
+				}
+			}	
+		}
+		
+		model.addAttribute("nowPage", nowPage);
+		model.addAttribute("user_id", user_id);
+		model.addAttribute("plList", plList);
+		model.addAttribute("audioList", audioList);
+		
+		return "mypage/mypageFollow";
+	}
+	
+	@RequestMapping("/mypageLike.do")
+	public String mypageL(Principal principal, HttpServletRequest req, Model model){
+		
+		String path = req.getContextPath();
+		String user_id = req.getParameter("user_id");
+		
+		/*페이징*/
+		int pageSize = 10;
+		
+		int nowPage = Integer.parseInt(req.getParameter("nowPage"));
+		int start = (nowPage-1)*pageSize+1;
+		int end = nowPage * pageSize;
+
+		System.out.println("page"+nowPage);
+		
+		/*user_id의 like*/
+		ArrayList<AudioBoardDTO> audioList = sqlSession.getMapper(LikeImpl.class).myLikeSelect(user_id, start, end);	
+		System.out.println("오디오"+audioList);
+		
+		boolean pageCheck = true;
+		if(audioList.size()==0) {
+			pageCheck = false;
+		}
+
+		/*로그인유저의 플레이리스트 가져오기*/
+		String login_id = null;
+		ArrayList<PlayListDTO> plList = null;
+		try {
+			login_id = principal.getName();
+			plList = sqlSession.getMapper(PlayListImpl.class).select(login_id);
+			
+			if(plList.size()==0) {
+				PlayListDTO dto = new PlayListDTO();
+				dto.setPlname("default");
+				plList.add(dto);
+			}
+		}
+		catch(Exception e) {
+			System.out.println("로그인"+e.getMessage());
+		}
+		
+		/*음원*/
+		for(AudioBoardDTO audioDTO : audioList) {
+			
+			if(audioDTO.getImagename()==null){
+				audioDTO.setImagename(path+"/resources/img/default.jpg");
+			}
+			else {
+				String fileName = audioDTO.getImagename();
+				audioDTO.setImagename(path+"/resources/upload/"+fileName);
+			}
+			
+			String fileName = audioDTO.getAudiofilename();
+			audioDTO.setAudiofilename(path+"/resources/upload/"+fileName);
+			
+			/*음원에 달린 코맨트*/
+			int commentCount = sqlSession.getMapper(McommentImpl.class).audioCommentCount(audioDTO.getAudio_idx());
+			
+			audioDTO.setCommentCount(commentCount);
+
+			/*음원에 대한 로그인 유저의 좋아요*/
+			if(login_id!=null) {
+				int likeResult = sqlSession.getMapper(LikeImpl.class).myLike(audioDTO.getAudio_idx(), login_id);
+				System.out.println("likeResult"+likeResult);
+				
+				if(likeResult==1) {
+					audioDTO.setLike(true);
+				}
+				else {
+					audioDTO.setLike(false);
+				}
+			}	
+		}
+		
+		model.addAttribute("nowPage", nowPage);
+		model.addAttribute("user_id", user_id);
+		model.addAttribute("plList", plList);
+		model.addAttribute("audioList", audioList);
+		
+		return "mypage/mypageLike";
 	}
 	
 	@RequestMapping("/mypageFollowTrack.do")

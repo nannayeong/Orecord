@@ -18,6 +18,29 @@
 <!-- layout js-->
 <script src="${pageContext.request.contextPath}/resources/js/layout.js"></script>
 <script>
+function recordDeleteFunc(aidx){
+	if("${pageContext.request.userPrincipal.name}"==""){
+		alert('로그인 후 이용해주세요');
+		location.href="../member/login.do"
+	}
+	else{
+		if(confirm('삭제하시겠습니까?')){
+			$.ajax({
+			     url : "../recordDelete.do",
+			     type : "get",
+			     contentType : "text/html;charset:utf-8",
+			     data : {audio_idx:aidx},
+			     dataType : "json",
+			     success : function sucFunc(resData) {
+			    	 if(resData.result==1){
+							alert("정상적으로 삭제되었습니다");
+							location.href="./record";
+					 }
+			     }    
+			});
+		}
+	}
+}
 function logincheck(bt){
 	if("${pageContext.request.userPrincipal.name}"==""){
 		alert('로그인 후 이용해주세요');
@@ -95,7 +118,82 @@ function pointCheck(){
 		return false;
 	}
 }
+
+function commentNcheck(c) {
+	if("${pageContext.request.userPrincipal.name}"==""){
+		   alert("로그인후 이용하세요");
+		   location.href='${pageContext.request.contextPath}/member/login.do';
+		   return false
+	}else if(c.cInput.value==""||c.cInput.value==null){
+		alert("내용을 입력하세요")
+		c.focus();
+		return false;
+	}
+}
+
+function likeFunc(a){
+	if("${pageContext.request.userPrincipal.name}"==""){
+		alert('로그인 후 이용해주세요');
+		location.href="../member/login.do"
+	}
+	else{
+		if($('#likeIcon'+a).hasClass('on')){//이미 좋아요상태일 때
+			$.ajax({
+			      url : "../nolike.do",
+			      type : "get",
+			      contentType : "text/html;charset:utf-8",
+			      data : { audio_idx :a}, 
+			      dataType : "json",
+			      success : function sucFunc(resData){
+			    	  if(resData.result==1){
+			    	  	$('#likeIcon'+a).removeClass('on');
+			    	  	$('#likecount'+a).html(resData.likecount);
+			    	  }
+			      }
+			   });
+		}
+		else{
+			$.ajax({
+			     url : "../like.do",
+			     type : "get",
+			     contentType : "text/html;charset:utf-8",
+			     data : { audio_idx :a}, 
+			     dataType : "json",
+			     success : function sucFunc(resData) {
+			    	if(resData.result==1){
+						$('#likeIcon'+a).addClass('on');
+						$('#likecount'+a).html(resData.likecount);
+			    	}
+			     }    
+			});  
+		}
+	}
+}
+
 $(function(){
+	
+	/* 페이징 */
+	var nowP = 1;
+	$(window).scroll(function(){
+		var scrollHeight = $(document).height();
+		var scrollPosition = $(window).height() + $(window).scrollTop();		
+		if(scrollPosition > scrollHeight -1){
+			nowP = nowP + 1;
+			$.ajax({
+			     url : "../mypageRecord.do",
+			     type : "get",
+			     contentType : "text/html;charset:utf-8",
+			     data : {user_id:"${user_id}", 
+			    	 	nowPage:nowP},
+			     dataType : "html",
+			     success : function sucFunc(resData) {
+			    	 $('#albumList').append(resData);
+			     }    
+			});
+		}
+	});
+	
+	/*팔로우*/
 	$('#follow').mouseenter(function(){
 		if($('#follow').html()=='팔로워'){
 			$('#follow').html('언팔로우');
@@ -126,7 +224,7 @@ $(function(){
 	    		 $('#follow').addClass('btn btn-outline-success btn-sm');
 	    	 }	 
 	     }    
-	});		
+	});
 	
 	/* 팔로잉/팔로워/게시물 숫자 불러오기 */
 	$.ajax({
@@ -176,7 +274,6 @@ $(function(){
 					<span onclick="location.href='../${user_id}/record'" style="color:orange;">record</span>
 					<span onclick="location.href='../${user_id}/album'">album</span>
 					<span onclick="location.href='../${user_id}/playlist'">playlist</span>
-					<span onclick="location.href='../${user_id}/like'">like</span>
 					
 					<div style="float:right;margin-right:1em;">
 						<c:choose>
@@ -224,6 +321,13 @@ $(function(){
 					<table style="width:100%;margin:1em 0 3em 0em;">
 						<tr>
 							<td class="my-con-left">
+								<div style="text-align:left">
+									<div class="btn-group" style="margin-bottom:1em;margin-left:1em;text-size:16px;">
+									  <button type="button" class="btn btn-dark" onclick="location.href='./record'">myRecord</button>
+									  <button type="button" class="btn btn-outline-dark" onclick="location.href='./likeRecord'">like</button>
+									  <button type="button" class="btn btn-outline-dark" onclick="location.href='./followRecord'">followers</button>
+									</div>
+								</div>
 								<div id="albumList">
 								
 								</div>

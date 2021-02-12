@@ -16,6 +16,12 @@
 	<select id="myplaylist" resultType="model.PlayListDTO">
 		select idx, plid, l.audio_idx, plname, audiotitle, artistname, audiofilename, imagename, id, regidate, play_count, like_count, party
 		from playlist l inner join audioBoard a on l.audio_idx=a.audio_idx where plid=#{param1}
+<!-- 		select idx, plid, l.audio_idx, plname, audiotitle, artistname, audiofilename, imagename, id, regidate, play_count, like_count, party  -->
+<!-- 		from playlist l inner join audioBoard a on l.audio_idx=a.audio_idx where plname = (select plname from (select tb.*, rownum rnum from  -->
+<!-- 		(select distinct plname from playlist where plid=#{param1})tb) where rnum between #{param2} and #{param3}) -->
 	</select>
 
+	<select id="myplaylistPaging" resultType="String">
+		select plname from (select tb.*, rownum rnum from (select distinct plname from playlist where plid=#{param1})tb) where rnum between #{param2} and #{param3}
+	</select>
 </mapper>	 
