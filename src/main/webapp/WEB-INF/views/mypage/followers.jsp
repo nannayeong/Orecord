@@ -89,8 +89,32 @@ function unfollowbtn(follow) {
 			<div class="profile" style="background-color:brown;">
 				<%@include file="/resources/jsp/mypageProfile.jsp" %>
 			</div>
-			<div>
-
+			<div style="padding-bottom:2em">
+				<div style="text-align:center;margin-top:2em">
+					<div class="btn-group" style="margin-bottom:1em;margin-left:1em;text-size:16px;">
+					  <button type="button" class="btn btn-dark" onclick="location.href='./myFollowers'" style="width:8em">follower</button>
+					  <button type="button" class="btn btn-outline-dark" onclick="location.href='./myFollowing'" style="width:8em">following</button>
+					</div>
+				</div>
+				<c:if test="${artists.size() eq 0}">
+				<h4>팔로우한 아티스트가 없습니다.</h4>
+				</c:if>
+				<c:forEach var="a" items="${artists}">
+				<table style="width: 60%; border: 2px #f2f2f2 solid;margin: auto;" class="feed">
+					<tr>
+						<td style="padding-top:1em; padding-bottom:1em">
+							<img src="${a.img }" alt="" style="width: 2em" />
+						</td>
+						<td><div style="text-size:20px"><a href="../${a.id}/record">${a.nickname}(${a.id })</a></div></td>
+						<td>
+							${a.intro}
+						</td>
+						<td style="text-align:right;padding-right:1em;">
+	               			<button type="button" class="btn btn-outline-secondary btn-sm follow ${a.id}" onclick="fBtn('${a.id}')" >팔로워</button>
+	               		</td>
+					</tr>
+				</table>
+				</c:forEach>
 			</div>
 		</div>
 		<!-- 본문종료 -->
