@@ -28,7 +28,38 @@
 				<%@include file="/resources/jsp/mypageProfile.jsp" %>
 			</div>
 			<div>
-				dddd
+			<c:if test="${ artists.size() eq 0}">
+		<h4>팔로우한 아티스트가 없습니다.</h4>
+		</c:if>
+		<c:forEach var="a" items="${artists}">
+			<table
+				style="width: 100%; border: 2px #f2f2f2 solid; margin: auto; margin-bottom: 1em"
+				class="feed">
+				<tr>
+					<td rowspan="4"
+						style="width: 7em; padding-left: 1em; padding-right: 1em">
+						<img src="./resources/default.jpg" alt="" style="width: 6em" />
+					</td>
+					<td><h3 style="padding-top: 1em;"><a href="./${a.id }/record">${a.nickname}</a></h3></td>
+				</tr>
+				<tr>
+					<td colspan="2"></td>
+				</tr>
+				<tr>
+					<td style="padding-top: 1em; padding-bottom: 1em;">
+               <button type="button" class="btn btn-outline-secondary btn-sm follow ${a.id}" onclick="fBtn('${a.id}')" >팔로우</button>
+
+					<td style="text-align: center">
+						<h6 class="pCount ${a.id }">팔로워 : ${memberMap[a]}</h6>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+					</td>
+				</tr>
+			</table>
+		</c:forEach>
+
 			</div>
 		</div>
 		<!-- 본문종료 -->
