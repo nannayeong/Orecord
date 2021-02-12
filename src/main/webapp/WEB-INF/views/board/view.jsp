@@ -183,13 +183,13 @@ function deleteRow(comment_idx, audio_idx){
 			<!-- 작성자 프로필 -->
 			<div class="row">
 				<div class="col-3" style="text-align: center; padding-left: 50px;">
-					<img src="../resources/img/2.png" alt="프로필사진"
+					<img src="${audio.img }" alt="프로필사진"
 						class="rounded-circle" width="100">
 					<h6 style="margin-top:8px;">${audio.id }</h6>
 					<hr width="100%" align="center" color="orange" size="10px">
 					<h6 style="color:gray;">참여자</h6>
 					<c:forEach items="${partyMember }" var="mem">
-						<img src="../resources/img/2.png" alt="프로필사진"
+						<img src="${mem.img }" alt="프로필사진"
 						class="rounded-circle" width="100">
 					<h6 style="margin:8px 0 7px 0;">${mem.id }</h6>
 					</c:forEach>

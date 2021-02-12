@@ -37,7 +37,6 @@ public class ViewController {
 		
 		/*절대경로*/
 		String path = req.getContextPath();
-		System.out.println("절대경로"+ path);
 		
 		//Mapper 호출
 		AudioBoardDTO view =
@@ -56,7 +55,6 @@ public class ViewController {
 		else {
 			view.setImg(path+"/resources/upload/"+view.getImg());
 		}
-		
 		if(view.getImagename()==null) {
 			view.setImagename("../resources/img/default.jpg");
 		}
@@ -85,6 +83,16 @@ public class ViewController {
 		ArrayList<PartyBoardDTO> PartyMember =
 			sqlSession.getMapper(ViewImpl.class).partyMember(
 					Integer.parseInt(req.getParameter("audio_idx")));
+		
+		for(PartyBoardDTO dto2 : PartyMember) {
+			
+			if(dto2.getImg()==null) {
+				dto2.setImg("../resources/img/default.jpg");
+			}
+			else {
+				dto2.setImg(path+"/resources/upload/"+dto2.getImg());
+			}
+		}
 		
 		model.addAttribute("partyMember", PartyMember);
 		
@@ -152,12 +160,6 @@ public class ViewController {
 		
 		return "redirect:view.do";
 	}
-	
-
 } 
-
-	//재생횟수 증가
-	
-	
 
 

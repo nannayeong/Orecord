@@ -38,23 +38,22 @@ color: #333333;}
 }
 .right-content-back{
 	background-color:white;
-	height : 1000px;
+	max-width:288px;
+	height : 100%;
 	width:30%;
 	display:inline-block;
+	position: fixed;
+	top: 0px;
+	float: left;
 }
 .right-content{
 	background-color:white;
 	width:100%;
-	max-width:288px;
 	height : 960px!;
 	margin:auto;
 	padding-top:3em;
 	padding-bottom:1em;
-	position: fixed;
-	top: 0px;
-	float: left;
 	text-align: center;
-	
 }
 .fix{ 
  	position:fixed;
@@ -165,7 +164,7 @@ $(window).on("scroll", function() {
 		      dataType : "html",
 		      async    : false,
 		      success : function(resData) {
-		    	  $('table').last().after(resData);
+		    	  $('.feed').last().after(resData);
 		    	  $.checktotalLoad();
 		      },
 		      error : function(e) {
@@ -193,7 +192,7 @@ $($.checktotalLoad = function () {
 	      success : function(resData) {
 	    	  if(resData.nomoreFeed!=null){
 	    	  if(end==undefined){
-	    		  $('table').last().after("<h3 class='end'>"+resData.nomoreFeed+"</h3>");
+	    		  $('.feed').last().after("<h3 class='end'>"+resData.nomoreFeed+"</h3>");
 	    	  }}
 	    	  
 	      },
@@ -415,7 +414,7 @@ function userFunc(){
 			<div class="left-content-back">
 				<div class="left-content">
         <c:forEach var="b" items="${audiolist}">
-					<table style="width:100%;border:2px #f2f2f2 solid;margin:auto;margin-bottom:1em" class="pcount">
+					<table style="width:100%;border:2px #f2f2f2 solid;margin:auto;margin-bottom:1em" class="feed">
 						<tr>
 							<td rowspan="4" style="width:7em;padding-left:1em;padding-right:1em">
 								<img src="${b.imagename}" alt="" style="width:6em"/>
