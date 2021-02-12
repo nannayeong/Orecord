@@ -21,4 +21,6 @@ public interface ReportImpl {
 	
 	/*신고글 수정하기*/
 	public int ReportModify(String r_id, String kind, String reason, int r_idx);
+	
+	/*  */
 }

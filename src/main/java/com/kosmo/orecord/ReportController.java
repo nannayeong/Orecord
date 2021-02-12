@@ -60,7 +60,7 @@ public class ReportController {
 	}
 	
 	//신고글쓰기
-	@RequestMapping(value = "/report/writeAction.do", method = RequestMethod.POST)
+	@RequestMapping("/report/writeAction.do")
 	public String writeAction(Model model,HttpServletRequest req, Principal principal)
 	{
 		
@@ -87,8 +87,11 @@ public class ReportController {
 		if(ReportInfo==1) {
 			System.out.println("신고글쓰기성공");			
 		}
+		else {
+			System.out.println("신고글쓰기실패");	
+		}
 		
-		return "report/reportlist";
+		return "redirect:/report/reportlist.do";
 	}
 	
 	//수정페이지
@@ -145,17 +148,20 @@ public class ReportController {
 		return "report/reportlist";
 		
 	}
-	
-//	@RequestMapping("/report/delete.do")
-//	public String delete(HttpServletRequest req, HttpSession session) {
+//	/* 신고글 삭제하기 */
+//	@RequestMapping("/report/deleteAction.do")
+//	public String deleteAtion(Model model, HttpServletRequest req) {
+//		
+//		int delte = sqlSession.getMapper(ReportImpl.class).deleteAction
+//		
 //		
 //		//로그인확인
-//		if(session.getAttribute("siteUserInfo")==null) {
+//		if(delete.getAttribute("siteUserInfo")==null) {
 //			return "redirect:login.do";
 //		}
 //		
 //		//Mybatis 사용
-//		sqlSession.getMapper(MybatisDAOImpl.class).delete(
+//		sqlSession.getMapper(ReportImpl.class).delete(
 //			req.getParameter("idx"),
 //			((MemberVO)session.getAttribute("siteUserInfo")).getId());
 //		

@@ -52,7 +52,7 @@
 							 	<td class="text-center">${row.r_idx }</td>
 							 	<td class="text-center">${row.r_id }</td>
 							 	<td class="text-center">${row.kind }</td>
-							 	<td class="text-center"><button class="btn btn-primary" onclick="location.href='${pageContext.request.contextPath}/report/reportModify.do?id=${row.id}';">수정</button></td>
+							 	<td class="text-center"><button class="btn btn-primary" onclick="location.href='${pageContext.request.contextPath}/report/reportModify.do?idx=${row.r_idx}';">수정</button></td>
 								<td class="text-center"><button class="btn btn-danger" onclick="location.href='${pageContext.request.contextPath}/report/reportDelete.do?id=${row.id}';">삭제</button></td>
 							 </tr>
 							</div>	

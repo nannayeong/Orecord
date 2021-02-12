@@ -59,7 +59,7 @@ function writeValidate(f)
 			<div class="left-content-back">
 				<div class="left-content">
 <!-- <table style="width:100%;border:2px #f2f2f2 solid;margin:auto;margin-bottom:1em"> -->
-		<form name="writeFrm" method="post" onsubmit="return writeValidate(this);" action="${pageContext.request.contextPath}/report/writeAction.do" >
+		<form name="writeFrm" method="post" onsubmit="return writeValidate(this);" action="../report/writeAction.do" >
 		<s:csrfInput />
 		<table class="table table-bordered">
 	
@@ -79,15 +79,15 @@ function writeValidate(f)
 		<tr>
 			<th class="text-center" style="vertical-align:middle;">신고 사유</th>
 			<td>
-            <input type="radio" name="kind" value="욕설" id="rad_1" onclick="choiceOne(this.value);" />
+            <input type="radio" name="kind" value="욕설" id="rad_1" />
             <label for="rad_1">욕설</label>
-            <input type="radio" name="kind" value="음란물" id="rad_2" onclick="choiceOne(this.value);" />
+            <input type="radio" name="kind" value="음란물" id="rad_2" />
             <label for="rad_2">음란물</label>
-            <input type="radio" name="kind" value="불법/사기" id="rad_3" onclick="choiceOne(this.value);" />
+            <input type="radio" name="kind" value="불법/사기" id="rad_3" />
             <label for="rad_3">불법/사기</label>
-            <input type="radio" name="kind" value="표절" id="rad_4" onclick="choiceOne(this.value);" />
+            <input type="radio" name="kind" value="표절" id="rad_4" />
             <label for="rad_4">표절</label>
-            <input type="radio" name="kind" value="기타" id="rad_5" onclick="choiceOne(this.value);" />
+            <input type="radio" name="kind" value="기타" id="rad_5" />
             <label for="rad_5">기타</label>
 			</td>
 		</tr>
