@@ -211,7 +211,7 @@ public class FollowController {
 			memberDTO.setImg(path+"/resources/img/default.jpg");
 		}
 		
-		ArrayList<FollowDTO> follows = sqlSession.getMapper(FollowImpl.class).following(login_id);
+		ArrayList<FollowDTO> follows = sqlSession.getMapper(FollowImpl.class).following(user_id);
 		ArrayList<MemberDTO> artists = new ArrayList<MemberDTO>();
 		HashMap<MemberDTO,Integer> memberMap = new HashMap<MemberDTO, Integer>();
 		
@@ -220,9 +220,10 @@ public class FollowController {
 			MemberDTO followingMember = sqlSession.getMapper(MemberImpl.class).memberInfo(following);	
 			ArrayList<FollowDTO> followers = sqlSession.getMapper(FollowImpl.class).followers(followingMember.getId());
 			memberMap.put(followingMember, followers.size());
+			artists.add(followingMember);
 		}
 		
-		model.addAttribute("artists",follows);
+		model.addAttribute("artists",artists);
 		model.addAttribute("memberDTO", memberDTO);
 		model.addAttribute("loginDTO", loginDTO);
 		model.addAttribute("user_id", user_id);
