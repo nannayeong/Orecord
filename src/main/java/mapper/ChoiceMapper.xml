@@ -25,4 +25,9 @@
     		SET choice = 1
 		WHERE id=#{param1} AND party_idx=#{param2}
 	</update>
+	
+	<!-- 나의 포인트를 조회 -->
+	<select id="myPoint" parameterType="model.MemberDTO">
+		select * from member where id=#{param1}
+	</select>
 </mapper>

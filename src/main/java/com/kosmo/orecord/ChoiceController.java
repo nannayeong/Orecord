@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import impl.ChoiceImpl;
+import model.MemberDTO;
 
 @Controller
 public class ChoiceController {
@@ -50,6 +51,12 @@ public class ChoiceController {
 				id, party_idx);
 		System.out.println("입력결과:"+ result3);
 		
+		//내가 가진 포인트가 요구포인트보다 낮을때
+		//나의 포인트를 조회한다.
+		MemberDTO myPoint =
+				sqlSession.getMapper(ChoiceImpl.class).myPoint(
+					name);
+		model.addAttribute("myPoint", myPoint);
 		
 		return "redirect:partyList.do?audio_idx="+idx;
 	}

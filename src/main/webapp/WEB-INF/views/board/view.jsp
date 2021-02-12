@@ -190,8 +190,8 @@ function deleteRow(comment_idx, audio_idx){
 					<h6 style="color:gray;">참여자</h6>
 					<c:forEach items="${partyMember }" var="mem">
 						<img src="${mem.img }" alt="프로필사진"
-						class="rounded-circle" width="100">
-					<h6 style="margin:8px 0 7px 0;">${mem.id }</h6>
+						class="rounded-circle" width="50">
+					<h6 style="margin-bottom:8px;">${mem.id }</h6>
 					</c:forEach>
 				</div>
 				<!-- 댓글 작성 -->
