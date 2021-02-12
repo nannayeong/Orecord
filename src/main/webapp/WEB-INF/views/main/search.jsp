@@ -46,6 +46,7 @@ a {
 
 .right-content-back {
 	background-color: white;
+	height : 1000px;
 	width: 30%;
 	display: inline-block;
 }
@@ -411,18 +412,6 @@ function checktotalLoad(type) {
 			}
 		});
 	}
-
-	function donatebtn(audio_idx) {
-		if ("${pageContext.request.userPrincipal.name}" == ""
-				|| "${pageContext.request.userPrincipal.name}" == null) {
-			alert("로그인후 이용하세요");
-			location.href = "${pageContext.request.contextPath}/member/login.do";
-		} else {
-			var win = window.open("./" + "/donate.do", "PopupWin",
-					"width=500,height=600");
-		}
-	}
-
 	function commentNcheck(c) {
 		if ("${pageContext.request.userPrincipal.name}" == ""
 				|| "${pageContext.request.userPrincipal.name}" == null) {
@@ -644,13 +633,12 @@ function checktotalLoad(type) {
 				<tr>
 					<td style="padding-top: 1em; padding-bottom: 1em;">
 				<c:set var="followB" value="false"/>
-        		<c:forEach var="f" items="${followMap }">
-        		<c:forEach var="follower" items="${f.value }">
-        		<c:if test="${pageContext.request.userPrincipal.name eq follower and a.id eq f.key}">
+        		<c:forEach var="f" items="${follows }">
+        		<c:if test="${a.id eq f.following_id}">
         		<c:set var="followB" value="true"/>
         		</c:if>
         		</c:forEach>
-        		</c:forEach>
+
         		     <c:choose>
                <c:when test="${followB}">
                <button type="button" class="btn btn-outline-secondary btn-sm follow ${a.id}" onclick="fBtn('${a.id}')" >팔로우</button>
@@ -659,8 +647,6 @@ function checktotalLoad(type) {
                    <button type="button" class="btn btn-secondary btn-sm follow ${a.id}" onclick="fBtn('${a.id}')" >팔로우</button>
                  </c:otherwise>
                </c:choose>
-               
-						
 					<td style="text-align: center">
 						<h6 class="pCount ${a.id }">팔로워 : ${memberMap[a]}</h6>
 					</td>
@@ -701,7 +687,8 @@ function checktotalLoad(type) {
 									test="${b.audio_idx eq l.audio_idx and pageContext.request.userPrincipal.name eq l.like_id}">
 									<c:set var="likeB" value="true" />
 								</c:if>
-							</c:forEach> <c:choose>
+							</c:forEach> 
+							<c:choose>
 								<c:when test="${likeB}">
 									<button type="button"
 										class="btn btn-outline-secondary btn-sm heart ${b.audio_idx}"
@@ -762,6 +749,46 @@ function checktotalLoad(type) {
 			<li><a href="./searchArtist.do?searchWord=${searchWord }">아티스트 검색</a></li>
 			<li><a href="./searchContents.do?searchWord=${searchWord }">내용으로 검색</a></li>
 			</ul>
+					<c:forEach var="r" items="${recFollow}">
+				<table
+				style="width: 100%; border: 2px #f2f2f2 solid; margin: auto; margin-bottom: 1em"
+				class="pcount">
+				<tr>
+					<td rowspan="4"
+						style="width: 7em; padding-left: 1em; padding-right: 1em">
+						<img src="./resources/default.jpg" alt="" style="width: 6em" />
+					</td>
+					<td><h4 style="padding-top: 1em;"><a href="./${r.id }/record">${r.nickname}</a></h4></td>
+				</tr>
+				<tr>
+					<td colspan="2"></td>
+				</tr>
+				<tr>
+					<td style="padding-top: 1em; padding-bottom: 1em;">
+				<c:set var="followB" value="false"/>
+        		<c:forEach var="f" items="${follows }">
+        		<c:if test="${r.id eq f.following_id}">
+        		<c:set var="followB" value="true"/>
+        		</c:if>
+        		</c:forEach>
+        		     <c:choose>
+               <c:when test="${followB}">
+               <button type="button" class="btn btn-outline-secondary btn-sm follow ${r.id}" onclick="fBtn('${r.id}')" >팔로우</button>
+                 </c:when>
+                 <c:otherwise>
+                   <button type="button" class="btn btn-secondary btn-sm follow ${r.id}" onclick="fBtn('${r.id}')" >팔로우</button>
+                 </c:otherwise>
+               </c:choose>	
+					<td style="text-align: center">
+						<h6 class="pCount ${r.id }">팔로워 : ${recMemberMap[r]}</h6>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+					</td>
+				</tr>
+			</table>
+		</c:forEach>
 		</div>
 	</div>
 </div>

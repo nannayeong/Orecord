@@ -38,6 +38,7 @@ color: #333333;}
 }
 .right-content-back{
 	background-color:white;
+	height : 1000px;
 	width:30%;
 	display:inline-block;
 }
@@ -45,6 +46,7 @@ color: #333333;}
 	background-color:white;
 	width:100%;
 	max-width:288px;
+	height : 960px!;
 	margin:auto;
 	padding-top:3em;
 	padding-bottom:1em;
@@ -156,74 +158,51 @@ $(window).on("scroll", function() {
 	$("#bottom").text(scrollHeight - scrollPosition);
 	if (scrollPosition > scrollHeight -1) {	
 		 $.ajax({
-		      url : "./mainload.do",
+		      url : "./audiolistAdd.do",
 		      type : "get",
-		      contentType : "text/html;charset:utf-8",
+	            contentType : "text/html;charset:utf-8",
 		      data : { loadlength :loadedSize,id:"${pageContext.request.userPrincipal.name}"}, 
-		      dataType : "json",
-		      success : function sucFunc(resData) {
-		    	  if(resData['audiolist'].length==0){
-		    		  if(feedEnd==undefined){
-		    		  var feed = resData['nomoreFeed'];
-		    		  $("table").last().after("<h2 class='feedEnd'>"+feed+"<h2>");
-		    		  }
-		    	  }else{
-		    	  
-		    	  for(var i in resData['audiolist']){
-			    	  
-			    		var feed = '<table style="width:100%;border:2px #f2f2f2 solid;margin:auto;margin-bottom:1em" class="pcount">'
-			    			+'<tr>'
-			    			+'<td rowspan="4" style="width:7em;padding-left:1em;padding-right:1em">'
-			    			+'	<img src="./resources/default.jpg" alt="" style="width:6em"/>'
-			    			+'</td>'
-			    			+'	<td><a href="./board/view.do?audio_idx='+resData['audiolist'][i].audio_idx+'">'+resData['audiolist'][i].audiotitle+'</a> - <a href="./${b.id }/record">'+resData['audiolist'][i].id+'</a></td>'
-			    			+'</tr>'
-			    			+' <tr>'
-			    			+'	<td colspan="2">'
-			    			+'		<audio src="" controls style="width:95%" >'
-			    			+'			<source src="">'
-			    			+'		</audio>'
-			    			+'	</td>'
-			    			+'</tr>'
-			    			+'<tr>'
-			    			+'	<td>';
-			    			
-			    			var likeB = false;
-			    			for(var j in resData['likes']){
-			    				if(resData['audiolist'][j].audio_idx==resData['audiolist'][i].audio_idx && '${pageContext.request.userPrincipal.name}'==resData['audiolist'][j].like_id ){
-			    					likeB = true;
-			    				}
-			    			}
-			    			
-			    			if(likeB==true){
-			    				feed+='<button type="button" class="btn btn-outline-secondary btn-sm heart '+resData['audiolist'][i].audio_idx+'" title="좋아요" onclick="heartbtn('+resData['audiolist'][i].audio_idx+')" name="minibtn">좋아요</button> ';
-			    			}else{feed+='<button type="button" class="btn btn-secondary btn-sm heart '+resData['audiolist'][i].audio_idx+'" title="좋아요" onclick="heartbtn('+resData['audiolist'][i].audio_idx+')"  name="minibtn">좋아요</button> ';
-			    				
-			    			}
-			    			feed+='<button type="button" class="btn btn-secondary btn-sm">플레이리스트</button> '
-			    			+'<button type="button" class="btn btn-secondary btn-sm" onclick="coOp('+resData['audiolist'][i].audio_idx+')">참여</button>'
-			    			+'	</td>'
-			    			+'	<td style="text-align:center">'
-			    			+'		<h6 class="pCount '+resData['audiolist'][i].audio_idx+'">재생 : '+resData['audiolist'][i].play_count+' </h6> <h6 class="lCount '+resData['audiolist'][i].audio_idx+'">좋아요 : '+resData['audiolist'][i].like_count+'</h6> '
-			    			+'	</td>'
-			    			+'</tr>'
-			    			+'<tr>'
-			    			+'	<td colspan="2">'
-			    			+'	<form action="${pageContext.request.contextPath}/board/commentAction.do?audio_idx=${b.audio_idx}" method="post" onsubmit="return commentNcheck(this)">'
-			    			+'		<input type="text" name="contents" style="width:80%;"/>&nbsp&nbsp<input type="submit" value="댓글달기" class="btn btn-secondary btn-sm" style="margin-bottom:5px"/>'
-			    			+'		</form>'
-			    			+'	</td>'
-			    		feed+='</tr></table>';
-			    		$("table").last().after(feed);
-			    		}
-			      }
-		      }    
+		      dataType : "html",
+		      async    : false,
+		      success : function(resData) {
+		    	  $('table').last().after(resData);
+		    	  $.checktotalLoad();
+		      },
+		      error : function(e) {
+				alert("실패"+e);
+			}
 		      
 		 }); 
 	
+	
 	}
+	
 });
 
+
+
+$($.checktotalLoad = function () {
+	var loadedSize = $('table').length;
+	var end = $('.end').val();
+	 $.ajax({
+	      url : "./loadMainCount.do",
+	      type : "get",
+           contentType : "text/html;charset:utf-8",
+	      data : { loadlength :loadedSize}, 
+	      dataType : "json",
+	      success : function(resData) {
+	    	  if(resData.nomoreFeed!=null){
+	    	  if(end==undefined){
+	    		  $('table').last().after("<h3 class='end'>"+resData.nomoreFeed+"</h3>");
+	    	  }}
+	    	  
+	      },
+	      error : function(e) {
+			alert("실패"+e);
+		}
+	      
+	 });
+});
 </script>
 
 
@@ -296,7 +275,7 @@ function nolike(audioIdx){
 	/* 버튼눌렀을때 팔로잉중인경우 언팔로우, 팔로우 안하는중이면 팔로우 함수로 이동 */
 function fBtn(follow) {
 	var f = follow;
-	var clas = document.getElementsByClassName("minibtn following "+f);
+	var clas = document.getElementsByClassName("btn btn-outline-secondary btn-sm follow " + f);
 	if("${pageContext.request.userPrincipal.name}"==""||"${pageContext.request.userPrincipal.name}"==null){
 	alert("로그인후 이용하세요");
 	location.href="${pageContext.request.contextPath}/member/login.do";
@@ -308,39 +287,51 @@ function fBtn(follow) {
 		}
 	}
 }
-function followbtn(follow){
-  var f = follow;
-     
+function followbtn(follow) {
+	var f = follow;
+
 	$.ajax({
 		url : "./addFollower.do",
 		type : "get",
 		contentType : "text/html;charset:utf-8",
-		data : { followId :"${pageContext.request.userPrincipal.name}",followerId:f}, 
+		data : {
+			followId : "${pageContext.request.userPrincipal.name}",
+			followerId : f
+		},
 		dataType : "json",
-		success : function a(resData) {
-			var section1s = document.getElementsByClassName("minibtn unfollowing "+f);
-			  for(var i = section1s.length-1; i>=0; i--){
-				  var sec1 = section1s.item(i);
-				  sec1.className="minibtn following "+f;
-				  }
-		} 
-		
-	});	
+		success : function sucFunc(resData) {
+			var section1s = document
+					.getElementsByClassName("btn btn-secondary btn-sm follow " + f);
+			for (var i = section1s.length - 1; i >= 0; i--) {
+				var sec1 = section1s.item(i);
+				sec1.className = "btn btn-outline-secondary btn-sm follow " + f;
+			}
+			count = resData.followcount;
+			$('.pCount.' + f).html('팔로워 : ' + count);
+		}
+
+	});
 }
-function unfollowbtn(follow){
+function unfollowbtn(follow) {
 	var f = follow;
 	$.ajax({
 		url : "./unFollow.do",
 		type : "get",
 		contentType : "text/html;charset:utf-8",
-		data : { followId :"${pageContext.request.userPrincipal.name}",followerId:f}, 
+		data : {
+			followId : "${pageContext.request.userPrincipal.name}",
+			followerId : f
+		},
 		dataType : "json",
-		success : function sucFunc(resData){
-			 var section1s = document.getElementsByClassName("minibtn following "+f);
-			  for(var i = section1s.length-1; i>=0; i--){
-			    var sec1 = section1s.item(i);
-			    sec1.className="minibtn unfollowing "+f;
-			  }
+		success : function sucFunc(resData) {
+			var section1s = document
+					.getElementsByClassName("btn btn-outline-secondary btn-sm follow " + f);
+			for (var i = section1s.length - 1; i >= 0; i--) {
+				var sec1 = section1s.item(i);
+				sec1.className = "btn btn-secondary btn-sm follow " + f;
+			}
+			count = resData.followcount;
+			$('.pCount.' + f).html('팔로워 : ' + count);
 		}
 	});
 }
@@ -482,9 +473,49 @@ function userFunc(){
 					</div>
 					<div class="sidebar myF"> 
 					</div>
-					첫하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />
-					하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />
-					하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />막하이<br />
+					<c:if test="${recFollow.size() ne 0}">
+					<h5>친구가 팔로우중인 아티스트</h5>
+					</c:if>
+				<c:forEach var="r" items="${recFollow}">
+				<table
+				style="width: 100%; border: 2px #f2f2f2 solid; margin: auto; margin-bottom: 1em"
+				class="pcount">
+				<tr>
+					<td rowspan="4"
+						style="width: 7em; padding-left: 1em; padding-right: 1em">
+						<img src="./resources/default.jpg" alt="" style="width: 6em" />
+					</td>
+					<td><h4 style="padding-top: 1em;"><a href="./${r.id }/record">${r.nickname}</a></h4></td>
+				</tr>
+				<tr>
+					<td colspan="2"></td>
+				</tr>
+				<tr>
+					<td style="padding-top: 1em; padding-bottom: 1em;">
+				<c:set var="followB" value="false"/>
+        		<c:forEach var="f" items="${follows }">
+        		<c:if test="${r.id eq f.following_id}">
+        		<c:set var="followB" value="true"/>
+        		</c:if>
+        		</c:forEach>
+        		     <c:choose>
+               <c:when test="${followB}">
+               <button type="button" class="btn btn-outline-secondary btn-sm follow ${r.id}" onclick="fBtn('${r.id}')" >팔로우</button>
+                 </c:when>
+                 <c:otherwise>
+                   <button type="button" class="btn btn-secondary btn-sm follow ${r.id}" onclick="fBtn('${r.id}')" >팔로우</button>
+                 </c:otherwise>
+               </c:choose>	
+					<td style="text-align: center">
+						<h6 class="pCount ${r.id }">팔로워 : ${recMemberMap[r]}</h6>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+					</td>
+				</tr>
+			</table>
+		</c:forEach>
 				</div>
 			</div>
 		</div>
@@ -497,6 +528,5 @@ function userFunc(){
 			<%@include file="/resources/jsp/header.jsp" %>
 		</div>
 	</header>
-
 </body>
 </html>
