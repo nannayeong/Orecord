@@ -137,23 +137,18 @@ border:1px solid #f2f2f2
                    					<i id="likeIcon${audio.audio_idx}" class="fas fa-heart ${audio.like eq 'true' ? 'on' : '' }"></i>
                    				</span>
                    				</c:if>	
+                   				<c:if test="${pageContext.request.userPrincipal.name eq user_id}">
                    				<span class="dropdown">
 								  <span data-toggle="dropdown" style="cursor:pointer">
 								    <i class="fas fa-ellipsis-h fa-lg"></i>
 								  </span>
 								  <div class="dropdown-menu">
-								  	<c:if test="${pageContext.request.userPrincipal.name eq user_id}">
+								  	
 								    <a class="dropdown-item" href="javascript:recordDeleteFunc(${audio.audio_idx });">삭제하기</a>
 								    <a class="dropdown-item" href="#">수정하기</a>
-								    <c:if test="${audio.party eq 1}">
-								    <a class="dropdown-item" href="#">협업신청리스트</a>
-								    </c:if>
-								    </c:if>
-								    <c:if test="${pageContext.request.userPrincipal.name ne user_id and audio.party eq 1}">
-								    <a class="dropdown-item" href="#">협업신청</a>
-								    </c:if>
 								  </div>
 								</span>
+								</c:if>
 							</td>
 						</tr>
 						</c:if>

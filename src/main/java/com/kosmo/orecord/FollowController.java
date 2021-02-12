@@ -150,7 +150,7 @@ public class FollowController {
 			System.out.println(e.getMessage());
 		}
 		
-		int result = sqlSession.getMapper(FollowImpl.class).followingCheck(login_id, user_id);
+		int result = sqlSession.getMapper(FollowImpl.class).followingCheck(login_id, user_id); //내 아이디, 내가 팔로우한 아이디
 		System.out.println("팔로우"+result);
 		
 		map.put("follow", result);
