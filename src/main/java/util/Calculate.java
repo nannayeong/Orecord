@@ -154,7 +154,7 @@ public class Calculate {
 			String followingId = followDTO.getFollowing_id();
 			ArrayList<FollowDTO> followrec = sqlSession.getMapper(FollowImpl.class).following(followingId);
 			for(FollowDTO rec : followrec) {
-				if(rec.getFollowing_id()!=id&&rec.getFollowing_id()!=followDTO.getFollowing_id()) {
+				if(rec.getFollowing_id()!=id) {
 					int audioCount = sqlSession.getMapper(AudioBoardImpl.class).audioList(rec.getFollowing_id()).size();
 					if(audioCount>0) {
 						int  followCount = sqlSession.getMapper(FollowImpl.class).followerCount(rec.getFollowing_id());
@@ -164,6 +164,19 @@ public class Calculate {
 				}
 			}
 		}
+		for (FollowDTO fDTO : followings) {
+			for(MemberDTO mdto : memberMap.keySet()) {
+				System.out.println(mdto.getId());
+				System.out.println(fDTO.getFollowing_id());
+				System.out.println();
+				if(mdto.getId().equals(fDTO.getFollowing_id())) {
+					System.out.println("왜 실행안되냐고");
+					memberMap.remove(mdto);
+					break;
+				}
+			}
+		}
+		
 		for(MemberDTO dto:memberMap.keySet()) {
 			if(memberMap.size()<=4) {
 				break;

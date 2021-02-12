@@ -28,7 +28,8 @@
 				<%@include file="/resources/jsp/mypageProfile.jsp" %>
 			</div>
 			<div>
-				dddd
+		ㅇㅇ
+
 			</div>
 		</div>
 		<!-- 본문종료 -->

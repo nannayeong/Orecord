@@ -28,10 +28,12 @@ import model.AudioBoardDTO;
 import model.FollowDTO;
 import model.LikeDTO;
 import model.MemberDTO;
+import model.PlayListDTO;
 import util.Calculate;
 import impl.AudioBoardImpl;
 import impl.FollowImpl;
 import impl.MainImpl;
+import impl.PlayListImpl;
 
 /**
  * Handles requests for the application home page. 
@@ -67,15 +69,26 @@ public class HomeController {
 			HttpSession session, Principal principal) {
 		
 		String path = req.getContextPath();
+		ArrayList<PlayListDTO> plList = null;
 		
 		//로그인
 		String id="";
 		try {
 			 id = principal.getName();
+			 
+			 /*로그인유저의 플레이리스트 가져오기*/
+			 plList = sqlSession.getMapper(PlayListImpl.class).select(id);
+				
+			 if(plList.size()==0) {
+				 PlayListDTO dto = new PlayListDTO();
+				 dto.setPlname("default");
+				 plList.add(dto);
+			 }
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		} 
+		model.addAttribute("plList", plList);
 		
 		//내 팔로잉목록 최대 4개 출력
 		ArrayList<FollowDTO> following = new ArrayList<FollowDTO>();

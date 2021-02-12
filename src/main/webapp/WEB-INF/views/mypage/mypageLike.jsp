@@ -25,40 +25,39 @@ background-color: #f2f2f2;cursor:pointer
 			<td rowspan="5" style="width:7em;padding-left:1em;padding-right:1em;padding-top:1.5em;vertical-align:top">
 				<img src="${audio.imagename }" alt="" style="width:6em"/>
 			</td>
-			<td>
-				<div style="font-size:21px;cursor:pointer" onclick="location.href='../${audio.id }/record'">
+			<td style="padding-left:1em">
+				<div style="font-size:14px;cursor:pointer" onclick="location.href='../${audio.id }/record'">
 					${audio.id }
 				</div>
 				<div style="font-size:18px">
 					<a href="../board/view.do?audio_idx=${audio.audio_idx }">${audio.audiotitle}</a>
-					- ${audio.artistname}
+					- <a href="${pageContext.request.contextPath}/search.do?searchWord=${audio.artistname}">${audio.artistname}</a>
 				</div>
-				<span style="background-color:yellow">${audio.party eq 1 ? '협업중' : ''}</span>
 			</td>
-			<td style="text-align:center; color:#423e3e; font-size:14px">
+			<td style="text-align:right; color:#423e3e; font-size:14px; padding-right:2em">
 				<div>${audio.regidate }</div>
 				<div>${audio.category }</div>
-			</td>
-			<c:if test="${pageContext.request.userPrincipal.name eq user_id }">
-			<td style="padding-right:1em">
+			</td>	
+			<td>
 				<div class="dropdown">
 				  <span data-toggle="dropdown" style="cursor:pointer">
 				    <i class="fas fa-bars"></i>
 				  </span>
 				  <div class="dropdown-menu">
+				  <c:if test="${pageContext.request.userPrincipal.name eq audio.id }">
 				    <a class="dropdown-item" href="javascript:recordDeleteFunc(${audio.audio_idx });">삭제하기</a>
 				    <a class="dropdown-item" href="#">수정하기</a>
 				    <c:if test="${audio.party eq 1}">
 				    <a class="dropdown-item" href="#">협업신청리스트</a>
 				    </c:if>
+				  </c:if>
 				  </div>
 				</div>
 			</td>
-			</c:if>
 		</tr>
 		<tr>
-			<td colspan="2">
-				<audio controls style="width:95%" id="${audio.albumName }">
+			<td colspan="3">
+				<audio controls style="width:97%" id="${audio.albumName }">
 					<source src="${audio.audiofilename }" type="audio/mp4">
 				</audio>
 			</td>
@@ -111,17 +110,17 @@ background-color: #f2f2f2;cursor:pointer
 				  </div>
 				</div>
 				</c:if>
-				<c:if test="${pageContext.request.userPrincipal.name ne user_id && audio.party eq 1}">
+				<c:if test="${pageContext.request.userPrincipal.name ne audio.id && audio.party eq 1}">
 				<button type="button" class="btn btn-secondary btn-sm" onclick="coOp('${b.audio_idx}')">참여</button>
 				</c:if>
 			</td>
-			<td style="text-align:center;color:#423e3e;font-size:14px">
+			<td style="text-align:right;color:#423e3e;font-size:14px;padding-right:1.5em;" colspan="2">
 				재생 : ${audio.play_count} &nbsp&nbsp
 				댓글수 : ${audio.commentCount }
 			</td>
 		</tr>
 		<tr>
-			<td colspan="2">
+			<td colspan="3">
 				<form action="${pageContext.request.contextPath}/board/commentAction.do?audio_idx=${b.audio_idx}" method="post" onsubmit="return commentNcheck(this)">
 					<input type="text" name="contents" style="width:80%;"/>&nbsp&nbsp<input type="submit" value="댓글달기" class="btn btn-secondary btn-sm" style="margin-bottom:5px"/>
 				</form>

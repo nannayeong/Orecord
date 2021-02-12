@@ -6,11 +6,17 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<!-- Jquery, BootStrap -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
+
+<!-- layout css -->
+<link href="${pageContext.request.contextPath}/resources/css/layout.css" rel="stylesheet" />
+<!-- layout js-->
+<script src="${pageContext.request.contextPath}/resources/js/layout.js"></script>
 <style>
 body {
 	background-color: #f2f2f2;
@@ -44,23 +50,23 @@ a {
 	padding-bottom: 1em;
 }
 
-.right-content-back {
-	background-color: white;
-	height : 1000px;
-	width: 30%;
-	display: inline-block;
-}
-
-.right-content {
-	background-color: white;
-	width: 100%;
-	max-width: 288px;
-	margin: auto;
-	padding-top: 3em;
-	padding-bottom: 1em;
+.right-content-back{
+	background-color:white;
+	max-width:288px;
+	height : 100%;
+	width:30%;
+	display:inline-block;
 	position: fixed;
 	top: 0px;
 	float: left;
+}
+.right-content{
+	background-color:white;
+	width:100%;
+	height : 960px!;
+	margin:auto;
+	padding-top:3em;
+	padding-bottom:1em;
 	text-align: center;
 }
 
@@ -397,7 +403,7 @@ li {
 			<c:if test="${a eq b.key }">
 				<table
 					style="width: 100%; border: 2px #f2f2f2 solid; margin: auto; margin-bottom: 1em"
-					class="pcount">
+					class="feed">
 					<tr>
 						<td rowspan="4"
 							style="width: 7em; padding-left: 1em; padding-right: 1em">
@@ -467,7 +473,7 @@ li {
 			<c:if test="${a eq b.key }">
 				<table
 					style="width: 100%; border: 2px #f2f2f2 solid; margin: auto; margin-bottom: 1em"
-					class="pcount">
+					class="feed">
 					<tr>
 						<td rowspan="4"
 							style="width: 7em; padding-left: 1em; padding-right: 1em">
@@ -534,7 +540,7 @@ li {
 	
 			<table
 				style="width: 100%; border: 2px #f2f2f2 solid; margin: auto; margin-bottom: 1em"
-				class="pcount">
+				class="feed">
 				<tr>
 					<td rowspan="4"
 						style="width: 7em; padding-left: 1em; padding-right: 1em">
@@ -583,7 +589,7 @@ li {
 			<c:if test="${a eq b.key }">
 				<table
 					style="width: 100%; border: 2px #f2f2f2 solid; margin: auto; margin-bottom: 1em"
-					class="pcount">
+					class="feed">
 					<tr>
 						<td rowspan="4"
 							style="width: 7em; padding-left: 1em; padding-right: 1em">

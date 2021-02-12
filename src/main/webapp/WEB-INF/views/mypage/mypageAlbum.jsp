@@ -33,7 +33,7 @@ border:1px solid #f2f2f2
 					<td><span style="font-size:30px">${album.albumName }</span></td>
 					<td style="padding-right:2em;text-align:right">
 						<div>
-						<c:if test="${pageContext.request.userPrincipal.name eq user_id}">
+						<c:if test="${pageContext.request.userPrincipal.name eq album.id}">
 						<button type="button" class="btn btn-outline-dark btn-sm" data-toggle="modal" data-target="#albumEdit${album.album_idx }">수정</button>
 						<!-- 수정 모달 -->
 						<div class="modal" id="albumEdit${album.album_idx }">
@@ -138,17 +138,18 @@ border:1px solid #f2f2f2
 								</c:if>
 								
                    				<!-- like -->
-                   				<c:if test="${pageContext.request.userPrincipal.name ne user_id}">
+                   				<c:if test="${pageContext.request.userPrincipal.name ne audio.id}">
                    				<span id="heart" class="iconPoint" onclick="likeFunc(${audio.audio_idx});">
                    					<i id="likeIcon${audio.audio_idx}" class="fas fa-heart ${audio.like eq 'true' ? 'on' : '' }"></i>
                    				</span>
                    				</c:if>	
-                   				<c:if test="${pageContext.request.userPrincipal.name eq user_id}">
+                   				<c:if test="${pageContext.request.userPrincipal.name eq audio.id}">
                    				<span class="dropdown">
 								  <span data-toggle="dropdown" style="cursor:pointer">
 								    <i class="fas fa-ellipsis-h fa-lg"></i>
 								  </span>
 								  <div class="dropdown-menu">
+
 								    <a class="dropdown-item" href="javascript:recordDeleteFunc(${audio.audio_idx });">삭제하기</a>
 								    <a class="dropdown-item" href="#">수정하기</a>
 								  </div>

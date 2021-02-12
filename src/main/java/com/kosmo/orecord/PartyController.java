@@ -40,9 +40,13 @@ public class PartyController {
 		String partyIdx = req.getParameter("audio_idx");
 		System.out.println("audio_idx????"+ partyIdx);
 		
-		ArrayList<PartyBoardDTO> partyList =
-			sqlSession.getMapper(PartyImpl.class).partyList(
-				Integer.parseInt(req.getParameter("audio_idx")));
+		ArrayList<PartyBoardDTO> partyList = null;
+		
+		if(partyIdx!=null) {
+			partyList =
+				sqlSession.getMapper(PartyImpl.class).partyList(
+					Integer.parseInt(partyIdx));
+		}
 		
 //		for(PartyBoardDTO dto : partyList) {
 //			String temp = dto.getTitle().replace("\r\n", "<br/>");
@@ -250,5 +254,4 @@ public class PartyController {
 		
 		return mv;
 	}
-	
 } 

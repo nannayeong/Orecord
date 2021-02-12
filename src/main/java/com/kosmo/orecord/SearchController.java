@@ -344,7 +344,6 @@ public class SearchController {
 			e.printStackTrace();
 		} 
 		HashMap<MemberDTO,Integer> memberMap = new HashMap<MemberDTO, Integer>();
-		//검색페이지에 출력할 오디오게시글 불러옴
 		String searchWord = req.getParameter("searchWord");
 		ArrayList<MemberDTO> artists = sqlSession.getMapper(SearchImpl.class).searchArtist(searchWord);
 		for(MemberDTO dto : artists) {
