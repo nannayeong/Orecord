@@ -132,7 +132,16 @@ public class FollowController {
 		ArrayList<FollowDTO> follows = sqlSession.getMapper(FollowImpl.class).following(user_id);
 		ArrayList<MemberDTO> artists = new ArrayList<MemberDTO>();
 		HashMap<MemberDTO,Integer> memberMap = new HashMap<MemberDTO, Integer>();
-		
+		for(MemberDTO recMemberDTO : artists) {
+			
+			if(recMemberDTO.getImg()==null){
+				recMemberDTO.setImg(path+"/resources/img/default.jpg");
+			}
+			else {
+				String fileName = recMemberDTO.getImg();
+				recMemberDTO.setImg(path+"/resources/upload/"+fileName);
+			}
+		}
 		for(FollowDTO dto : follows) {
 			String following = dto.getFollowing_id();
 			MemberDTO followingMember = sqlSession.getMapper(MemberImpl.class).memberInfo(following);	
@@ -140,7 +149,16 @@ public class FollowController {
 			memberMap.put(followingMember, followers.size());
 			artists.add(followingMember);
 		}
-		
+		for(MemberDTO recMemberDTO : artists) {
+			
+			if(recMemberDTO.getImg()==null){
+				recMemberDTO.setImg(path+"/resources/img/default.jpg");
+			}
+			else {
+				String fileName = recMemberDTO.getImg();
+				recMemberDTO.setImg(path+"/resources/upload/"+fileName);
+			}
+		}
 		model.addAttribute("artists",artists);
 		model.addAttribute("memberDTO", memberDTO);
 		model.addAttribute("loginDTO", loginDTO);
@@ -181,6 +199,7 @@ public class FollowController {
 		ArrayList<MemberDTO> artists = new ArrayList<MemberDTO>();
 		HashMap<MemberDTO,Integer> memberMap = new HashMap<MemberDTO, Integer>();
 		
+		
 		//나를 팔로우한 사람들
 		for(FollowDTO dto : myfollower) {
 			String following = dto.getUser_id();
@@ -188,6 +207,16 @@ public class FollowController {
 			ArrayList<FollowDTO> followers = sqlSession.getMapper(FollowImpl.class).followers(followingMember.getId());
 			memberMap.put(followingMember, followers.size());
 			artists.add(followingMember);
+		}
+		for(MemberDTO recMemberDTO : artists) {
+			
+			if(recMemberDTO.getImg()==null){
+				recMemberDTO.setImg(path+"/resources/img/default.jpg");
+			}
+			else {
+				String fileName = recMemberDTO.getImg();
+				recMemberDTO.setImg(path+"/resources/upload/"+fileName);
+			}
 		}
 		
 		model.addAttribute("artists",artists);
