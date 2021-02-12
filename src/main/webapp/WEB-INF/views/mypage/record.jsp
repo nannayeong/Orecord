@@ -30,7 +30,7 @@ function recordDeleteFunc(aidx){
 			     type : "get",
 			     contentType : "text/html;charset:utf-8",
 			     data : {audio_idx:aidx},
-			     dataType : "html",
+			     dataType : "json",
 			     success : function sucFunc(resData) {
 			    	 if(resData.result==1){
 							alert("정상적으로 삭제되었습니다");
@@ -274,7 +274,6 @@ $(function(){
 					<span onclick="location.href='../${user_id}/record'" style="color:orange;">record</span>
 					<span onclick="location.href='../${user_id}/album'">album</span>
 					<span onclick="location.href='../${user_id}/playlist'">playlist</span>
-					<span onclick="location.href='../${user_id}/like'">like</span>
 					
 					<div style="float:right;margin-right:1em;">
 						<c:choose>
@@ -322,6 +321,13 @@ $(function(){
 					<table style="width:100%;margin:1em 0 3em 0em;">
 						<tr>
 							<td class="my-con-left">
+								<div style="text-align:left">
+									<div class="btn-group" style="margin-bottom:1em;margin-left:1em;text-size:16px;">
+									  <button type="button" class="btn btn-dark" onclick="location.href='./record'">myRecord</button>
+									  <button type="button" class="btn btn-outline-dark" onclick="location.href='./likeRecord'">like</button>
+									  <button type="button" class="btn btn-outline-dark" onclick="location.href='./followRecord'">followers</button>
+									</div>
+								</div>
 								<div id="albumList">
 								
 								</div>

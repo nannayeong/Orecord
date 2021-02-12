@@ -20,4 +20,6 @@ public interface AudioBoardImpl {
 	public int audioCount();
 	public int myAudioCount(String id);
 	public int recordDelete(String id, int audio_idx);
+	
+	public ArrayList<AudioBoardDTO> recordFollow(String user_id, int start, int end);
 } 

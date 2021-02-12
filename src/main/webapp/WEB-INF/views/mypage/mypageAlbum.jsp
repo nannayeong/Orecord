@@ -13,7 +13,7 @@ border:1px solid #f2f2f2
 <!-- 앨범 -->
 <table style="width:95%;margin:auto;">
 <c:choose>
-<c:when test="${empty albumList and nowPage eq null}">
+<c:when test="${empty albumList and nowPage eq 1}">
 	<td style="text-align:center;border:2px #f2f2f2 solid;height:30em">
 		<div>등록된 앨범이 없습니다.</div><br />
 		<c:if test="${pageContext.request.userPrincipal.name eq user_id}">
@@ -132,10 +132,28 @@ border:1px solid #f2f2f2
 								</c:if>
 								
                    				<!-- like -->
+                   				<c:if test="${pageContext.request.userPrincipal.name ne user_id}">
                    				<span id="heart" class="iconPoint" onclick="likeFunc(${audio.audio_idx});">
                    					<i id="likeIcon${audio.audio_idx}" class="fas fa-heart ${audio.like eq 'true' ? 'on' : '' }"></i>
-                   				</span>	
-<%--                    				<span id="likecount${audio.audio_idx}">${audio.like_count }</span> --%>
+                   				</span>
+                   				</c:if>	
+                   				<span class="dropdown">
+								  <span data-toggle="dropdown" style="cursor:pointer">
+								    <i class="fas fa-ellipsis-h fa-lg"></i>
+								  </span>
+								  <div class="dropdown-menu">
+								  	<c:if test="${pageContext.request.userPrincipal.name eq user_id}">
+								    <a class="dropdown-item" href="javascript:recordDeleteFunc(${audio.audio_idx });">삭제하기</a>
+								    <a class="dropdown-item" href="#">수정하기</a>
+								    <c:if test="${audio.party eq 1}">
+								    <a class="dropdown-item" href="#">협업신청리스트</a>
+								    </c:if>
+								    </c:if>
+								    <c:if test="${pageContext.request.userPrincipal.name ne user_id and audio.party eq 1}">
+								    <a class="dropdown-item" href="#">협업신청</a>
+								    </c:if>
+								  </div>
+								</span>
 							</td>
 						</tr>
 						</c:if>

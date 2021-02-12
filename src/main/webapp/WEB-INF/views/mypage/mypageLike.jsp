@@ -15,9 +15,6 @@ background-color: #f2f2f2;cursor:pointer
 	<tr>
 		<td style="text-align:center;border:2px #f2f2f2 solid;height:30em">
 			<div>등록된 레코드가 없습니다.</div><br />
-			<c:if test="${pageContext.request.userPrincipal.name eq user_id}">
-			<div><button type="button" onclick="location.href='../upload.do'" class="btn btn-outline-dark">업로드하기</button></div>
-			</c:if>
 		</td>
 	</tr>
 </c:when>

@@ -49,11 +49,13 @@ public class AudioController {
 			/*삭제*/
 			result = sqlSession.getMapper(AudioBoardImpl.class).recordDelete(login_id, audio_idx);
 		
-			System.out.println(result);
+	
 		}
 		catch(Exception e) {
 			System.out.println(e.getMessage());
 		}
+		
+		System.out.println("오디오리절"+result);
 		
 		map.put("result", result);
 		return map;

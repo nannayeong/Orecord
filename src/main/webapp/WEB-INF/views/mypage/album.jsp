@@ -33,7 +33,6 @@ function deleteAlbumFunc(aidx){
 			     data : {album_idx:aidx}, 
 			     dataType : "json",
 			     success : function sucFunc(resData) {
-			    	 alert(resData.result);
 					 if(resData.result==1){
 						alert("정상적으로 삭제되었습니다");
 						location.href="./album";
@@ -269,7 +268,6 @@ $(function(){
 					<span onclick="location.href='../${user_id}/record'">record</span>
 					<span onclick="location.href='../${user_id}/album'" style="color:orange;">album</span>
 					<span onclick="location.href='../${user_id}/playlist'">playlist</span>
-					<span onclick="location.href='../${user_id}/like'">like</span>
 					
 					<div style="float:right;margin-right:1em;">
 						<c:choose>

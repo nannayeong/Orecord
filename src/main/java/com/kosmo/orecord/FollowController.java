@@ -147,11 +147,11 @@ public class FollowController {
 			login_id = principal.getName();
 		}
 		catch(Exception e) {
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
 		
-		int result = sqlSession.getMapper(FollowImpl.class).followingCheck(user_id, login_id);
-		System.out.println(result);
+		int result = sqlSession.getMapper(FollowImpl.class).followingCheck(login_id, user_id);
+		System.out.println("팔로우"+result);
 		
 		map.put("follow", result);
 		
