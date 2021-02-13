@@ -32,10 +32,12 @@ import impl.LikeImpl;
 import impl.McommentImpl;
 import impl.MemberImpl;
 import impl.MypageImpl;
+import impl.PartyImpl;
 import impl.PlayListImpl;
 import model.AlbumDTO;
 import model.AudioBoardDTO;
 import model.MemberDTO;
+import model.PartyBoardDTO;
 import model.PlayListDTO;
 
 @Controller
@@ -195,8 +197,8 @@ public class MyPageController {
 		return "mypage/playlist";
 	}
 	
-	/*내가 참여한*/
-	@RequestMapping("/{user_id}/doParty")
+	/*채택안된참여*/
+	@RequestMapping("/{user_id}/nParty")
 	public String doParty(@PathVariable String user_id, Model model, Principal principal, HttpServletRequest req) { 
 		
 		String path = req.getContextPath();
@@ -204,6 +206,9 @@ public class MyPageController {
 		
 		/*계정정보*/
 		MemberDTO memberDTO = sqlSession.getMapper(MemberImpl.class).memberInfo(user_id);	
+		if(memberDTO.getImg()==null) {
+			memberDTO.setImg(path+"/resources/img/default.jpg");
+		}
 		
 		/*로그인 유저의 계정정보*/
 		MemberDTO loginDTO = null;
@@ -214,20 +219,20 @@ public class MyPageController {
 		catch(Exception e) {
 			e.printStackTrace();
 		}
-
-		if(memberDTO.getImg()==null) {
-			memberDTO.setImg(path+"/resources/img/default.jpg");
-		}
 		
+		/*내가 참여한 리스트*/
+		ArrayList<PartyBoardDTO> plist = sqlSession.getMapper(PartyImpl.class).mydopartynotchoice(user_id);
+		
+		model.addAttribute("plist",plist);
 		model.addAttribute("memberDTO", memberDTO);
 		model.addAttribute("loginDTO", loginDTO);
 		model.addAttribute("user_id", user_id);
 		
-		return "mypage/doParty";
+		return "mypage/partyN";
 	}
 	
-	/*참여신청받은*/
-	@RequestMapping("/{user_id}/getParty")
+	/*채택된참여*/
+	@RequestMapping("/{user_id}/yParty")
 	public String getParty(@PathVariable String user_id, Model model, Principal principal, HttpServletRequest req) { 
 		
 		String path = req.getContextPath();
@@ -235,6 +240,9 @@ public class MyPageController {
 		
 		/*계정정보*/
 		MemberDTO memberDTO = sqlSession.getMapper(MemberImpl.class).memberInfo(user_id);	
+		if(memberDTO.getImg()==null) {
+			memberDTO.setImg(path+"/resources/img/default.jpg");
+		}
 		
 		/*로그인 유저의 계정정보*/
 		MemberDTO loginDTO = null;
@@ -245,16 +253,15 @@ public class MyPageController {
 		catch(Exception e) {
 			e.printStackTrace();
 		}
-
-		if(memberDTO.getImg()==null) {
-			memberDTO.setImg(path+"/resources/img/default.jpg");
-		}
 		
+		ArrayList<PartyBoardDTO> plist = sqlSession.getMapper(PartyImpl.class).mydopartychoice(user_id);
+		
+		model.addAttribute("plist",plist);
 		model.addAttribute("memberDTO", memberDTO);
 		model.addAttribute("loginDTO", loginDTO);
 		model.addAttribute("user_id", user_id);
 		
-		return "mypage/getParty";
+		return "mypage/partyY";
 	}
 	
 	
