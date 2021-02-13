@@ -44,6 +44,9 @@ public interface PartyImpl {
 	//나의 포인트 조회
 	public MemberDTO myPoint(String id);
 	
-	public ArrayList<PartyBoardDTO> mydopartychoice(String id);
-	public ArrayList<PartyBoardDTO> mydopartynotchoice(String id);
+	public ArrayList<PartyBoardDTO> mydopartychoice(String id, int start, int end);
+	public ArrayList<PartyBoardDTO> mydopartynotchoice(String id, int start, int end);
+	
+	public int mypartychoicecount(String id);
+	public int mypartynotchoicecount(String id);
 }

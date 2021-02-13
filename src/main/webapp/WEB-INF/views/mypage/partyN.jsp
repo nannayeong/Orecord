@@ -333,6 +333,10 @@ $(function(){
 									    </tbody>
 										</c:forEach>
 									</table>
+									<br />
+									<div style="text-align:center">
+										${pagingUtil }
+									</div>
 								</div>
 							</td>
 							<td class="my-con-right">

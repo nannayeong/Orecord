@@ -39,6 +39,7 @@ import model.AudioBoardDTO;
 import model.MemberDTO;
 import model.PartyBoardDTO;
 import model.PlayListDTO;
+import util.PagingUtil;
 
 @Controller
 public class MyPageController {
@@ -220,9 +221,29 @@ public class MyPageController {
 			e.printStackTrace();
 		}
 		
-		/*내가 참여한 리스트*/
-		ArrayList<PartyBoardDTO> plist = sqlSession.getMapper(PartyImpl.class).mydopartynotchoice(user_id);
+		/*본인페이지아닐때*/
+		if(!login_id.equals(user_id)) {
+			return "redirect:/main.do";
+		}
 		
+		/*내가 참여한 리스트*/
+		//페이징
+		int totalRecordCount = sqlSession.getMapper(PartyImpl.class).mypartynotchoicecount(user_id);
+		
+		int pageSize = 10;
+		int blockPage = 5;
+		
+//		int totalPage = (int)Math.ceil((double)totalRecordCount/pageSize);
+		
+		int nowPage = req.getParameter("nowPage")==null?1:Integer.parseInt(req.getParameter("nowPage"));
+		int start = (nowPage-1)*pageSize+1;
+		int end = nowPage * pageSize;
+		
+		String page = PagingUtil.pagingImg(totalRecordCount, pageSize, blockPage, nowPage, req.getContextPath()+"/"+user_id+"/partyY?");
+		
+		ArrayList<PartyBoardDTO> plist = sqlSession.getMapper(PartyImpl.class).mydopartynotchoice(user_id, start, end);
+		
+		model.addAttribute("pagingUtil", page);
 		model.addAttribute("plist",plist);
 		model.addAttribute("memberDTO", memberDTO);
 		model.addAttribute("loginDTO", loginDTO);
@@ -254,8 +275,29 @@ public class MyPageController {
 			e.printStackTrace();
 		}
 		
-		ArrayList<PartyBoardDTO> plist = sqlSession.getMapper(PartyImpl.class).mydopartychoice(user_id);
+		System.out.println(login_id+","+user_id);
+		/*본인페이지아닐때*/
+		if(!login_id.equals(user_id)) {
+			return "redirect:/main.do";
+		}
 		
+		//페이징
+		int totalRecordCount = sqlSession.getMapper(PartyImpl.class).mypartychoicecount(user_id);
+		
+		int pageSize = 10;
+		int blockPage = 5;
+		
+//		int totalPage = (int)Math.ceil((double)totalRecordCount/pageSize);
+		
+		int nowPage = req.getParameter("nowPage")==null?1:Integer.parseInt(req.getParameter("nowPage"));
+		int start = (nowPage-1)*pageSize+1;
+		int end = nowPage * pageSize;
+		
+		String page = PagingUtil.pagingImg(totalRecordCount, pageSize, blockPage, nowPage, req.getContextPath()+"/"+user_id+"/partyY?");
+		
+		ArrayList<PartyBoardDTO> plist = sqlSession.getMapper(PartyImpl.class).mydopartychoice(user_id, start, end);
+		
+		model.addAttribute("pagingUtil", page);
 		model.addAttribute("plist",plist);
 		model.addAttribute("memberDTO", memberDTO);
 		model.addAttribute("loginDTO", loginDTO);
