@@ -241,6 +241,7 @@ function addAlbumFunc(){
 					</div>
 					<div class="col-5">
                         <input type="hidden" class="form-control" name="id" value="${pageContext.request.userPrincipal.name}">
+                        <input type="hidden" class="form-control" name="id" value="${audiodto.audio_idx}">
 	                </div>
 				</div>
                 <div class="row">

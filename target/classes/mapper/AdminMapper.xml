@@ -30,27 +30,76 @@
 		select audio_idx, audiotitle, b.id, b.album_idx, audiofilename, artistname, albumName, regidate, imagename, category, like_count, party
 			from audioboard b inner join album a on b.album_idx=a.album_idx ORDER BY audio_idx DESC
 	</select>
+	<!-- 오디오보드 상세보기 -->
+	<select id="adAudioView" resultType="model.AudioBoardDTO">
+		SELECT * FROM audioboard WHERE audio_idx=#{param1}
+	</select>
+	<!-- 오디오보드 수정하기 -->
+	<update id="adAudioEdit">
+		UPDATE audioboard SET audiotitle=#{0}, audiofilename=#{1}, artistname=#{2}, albumName=#{3}, imagename=#{4}, category=#{5}, party=#{6} WHERE audio_idx=#{7} 
+	</update>
+	<!-- 오디오보드 삭제하기 -->
+	<delete id="adAudioDELETE">
+		DELETE FROM audioboard WHERE audio_idx=#{param1}
+	</delete>
 	
 	<!-- 앨범리스트 보기 -->
-	<select id="adalbumList" resultType="model.AlbumDTO">
+	<!-- <select id="adalbumList" resultType="model.AlbumDTO">
 		select * from album ORDER BY album_idx DESC
-	</select>
+	</select> -->
 	
 	<!-- 후원리스트 보기 -->
 	<select id="sponsorshipList" resultType="model.SponsorshipDTO">
-		SELECT * FROM sponsorshipLog ORDER BY idx DESC
+		SELECT * FROM sponsorshipLog ORDER BY idx=#{idx}
 	</select>
+	<!-- 후원 상세보기 -->
+	<!-- <select id="sponsorshipView" resultType="model.SponsorshipDTO">
+		SELECT * FROM sponsorshipLog ORDER BY idx DESC
+	</select> -->	
+	<!-- 후원 수정하기 -->
+	<!-- <select id="sponsorshipEdit">
+		UPDATE sponsorshipLog SET sponpoint=#{0}, patronid=#{1} WHERE idx=#{2}
+	</select> -->
+	<!-- 후원 삭제하기 -->
+	<!-- <delete id="sponsorshipDelete">
+		DELETE FROM sponsorshipLog WHERE idx=#{idx}
+	</delete> -->
 	
 	<!-- 충전리스트 -->
 	<select id="chargeList" resultType="model.ChargeDTO">
 		SELECT * FROM chargeLog ORDER BY idx DESC
 	</select>
+	<!-- 충전상세보기 -->
+	<!-- <select id="chargeView" resultType="model.ChargeDTO">
+		SELECT * FROM chargeLog WHERE idx=#{idx}
+	</select> -->
+	<!-- 충전 수정하기 -->
+	<!-- <update id="chargeEdit">
+		UPDATE chargeLog SET totalpayment=#{0}, vat=#{1}, chargepoint=#{2}, paymenttype=#{3} WHERE idx=#{idx}
+	</update> -->
+	<!-- 충전 삭제하기 -->
+	<!-- <delete id="chargeDelete">
+		DELETE FROM chargeLog WHERE idx=#{idx}
+	</delete> -->
 	
 	<!-- 환전리스트 -->
 	<select id="exchangeList" resultType="model.ExchangeDTO">
 		SELECT * FROM exchageLog ORDER BY idx DESC
 	</select>
-	
+	<!-- 환전 상세보기 -->
+	<!-- <select id="exchangeView" resultType="model.ExchangeDTO">
+		SELECT * FROM exchangeLog WHERE idx=#{idx}
+	</select> -->
+	<!-- 환전 수정하기 -->
+	<!-- <update id="exchangeEdit">
+		UPDATE exchangeLog SET exchangePoint=#{0}, exchangePoint=#{1}, exchageFee=#{2}, exchangedMoney=#{3}, 
+			accountBank=#{4}, accountNumber=#{5}, accountName=#{6} 
+			WHERE idx=#{idx} 
+	</update> -->
+	<!-- 환전 삭제하기 -->
+	<!-- <delete id="exchangeDelete">
+		delete from exchangeLog WHERE idx=#{idx}
+	</delete> -->
 	<!-- 댓글리스트 -->
 	<select id="mCommentList" resultType="model.MCommentDTO">
 		SELECT * FROM m_comment ORDER BY comment_idx DESC

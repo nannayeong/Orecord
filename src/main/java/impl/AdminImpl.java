@@ -35,6 +35,15 @@ public interface AdminImpl {
 	//오디오리스트보기
 	public ArrayList<AudioBoardDTO> adAudioList(AudioBoardDTO audioBoardDTO);
 	
+	//오디오 상세보기
+	public AudioBoardDTO adAudioView(int audio_idx);
+	
+	//오디오 수정하기
+	public int adAudioEdit(String audiotitle, String audiofilename, String artistname, String albumName, String imagename, String category, int party, int audio_idx);
+	
+	//오디오 삭제하기
+	public int adAudioDELETE(int audio_idx);
+	
 	//앨범리스트 보기
 	public ArrayList<AlbumDTO> adalbumList(AlbumDTO albumDTO);
 	

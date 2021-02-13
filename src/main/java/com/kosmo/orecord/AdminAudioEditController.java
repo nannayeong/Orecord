@@ -2,16 +2,12 @@ package com.kosmo.orecord;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Array;
-import java.security.Principal;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,50 +18,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import impl.AlbumImpl;
-import impl.AudioBoardImpl;
-import model.AlbumDTO;
+import impl.AdminImpl;
 import model.AudioBoardDTO;
 
 @Controller
-public class UploadController {
+public class AdminAudioEditController {
 	
 	@Autowired
 	SqlSession sqlSession;
-	public void setSqlSession(SqlSession sqlSession) {
-		this.sqlSession = sqlSession;
-	} 
-	
-	/*업로드*/
-	@RequestMapping("/upload.do")
-	public String upload(Principal principal, Model model, AudioBoardDTO audioBoardDTO) {
-		
-		String id = null;
-		/*로그인 없이 접근시 nullpointerexception발생, security로 접근권한 설정해야함.*/
-		try {
-			id = principal.getName();
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-		}
-		
-		/*앨범 리스트 불러오기*/
-		ArrayList<AlbumDTO> albumList = sqlSession.getMapper(AlbumImpl.class).albumList(id);
-		AlbumDTO albumDTO = new AlbumDTO();
-		
-		/*아무 앨범도 없을 때*/
-		if(albumList.size()==0) {
-			albumDTO.setAlbumName("default");
-			albumList.add(albumDTO);
-		}
-		
-		model.addAttribute("albumList", albumList);
-		
-		AudioBoardDTO audiodto = sqlSession.getMapper(AudioBoardImpl.class).audioBoardView(audioBoardDTO);
-		model.addAttribute("audiodto", audiodto);
-		
-		return "/upload/upload";
-	}
 	
 	/*
 	 UUID(Universally Unique Identifier)
@@ -80,10 +40,32 @@ public class UploadController {
 		System.out.println("생성된UUID-2:"+uuid);
 		return uuid;
 	}
-
-	/*파일업로드 처리*/
-	@RequestMapping(value = "/uploadAction.do", method = RequestMethod.POST)
-	public String uploadAction(Model model, MultipartHttpServletRequest req, HttpSession session, Principal principal) {
+	
+	/*오디오수정폼*/
+	@RequestMapping("/admin/adaudioboardEdit.do")
+	public String adaudioboardEdit(Model model, HttpServletRequest req, AudioBoardDTO audioBoardDTO) {
+		
+		int audio_idx = Integer.parseInt(req.getParameter("audio_idx"));
+		
+		System.out.println("audio_idx"+audio_idx);
+		
+		//AudioBoardDTO audioedit = sqlSession.getMapper(AdminImpl.class).adAudioView(audio_idx);
+		ArrayList<AudioBoardDTO> adaudio = sqlSession.getMapper(AdminImpl.class).adAudioList(audioBoardDTO);
+		
+		model.addAttribute("adaudio", adaudio);
+		model.addAttribute("audio_idx",audio_idx);
+		//ㄴㄴmodel.addAttribute("audioedit",audioedit);
+		
+		return "admin/adaudioboardEdit";
+	}
+	
+	/*수정하기*/
+	@RequestMapping(value = "/admin/adaudioboardEditAction.do" , method = RequestMethod.POST)
+	public String audioEditAction(Model model, MultipartHttpServletRequest req , AudioBoardDTO audioBoardDTO) {
+		
+		String albumName = req.getParameter("albumName");
+		String party = req.getParameter("party");
+		
 		
 		//서버의 물리적경로 얻어오기
 		String path = req.getSession().getServletContext().getRealPath("/resources/upload");
@@ -91,57 +73,25 @@ public class UploadController {
 		
 		String id = null;
 		
+		
+		int audio_idx = Integer.parseInt(req.getParameter("audio_idx"));
+		System.out.println("audio_idx = "+ audio_idx);
+		
 		try {
 			//업로드폼의 file속성의 필드를 가져온다.(여기서는 2개임)
 			Iterator itr = req.getFileNames();
 			
 			MultipartFile mfile = null;
-			String fileName = "";
+			String fileName = req.getParameter("audiofilename");
 			List resultList = new ArrayList();
 			
 			//파일외에 폼값 받음.
 			String audiotitle = req.getParameter("audiotitle");
-			id = principal.getName();
-			String albumName = req.getParameter("albumName");
 			String artistname = req.getParameter("artistname");
 			String contents = req.getParameter("contents");
 			String category = req.getParameter("country")+" "+req.getParameter("genre");
-			int party = -1;
-
-			if(req.getParameter("party")==null) {
-				party = 0;
-			}
-			else {
-				if(req.getParameter("party").equals("Y")) {
-					party = 1;
-				}
-			}
-			
-			
 			String audiofilename = null;
 			String imagename = null;
-			int album_idx = -1;
-			
-			/*앨범*/
-			//내가 앨범리스트 불러오기
-			ArrayList<AlbumDTO> albumList = sqlSession.getMapper(AlbumImpl.class).albumList(id);
-			
-			if(albumList.size()==0) {//아무 앨범도 없는 경우
-				sqlSession.getMapper(AlbumImpl.class).addAlbum(id, albumName);
-				albumList = sqlSession.getMapper(AlbumImpl.class).albumList(id);
-				for(AlbumDTO adto : albumList) {
-					album_idx = adto.getAlbum_idx();
-				}
-			}
-			else {
-				for(AlbumDTO adto : albumList) {
-					if(adto.getAlbumName().equals(albumName)) {
-						album_idx = adto.getAlbum_idx();
-						break;
-					}
-				}
-			}
-			
 			
 			/*
 			 물리적경로를 기반으로 File객체를 생성한 후 지정된 디렉토리가 있는지 확인한다.
@@ -151,7 +101,6 @@ public class UploadController {
 			if(!directory.isDirectory()) {
 				directory.mkdirs();
 			}
-			
 			//업로드 폼의 file필드 갯수만큼 반복
 			while(itr.hasNext()) {
 				//전송된 파일의 이름을 읽어온다.
@@ -189,13 +138,12 @@ public class UploadController {
 				mfile.transferTo(serverFullName);
 			}
 			
-			int result = sqlSession.getMapper(AudioBoardImpl.class).addAudioBoard(audiotitle, id, album_idx, audiofilename, artistname, contents, imagename, category, party);
+			int audioEditAction = sqlSession.getMapper(AdminImpl.class).adAudioEdit
+					(audiotitle, audiofilename, artistname, albumName, imagename, category, Integer.parseInt(party), audio_idx);
 			
+			System.out.println("수정처리된 레코드수 : "+ audioEditAction);
 			
-			if(result==1) {
-				System.out.println("성공!");
-			}
-			
+			model.addAttribute("audioEditAction", audioEditAction);
 		}
 		catch (IOException e) {
 			e.printStackTrace();
@@ -203,6 +151,23 @@ public class UploadController {
 		catch (Exception e) {
 			e.printStackTrace();
 		}
-		return "redirect:/"+id+"/record";
+		
+		return "redirect:/admin/adaudioboardList.do";
+	}
+	
+	/*오디오 삭제하기*/
+	@RequestMapping("/admin/adAudioDelete.do")
+	public String adAudioDelete(Model model, HttpServletRequest req, AudioBoardDTO audioBoardDTO) {
+		
+		int audio_idx = Integer.parseInt(req.getParameter("audio_idx"));
+		
+		System.out.println("audio_idx"+audio_idx);
+		
+		int audiodelete = sqlSession.getMapper(AdminImpl.class).adAudioDELETE(audio_idx);
+		
+		if(audiodelete == 1) {
+			System.out.println("어드민오디오 삭제성공");
+		}
+		return "redirect:/admin/adaudioboardList.do";
 	}
 }

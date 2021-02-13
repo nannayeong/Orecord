@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import impl.AdminImpl;
+import impl.ViewImpl;
 import model.AlbumDTO;
 import model.AudioBoardDTO;
 import model.ChargeDTO;
@@ -194,6 +195,8 @@ public class AdminController {
 		
 		return "admin/adaudioboardList";
 	}
+	
+	
 	
 	/*앨범리스트*/
 	@RequestMapping("/admin/adalbumList.do")

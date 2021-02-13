@@ -18,6 +18,10 @@
 			from audioboard b inner join album a on b.album_idx=a.album_idx where b.id=#{param1} order by regidate desc)tb) where rnum between #{param2} and #{param3}
 	</select>
 	
+	<select id="audioBoardView">
+		SELECT * FROM audioboard
+	</select>
+	
 	<!-- 업로드 -->
 	<insert id="addAudioBoard">
 		insert into audioboard(audio_idx, audiotitle, id, album_idx, audiofilename, artistname, contents, imagename, category, party)
