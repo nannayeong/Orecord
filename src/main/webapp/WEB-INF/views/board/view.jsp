@@ -36,20 +36,61 @@ function deleteRow(comment_idx, audio_idx){
 		location.href="delete.do?comment_idx="+ comment_idx+ "&audio_idx="+ audio_idx;
 	}
 }
+$(document).ready(function(){
+	/* 웹페이지를 열었을때 */
+	$("#img1").show();
+	$("#img2").hide();
+	
+	/* img1을 클릭했을때 img2를 보여줌 */
+	$("#img1").click(function(){
+		$("#img1").hide();
+		$("#img2").show();
+	});
+	
+	/* img2를 클릭했을때 img1을 보여줌 */
+	$("#img2").click(function(){
+		$("#img1").show();
+		$("#img2").hide();
+	});
+});
+$(function(){
+	$('#img1').click(function(){
+		$.ajax({
+			url : "../board/playAction.do",
+			type : "get",
+			contentType : "text/html;charset:utf-8",
+			data : { audio_idx : $("#audio_idx").val()},
+			dataType : "json",
+			success : function(resData){
+	            if(resData!=null){
+					$('#playC').html(resData.playCount);
+	            }	
+			},
+			error : function(error) {
+				alert("error : " + error);
+			}   
+		});
+	});
+});
+
 </script>
 </head>
 <body>
 <div>
 	<div class="content">
 		<!-- 왼쪽 컨텐츠 -->
-		<input type="hidden" name="audio_idx" value="${audio.audio_idx}">
+		<input type="hidden" name="audio_idx" id="audio_idx" value="${audio.audio_idx}">
 		<div style="background: linear-gradient(to right, #91888A, #5A5B82);">
 			<div class="row">
 				<div class="col-8" style="padding: 20px 0 0 40px; font-size: 20px;">
 					<div class="row">
 						<div class="col-2" style="margin-left: 15px;">
 							<img src="../resources/img/play.png" alt="재생버튼" width="70"
-								height="70" style="padding: 5px 0 0 15px;">
+								height="70" style="padding: 5px 0 0 15px; cursor:pointer;"
+								id="img1" onclick="control(event)">
+							<img src="../resources/img/stop.png" alt="정지버튼" width="70"
+								height="70" style="padding: 5px 0 0 15px; cursor:pointer;"
+								id="img2" onclick="control(event)">
 						</div>
 						<div class="col-9"
 							style="padding-left: 20px;">
@@ -85,15 +126,35 @@ function deleteRow(comment_idx, audio_idx){
 					<div style="padding: 10px 0 0 10px;">
 						<audio controls
 							style="width: 95%; height: 60px; padding-left: 12px;"
-							id="${album.albumName}">
-							<source src="${audio.audiofilename }"/>
+							id="audio" src="${audio.audiofilename }">
 						</audio>
 					</div>
 					<div style="padding: 10px 0 0 35px;">
-						<img src="../resources/img/like.png" alt="좋아요 수" width="30">
+						<div id="msg" style="color:white; font-size:16px;"></div>
+						<button type="button" onclick="control(event)" class="btn btn-outline-dark"
+							style="color:white;" id="play">
+							play
+						</button>
+						<button type="button" onclick="control(event)" class="btn btn-outline-dark"
+							style="color:white;" id="pause">
+							pause
+						</button>
+						<button type="button" onclick="control(event)" class="btn btn-outline-dark"
+							style="color:white;" id="replay">
+							replay
+						</button>
+						<button type="button" onclick="control(event)" class="btn btn-outline-dark"
+							style="color:white;" id="vol+">
+							vol+
+						</button>
+						<button type="button" onclick="control(event)" class="btn btn-outline-dark"
+							style="color:white;" id="vol-">
+							vol-
+						</button>
+						<img src="../resources/img/like.png" alt="좋아요 수" width="30" style="margin-left:50px;">
 						<span>${audio.like_count}</span>
 						<img src="../resources/img/playcount.png" alt="재생횟수" width="50">
-						<span>${audio.play_count}</span>
+						<span id="playC">${audio.play_count}</span>
 					</div>
 				</div>
 				<!-- 앨범사진 -->
@@ -278,11 +339,41 @@ function deleteRow(comment_idx, audio_idx){
 	</div>
 	<!-- 본문종료 -->
 </div>
-
 	<!-- 상단 메뉴바(위치옮기면안됨!) -->
 	<header>
 		<%@include file="/resources/jsp/header.jsp" %>
 	</header>
-	
+
+<script>
+var div = document.getElementById("msg");
+var audio = document.getElementById("audio");
+function control(e){
+	var id = e.target.id;
+	if(id == "img1"){
+		audio.play();
+		div.innerHTML = "재생중입니다.";
+	}
+	else if(id == "img2"){
+		audio.pause();
+		div.innerHTML = "일시중지되었습니다.";
+	}
+	else if(id == "replay"){
+		audio.load();
+		audio.play();
+		div.innerHTML = "처음부터 재생합니다.";
+	}
+	else if(id == "vol+"){
+		audio.volume += 0.1;
+		if(audio.volume > 0.9) audio.volume = 1.0;
+		div.innerHTML = "음량 0.1 증가 "+ "현재 "+ audio.volume;
+	}
+	else if(id == "vol-"){
+		audio.volume -= 0.1;
+		if(audio.volume < 0.1) audio.volume = 0;
+		div.innerHTML = "음량 0.1 감소 "+ "현재 "+ audio.volume;
+	}
+}
+</script>
+
 </body>
 </html>

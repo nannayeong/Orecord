@@ -8,6 +8,8 @@
    <http>
    	  <intercept-url pattern="/admin/**" access="hasRole('ADMIN')"/>
    	  <intercept-url pattern="/upload.do" access="hasAnyRole('USER','ADMIN')"/>
+   	  <intercept-url pattern="/*/yParty" access="hasAnyRole('USER','ADMIN')"/>
+   	  <intercept-url pattern="/*/nParty" access="hasAnyRole('USER','ADMIN')"/>
       <intercept-url pattern="/**" access="permitAll" />
       
       <!-- 로그인 페이지 -->

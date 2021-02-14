@@ -37,9 +37,12 @@ public class IdpwController {
 		MemberDTO idSearch = sqlSession.getMapper(IdPwSearchImpl.class).idSearch(nickname, email);
 		System.out.println("아디:"+idSearch);
 		
+		model.addAttribute("nickname", nickname);
+		model.addAttribute("email", email);
+		
 		model.addAttribute("idSearch", idSearch);
 		
-		return "redirect:/member/id_pw.do";
+		return "member/id_pw";
 	}
 	
 	//비밀번호 찾기
@@ -54,8 +57,12 @@ public class IdpwController {
 		MemberDTO pwSearch = sqlSession.getMapper(IdPwSearchImpl.class).pwSearch(nickname, id, email);
 		System.out.println("비번:"+pwSearch);
 		
+		model.addAttribute("nickname1", nickname);
+		model.addAttribute("email2", email);
+		model.addAttribute("id", id);
+		
 		model.addAttribute("pwSearch", pwSearch);
 		
-		return "redirect:/member/id_pw.do";
+		return "member/id_pw";
 	}
 }

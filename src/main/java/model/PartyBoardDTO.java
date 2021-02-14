@@ -19,7 +19,16 @@ public class PartyBoardDTO {
 	
 	//getter/setter
 	
+	/*innerjoin*/
+	private String audiotitle;
 	
+	
+	public String getAudiotitle() {
+		return audiotitle;
+	}
+	public void setAudiotitle(String audiotitle) {
+		this.audiotitle = audiotitle;
+	}
 	public int getCount() {
 		return count;
 	}
