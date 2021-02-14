@@ -44,4 +44,26 @@
 	<select id="myPoint" resultType="model.MemberDTO">
 		select * from member where id=#{param1}
 	</select>
+	
+	<select id="mydopartychoice" resultType="model.PartyBoardDTO">
+		select * from
+		(select a.audio_idx, audiotitle, party_idx, p.title, p.audiofilename, audiocontents, kind, point, choice, exdate, p.regidate, rownum rnum
+		from partyboard p inner join audioBoard a on p.audio_idx=a.audio_idx where p.id=#{param1} and choice=1 order by p.regidate desc)
+		where rnum between #{param2} and #{param3}
+	</select>
+	<select id="mydopartynotchoice" resultType="model.PartyBoardDTO">
+		select * from
+		(select a.audio_idx, audiotitle, party_idx, p.title, p.audiofilename, audiocontents, kind, point, choice, exdate, p.regidate, rownum rnum
+		from partyboard p inner join audioBoard a on p.audio_idx=a.audio_idx where p.id=#{param1} and choice=0 order by p.regidate desc)
+		where rnum between #{param2} and #{param3}
+	</select>
+	
+	<select id="mypartychoicecount" resultType="int">
+		select count(*) from partyboard p inner join audioBoard a on p.audio_idx=a.audio_idx 
+		where p.id=#{param1} and choice=1
+	</select>
+	<select id="mypartynotchoicecount" resultType="int">
+		select count(*) from partyboard p inner join audioBoard a on p.audio_idx=a.audio_idx 
+		where p.id=#{param1} and choice=0
+	</select>
 </mapper>

@@ -96,11 +96,16 @@ function unfollowbtn(follow) {
 					  <button type="button" class="btn btn-outline-dark" onclick="location.href='./myFollowing'" style="width:8em">following</button>
 					</div>
 				</div>
-				<c:if test="${artists.size() eq 0}">
-				<h4>팔로우한 아티스트가 없습니다.</h4>
-				</c:if>
-				<c:forEach var="a" items="${artists}">
-				<table style="width: 60%; border: 2px #f2f2f2 solid;margin: auto;" class="feed">
+				
+				<table style="width: 60%;margin: auto;" class="table ${artists.size() eq 0 ? '' : 'table-hover'}">
+					<c:if test="${artists.size() eq 0}">
+					<tr>
+						<td style="text-align:center">
+							<h4>팔로우한 아티스트가 없습니다.</h4>
+						</td>
+					</tr>
+						</c:if>
+					<c:forEach var="a" items="${artists}">
 					<tr>
 						<td style="padding-top:1em; padding-bottom:1em">
 							<img src="${a.img }" alt="" style="width: 2em" />
@@ -113,8 +118,8 @@ function unfollowbtn(follow) {
 	               			<button type="button" class="btn btn-outline-secondary btn-sm follow ${a.id}" onclick="fBtn('${a.id}')" >팔로워</button>
 	               		</td>
 					</tr>
+					</c:forEach>
 				</table>
-				</c:forEach>
 			</div>
 		</div>
 		<!-- 본문종료 -->
