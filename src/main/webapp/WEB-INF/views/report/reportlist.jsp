@@ -21,8 +21,17 @@
 <body>
 	<div>
 		<div class="content">
-			<!-- 왼쪽 컨텐츠 -->
-			<div class="left-content-back">
+			<div style="background: linear-gradient(to right, #91888A, #5A5B82);">
+			<div class="row">
+				<div style="margin: 50px 0 0 80px;">
+					<h5 style="margin-left: 5px;">Report</h5>
+					<h2>신고하기</h2>
+				</div>
+			</div>
+		</div>
+		<br />
+		<hr color="gray">
+			
 				<div class="left-content">
 				<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
@@ -53,8 +62,8 @@
 							 	<td class="text-center">${row.r_idx }</td>
 							 	<td class="text-center">${row.r_id }</td>
 							 	<td class="text-center">${row.kind }</td>
-							 	<td class="text-center"><button class="btn btn-primary" onclick="location.href='reportModify.do?r_idx=${row.r_idx}'">수정</button></td>
-								<td class="text-center"><button class="btn btn-danger" onclick="location.href='./deleteAction.do?r_idx=${row.r_idx}&s_id=${pageContext.request.userPrincipal.name}'">삭제</button></td>
+							 	<td class="text-center"><button class="btn btn-outline-primary" onclick="location.href='reportModify.do?r_idx=${row.r_idx}'">수정</button></td>
+								<td class="text-center"><button class="btn btn-outline-danger" onclick="location.href='./deleteAction.do?r_idx=${row.r_idx}&s_id=${pageContext.request.userPrincipal.name}'">삭제</button></td>
 							 </tr>
 							</div>	
 						</div>
@@ -63,20 +72,17 @@
 	            </table>
 	            <div>
 					<tr>
-						<td><input type="button" class="btn btn-warning" style="color: white; align-content: center; margin-left: 540px;" value="신고하기" onclick="location.href='${pageContext.request.contextPath}/report/write.do';"></td>
+						<td><input type="button" class="btn btn-warning" style="color: white; align-content: center; margin-left: -0.1em;" value="신고하기" onclick="location.href='./write.do';"></td>
 					</tr>
+					<br /><br />
 				</div>
 				
 				</div>
 			</div>
 		</div>
-	</div>
+	
 	<!-- 오른쪽 컨텐츠 -->
-	<div class="right-content-back">
-		<div class="right-content">
-			
-		</div>
-	</div>
+	
 	<!-- 오른쪽 컨텐츠종료 -->
 
 <!-- 본문종료 -->

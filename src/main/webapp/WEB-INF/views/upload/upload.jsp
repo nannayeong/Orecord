@@ -292,7 +292,7 @@ function addAlbumFunc(){
                     </div>
                   </div>
                   	<div class="form-group" align="center">
-                		<input type="submit" class="btn btn-fill btn-warning" style="color: white;" value="업로드">
+                		<input type="submit" class="btn btn-fill btn-outline-warning" style="" value="업로드">
               		</div>
               	<br>
 			<br>

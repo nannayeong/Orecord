@@ -55,11 +55,20 @@ function writeValidate(f)
 </script>
 	<div>
 		<div class="content">
-			<!-- 왼쪽 컨텐츠 -->
-			<div class="left-content-back">
+			
+			<div style="background: linear-gradient(to right, #91888A, #5A5B82);">
+			<div class="row">
+				<div style="margin: 50px 0 0 80px;">
+					<h5 style="margin-left: 5px;">Report</h5>
+					<h2>신고</h2>
+				</div>
+			</div>
+		</div>
+		<br />
+		<hr color="gray">
 				<div class="left-content">
 <!-- <table style="width:100%;border:2px #f2f2f2 solid;margin:auto;margin-bottom:1em"> -->
-		<form name="writeFrm" method="post" onsubmit="return writeValidate(this);" action="../report/writeAction.do" >
+		<form name="writeFrm" method="post" onsubmit="return writeValidate(this);" action="../report/writeAction.do?r_idx=${row.r_idx}" >
 		<s:csrfInput />
 		<table class="table table-bordered">
 		<td><input type="hidden" name="r_idx" value="${ret.r_idx}"></td>
@@ -117,13 +126,8 @@ function writeValidate(f)
 						
 <!-- 					</table> -->
 				</div>
-			</div>
-			<!-- 오른쪽 컨텐츠 -->
-			<div class="right-content-back">
-				<div class="right-content">
-					
-				</div>
-			</div>
+			
+			
 			<!-- 오른쪽 컨텐츠종료 -->
 		
 		<!-- 본문종료 -->
