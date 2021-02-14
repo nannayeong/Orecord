@@ -21,31 +21,25 @@
 
 </head>
 <body>
+
 <script type="text/javascript">
 // 아이디 찾기버튼
+
 function idSearch(frm1){
+	console.log(333);
 	
-	var frm = document.idfindscreen;
 	
-	if(frm.nickname.value=="" || frm.nickname.value==null){
+	if(frm1.nickname.value=="" || frm1.nickname.value==null){
 		alert("닉네임을 입력해주세요.");
-		frm.nickname.focus();
+		frm1.nickname.focus();
 		return false;
 	}
-	if(frm.email1.value=="" || frm.email1.value==null){
+	if(frm1.email1.value=="" || frm1.email1.value==null){
 		alert("이메일을 입력해주세요.");
-		frm.email1.focus();
+		frm1.email1.focus();
 		return false;
 	}
 	
-	frm.action="${pageContext.request.contextPath}/member/idSearch.do";
-	
-	
-	/* if(frm.nickname.value == ${idSearch.nickname} && frm.email1.value == ${idSearch.email} ){
-		
-		alert( ${idSearch.nickname}+'님의 아이디는 '+ ${idSearch.id} + ' 입니다.');
-		
-	} */
 	
 	
 }
@@ -53,28 +47,36 @@ function idSearch(frm1){
 // 비번찾기 버튼
 function passSearch(frm2){
 	
-	var frm = document.passfindscreen;
 	
-	if(frm.id.value=="" || frm.id.value==null){
+	if(frm2.id.value=="" || frm2.id.value==null){
 		alert("아이디를 입력해주세요.");
-		frm.id.focus();
+		frm2.id.focus();
 		return false;
 	}
-	if(frm.nickname1.value==""|| frm.nickname1.value==null){
+	if(frm2.nickname1.value==""|| frm2.nickname1.value==null){
 		alert("닉네임을 입력해주세요.");
-		frm.ncikname1.focus();
+		frm2.nickname1.focus();
 		return false;
 	}
-	if(frm.email2.value==""|| frm.email2.value==null){
+	if(frm2.email2.value==""|| frm2.email2.value==null){
 		alert("이메일을 입력해주세요.");
-		frm.email2.focus();
+		frm2.email2.focus();
 		return false;
 	}
 	
-	frm.action="${pageContext.request.contextPath}/member/pwSearch.do";
 }
 </script>
-
+--%>
+<script type="text/javascript">
+/* 아이디찾기 */
+/**/
+<c:if test="${not empty idSearch }">
+	alert( '${nickname}'+'님의 아이디는 '+ '${idSearch.id}' + ' 입니다.');
+</c:if>
+<c:if test="${not empty pwSearch }">
+alert( '${id}'+'님의 비밀번호는 '+ '${pwSearch.pw}' + ' 입니다.');
+</c:if>
+</script>
 	<div>
 		<div class="content">
 			<!-- 왼쪽 컨텐츠 -->
@@ -85,26 +87,20 @@ function passSearch(frm2){
 				<br />
 				</div>
 					<!-- <div class="col-md-6 pr-md-1" style="margin-top: 15px;"> -->
-					<form onsubmit="return idSearch(this);" name="idfindscreen" method="post" >
+					<form onsubmit="return idSearch(this);" name="idfindscreen" method="post" action="${pageContext.request.contextPath}/member/idSearch.do" >
 					<s:csrfInput />
-						<%-- <input type="hidden" id="id1" value="${idSearch.id }" />
-						<input type="hidden" id="name1" value="${idSearch.nickname }" /> --%>
 						<div><span>닉네임&nbsp;&nbsp;<input type="text" name="nickname"class="login_input01" /></span></div>
 						<br />
 						<div><span>이메일&nbsp;&nbsp;<input type="text" name="email1" class="login_input01" /></span></div>
 						<br />
 						<div style="align-content: center; margin-left: 70px; margin-top: 40px;">
-							<input type="submit" class="btn btn-warning" value="아이디찾기" name="idSearch" style="color: white;"/></div>						
+							<input type="submit" class="btn btn-warning" value="아이디찾기" style="color: white;"/></div>						
 					</form>	
 					<!-- </div> -->
 					
 					<div class="col-md-6 pl-md-1">
-						<form onsubmit="return passSearch(this);" name="passfindscreen" method="post">
+						<form onsubmit="return passSearch(this);" name="passfindscreen" id="passfindscreen" method="post" action="${pageContext.request.contextPath}/member/pwSearch.do" >
 						<s:csrfInput />
-							<%-- <input type="hid den" id="id" value="${pwSearch.id }" />
-							<input type="hid den" id="name2" value="${pwSearch.nickname }" />
-							<input type="hid den" id="email3" value="${pwSearch.email }" />
-							<input type="hid den" id="pw" value="${pwSearch.pw }" /> --%>
 							<div><span>아이디&nbsp;&nbsp;<input type="text" name="id" class="login_input01" /></span></div>
 							<br />
 							<div><span>닉네임&nbsp;&nbsp;<input type="text" name="nickname1" class="login_input01" /></span></div>
