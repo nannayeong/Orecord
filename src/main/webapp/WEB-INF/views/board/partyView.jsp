@@ -25,8 +25,10 @@ function choiceAction(f){
 	var youPoint = f.point.value;
 	var myPoint = f.myPoint.value;
 	if(myPoint < youPoint){
-		alert("포인트가 부족합니다.");
-		return false;
+		if(confirm("포인트가 부족합니다 충전하시겠습니까?")){
+			location.href="/orecord/chargeLog.do";
+			return false;
+		}
 	}	
 }
 </script>
@@ -56,7 +58,7 @@ function choiceAction(f){
 		<br>
 		<hr color="green">
 		<!-- 본문 제목 종료 -->
-		<input type="hi dden" name="myPoint" value="${myPoint.mypoint }" />
+		<input type="hidden" name="myPoint" value="${myPoint.mypoint }" />
 		<input type="hidden" name="audio_idx" value="${partyView.audio_idx }">
 		<input type="hidden" name="party_idx" value="${partyView.party_idx }" />
 		<input type="hidden" name="id" value="${partyView.id }">
