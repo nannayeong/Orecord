@@ -12,6 +12,17 @@
     	B.audio_idx = #{audio_idx}
 	</select>
 	
+	<!-- 재생횟수증가 -->
+	<update id="addPlay" parameterType="model.AudioBoardDTO">
+		UPDATE audioboard SET play_count = (play_count + 1)
+			WHERE audio_idx = #{param1}
+	</update>
+	
+	<!-- 재생횟수 가져오기 -->
+	<select id="playCount" resultType="int">
+		SELECT play_count FROM audioboard WHERE audio_idx=#{param1}
+	</select>
+	
 	<!-- 댓글리스트 -->
 	<select id="mComment" resultType="model.MCommentDTO">
 		SELECT * FROM m_comment WHERE audio_idx=#{audio_idx} ORDER BY comment_idx ASC
