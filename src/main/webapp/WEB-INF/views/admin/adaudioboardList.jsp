@@ -200,8 +200,8 @@
 							 	<c:if test="${audio.party eq 0}">
 							 		<td class="text-center">불참</td>
 							 	</c:if>
-							 	<td class="text-center"><button class="btn btn-primary" onclick="location.href='./adaudioboardEdit.do?idx=${audio.audio_idx}';">수정</button></td>
-								<td class="text-center"><button class="btn btn-danger" onclick="location.href='./adAudioDelete.do?id=${audio.audio_idx}';">삭제</button></td>
+							 	<td class="text-center"><button class="btn btn-primary" onclick="location.href='./adaudioboardEdit.do?audio_idx=${audio.audio_idx}';">수정</button></td>
+								<td class="text-center"><button class="btn btn-danger" onclick="location.href='./adAudioDelete.do?audio_idx=${audio.audio_idx}';">삭제</button></td>
 							 </tr>
 							</div>	
 						</div>

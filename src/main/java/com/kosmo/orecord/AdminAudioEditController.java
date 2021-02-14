@@ -49,12 +49,11 @@ public class AdminAudioEditController {
 		
 		System.out.println("audio_idx"+audio_idx);
 		
-		//AudioBoardDTO audioedit = sqlSession.getMapper(AdminImpl.class).adAudioView(audio_idx);
-		ArrayList<AudioBoardDTO> adaudio = sqlSession.getMapper(AdminImpl.class).adAudioList(audioBoardDTO);
+		AudioBoardDTO adaudio = sqlSession.getMapper(AdminImpl.class).adAudioView(audio_idx);
+		
+		System.out.println(adaudio.getAudio_idx()+"----------------------------");
 		
 		model.addAttribute("adaudio", adaudio);
-		model.addAttribute("audio_idx",audio_idx);
-		//ㄴㄴmodel.addAttribute("audioedit",audioedit);
 		
 		return "admin/adaudioboardEdit";
 	}

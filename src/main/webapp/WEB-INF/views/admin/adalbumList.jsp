@@ -192,8 +192,8 @@
 								 	<td class="text-center">${album.id }</td>
 								 	<td class="text-center">${album.albumName }</td>
 								 	<td class="text-center">${album.albumJacket }</td>
-								 	<td class="text-center"><button class="btn btn-primary" onclick="location.href='${pageContext.request.contextPath}/admemberEdit.do?id=${row.id}';">수정</button></td>
-									<td class="text-center"><button class="btn btn-danger" onclick="location.href='${pageContext.request.contextPath}/admemberDelete.do?id=${row.id}';">삭제</button></td>
+								 	<td class="text-center"><button class="btn btn-primary" onclick="location.href='./adalbumEdit.do?album_idx=${album.album_idx}';">수정</button></td>
+									<td class="text-center"><button class="btn btn-danger" onclick="location.href='./adalbumDelete.do?album_idx=${album.album_idx}';">삭제</button></td>
 							 	</tr>
 							</div>	
 						</div>

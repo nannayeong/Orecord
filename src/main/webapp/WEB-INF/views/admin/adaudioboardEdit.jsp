@@ -185,8 +185,8 @@ function colChoice(){
 							<div class="col-4 ">
 								<!-- 국가별 카테고리 -->
 								<div class="form-group">
-									<label style="margin-top: 7px;">카테고리</label> <select
-										name="country" id="country" class="form-control">
+									<label style="margin-top: 7px;">카테고리</label> 
+									<select name="country" id="country" class="form-control">
 										<option style="color: black;" value="noValue">나라</option>
 										<option style="color: black;" value="Ghana">가나</option>
 										<option style="color: black;" value="Korea">대한민국</option>

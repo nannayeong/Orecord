@@ -9,21 +9,19 @@
 	<select id="listPage" resultType="model.MemberDTO">
 		SELECT * FROM member ORDER BY id DESC		
 	</select>
-	
 	<!-- 회원정보 조회하기 -->
 	<select id="memberView" resultType="model.MemberDTO" parameterType="model.MemberDTO">
 		SELECT * FROM member WHERE id=#{id}
 	</select>
-
 	<!-- 회원정보 수정 -->
  	<update id="memberEdit" >
 		UPDATE member SET pw=#{0}, email=#{1}, phone=#{2}, address=#{3}, intro=#{4}, img=#{5} WHERE id=#{6} 
 	</update>
-	
 	<!-- 회원삭제 -->
 	<delete id="memberDelete">
 		DELETE FROM member WHERE id=#{param1}
 	</delete>
+
 
 	<!-- 오디오보드 리스트보기 -->
 	<select id="adAudioList" resultType="model.AudioBoardDTO">
@@ -42,78 +40,141 @@
 	<delete id="adAudioDELETE">
 		DELETE FROM audioboard WHERE audio_idx=#{param1}
 	</delete>
+
 	
 	<!-- 앨범리스트 보기 -->
-	<!-- <select id="adalbumList" resultType="model.AlbumDTO">
+	<select id="adalbumList" resultType="model.AlbumDTO">
 		select * from album ORDER BY album_idx DESC
-	</select> -->
+	</select>
+	<!-- 앨범상세보기 -->
+	<select id="adalbumView" resultType="model.AlbumDTO">
+		select * from album WHERE album_idx=#{album_idx}
+	</select>
+	<!-- 앨범 수정하기 -->
+	<update id="adalbumEdit">
+		UPDATE album SET albumName=#{0}, albumJacket=#{1} WHERE album_idx=#{2} 
+	</update>
+	<update id="AlbumNoJacketEdit">
+		update album set albumName=#{0} where album_idx=#{1}
+	</update>
+	<!-- 앨범 삭제하기 -->
+	<delete id="adalbumDelete">
+		DELETE FROM album WHERE album_idx=#{param1}
+	</delete>
+
 	
 	<!-- 후원리스트 보기 -->
 	<select id="sponsorshipList" resultType="model.SponsorshipDTO">
-		SELECT * FROM sponsorshipLog ORDER BY idx=#{idx}
+		SELECT * FROM sponsorshipLog ORDER BY idx DESC
 	</select>
 	<!-- 후원 상세보기 -->
-	<!-- <select id="sponsorshipView" resultType="model.SponsorshipDTO">
-		SELECT * FROM sponsorshipLog ORDER BY idx DESC
-	</select> -->	
+	<select id="sponsorshipView" resultType="model.SponsorshipDTO">
+		SELECT * FROM sponsorshipLog WHERE idx=#{idx}
+	</select>
 	<!-- 후원 수정하기 -->
-	<!-- <select id="sponsorshipEdit">
-		UPDATE sponsorshipLog SET sponpoint=#{0}, patronid=#{1} WHERE idx=#{2}
-	</select> -->
+	<select id="sponsorshipEdit">
+		UPDATE sponsorshipLog SET sponPoint=#{0}, patronId=#{1} WHERE idx=#{2}
+	</select>
 	<!-- 후원 삭제하기 -->
-	<!-- <delete id="sponsorshipDelete">
+	<delete id="sponsorshipDelete">
 		DELETE FROM sponsorshipLog WHERE idx=#{idx}
-	</delete> -->
+	</delete>
+	
 	
 	<!-- 충전리스트 -->
 	<select id="chargeList" resultType="model.ChargeDTO">
 		SELECT * FROM chargeLog ORDER BY idx DESC
 	</select>
 	<!-- 충전상세보기 -->
-	<!-- <select id="chargeView" resultType="model.ChargeDTO">
+	<select id="chargeView" resultType="model.ChargeDTO">
 		SELECT * FROM chargeLog WHERE idx=#{idx}
-	</select> -->
+	</select>
 	<!-- 충전 수정하기 -->
-	<!-- <update id="chargeEdit">
-		UPDATE chargeLog SET totalpayment=#{0}, vat=#{1}, chargepoint=#{2}, paymenttype=#{3} WHERE idx=#{idx}
-	</update> -->
+	<update id="chargeEdit">
+		UPDATE chargeLog SET totalPayment=#{0}, VAT=#{1}, chargePoint=#{2}, paymentType=#{3} WHERE idx=#{4}
+	</update>
 	<!-- 충전 삭제하기 -->
-	<!-- <delete id="chargeDelete">
+	<delete id="chargeDelete">
 		DELETE FROM chargeLog WHERE idx=#{idx}
-	</delete> -->
+	</delete>
+	
 	
 	<!-- 환전리스트 -->
 	<select id="exchangeList" resultType="model.ExchangeDTO">
 		SELECT * FROM exchageLog ORDER BY idx DESC
 	</select>
 	<!-- 환전 상세보기 -->
-	<!-- <select id="exchangeView" resultType="model.ExchangeDTO">
+	<select id="exchangeView" resultType="model.ExchangeDTO">
 		SELECT * FROM exchangeLog WHERE idx=#{idx}
-	</select> -->
+	</select>
 	<!-- 환전 수정하기 -->
-	<!-- <update id="exchangeEdit">
-		UPDATE exchangeLog SET exchangePoint=#{0}, exchangePoint=#{1}, exchageFee=#{2}, exchangedMoney=#{3}, 
-			accountBank=#{4}, accountNumber=#{5}, accountName=#{6} 
-			WHERE idx=#{idx} 
-	</update> -->
+	<update id="exchangeEdit">
+		UPDATE exchangeLog SET exchangePoint=#{0}, exchageFee=#{1}, exchangedMoney=#{2}, accountBank=#{3}, accountNumber=#{4}, 
+			accountName=#{5} WHERE idx=#{6} 
+	</update>
 	<!-- 환전 삭제하기 -->
-	<!-- <delete id="exchangeDelete">
+	<delete id="exchangeDelete">
 		delete from exchangeLog WHERE idx=#{idx}
-	</delete> -->
+	</delete>
+	
+	
 	<!-- 댓글리스트 -->
 	<select id="mCommentList" resultType="model.MCommentDTO">
 		SELECT * FROM m_comment ORDER BY comment_idx DESC
 	</select>
+	<!-- 댓글상세보기 -->
+	<select id="mCommentView" resultType="model.MCommentDTO">
+		SELECT * FROM m_comment WHERE comment_idx=#{comment_idx}
+	</select>
+	<!-- 댓글 수정하기 -->
+	<update id="mCommentEdit">
+		UPDATE m_comment SET contents=#{0} WHERE comment_idx=#{1}
+	</update>
+	<!-- 댓글 삭제하기 -->
+	<delete id="mCommentDelete">
+		DELETE FROM m_comment WHERE comment_idx=#{param1}
+	</delete>
+	
 	
 	<!-- 협업리스트 -->
 	<select id="partyList" resultType="model.PartyBoardDTO">
 		SELECT * FROM partyboard ORDER BY party_idx DESC
 	</select>
+	<!-- 협업상세보기 -->
+	<select id="partyView" resultType="model.PartyBoardDTO">
+		SELECT * FROM partyboard WHERE party_idx=#{party_idx}
+	</select>
+	<!-- 협업수정하기 -->
+	<update id="partyEdit">
+		UPDATE partyboard SET audio_idx=#{0}, title=#{1}, contents=#{2}, audiocontents=#{3}, audiofilename=#{4}, 
+			kind==#{5}, point=#{6}, choice=#{7} WHERE party_idx=#{8}
+	</update>
+	<update id="partyEdit1">
+		UPDATE partyboard SET audio_idx=#{0}, title=#{1}, contents=#{2}, audiocontents=#{3}, kind==#{4}, 
+			point=#{5}, choice=#{6} WHERE party_idx=#{7}
+	</update>
+	<!-- 협업삭제하기 -->
+	<delete id="partyDelete">
+		DELETE partyboard WHERE party_idx=#{param1}
+	</delete>
+	
 	
 	<!-- 신고리스트 -->
 	<select id="reportList" resultType="model.ReportDTO">
 		SELECT * FROM report ORDER BY r_idx DESC
 	</select>
+	<!-- 신고상세 -->
+	<select id="reportView" resultType="model.ReportDTO">
+		SELECT * FROM report WHERE r_idx=#{r_idx}
+	</select>
+	<!-- 신고수정 -->
+	<update id="reportEdit">
+		UPDATE report SET r_id=#{0}, kind=#{1}, reason=#{2} WHERE r_idx=#{3}
+	</update>
+	<!-- 신고삭제 -->
+	<delete id="reportDelete">
+		DELETE FROM report WHERE r_idx=#{param1}
+	</delete>
 </mapper>
 
 

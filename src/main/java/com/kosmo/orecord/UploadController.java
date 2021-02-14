@@ -61,9 +61,6 @@ public class UploadController {
 		
 		model.addAttribute("albumList", albumList);
 		
-		AudioBoardDTO audiodto = sqlSession.getMapper(AudioBoardImpl.class).audioBoardView(audioBoardDTO);
-		model.addAttribute("audiodto", audiodto);
-		
 		return "/upload/upload";
 	}
 	
