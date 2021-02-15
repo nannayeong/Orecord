@@ -8,7 +8,7 @@ public class ExchangeDTO {
 	private Date regidate;
 	private int exchangePoint;
 	private int exchangeFee;
-	private int exchangeMoney;
+	private int exchangedMoney;
 	private String accountBank;
 	private String accountNumber;
 	private String accountName;
@@ -45,11 +45,11 @@ public class ExchangeDTO {
 	public void setExchangeFee(int exchangeFee) {
 		this.exchangeFee = exchangeFee;
 	}
-	public int getExchangeMoney() {
-		return exchangeMoney;
+	public int getExchangedMoney() {
+		return exchangedMoney;
 	}
-	public void setExchangeMoney(int exchangeMoney) {
-		this.exchangeMoney = exchangeMoney;
+	public void setExchangedMoney(int exchangedMoney) {
+		this.exchangedMoney = exchangedMoney;
 	}
 	public String getAccountBank() {
 		return accountBank;

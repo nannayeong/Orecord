@@ -196,10 +196,10 @@
 								 	<td class="text-center">${exchange.id }</td>
 								 	<td class="text-center">${exchange.exchangePoint }</td>
 								 	<td class="text-center">${exchange.exchangedMoney }</td>
-								 	<td class="text-center">${exchange.exchageFee }</td>
+								 	<td class="text-center">${exchange.exchangeFee }</td>
 								 	<td class="text-center">${exchange.regidate }</td>
-								 	<td class="text-center"><button class="btn btn-primary" onclick="location.href='${pageContext.request.contextPath}/admin/admemberEdit.do?id=${row.id}';">수정</button></td>
-									<td class="text-center"><button class="btn btn-danger" onclick="location.href='${pageContext.request.contextPath}/admin/admemberDelete.do?id=${row.id}';">삭제</button></td>
+								 	<td class="text-center"><button class="btn btn-primary" onclick="location.href='./exchangeEdit.do?idx=${exchange.idx }';">수정</button></td>
+									<td class="text-center"><button class="btn btn-danger" onclick="location.href='./exchangeDelete.do?idx=${exchange.idx }';">삭제</button></td>
 							 	</tr>
 							</div>	
 						</div>

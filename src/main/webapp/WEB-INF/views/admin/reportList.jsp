@@ -192,8 +192,8 @@
 								 	<td class="text-center">${report.s_id }</td>
 								 	<td class="text-center">${report.r_id }</td>
 								 	<td class="text-center">${report.kind }</td>
-								 	<td class="text-center"><button class="btn btn-primary" onclick="location.href='${pageContext.request.contextPath}/admin/admemberEdit.do?id=${row.id}';">수정</button></td>
-									<td class="text-center"><button class="btn btn-danger" onclick="location.href='${pageContext.request.contextPath}/admin/admemberDelete.do?id=${row.id}';">삭제</button></td>
+								 	<td class="text-center"><button class="btn btn-primary" onclick="location.href='./reportEdit.do?r_idx=${report.r_idx }';">수정</button></td>
+									<td class="text-center"><button class="btn btn-danger" onclick="location.href='./reportDelete.do?r_idx=${report.r_idx }';">삭제</button></td>
 							 	</tr>
 							</div>	
 						</div>
