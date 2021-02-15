@@ -9,6 +9,7 @@
 	<select id="albumList" resultType="model.AlbumDTO">
 		select * from album where id=#{param1}
 	</select>
+	
 	<select id="albumListPaging" resultType="model.AlbumDTO">
 		select * from 
 		(select tb.*, rownum rnum from 

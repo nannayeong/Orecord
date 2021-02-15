@@ -39,7 +39,9 @@
 		<!-- 협업신청목록 시작 -->
 		<div class="row" style="padding: 15px;">
 			<div class="col-12">
-				<!-- <h3 style="padding-left: 5px;">협업신청리스트</h3> -->
+				<h5 style="padding-left: 15px; color:gray;">
+					* 채택된 글은 초록색으로 표시됩니다.
+				</h5>
 				<table class="table table-hover">
 					<colgroup>
 						<col width="10px">

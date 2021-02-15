@@ -21,16 +21,16 @@
 <script src="${pageContext.request.contextPath}/resources/js/layout.js"></script>
 
 <script type="text/javascript">
-function choiceAction(id, point){
-	if(confirm("채택하시겠습니까?")){
-		location.href="choiceAction.do?id="+id+"&point="+point;
-	}
+function choiceAction(f){
+	var youPoint = f.point.value;
+	var myPoint = f.myPoint.value;
+	if(myPoint < youPoint){
+		if(confirm("포인트가 부족합니다 충전하시겠습니까?")){
+			location.href="/orecord/chargeLog.do";
+			return false;
+		}
+	}	
 }
-// function choiceAction(){
-// 	if(confirm("채택하시겠습니까?")){
-		
-// 	}
-// }
 </script>
 <style>
 .form-group label{
@@ -44,7 +44,7 @@ function choiceAction(id, point){
 		<!-- 본문 제목 -->
 		<form method="post"
 			action="<c:url value="/board/choiceAction.do"/>"
-			name="choiceFrm">
+			name="choiceFrm" onsubmit="return choiceAction(this);">
 			<s:csrfInput />
 		<div style="background: linear-gradient(to right, #91888A, #5A5B82);">
 			<div class="row">
@@ -58,6 +58,7 @@ function choiceAction(id, point){
 		<br>
 		<hr color="green">
 		<!-- 본문 제목 종료 -->
+		<input type="hidden" name="myPoint" value="${myPoint.mypoint }" />
 		<input type="hidden" name="audio_idx" value="${partyView.audio_idx }">
 		<input type="hidden" name="party_idx" value="${partyView.party_idx }" />
 		<input type="hidden" name="id" value="${partyView.id }">
@@ -93,7 +94,7 @@ function choiceAction(id, point){
 				<div class="form-group">
 					<label>요청 포인트</label>
 					<input type="text" class="form-control"
-						readonly name="point" value="${partyView.point }">
+						readonly name="point" id="point" value="${partyView.point }">
 				</div>
 			</div>
 		</div>
@@ -153,8 +154,7 @@ function choiceAction(id, point){
 			<div class="col-10">
 				<div class="form-group">
 					<div class="d-flex flex-row-reverse">
-						<button type="submit" class="btn btn-outline-danger"
-							>
+						<button type="submit" class="btn btn-outline-danger">
 							채택하기
 						</button>
 						<button type="button" class="btn btn-outline-primary"

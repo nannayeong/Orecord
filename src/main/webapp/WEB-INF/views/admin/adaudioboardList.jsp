@@ -33,7 +33,7 @@
 
   <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
 
-    <a class="navbar-brand mr-1" href="index.html">Start Bootstrap</a>
+    <a class="navbar-brand mr-1" href="${pageContext.request.contextPath}/admin/main">Orecord</a>
 
     <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
       <i class="fas fa-bars"></i>
@@ -97,13 +97,48 @@
     <!-- Sidebar -->
     <ul class="sidebar navbar-nav">
       <li class="nav-item active">
-        <a class="nav-link" href="./admin/member">
+        <a class="nav-link" href="${pageContext.request.contextPath}/admin/main">
           <span>회원관리</span>
         </a>
       </li>
       <li class="nav-item active">
-        <a class="nav-link" href="${pageContext.request.contextPath}/memberList.do">
-          <span>회원리스트</span>
+        <a class="nav-link" href="${pageContext.request.contextPath}/admin/adaudioboardList.do">
+          <span>게시물관리</span>
+        </a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="${pageContext.request.contextPath}/admin/adalbumList.do">
+          <span>앨범관리</span>
+        </a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="${pageContext.request.contextPath}/admin/sponsorshipList.do">
+          <span>후원관리</span>
+        </a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="${pageContext.request.contextPath}/admin/chargeList.do">
+          <span>결제/충전관리</span>
+        </a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="${pageContext.request.contextPath}/admin/exchangeList.do">
+          <span>환전관리</span>
+        </a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="${pageContext.request.contextPath}/admin/mCommentList.do">
+          <span>댓글관리</span>
+        </a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="${pageContext.request.contextPath}/admin/partyList.do">
+          <span>협업관리</span>
+        </a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="${pageContext.request.contextPath}/admin/reportList.do">
+          <span>신고관리</span>
         </a>
       </li>
     </ul>
@@ -115,56 +150,64 @@
         <!-- Breadcrumbs-->
         <ol class="breadcrumb">
           <li class="breadcrumb-item">
-            <a href="#">Dashboard</a>
+            <a href="">Orecord</a>
           </li>
-          <li class="breadcrumb-item active">Overview</li>
+          <li class="breadcrumb-item active">audioboard</li>
         </ol>
         
         <!-- DataTables Example -->
         <div class="card mb-3">
           <div class="card-header">
-            <i class="fas fa-table"></i>Member</div>
+            <i class="fas fa-table"></i>음원게시물</div>
           <div class="card-body">
             <div class="table-responsive">
               <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
-                  <tr>
-                    <th class="text-center">아이디</th>
-                    <th class="text-center">닉네임</th>
-                    <th class="text-center">핸드폰번호</th>
-                    <th class="text-center">이메일</th>
-                    <th class="text-center">수정</th>
-                    <th class="text-center">삭제</th>
-                  </tr>
+                  	<tr>
+	                    <th class="text-center">NO</th>
+	                    <th class="text-center">작성자</th>
+	                    <th class="text-center">음원명</th>
+	                    <th class="text-center">작성일</th>
+	                    <th class="text-center">협업여부</th>                    
+	                    <th class="text-center">수정</th>
+	                    <th class="text-center">삭제</th>
+                  	</tr>
                 </thead>
                 <tfoot>
                 	<tr>
-                    <th class="text-center">아이디</th>
-                    <th class="text-center">닉네임</th>
-                    <th class="text-center">핸드폰번호</th>
-                    <th class="text-center">이메일</th>
-                    <th class="text-center">수정</th>
-                    <th class="text-center">삭제</th>
-                  </tr>
+	                    <th class="text-center">NO</th>
+	                    <th class="text-center">작성자</th>
+	                    <th class="text-center">음원명</th>
+	                    <th class="text-center">작성일</th>
+	                    <th class="text-center">협업여부</th>                    
+	                    <th class="text-center">수정</th>
+	                    <th class="text-center">삭제</th>
+                  	</tr>
                 <tbody>
                 
                 <!-- 방명록 반복 부분 s -->
-				<c:forEach items="${lists }" var="row">
+				<c:forEach items="${adaudio }" var="audio">
 						<div class="media">
 							<div class="media-body">
 							  <tr>				 	
-							 	<td class="text-center">${row.id }</td>
-							 	<td class="text-center">${row.nickname }</td>
-							 	<td class="text-center">${row.phone }</td>
-							 	<td class="text-center">${row.email }</td>
+							 	<td class="text-center">${audio.audio_idx }</td>
+							 	<td class="text-center">${audio.id }</td>
+							 	<td class="text-center">${audio.audiotitle }</td>
+							 	<td class="text-center">${audio.regidate }</td>
+							 	<c:if test="${audio.party eq 1}">
+							 		<td class="text-center">참여</td>
+							 	</c:if>
+							 	<c:if test="${audio.party eq 0}">
+							 		<td class="text-center">불참</td>
+							 	</c:if>
 							 	<td class="text-center"><button class="btn btn-primary" onclick="location.href='${pageContext.request.contextPath}/admemberEdit.do?id=${row.id}';">수정</button></td>
 								<td class="text-center"><button class="btn btn-danger" onclick="location.href='${pageContext.request.contextPath}/admemberDelete.do?id=${row.id}';">삭제</button></td>
 							 </tr>
 							</div>	
 						</div>
 				</c:forEach>
-	             </tbody>
 	            </table>
+               </tbody>
             </div>
           </div>
           <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>

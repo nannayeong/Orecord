@@ -14,6 +14,8 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 <!-- layout css -->
 <link href="${pageContext.request.contextPath}/resources/css/layout.css" rel="stylesheet" />
@@ -34,20 +36,61 @@ function deleteRow(comment_idx, audio_idx){
 		location.href="delete.do?comment_idx="+ comment_idx+ "&audio_idx="+ audio_idx;
 	}
 }
+$(document).ready(function(){
+	/* 웹페이지를 열었을때 */
+	$("#img1").show();
+	$("#img2").hide();
+	
+	/* img1을 클릭했을때 img2를 보여줌 */
+	$("#img1").click(function(){
+		$("#img1").hide();
+		$("#img2").show();
+	});
+	
+	/* img2를 클릭했을때 img1을 보여줌 */
+	$("#img2").click(function(){
+		$("#img1").show();
+		$("#img2").hide();
+	});
+});
+$(function(){
+	$('#img1').click(function(){
+		$.ajax({
+			url : "../board/playAction.do",
+			type : "get",
+			contentType : "text/html;charset:utf-8",
+			data : { audio_idx : $("#audio_idx").val()},
+			dataType : "json",
+			success : function(resData){
+	            if(resData!=null){
+					$('#playC').html(resData.playCount);
+	            }	
+			},
+			error : function(error) {
+				alert("error : " + error);
+			}   
+		});
+	});
+});
+
 </script>
 </head>
 <body>
 <div>
 	<div class="content">
 		<!-- 왼쪽 컨텐츠 -->
-		<input type="hidden" name="audio_idx" value="${audio.audio_idx}">
+		<input type="hidden" name="audio_idx" id="audio_idx" value="${audio.audio_idx}">
 		<div style="background: linear-gradient(to right, #91888A, #5A5B82);">
 			<div class="row">
 				<div class="col-8" style="padding: 20px 0 0 40px; font-size: 20px;">
 					<div class="row">
 						<div class="col-2" style="margin-left: 15px;">
 							<img src="../resources/img/play.png" alt="재생버튼" width="70"
-								height="70" style="padding: 5px 0 0 15px;">
+								height="70" style="padding: 5px 0 0 15px; cursor:pointer;"
+								id="img1" onclick="control(event)">
+							<img src="../resources/img/stop.png" alt="정지버튼" width="70"
+								height="70" style="padding: 5px 0 0 15px; cursor:pointer;"
+								id="img2" onclick="control(event)">
 						</div>
 						<div class="col-9"
 							style="padding-left: 20px;">
@@ -83,15 +126,35 @@ function deleteRow(comment_idx, audio_idx){
 					<div style="padding: 10px 0 0 10px;">
 						<audio controls
 							style="width: 95%; height: 60px; padding-left: 12px;"
-							id="${album.albumName}">
-							<source src="${audio.audiofilename }"/>
+							id="audio" src="${audio.audiofilename }">
 						</audio>
 					</div>
 					<div style="padding: 10px 0 0 35px;">
-						<img src="../resources/img/like.png" alt="좋아요 수" width="30">
+						<div id="msg" style="color:white; font-size:16px;"></div>
+						<button type="button" onclick="control(event)" class="btn btn-outline-dark"
+							style="color:white;" id="play">
+							play
+						</button>
+						<button type="button" onclick="control(event)" class="btn btn-outline-dark"
+							style="color:white;" id="pause">
+							pause
+						</button>
+						<button type="button" onclick="control(event)" class="btn btn-outline-dark"
+							style="color:white;" id="replay">
+							replay
+						</button>
+						<button type="button" onclick="control(event)" class="btn btn-outline-dark"
+							style="color:white;" id="vol+">
+							vol+
+						</button>
+						<button type="button" onclick="control(event)" class="btn btn-outline-dark"
+							style="color:white;" id="vol-">
+							vol-
+						</button>
+						<img src="../resources/img/like.png" alt="좋아요 수" width="30" style="margin-left:50px;">
 						<span>${audio.like_count}</span>
 						<img src="../resources/img/playcount.png" alt="재생횟수" width="50">
-						<span>${audio.play_count}</span>
+						<span id="playC">${audio.play_count}</span>
 					</div>
 				</div>
 				<!-- 앨범사진 -->
@@ -102,10 +165,55 @@ function deleteRow(comment_idx, audio_idx){
 			</div>
 		</div>
 		<br>
-		<div style="padding-left: 50px;">
-			<p>${audio.contents }</p>
+		<!-- 참여자 목록 -->
+		<div class="row">
+			<div class="col-8">
+				<div style="padding-left: 50px;">
+					<textarea name="contents" cols="80" rows="10" readonly>${audio.contents }</textarea>
+				</div>
+			</div>
+			<div class="col-4" style="padding-left:70px;">
+				<button type="button" class="btn btn-outline-primary" data-toggle="collapse"
+					data-target="#demo" style="width:170px;">참여자 목록</button>
+				<div id="demo" class="collapse" style="padding-left:23px;">
+					<ul class="list-group">
+						<li class="list-group-item active">
+							작성자 <br />
+							<a href="/orecord/${audio.id }/myFollowing" style="color:white;">
+								<span style="color:white;">${audio.id }</span>
+							</a> <br />
+						</li>
+						<c:choose>
+							<c:when test="${audio.party eq 1 and notChoice.count ne 0 }">
+							<li class="list-group-item">
+								참여자 <br />
+								<c:forEach items="${partyMember }" var="mem">
+								<a href="/orecord/${mem.id}/myFollowing">${mem.id }</a> <br />
+								</c:forEach>
+							</li>
+							</c:when>
+							<c:when test="${notParty.count ne 0 and audio.party eq 1 }">
+								<li class="list-group-item">
+									<p style="color:gray; font-size:10px;">
+										참여자가 없습니다. <br />
+										참여를 해주세요.
+									</p>
+								</li>
+							</c:when>
+							<c:otherwise>
+								<li class="list-group-item">
+									<p style="color:gray; font-size:10px;">
+										협업신청 불가
+									</p>
+								</li>
+							</c:otherwise>
+						</c:choose>
+					</ul>
+				</div>
+			</div>
 		</div>
-		<hr align="center" color="gray" size="10px">
+		<!-- #17A2B8 -->
+		<hr align="center" width="90%" style="border:outset 1px gray;">
 		<!-- 협업신청, 목록, 수정 버튼 -->
 		<c:choose>
 			<c:when test="${pageContext.request.userPrincipal.name eq audio.id}">
@@ -181,22 +289,10 @@ function deleteRow(comment_idx, audio_idx){
 			<s:csrfInput />
 			<input type="hidden" name="audio_idx" value="${audio.audio_idx}">
 			<!-- 작성자 프로필 -->
-			<div class="row">
-				<div class="col-3" style="text-align: center; padding-left: 50px;">
-					<img src="${audio.img }" alt="프로필사진"
-						class="rounded-circle" width="100">
-					<h6 style="margin-top:8px;">${audio.id }</h6>
-					<hr width="100%" align="center" color="orange" size="10px">
-					<h6 style="color:gray;">참여자</h6>
-					<c:forEach items="${partyMember }" var="mem">
-						<img src="${mem.img }" alt="프로필사진"
-						class="rounded-circle" width="100">
-					<h6 style="margin:8px 0 7px 0;">${mem.id }</h6>
-					</c:forEach>
-				</div>
+<!-- 			<div class="row"> -->
 				<!-- 댓글 작성 -->
-				<div class="col-8">
-					<div class="row" style="padding-top: 10px;">
+<!-- 				<div class="col-12"> -->
+					<div class="row" style="padding:10px 0 0 70px;">
 						<div class="col-2" style="padding: 0px; margin-left: 50px;">
 							<input type="text" readonly class="form-control"
 								value="${pageContext.request.userPrincipal.name}"
@@ -210,15 +306,14 @@ function deleteRow(comment_idx, audio_idx){
 							<input type="submit" class="btn btn-outline-secondary"
 								value="입력">
 						</div>
-						<hr width="100%" align="center" color="#17A2B8" size="10px">
 					</div>
-
+						<hr align="center" width="90%" style="border:outset 1px gray;">
 					<!-- 댓글영역 -->
 					<c:forEach items="${comments}" var="row">
 						<input type="hidden" name="comment_idx"
 							value="${row.comment_idx }" />
 						<div class="row">
-							<div class="col-2" style="padding:23px 0 0 30px;"
+							<div class="col-2" style="padding:23px 0 0 90px;"
 								align="center">
 								<img src="../resources/img/4.png" alt="작성자프로필" width="50"
 									class="rounded-circle">
@@ -237,19 +332,48 @@ function deleteRow(comment_idx, audio_idx){
 							</c:if>
 						</div>
 					</c:forEach>
-
-				</div>
-			</div>
+<!-- 				</div> -->
+<!-- 			</div> -->
 		</form>
 		<!-- 왼쪽 컨텐츠 종료 -->
 	</div>
 	<!-- 본문종료 -->
 </div>
-
 	<!-- 상단 메뉴바(위치옮기면안됨!) -->
 	<header>
 		<%@include file="/resources/jsp/header.jsp" %>
 	</header>
-	
+
+<script>
+var div = document.getElementById("msg");
+var audio = document.getElementById("audio");
+function control(e){
+	var id = e.target.id;
+	if(id == "img1"){
+		audio.play();
+		div.innerHTML = "재생중입니다.";
+	}
+	else if(id == "img2"){
+		audio.pause();
+		div.innerHTML = "일시중지되었습니다.";
+	}
+	else if(id == "replay"){
+		audio.load();
+		audio.play();
+		div.innerHTML = "처음부터 재생합니다.";
+	}
+	else if(id == "vol+"){
+		audio.volume += 0.1;
+		if(audio.volume > 0.9) audio.volume = 1.0;
+		div.innerHTML = "음량 0.1 증가 "+ "현재 "+ audio.volume;
+	}
+	else if(id == "vol-"){
+		audio.volume -= 0.1;
+		if(audio.volume < 0.1) audio.volume = 0;
+		div.innerHTML = "음량 0.1 감소 "+ "현재 "+ audio.volume;
+	}
+}
+</script>
+
 </body>
 </html>

@@ -18,111 +18,114 @@
 <!-- layout js-->
 <script src="${pageContext.request.contextPath}/resources/js/layout.js"></script>
 
+
 </head>
 <body>
-<script>
+
+<script type="text/javascript">
 // 아이디 찾기버튼
-function idSearch(frm){
-	var frm1 = document.idfindscreen;
-	if(frm1.nickname.value.length < 1){
+
+function idSearch(frm1){
+	console.log(333);
+	
+	
+	if(frm1.nickname.value=="" || frm1.nickname.value==null){
 		alert("닉네임을 입력해주세요.");
-		frm1.name.focus();
+		frm1.nickname.focus();
 		return false;
 	}
-	if(frm1.email.value.length < 1){
+	if(frm1.email1.value=="" || frm1.email1.value==null){
 		alert("이메일을 입력해주세요.");
-		frm1.email.focus();
+		frm1.email1.focus();
 		return false;
 	}
 	
-	var idSearch = document.getElementById('id1').value; 
-	var username = document.getElementById('name2').value;  
-	alert(username+'님의 아이디는 '+ idSearch + ' 입니다.');
+	
 	
 }
 
 // 비번찾기 버튼
-function passSearch(frm){
-	var frm = document.passfindscreen;
-	if(frm.id.value.length < 1){
+function passSearch(frm2){
+	
+	
+	if(frm2.id.value=="" || frm2.id.value==null){
 		alert("아이디를 입력해주세요.");
-		frm.id.focus();
+		frm2.id.focus();
 		return false;
 	}
-	if(frm.name1.value.length < 1){
+	if(frm2.nickname1.value==""|| frm2.nickname1.value==null){
 		alert("닉네임을 입력해주세요.");
-		frm.name1.focus();
+		frm2.nickname1.focus();
 		return false;
 	}
-	if(frm.email1.value.length < 1){
+	if(frm2.email2.value==""|| frm2.email2.value==null){
 		alert("이메일을 입력해주세요.");
-		frm.email1.focus();
+		frm2.email2.focus();
 		return false;
 	}
 	
 }
-
-
-
 </script>
-	<div>
-		<div class="content">
+
+<script type="text/javascript">
+/* 아이디찾기 */
+/**/
+<c:if test="${not empty idSearch }">
+	alert( '${nickname}'+'님의 아이디는 '+ '${idSearch.id}' + ' 입니다.');
+</c:if>
+<c:if test="${not empty pwSearch }">
+alert( '${id}'+'님의 비밀번호는 '+ '${pwSearch.pw}' + ' 입니다.');
+</c:if>
+</script>
+	
+		
 			<!-- 왼쪽 컨텐츠 -->
-			<div class="left-content-back">
-				<div class="left-content">
-					<div class="contents_box">
-			<div class="left_contents">
-			</div>
-			<div class="right_contents">
-				<div class="top_title">
-					<input type="image" src="/resources/img/id_pw_title.gif" alt="" class="con_title" /><p class="location">&nbsp;&nbsp;멤버쉽&nbsp;>&nbsp;아이디/비밀번호찾기<p>
-				<br />
+			<div class="content">
+			<div style="background: linear-gradient(to right, #91888A, #5A5B82);">
+			<div class="row">
+				<div style="margin: 50px 0 0 60px;">
+					<h5 style="margin-left: 3px;">ID/Passward Find</h5>
+					<h2>아이디/비밀번호찾기</h2>
 				</div>
-				<div class="row" style="border: 1px solid gray; padding: 30px;">
-					<div class="col-md-6 pr-md-1" style="margin-top: 15px;">
-					<form action="${pageContext.request.contextPath}/member/idSearch.do" onsubmit="return idSearch(this);" name="idfindscreen" method="post" >
+				</div>
+			</div>
+			<br />
+			<hr color="gray">
+				<div class="left-content">
+				
+					<!-- <div class="col-md-6 pr-md-1" style="margin-top: 15px;"> -->
+					<form onsubmit="return idSearch(this);" name="idfindscreen" method="post" action="${pageContext.request.contextPath}/member/idSearch.do" >
 					<s:csrfInput />
-						<input type="hidden" id="id1" value="${idSearch.id }" />
-						<input type="hidden" id="name2" value="${idSearch.nickname }" />
-						<div><span>닉네임&nbsp;&nbsp;<input type="text" name="nickname" value="" class="login_input01" /></span></div>
+					
+						<div class="input-field col-md-6 pr-md-1">
+						<label>닉네임</label>&nbsp;&nbsp;<input type="text" name="nickname" class="login_input01" /></div>
 						<br />
-						<div><span>이메일&nbsp;&nbsp;<input type="text" name="email" value="" class="login_input01" /></span></div>
-						<br />
-						<div style="align-content: center; margin-left: 70px; margin-top: 40px;">
-							<input type="submit" class="btn btn-warning" value="아이디찾기" name="idSearch" style="color: white;"/></div>						
+						<div class="input-field col-md-6 pr-md-1"><label>이메일</label>&nbsp;&nbsp;<input type="text" name="email1" class="login_input01" /></div>
+						
+						<div class="input-field col-md-6 pr-md-1" style="align-content: center; margin-left: 70px; margin-top: 40px;">
+							<input type="submit" class="btn btn-warning" value="아이디찾기" style="color: white;"/></div>						
 					</form>	
-					</div>
+					<br /> 
+					<!-- </div> -->
 					
 					<div class="col-md-6 pl-md-1">
-						<form action="${pageContext.request.contextPath}/idSearch.do" onsubmit="return passSearch(this);" name="passfindscreen" method="post">
+						<form onsubmit="return passSearch(this);" name="passfindscreen" id="passfindscreen" method="post" action="${pageContext.request.contextPath}/member/pwSearch.do" >
 						<s:csrfInput />
-							<div><span>아이디&nbsp;&nbsp;<input type="text" name="id" value="" class="login_input01" /></span></div>
+							<div><label>아이디</label>&nbsp;&nbsp;<input type="text" name="id" class="login_input01" /></div>
 							<br />
-							<div><span>닉네임&nbsp;&nbsp;<input type="text" name="name1" value="" class="login_input01" /></span></div>
+							<div><label>닉네임</label>&nbsp;&nbsp;<input type="text" name="nickname1" class="login_input01" /></div>
 							<br />
-							<div><span>이메일&nbsp;&nbsp;<input type="text" name="email1" value="" class="login_input01" /></span></div>
+							<div><label>이메일</label>&nbsp;&nbsp;<input type="text" name="email2" class="login_input01" /></div>
 							<br />
 							<div style="align-content: center; margin-left: 70px;"><input type="submit" class="btn btn-warning" value="비밀번호찾기" name="pwSearch" style="color: white;"/></div>
 						</form>
 					</div>
 				</div>
 			</div>
-		</div>
-	</div>
-</div>
-			<!-- 오른쪽 컨텐츠종료 -->
-			<div class="right-content-back">
-				<div class="right-content">
-					첫하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />
-					하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />
-					하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />
-					하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />
-					하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />막하이<br />
-				</div>
-			</div>
-		</div>
+			
+		
 		<!-- 본문종료 -->
-	</div>
+	
 
 	<!-- 상단 메뉴바(위치옮기면안됨!) -->
 	<header>

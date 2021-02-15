@@ -1,3 +1,4 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -48,6 +49,73 @@ if(cookies!=null){
 <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
 
 <script type="text/javascript">
+$(document).ready(function() {
+    var userInputId = getCookie("userInputId");
+    var setCookieYN = getCookie("setCookieYN");
+    
+    if(setCookieYN == 'Y') {
+        $("#idSaveCheck").prop("checked", true);
+    } else {
+        $("#idSaveCheck").prop("checked", false);
+    }
+    
+    $("#loginid").val(userInputId); 
+    
+    //로그인 버튼 클릭
+    $('#loginbtn').click(function() {
+        if($("#idSaveCheck").is(":checked")){ 
+            var userInputId = $("#loginid").val();
+            setCookie("userInputId", userInputId, 60); 
+            setCookie("setCookieYN", "Y", 60);
+        } else {
+            deleteCookie("userInputId");
+            deleteCookie("setCookieYN");
+        }
+        
+        document.fform.submit();
+    });
+});
+
+//쿠키값 Set
+function setCookie(cookieName, value, exdays){
+    var exdate = new Date();
+    exdate.setDate(exdate.getDate() + exdays);
+    var cookieValue = escape(value) + ((exdays==null) ? "" : "; expires=" + 
+    exdate.toGMTString());
+    document.cookie = cookieName + "=" + cookieValue;
+}
+
+//쿠키값 Delete
+function deleteCookie(cookieName){
+    var expireDate = new Date();
+    expireDate.setDate(expireDate.getDate() - 1);
+    document.cookie = cookieName + "= " + "; expires=" + expireDate.toGMTString();
+}
+
+//쿠키값 가져오기
+function getCookie(cookie_name) {
+    var x, y;
+    var val = document.cookie.split(';');
+    
+    for (var i = 0; i < val.length; i++) {
+        x = val[i].substr(0, val[i].indexOf('='));
+        y = val[i].substr(val[i].indexOf('=') + 1);
+        x = x.replace(/^\s+|\s+$/g, ''); // 앞과 뒤의 공백 제거하기
+        
+        if (x == cookie_name) {
+          return unescape(y); // unescape로 디코딩 후 값 리턴
+        }
+    }
+}
+</script>
+
+
+
+
+
+
+
+<script type="text/javascript">
 		
 		
 GET /oauth/authorize?client_id={e1dea648a00c2082d1e6c90ec387bf1e}&redirect_uri={http://localhost:8282, http://localhost:8080, http://localhost:9999}&response_type=code HTTP/1.1
@@ -83,8 +151,8 @@ https://kauth.kakao.com/oauth/authorize?response_type=code&client_id={e1dea648a0
 </head>
 <body>
 	<div>
-		<div class="content" style="padding-top:3em;">
-			<div style="width:80%;height:500px;">
+		<div class="content">
+			<div >
 			<c:choose>
 			<c:when test="${empty pageContext.request.userPrincipal.name }">
 			<c:url value="/member/loginAction.do" var="loginUrl" />
@@ -96,60 +164,75 @@ https://kauth.kakao.com/oauth/authorize?response_type=code&client_id={e1dea648a0
 				<p>로그아웃 하였습니다.</p>
 			</c:if>
 				<table>
+			<div style="background: linear-gradient(to right, #91888A, #5A5B82);">
+			<div class="row">
+				<div style="margin: 50px 0 0 60px;">
+					<h5 style="margin-left: 3px;">Login</h5>
+					<h2>로그인</h2>
+				</div>
+				</div>
+			</div>
+			<br />
+			
+			<hr color="gray">
+			
 					<div class="input-field col-md-7 pr-md-1">
 							<label>아이디</label><input type="text" name="id" required class="form-control"
-							value="<%=(save.length() == 0) ? "" : save %>" class="login_input"> 
+							value="" class="login_input"> 
 						</div>
 						<div class="input-field col-md-7 pr-md-1">
 							<label>비밀번호</label><input class="pswrd form-control" name="pw" type="password" required> 
 						</div>
-						&nbsp;
-						<div class="checkbox">
-							<lable><input type="checkbox" name="id_save" value="id_save" 
-								<%if(save.length() != 0){ %> 
-									checked="checked" 
-								<%} %>>아이디저장</lable>
-						</div>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+					<div class="input-field col-md-7 pr-md-1" >
 						<div class="button">
 							<div class="inner"></div>
-							<button  type="submit" class="btn btn-Warning">로그인</button>
+							<button  type="submit" class="btn btn-outline-warning">로그인</button>
 						</div>
-				
+					</div>
 					&nbsp;
 					
 					<div class="links">
 						<div class="kakaotalk">
-							<a id="kakao-login-btn" href="javascript:loginWithKakao()">
+<!-- 							<a id="kakao-login-btn" href="javascript:loginWithKakao()"> -->
+							<a id="kakao-login-btn" href="https://kauth.kakao.com/oauth/authorize
+							    ?client_id=5de051009d4dd68062be58fd9608a661
+							    &redirect_uri=http://localhost:8282/login
+							    &response_type=code">
 	 								<img src="//k.kakaocdn.net/14/dn/btqCn0WEmI3/nijroPfbpCa4at5EIsjyf0/o.jpg" width="222"/></a>
 							<script type='text/javascript'>
 							   <![CDATA[
 							   // 사용할 앱의 JavaScript 키를 설정해 주세요.
-							   Kakao.init('5de051009d4dd68062be58fd9608a661');
+							   Kakao.init('	5de051009d4dd68062be58fd9608a661');
 							   
 							   // 카카오 로그인 버튼을 생성합니다.
 							   Kakao.Auth.createLoginButton({
-							     container: '#kakao-login-btn',
-							     success: function(authObj) {
-							    alert(JSON.stringify(authObj));
-							     },
-							     fail: function(err) {
-							     alert(JSON.stringify(err));
-							     }
-							   });
+							    	container: '#kakao-login-btn',
+							    	success: function(authObj) {
+							    	alert(JSON.stringify(authObj));
+							    },
+						     	fail: function(err) {
+						     	alert(JSON.stringify(err));
+						     	}
+						    });
 							    
 							  </script>
 						</div>
 					</div>
+					<div class="container">
 					<div class="signup">
-						회원 아니십니까? &nbsp; <a href="${pageContext.request.contextPath}/membershipsub.do">회원가입</a>
+						<a href="./membershipsub.do">회원가입</a>
 						&nbsp;
-
+					</div>
 					</div>
 					&nbsp;
 					<div class="idpw">
-						<a href="./id_pw.do">아이디/비밀번호 찾기</a>
+						
+						<a href="./id_pwSearch.do">아이디/비밀번호 찾기</a>
 						&nbsp;
 					</div>
+					<br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
 				</table>
 			</form:form>
 			</c:when>

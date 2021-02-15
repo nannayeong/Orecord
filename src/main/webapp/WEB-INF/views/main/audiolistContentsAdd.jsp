@@ -9,7 +9,7 @@
 </head>
 <body>
 <c:forEach var="b" items="${audiolist}">
-		<table style="width:100%;border:2px #f2f2f2 solid;margin:auto;margin-bottom:1em" class="pcount">
+		<table style="width:100%;border:2px #f2f2f2 solid;margin:auto;margin-bottom:1em" class="feed">
 			<tr>
 				<td rowspan="4" style="width:7em;padding-left:1em;padding-right:1em">
 					<img src="./resources/default.jpg" alt="" style="width:6em"/>

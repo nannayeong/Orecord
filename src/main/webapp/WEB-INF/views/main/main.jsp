@@ -252,7 +252,8 @@ function like(audioIdx){
 	         var sec1 = section1s.item(0);
 	         sec1.className="btn btn-outline-secondary btn-sm heart "+a;
 	          count = resData.likecount;
-	          $( '.lCount.'+a ).html( '좋아요 : '+count );
+	          $(sec1).html("좋아요&nbsp;&nbsp;&nbsp;"
+                      +count);
 	    	  }
 	      }    
 	 });   
@@ -272,7 +273,8 @@ function nolike(audioIdx){
          var sec1 = section1s.item(0);
          sec1.className="btn btn-secondary btn-sm heart "+a;
           count = resData.likecount;
-          $( '.lCount.'+a ).html( '좋아요 : '+count );
+          $(sec1).html("좋아요&nbsp;&nbsp;&nbsp;"
+                  +count);
     	 }
       }
    });
@@ -428,7 +430,7 @@ function userFunc(){
 								<img src="${b.imagename }" alt="" style="width:6em"/>
 							</td>
 							<td style="padding-left:1em">
-								<div style="font-size:14px;cursor:pointer" onclick="location.href='./${audio.id }/record'">
+								<div style="font-size:14px;cursor:pointer" onclick="location.href='./${b.id }/record'">
 									${b.id }
 								</div>
 								<div style="font-size:18px">
