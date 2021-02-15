@@ -43,6 +43,20 @@ public interface ViewImpl {
 		@Param("audio_idx") int audio_idx,
 		@Param("id") String id);
 	
+	//게시물 수정하기(오디오파일X)
+	public int modifyAction2(String audiotitle, String artistname,
+		String contents, String imagename, String category, int audio_idx,
+		String id);
+	
+	//게시물 수정하기(이미지파일X)
+	public int modifyAction3(String audiotitle, String artistname,
+			String contents, String audiofilename, String category, int audio_idx,
+			String id);
+	
+	//게시물 수정하기(오디오, 이미지X)
+	public int modifyAction4(String audiotitle, String artistname,
+			String contents, String category, int audio_idx, String id);
+	
 	//협업자 불러오기
 	public ArrayList<PartyBoardDTO> partyMember(int audio_idx);
 	
