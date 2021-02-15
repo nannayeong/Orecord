@@ -148,13 +148,38 @@ public class ModifyController {
 				mfile.transferTo(serverFullName);
 			}
 			
-			int applyRow = sqlSession.getMapper(ViewImpl.class)
-					.modifyAction(audiotitle, artistname, contents,
-						audiofilename, imagename, category, modi1, id);
-			System.out.println("수정처리된 레코드수 : "+ applyRow);
+			//오디오,이미지X > 오디오X > 이미지X > 오디오,이미지O
+			if(audiofilename==null && imagename==null) {
+				int result3 = sqlSession.getMapper(ViewImpl.class)
+					.modifyAction4(audiotitle, artistname, contents,
+						category, modi1, id);
+				System.out.println("오디오,이미지X="+result3);
+				model.addAttribute("audio_idx", modi1);
+			}
+			else if(audiofilename==null) {
+				int result = sqlSession.getMapper(ViewImpl.class)
+					.modifyAction2(audiotitle, artistname,
+						contents, imagename, category, modi1, id);
+				System.out.println("오디오X="+ result);
+				model.addAttribute("audio_idx", modi1);
+			}
+			else if(imagename==null) {
+				int result2 = sqlSession.getMapper(ViewImpl.class)
+					.modifyAction3(audiotitle, artistname, contents,
+						audiofilename, category, modi1, id);
+				System.out.println("이미지X="+ result2);
+				model.addAttribute("audio_idx", modi1);
+			}
+			else {
+				int applyRow = sqlSession.getMapper(ViewImpl.class)
+						.modifyAction(audiotitle, artistname, contents,
+								audiofilename, imagename, category, modi1, id);
+				System.out.println("수정처리된 레코드수 : "+ applyRow);
+				
+				//모델객체에 idx저장
+				model.addAttribute("audio_idx", modi1);
+			}
 			
-			//모델객체에 idx저장
-			model.addAttribute("audio_idx", modi1);
 		}
 		catch (IOException e) {
 			e.printStackTrace();

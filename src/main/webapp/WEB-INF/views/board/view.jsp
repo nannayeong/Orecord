@@ -124,7 +124,7 @@ $(function(){
 					</div>
 					<!-- 오디오태그 -->
 					<div style="padding: 10px 0 0 10px;">
-						<audio
+						<audio controls
 							style="width: 95%; height: 60px; padding-left: 12px;"
 							id="audio" src="${audio.audiofilename }">
 						</audio>
@@ -362,7 +362,7 @@ function control(e){
 		div.innerHTML = "음량 0.1 증가 "+ "현재 "+ audio.volume;
 	}
 	else if(id == "vol-"){
-		audio.volume -= 0.1;
+		audio.volume -= 0.1; 
 		if(audio.volume < 0.1) audio.volume = 0;
 		div.innerHTML = "음량 0.1 감소 "+ "현재 "+ audio.volume;
 	}
