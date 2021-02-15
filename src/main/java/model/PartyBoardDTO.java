@@ -22,7 +22,15 @@ public class PartyBoardDTO {
 	/*innerjoin*/
 	private String audiotitle;
 	
+	private String nickname;
 	
+	
+	public String getNickname() {
+		return nickname;
+	}
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
 	public String getAudiotitle() {
 		return audiotitle;
 	}

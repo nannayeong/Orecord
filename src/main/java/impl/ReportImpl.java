@@ -13,7 +13,7 @@ public interface ReportImpl {
 	//리스트보기
 	public ArrayList<ReportDTO> listView(String s_id);
 	
-	public ReportDTO View(String s_id);
+	public ReportDTO View(int r_idx);
 	
 	//신고수정폼
 	public ReportDTO rpView(int r_idx);

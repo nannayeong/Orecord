@@ -18,6 +18,25 @@
 <!-- layout js-->
 <script src="${pageContext.request.contextPath}/resources/js/layout.js"></script>
 <script>
+function addplname(){
+	if("${pageContext.request.userPrincipal.name}"==""){
+		alert('로그인 후 이용해주세요');
+		location.href="../member/login.do"
+	}
+	else{
+		var a = prompt('추가하실 이름을 입력해주세요');
+		$('select[name=plname]').prepend('<option value='+a+' selected>'+a+"</option>");
+	}
+}
+function partyFunc(aidx){
+	if("${pageContext.request.userPrincipal.name}"==""){
+		alert('로그인 후 이용해주세요');
+		location.href="../member/login.do"
+	}
+	else{
+		location.href='../board/partyWrite.do?audio_idx='+aidx;
+	}
+}
 function recordDeleteFunc(aidx){
 	if("${pageContext.request.userPrincipal.name}"==""){
 		alert('로그인 후 이용해주세요');
@@ -109,13 +128,48 @@ function logincheck(bt){
 	}
 }
 function pointCheck(){
-	if($('#doneError').html()!=''){
-		alert('보유 포인트를 확인해주세요');
+	var sponPoint = $("#sponPoint").val();
+	var myPoint = $("#myPoint").val();
+	var checkPoint = myPoint - sponPoint;
+	if(sponPoint == '' || sponPoint =='0'){
+		alert('후원 포인트를 입력해주세요.');
+		$('#sponPoint').focus();
 		return false;
 	}
-	if($('#donePoint').val()==''){
-		alert('후원 포인트를 입력해주세요');
+	else if((sponPoint % 100) != 0){
+		alert('후원 포인트는 100포인트 단위로 입력해주세요.');
+		$('#sponPoint').focus();
 		return false;
+	}
+	else if(checkPoint < 0){
+		alert('보유 포인트가 부족합니다.');
+		$('#sponPoint').focus();
+		return false;
+	}
+	else {
+		var patronId = document.getElementById("patronId").value;
+		$.ajax({
+			url : "../insertSponsorshipLog.do",
+			type : "post",
+			data : {patronId : patronId,
+							sponPoint : sponPoint},
+		  beforeSend : function(xhr)
+              {   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+                  xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+              },
+			success : function(data) {
+				if (data != null) {
+					alert(patronId + "님에게 " + sponPoint + "포인트를 후원하였습니다.");
+					location.reload();
+				}
+				else {
+					alert("후원에 실패하였습니다.");
+				}
+			},
+			error : function(error) {
+				alert("error : " + error);
+			}
+		});
 	}
 }
 
@@ -288,25 +342,26 @@ $(function(){
 						      <!-- Modal Header -->
 						      <div class="modal-header">
 						        <h4 class="modal-title">${memberDTO.nickname }(${user_id })님에게 후원하기</h4>
+						        <input type="hidden" id="patronId" value="${user_id }" />
 						        <button type="button" class="close" data-dismiss="modal">&times;</button>
 						      </div>
 						
 						      <!-- Modal body -->
-						      <form action="?${_csrf.parameterName}=${_csrf.token}" method="post" onsubmit="return pointCheck();">
 						      <div class="modal-body">
-						        <div>${pageContext.request.userPrincipal.name}님의 잔여 포인트 :<span id="myPoint">${loginDTO.mypoint }원</span>&nbsp&nbsp
-						        	<button type="button" class="btn btn-info btn-sm" style="margin-bottom:5px"onclick="location.href='../chargeLog.do'">충전하기</button>
+						        <div>${pageContext.request.userPrincipal.name}님의 잔여 포인트 :
+						        	<input type="text" id="myPoint" value="${loginDTO.mypoint }" size="3" style="border: 0px;">원
+						        	<button type="button" class="btn btn-info btn-sm" style="margin-bottom:5px; margin-left:130px;"onclick="location.href='../chargeLog.do'">충전하기</button>
 						        </div>
 						        
-						        <div>후원하실 포인트를 입력해주세요 : <input type="text" id="donePoint" name="donePoint" style="width:7em"/> 원</div>
-								<div id="doneError"></div>
+						        <div>후원하실 포인트를 입력해주세요 : <input type="text" id="sponPoint" name="sponPoint" value="" style="width:7em" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"/> 원</div>
+										<div id="doneError"> </div>
 						      </div>
 						
 						      <!-- Modal footer -->
 						      <div class="modal-footer">
-						        <button type="submit" class="btn btn-warning btn-sm">후원하기</button>
+						        <button type="button" class="btn btn-warning btn-sm" onClick="pointCheck();">후원하기</button>
+						        <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">취소하기</button>
 						      </div>
-							</form>
 						    </div>
 						  </div>
 						</div>
@@ -325,7 +380,7 @@ $(function(){
 									<div class="btn-group" style="margin-bottom:1em;margin-left:1em;text-size:16px;">
 									  <button type="button" class="btn btn-dark" onclick="location.href='./record'" style="width:6em">myRecord</button>
 									  <button type="button" class="btn btn-outline-dark" onclick="location.href='./likeRecord'" style="width:6em">like</button>
-									  <button type="button" class="btn btn-outline-dark" onclick="location.href='./followRecord'" style="width:6em">followers</button>
+									  <button type="button" class="btn btn-dark" onclick="location.href='./followRecord'" style="width:6em">followers</button>
 									</div>
 								</div>
 								<div id="albumList">

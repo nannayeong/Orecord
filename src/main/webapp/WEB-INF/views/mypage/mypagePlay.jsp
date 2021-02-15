@@ -87,12 +87,20 @@ border:1px solid #f2f2f2;
 								      	<div><img src="${audio.imagename }" alt="" style="width:25px"/> 
 											${audio.audiotitle } - ${audio.artistname }
 										</div><br />
-								      	<span>저장할 플레이리스트 폴더 선택</span><br />
-								      	<select name="plname" id="" style="width:8em;text-align:center">
+										<div style="margin-bottom:0.3em">저장할 플레이리스트 폴더 선택</div>
+								      	<select name="plname" class="custom-select" style="width:12em;text-align:center">
 								      		<c:forEach items="${plList}" var="pl" varStatus="status">
 								      		<option value="${pl.plname}">${pl.plname }</option>
 								      		</c:forEach>
 								      	</select>
+								      	&nbsp&nbsp<span onclick="addplname();"><i class="fas fa-plus fa-lg"></i></span><br />
+								      	<div style="margin-bottom:0.3em">저장할 플레이리스트 폴더 선택</div>
+								      	<select name="plname" class="custom-select" style="width:12em;text-align:center">
+								      		<c:forEach items="${plList}" var="pl" varStatus="status">
+								      		<option value="${pl.plname}">${pl.plname }</option>
+								      		</c:forEach>
+								      	</select>
+								      	&nbsp&nbsp<span onclick="addplname();"><i class="fas fa-plus fa-lg"></i></span><br />
 								      </div>
 								      <!-- Modal footer -->
 								      <div class="modal-footer">

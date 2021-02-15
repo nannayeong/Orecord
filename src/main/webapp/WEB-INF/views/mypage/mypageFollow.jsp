@@ -47,9 +47,9 @@ background-color: #f2f2f2;cursor:pointer
 				  <div class="dropdown-menu">
 				  <c:if test="${pageContext.request.userPrincipal.name eq audio.id }">
 				    <a class="dropdown-item" href="javascript:recordDeleteFunc(${audio.audio_idx });">삭제하기</a>
-				    <a class="dropdown-item" href="#">수정하기</a>
+				    <a class="dropdown-item" href="../board/modify.do?audio_idx=${audio.audio_idx }">수정하기</a>
 				    <c:if test="${audio.party eq 1}">
-				    <a class="dropdown-item" href="#">협업신청리스트</a>
+				    <a class="dropdown-item" href="../board/partyList.do?audio_idx=${audio.audio_idx }">협업신청리스트</a>
 				    </c:if>
 				  </c:if>
 				  </div>
@@ -94,6 +94,13 @@ background-color: #f2f2f2;cursor:pointer
 				      	<div><img src="${audio.imagename }" alt="" style="width:25px"/> 
 							${audio.audiotitle } - ${audio.artistname }
 						</div><br />
+						<div style="margin-bottom:0.3em">저장할 플레이리스트 폴더 선택</div>
+				      	<select name="plname" class="custom-select" style="width:12em;text-align:center">
+				      		<c:forEach items="${plList}" var="pl" varStatus="status">
+				      		<option value="${pl.plname}">${pl.plname }</option>
+				      		</c:forEach>
+				      	</select>
+				      	&nbsp&nbsp<span onclick="addplname();"><i class="fas fa-plus fa-lg"></i></span><br />
 				      	<span>저장할 플레이리스트 폴더 선택</span><br />
 				      	<select name="plname" id="" style="width:8em;text-align:center">
 				      		<c:forEach items="${plList}" var="pl" varStatus="status">
@@ -112,7 +119,7 @@ background-color: #f2f2f2;cursor:pointer
 				</div>
 				</c:if>
 				<c:if test="${pageContext.request.userPrincipal.name ne audio.id && audio.party eq 1}">
-				<button type="button" class="btn btn-secondary btn-sm" onclick="coOp('${b.audio_idx}')">참여</button>
+				<button type="button" class="btn btn-secondary btn-sm" onclick="partyFunc(${audio.audio_idx})">참여</button>
 				</c:if>
 			</td>
 			<td style="text-align:right;color:#423e3e;font-size:14px;padding-right:1.5em;" colspan="2">

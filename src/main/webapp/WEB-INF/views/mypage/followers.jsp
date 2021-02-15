@@ -81,6 +81,22 @@ function unfollowbtn(follow) {
 		}
 	});
 }
+function deleteFollow(t,deleteId) {
+	$(t).parent().parent().parent().remove()
+	$.ajax({
+		url : "../deleteFollow.do",
+		type : "get",
+		contentType : "text/html;charset:utf-8",
+		data : {
+			followingId : "${pageContext.request.userPrincipal.name}",
+			userId : deleteId
+		},
+		dataType : "json",
+		success : function sucFunc(resData) {
+			alert("성공");
+		}
+	});
+}
 </script>
 </head>
 <body style="background-color:#f2f2f2;">
@@ -116,6 +132,9 @@ function unfollowbtn(follow) {
 						</td>
 						<td style="text-align:right;padding-right:1em;">
 	               			<button type="button" class="btn btn-outline-secondary btn-sm follow ${a.id}" onclick="fBtn('${a.id}')" >팔로워</button>
+	               		</td>
+						<td style="text-align:right;padding-right:1em;">
+	               			<button type="button" class="btn btn-warning btn-sm" onclick="deleteFollow(this,'${a.id}')" >팔로워</button>
 	               		</td>
 					</tr>
 					</c:forEach>

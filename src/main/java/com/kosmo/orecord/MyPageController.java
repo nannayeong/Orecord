@@ -67,8 +67,12 @@ public class MyPageController {
 			e.printStackTrace();
 		}
 
+		System.out.println("이미지"+memberDTO.getImg());
 		if(memberDTO.getImg()==null) {
 			memberDTO.setImg(path+"/resources/img/default.jpg");
+		}
+		else {
+			memberDTO.setImg(path+"/resources/upload/"+memberDTO.getImg());
 		}
 		
 		model.addAttribute("memberDTO", memberDTO);
@@ -387,7 +391,7 @@ public class MyPageController {
 	}
 	
 	/*회원 수정하기*/
-	@RequestMapping(value = "/memberEditAction.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/{user_id}/memberEditAction.do", method = RequestMethod.POST)
 	public String memberEditAction(Principal principal, MultipartHttpServletRequest req)
 	{		
 		
@@ -446,9 +450,9 @@ public class MyPageController {
 				File serverFullName = new File(path + File.separator + saveFileName);
 				
 				/*서버 저장 imagename*/
-				if(fileName.equals("imagename")) {
+				if(fileName.equals("img")) {
 					img = saveFileName;
-					System.out.println("imagename"+img);
+					System.out.println("img"+img);
 				}
 				
 				mfile.transferTo(serverFullName);
@@ -459,6 +463,9 @@ public class MyPageController {
 			
 			System.out.println("수정처리된 레코드수:"+ applyRow);
 			System.out.println(pw +" "+ email+" " + phone+" " + address+" " + intro+" " + img+" " + id);
+			if(applyRow>=1) {
+				System.out.println("수정성공");
+			}
 		}
 		catch (IOException e) {
 			e.printStackTrace();
@@ -467,7 +474,7 @@ public class MyPageController {
 			e.printStackTrace();
 		}
 		
-		return "redirect:/"+id+".do";
+		return "redirect:/"+id+"/record";
 	}
 	
 	@RequestMapping("/mypageAlbum.do")
