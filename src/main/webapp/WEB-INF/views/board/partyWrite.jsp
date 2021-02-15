@@ -122,7 +122,9 @@ var writeValidate = function(f){
 							class="form-control">
 							<option style="color: black;" value="noValue">선택해주세요</option>
 							<option style="color: black;" value="작곡">작곡</option>
+							<option style="color: black;" value="편곡">편곡</option>
 							<option style="color: black;" value="작사">작사</option>
+							<option style="color: black;" value="보컬">보컬</option>
 						</select>
 					</div>
 				</div>

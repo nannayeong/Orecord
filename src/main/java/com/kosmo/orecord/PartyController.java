@@ -218,12 +218,17 @@ public class PartyController {
 		
 		//내가 가진 포인트가 요구포인트보다 낮을때
 		//나의 포인트를 조회한다.
-		String name = principal.getName();
-		System.out.println("본인 아이디:"+ name);
-		MemberDTO myPoint =
-				sqlSession.getMapper(PartyImpl.class).myPoint(
-					name);
-		model.addAttribute("myPoint", myPoint);
+		try {
+			String name = principal.getName();
+			System.out.println("본인 아이디:"+ name);
+			MemberDTO myPoint =
+					sqlSession.getMapper(PartyImpl.class).myPoint(
+						name);
+			model.addAttribute("myPoint", myPoint);
+		}
+		catch(Exception e) {
+			System.out.println(e.getMessage());
+		}
 		
 		return "board/partyView";
 	}

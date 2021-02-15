@@ -238,8 +238,8 @@ function colChoice(){
 			</div>
 			<br>
 			<!-- 곡 설명 -->
-			<div style="padding-left: 50px;">
-				<textarea name="contents" id="" cols="120" rows="10"
+			<div style="padding-left:4em;padding-bottom:1em">
+				<textarea name="contents" id="" cols="90px" rows="10px"
 					placeholder="내용을 입력해주세요."></textarea>
 			</div>
 			<hr width="90%" align="center" color="gray" size="10px">

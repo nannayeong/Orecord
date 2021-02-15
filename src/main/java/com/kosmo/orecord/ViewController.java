@@ -95,6 +95,10 @@ public class ViewController {
 			else {
 				dto2.setImg(path+"/resources/upload/"+dto2.getImg());
 			}
+			
+			if(dto2.getAudiofilename()!=null) {
+				dto2.setAudiofilename(path+"/resources/upload/"+dto2.getAudiofilename());
+			}
 		}
 		
 		model.addAttribute("partyMember", PartyMember);
