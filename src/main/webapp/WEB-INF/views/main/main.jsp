@@ -456,6 +456,9 @@ function userFunc(){
 									    <a class="dropdown-item" href="#">협업신청리스트</a>
 									    </c:if>
 									  </c:if>
+									  <c:if test="${not empty pageContext.request.userPrincipal.name}">
+									  	<a class="dropdown-item" href="${pageContext.request.contextPath}/report/reportlist.do">신고하기</a>
+									  </c:if>
 									  </div>
 									</div>
 								</div>

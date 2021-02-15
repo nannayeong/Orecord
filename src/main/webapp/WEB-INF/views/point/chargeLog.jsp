@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 
-<!-- Jquery, BootStrap -->
+<!-- Jquery, BootStrap --> 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -117,7 +117,7 @@ h4 {
 					
 					      <!-- Modal body -->
 					      <div class="modal-body">
-					      	<div class="pointButton" style="margin: auto;">
+					      	<div class="pointButton">
 						        <button type="button" class="btn btn-info" onClick="selectAmount(1000);">1,000</button>
 						        <button type="button" class="btn btn-info" onClick="selectAmount(5000);">5,000</button>
 						        <button type="button" class="btn btn-info" onClick="selectAmount(10000);">10,000</button>
@@ -146,7 +146,7 @@ h4 {
 					  </div>
 					</div>
 					<h2>${MemberDTO.id }님</h2> 
-					<h4>보유 포인트 : ${MemberDTO.mypoint }Point</h4> <!-- 마이 포인트 얻어오기 -->
+					<h4>보유 포인트 : ${MemberDTO.mypoint }Point</h4>
 				</div>
 				<div class="pointSubMenu" style="margin-top:20px;">
 					<div class="btn-group btn-group-sm">  

@@ -86,7 +86,7 @@ $.fn.setPreview = function(opt){
 	"use strict" 
 	var defaultOpt = { 
 			inputFile: $(this), 
-			img: $('#img_preview'), 
+			img: $(''), 
 			w: 300, 
 			h: 250 
 	}; 

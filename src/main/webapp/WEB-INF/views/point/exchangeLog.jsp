@@ -36,7 +36,7 @@ h4 {
 	margin-right: 0;
 }
 
-#paymentButton {
+#exchangeButton {
 	font-size: 20px;
 	width: 140px;
 	height: 50px;
@@ -93,9 +93,9 @@ h4 {
 			<!-- 본문 제목 시작-->
 			<div class="content-header">
 				<div class="pointMainMenu" style="border-bottom: 2px solid #545B62; padding-bottom: 10px;">
-					<button type="button" class="btn btn-info" id="paymentButton" data-toggle="modal" data-target="#paymentModal">결제하기</button>
-					<h2>${loginId }님</h2> 
-					<h4>보유 포인트 : 2000Point</h4> <!-- 마이 포인트 얻어오기 -->
+					<button type="button" class="btn btn-info" id="exchangeButton" onClick="location.href='./exchangeForm.do'">환전하기</button>
+					<h2>${MemberDTO.id }님</h2> 
+					<h4>보유 포인트 : ${MemberDTO.mypoint }Point</h4>
 				</div>
 				<div class="pointSubMenu" style="margin-top:20px;">
 					<div class="btn-group btn-group-sm"> 
@@ -346,10 +346,5 @@ function changingTableFunc(obj) {
 			html +=  '</ul></nav>';
 	table.innerHTML = html;
 }
-</script>
-<script>
-function changePaymentMoney(param){
-	document.getElementById("displayMoney").value = param;
-}	
 </script>
 </html>

@@ -387,7 +387,7 @@ public class MyPageController {
 	}
 	
 	/*회원 수정하기*/
-	@RequestMapping(value = "/memberEditAction.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/{user_id}/memberEditAction.do", method = RequestMethod.POST)
 	public String memberEditAction(Principal principal, MultipartHttpServletRequest req)
 	{		
 		
@@ -459,6 +459,9 @@ public class MyPageController {
 			
 			System.out.println("수정처리된 레코드수:"+ applyRow);
 			System.out.println(pw +" "+ email+" " + phone+" " + address+" " + intro+" " + img+" " + id);
+			if(applyRow>=1) {
+				System.out.println("수정성공");
+			}
 		}
 		catch (IOException e) {
 			e.printStackTrace();
@@ -467,7 +470,7 @@ public class MyPageController {
 			e.printStackTrace();
 		}
 		
-		return "redirect:/"+id+".do";
+		return "redirect:/"+id+"/record";
 	}
 	
 	@RequestMapping("/mypageAlbum.do")
