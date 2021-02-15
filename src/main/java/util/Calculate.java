@@ -166,11 +166,7 @@ public class Calculate {
 		}
 		for (FollowDTO fDTO : followings) {
 			for(MemberDTO mdto : memberMap.keySet()) {
-				System.out.println(mdto.getId());
-				System.out.println(fDTO.getFollowing_id());
-				System.out.println();
 				if(mdto.getId().equals(fDTO.getFollowing_id())) {
-					System.out.println("왜 실행안되냐고");
 					memberMap.remove(mdto);
 					break;
 				}

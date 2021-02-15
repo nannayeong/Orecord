@@ -195,6 +195,9 @@ public class MemberController {
 			if(result==1) {
 				System.out.println("성공!");
 			}
+			else {
+				System.out.println("회원가입 실패..");
+			}
 			
 		}
 		catch (IOException e) {

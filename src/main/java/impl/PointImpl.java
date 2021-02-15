@@ -32,11 +32,15 @@ public interface PointImpl {
 	public int selectExchangeLogTotalCount(Map<String, Object> obj);
 	public ArrayList<ExchangeDTO> selectExchangeLog(Map<String, Object> obj);
 	
-	// 결제시 충전 내역 삽입 쿼리
+	// 결제시 충전 내역 삽입, 마이포인트 업데이트 쿼리
 	public void insertChargeLog(Map<String, Object> obj);
+	public void updateChargeMyPoint(Map<String, Object> obj);
 	
 	// 후원시 포인트 업데이트 쿼리
-	public void updateSponsorPoint(String loginId, int sponPoint);
+	public void updateSponsorPoint(String sponsorId, int sponPoint);
 	public void updatePatronPoint(String patronId, int sponPoint);
 	
+	// 환전신청시 환전 내역 삽입, 마이포인트 업데이트 쿼리
+	public void insertExchangeLog(Map<String, Object> obj);
+	public void updateExchangeMyPoint(Map<String, Object> obj);
 }

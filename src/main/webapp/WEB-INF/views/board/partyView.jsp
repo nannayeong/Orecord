@@ -25,8 +25,12 @@ function choiceAction(f){
 	var youPoint = f.point.value;
 	var myPoint = f.myPoint.value;
 	if(myPoint < youPoint){
-		if(confirm("포인트가 부족합니다 충전하시겠습니까?")){
+		var pointCon = confirm("포인트가 부족합니다. 충전하시겠습니까?");
+		if(pointCon==true){
 			location.href="/orecord/chargeLog.do";
+			return false;
+		}
+		else{
 			return false;
 		}
 	}	

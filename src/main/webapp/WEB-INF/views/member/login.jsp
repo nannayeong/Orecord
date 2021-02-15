@@ -173,8 +173,8 @@ https://kauth.kakao.com/oauth/authorize?response_type=code&client_id={e1dea648a0
 				</div>
 			</div>
 			<br />
-			
 			<hr color="gray">
+
 			<br /><br /><br /><br />  
 					<div class="container" align="center">
 						<div class="row" style="margin: 50px 100px 0 80px;">   
@@ -212,7 +212,10 @@ https://kauth.kakao.com/oauth/authorize?response_type=code&client_id={e1dea648a0
 					&nbsp;&nbsp;&nbsp;&nbsp;
 					<br /> 
 					</div>
-					<!-- <div class="links">
+					<!-- 
+					
+					<div class="links">
+
 						<div class="kakaotalk">
 							<a id="kakao-login-btn" href="javascript:loginWithKakao()">
 							<a id="kakao-login-btn" href="https://kauth.kakao.com/oauth/authorize
