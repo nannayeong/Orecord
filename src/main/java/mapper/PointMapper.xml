@@ -10,16 +10,6 @@
 		SELECT * FROM member WHERE id=#{loginId}
 	</select>
 
-	<!-- 후원하는 사람 포인트 감소 -->
-	<select id="updateSponsorPoint">
-		update member set myPoint=#{-포인트} where id=#{후원하는 사람 아이디}
-	</select>
-	
-	<!-- 후원받는 사람 포인트 감소 -->
-	<select id="updatePatronPoint">
-		update member set myPoint=#{+포인트} where id=#{후원받는 사람 아이디}
-	</select>
-
 	<!-- 충전내역 건수 조회 -->
 	<select id="selectChargeLogTotalCount" resultType="int" parameterType="hashmap">
 		SELECT count(*)
@@ -109,7 +99,7 @@
 		FROM (
 					SELECT A.*, rownum recordNum 
 					FROM (
-								SELECT regidate, exchangePoint, exchangeMoney, exchangeResult
+								SELECT regidate, exchangePoint, exchangedMoney, exchangeResult
 								FROM exchangeLog
 								WHERE id=#{loginId} AND 
 									trunc(regidate) between #{fromDate} and #{toDate}
@@ -121,8 +111,32 @@
 	
 	
 	<!-- 결제후 포인트 내역 삽입 -->
-	<select id="insertChargeLog" parameterType="hashmap">
+	<insert id="insertChargeLog" parameterType="hashmap">
 		INSERT INTO chargeLog(idx, id, totalPayment, vat, chargePoint, paymentType, paymentResult, regidate)
     	VALUES (seq_chargeLog.nextval, #{loginId}, #{totalPayment}, #{VAT}, #{chargePoint}, #{paymentType}, default, default)
-	</select>
+	</insert>
+	<!-- 결제후 마이포인트 업데이트 -->
+	<update id="updateChargeMyPoint">
+		UPDATE MEMBER set myPoint = (myPoint + #{chargePoint}) WHERE id=#{loginId}
+	</update>
+	
+	<!-- 후원하는 사람 포인트 감소 -->
+	<update id="updateSponsorPoint">
+		UPDATE MEMBER set myPoint = (myPoint - #{param2}) WHERE id=#{param1}
+	</update>
+	<!-- 후원받는 사람 포인트 감소 -->
+	<update id="updatePatronPoint">
+		UPDATE MEMBER set myPoint = (myPoint + #{param2}) WHERE id=#{param1}
+	</update>
+	
+	
+	<!-- 환전신청시 환전 내역 삽입 -->
+	<insert id="insertExchangeLog" parameterType="hashmap">
+		INSERT INTO exchangeLog(idx, id, exchangePoint, exchangeFee, exchangedMoney, accountBank, accountNumber, accountName, regidate, exchangeResult)
+    	VALUES (seq_exchangeLog.nextval, #{exchangeId}, #{exchangePoint}, #{exchangeFee}, #{exchangedMoney}, #{bankName}, #{accountNum}, #{accountName}, default, default)
+	</insert>
+	<!-- 환전신청후 마이포인트 업데이트 -->
+	<update id="updateExchangeMyPoint">
+		UPDATE MEMBER set myPoint = (myPoint - #{exchangePoint}) WHERE id=#{exchangeId}
+	</update>
 </mapper>
