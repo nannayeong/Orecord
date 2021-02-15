@@ -64,6 +64,7 @@
 							 	<td class="text-center">${row.kind }</td>
 							 	<td class="text-center"><button class="btn btn-outline-primary" onclick="location.href='reportModify.do?r_idx=${row.r_idx}'">수정</button></td>
 								<td class="text-center"><button class="btn btn-outline-danger" onclick="location.href='./deleteAction.do?r_idx=${row.r_idx}&s_id=${pageContext.request.userPrincipal.name}'">삭제</button></td>
+								<td><input type="hidden" value="${row.r_idx }" name="r_idx"></td>
 							 </tr>
 							</div>	
 						</div>
@@ -72,6 +73,7 @@
 	            </table>
 	            <div>
 					<tr>
+					<!-- r_idx어떻게 넘겨주지.. ㅜ -->
 						<td><input type="button" class="btn btn-warning" style="color: white; align-content: center; margin-left: -0.1em;" value="신고하기" onclick="location.href='./write.do';"></td>
 					</tr>
 					<br /><br />
