@@ -34,11 +34,11 @@ var modiValidate = function(f){
 		f.audiotitle.focus();
 		return false;
 	}
-	if(f.audiofilename.value==""){
-        alert('음원파일을 첨부하세요.');
-        f.audiofilename.focus();
-        return false;
-    }if(f.country.selectedIndex == 0){
+// 	if(f.audiofilename.value==""){
+//         alert('음원파일을 첨부하세요.');
+//         f.audiofilename.focus();
+//         return false;}
+	if(f.country.selectedIndex == 0){
         alert("나라를 선택하세요.");
         f.country.focus();
         return false;
