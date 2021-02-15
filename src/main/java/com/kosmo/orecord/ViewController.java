@@ -2,6 +2,8 @@ package com.kosmo.orecord;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import impl.ViewImpl;
 import model.AudioBoardDTO;
@@ -43,11 +46,11 @@ public class ViewController {
 			sqlSession.getMapper(ViewImpl.class).View(
 			Integer.parseInt(req.getParameter("audio_idx")));
 		
-		String temp2 = null;
-		if(view.getContents()!=null) {
-			temp2 = view.getContents().replace("\r\n", "<br/>");
-		}
-		view.setContents(temp2);
+//		String temp2 = null;
+//		if(view.getContents()!=null) {
+//			temp2 = view.getContents().replace("\r\n", "<br/>");
+//		}
+//		view.setContents(temp2);
 		
 		if(view.getImg()==null) {
 			view.setImg("../resources/img/default.jpg");
@@ -95,6 +98,20 @@ public class ViewController {
 		}
 		
 		model.addAttribute("partyMember", PartyMember);
+		
+		//참여자가 없을때를 위한 쿼리문
+		PartyBoardDTO notParty =
+			sqlSession.getMapper(ViewImpl.class).notParty(
+				Integer.parseInt(req.getParameter("audio_idx")));
+		
+		model.addAttribute("notParty", notParty);
+		
+		//채택한 글이 없을때 참여자 목록을 위한 쿼리문
+		PartyBoardDTO notChoice =
+			sqlSession.getMapper(ViewImpl.class).notChoice(
+				Integer.parseInt(req.getParameter("audio_idx")));
+		
+		model.addAttribute("notChoice", notChoice);
 		
 		return "board/view";
 		
@@ -159,6 +176,39 @@ public class ViewController {
 		model.addAttribute("comment_idx", comment_idx);
 		
 		return "redirect:view.do";
+	}
+	
+	@RequestMapping("/board/playAction.do")
+	@ResponseBody
+	public Map<String, Object> playAction(Principal principal,
+			HttpServletRequest req){
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		String login_id = null;
+		String audio_idx = req.getParameter("audio_idx");
+		
+		try {
+			login_id = principal.getName();
+			
+			//재생횟수 카운트 늘리기
+			int count = sqlSession.getMapper(ViewImpl.class).addPlay(
+				Integer.parseInt(audio_idx));
+			System.out.println("재생횟수 카운트 결과="+count);
+			
+			//현재 재생횟수
+			int playCount = sqlSession.getMapper(ViewImpl.class).playCount(
+				Integer.parseInt(audio_idx));
+			System.out.println("현재 재생횟수="+playCount);
+			
+			
+			map.put("count", count);
+			map.put("playCount", playCount);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return map;
 	}
 } 
 

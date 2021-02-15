@@ -46,4 +46,14 @@ public interface ViewImpl {
 	//협업자 불러오기
 	public ArrayList<PartyBoardDTO> partyMember(int audio_idx);
 	
+	//참여자가 없을때를 위한 쿼리문
+	public PartyBoardDTO notParty(int audio_idx);
+	
+	//채택한 글이 없을때 참여자 목록을 위한 쿼리문
+	public PartyBoardDTO notChoice(int audio_idx);
+	
+	//재생횟수증가
+	public int addPlay(int audio_idx);
+	//재생횟수 가져오기
+	public int playCount(int audio_idx);
 } 

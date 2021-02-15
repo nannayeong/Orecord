@@ -139,7 +139,7 @@ $(function(){
 
   <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
 
-    <a class="navbar-brand mr-1" href="index.html">Start Bootstrap</a>
+    <a class="navbar-brand mr-1" href="${pageContext.request.contextPath}/admin/main">Orecord</a>
 
     <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
       <i class="fas fa-bars"></i>
@@ -203,13 +203,48 @@ $(function(){
     <!-- Sidebar -->
     <ul class="sidebar navbar-nav">
       <li class="nav-item active">
-        <a class="nav-link" href="./admin/member">
+        <a class="nav-link" href="${pageContext.request.contextPath}/admin/main">
           <span>회원관리</span>
         </a>
       </li>
       <li class="nav-item active">
-        <a class="nav-link" href="${pageContext.request.contextPath}/memberList.do">
-          <span>회원리스트</span>
+        <a class="nav-link" href="${pageContext.request.contextPath}/admin/adaudioboardList.do">
+          <span>게시물관리</span>
+        </a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="${pageContext.request.contextPath}/admin/adalbumList.do">
+          <span>앨범관리</span>
+        </a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="${pageContext.request.contextPath}/admin/sponsorshipList.do">
+          <span>후원관리</span>
+        </a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="${pageContext.request.contextPath}/admin/chargeList.do">
+          <span>결제/충전관리</span>
+        </a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="${pageContext.request.contextPath}/admin/exchangeList.do">
+          <span>환전관리</span>
+        </a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="${pageContext.request.contextPath}/admin/mCommentList.do">
+          <span>댓글관리</span>
+        </a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="${pageContext.request.contextPath}/admin/partyList.do">
+          <span>협업관리</span>
+        </a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="${pageContext.request.contextPath}/admin/reportList.do">
+          <span>신고관리</span>
         </a>
       </li>
     </ul>
@@ -221,18 +256,18 @@ $(function(){
         <!-- Breadcrumbs-->
         <ol class="breadcrumb">
           <li class="breadcrumb-item">
-            <a href="#">Dashboard</a>
+            <a href="../admin/main">Orecord</a>
           </li>
-          <li class="breadcrumb-item active">Overview</li>
+          <li class="breadcrumb-item active">memberEdit</li>
         </ol>
         
         <!-- DataTables Example -->
         <div class="card mb-3">
           <div class="card-header">
-            <i class="fas fa-table"></i>Member</div>
+            <i class="fas fa-table"></i>회원수정</div>
           <div class="card-body">
             <div class="table-responsive">
-              <form name="registFrm" onsubmit="return isValidate(this);" method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/admemberEditAction.do">
+              <form name="registFrm" onsubmit="return isValidate(this);" method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/admin/admemberEditAction.do">
 				<s:csrfInput />
 					<input type="hidden" name="id" value="${dto.id }"/>
 					<!-- 아이디 -->

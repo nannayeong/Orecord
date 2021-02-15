@@ -40,7 +40,7 @@ public class PartyController {
 	public String partyList(Model model, HttpServletRequest req, Principal principal) {
 		
 		String partyIdx = req.getParameter("audio_idx");
-		System.out.println("audio_idx????"+ partyIdx);
+		System.out.println("audio_idx="+ partyIdx);
 		
 		ArrayList<PartyBoardDTO> partyList = null;
 		

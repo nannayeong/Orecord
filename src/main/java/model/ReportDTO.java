@@ -3,12 +3,20 @@ package model;
 public class ReportDTO {
 	
 	private int r_idx;//신고인덱스
-	private String s_id;//신고할사람 아이디
+	private String s_id;//신고한사람 아이디
 	private String r_id;//신고할사람 아이디
 	private String kind;//신고사유
 	private String reason;//추가
 	private java.sql.Date regidate;//신고일
 	
+	private String id;
+	
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
 	//getter/setter
 	public int getR_idx() {
 		return r_idx;

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -171,28 +172,6 @@ function likeFunc(a){
 }
 
 $(function(){
-	
-	/* 페이징 */
-	var nowP = 1;
-	$(window).scroll(function(){
-		var scrollHeight = $(document).height();
-		var scrollPosition = $(window).height() + $(window).scrollTop();		
-		if(scrollPosition > scrollHeight -1){
-			nowP = nowP + 1;
-			$.ajax({
-			     url : "../getPartyList.do",
-			     type : "get",
-			     contentType : "text/html;charset:utf-8",
-			     data : {user_id:"${user_id}", 
-			    	 	nowPage:nowP},
-			     dataType : "html",
-			     success : function sucFunc(resData) {
-			    	 $('#albumList').append(resData);
-			     }    
-			});
-		}
-	});
-	
 	/*팔로우*/
 	$('#follow').mouseenter(function(){
 		if($('#follow').html()=='팔로워'){
@@ -237,19 +216,6 @@ $(function(){
 	   	  $('#following').html(resData.followingCount);
 	   	  $('#followers').html(resData.followerCount);
 	   	  $('#track').html(resData.trackCount);
-	     }    
-	});
-	
-	/*페이지리스트*/
-	$.ajax({
-	     url : "../getPartyList.do",
-	     type : "get",
-	     contentType : "text/html;charset:utf-8",
-	     data : {user_id:"${user_id}", 
-	    	 	nowPage:"${nowPage==null?1:nowPage}"},
-	     dataType : "html",
-	     success : function sucFunc(resData) {
-	    	 $('#albumList').html(resData);
 	     }    
 	});
 	
@@ -319,19 +285,57 @@ $(function(){
 						</c:choose>
 					</div>
 				</div>
-				<div class="my-content">
-					
+				<div class="my-content">					
 					<table style="width:100%;margin:1em 0 3em 0em;">
 						<tr>
 							<td class="my-con-left">
 								<div style="text-align:center">
 									<div class="btn-group" style="margin-bottom:1em;margin-left:1em;text-size:16px;">
-									  <button type="button" class="btn btn-dark" onclick="location.href='./getParty'" style="width:10em">getParty</button>
-									  <button type="button" class="btn btn-outline-dark" onclick="location.href='./doParty'" style="width:10em">doParty</button>
+									  <button type="button" class="btn btn-dark" onclick="location.href='./yParty'" style="width:10em">참여완료</button>
+									  <button type="button" class="btn btn-outline-dark" onclick="location.href='./nParty'" style="width:10em">참여신청</button>
 									</div>
 								</div>
 								<div id="albumList">
-								
+									<table class="table table-hover" style="width:90%; margin:auto; text-align:center">
+										<c:choose>
+										<c:when test="${empty plist}">
+										<tr>
+											<th style="text-align:center"><h3>참여 완료된 글이 없습니다.</h3></th>
+										</tr>
+										</c:when>
+										<c:otherwise>
+										<thead>
+									      <tr>
+									      	<th></th>
+									        <th>원곡</th>
+									        <th>종류</th>
+									        <th>제목</th>
+									        <th>포인트</th>
+									        <th>업로드날짜</th>
+									      </tr>
+									    </thead>
+									    </c:otherwise>
+									    </c:choose>
+										<c:forEach items="${plist }" var="p" varStatus="status">
+										<jsp:useBean id="now" class="java.util.Date" />
+										<fmt:formatDate value="${now}" pattern="yyyyMMdd" var="nowDate" />
+										<fmt:formatDate value="${p.exdate}" pattern="yyyyMMdd" var="exDate" /> 
+									    <tbody>
+									      <tr>
+									      	<td>${status.count }</td>
+									      	<td><a href="../board/view.do?audio_idx=${p.audio_idx}">${p.audiotitle}</a></td>
+									        <td>${p.kind }</td>
+									        <td onclick=''>${p.title }</td>
+									        <td>${p.point }p(지급완료)</td>
+									        <td>${p.regidate}</td>
+									      </tr>
+									    </tbody>
+										</c:forEach>
+									</table>
+									<br />
+									<div style="text-align:center">
+										${pagingUtil }
+									</div>
 								</div>
 							</td>
 							<td class="my-con-right">

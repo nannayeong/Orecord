@@ -12,7 +12,7 @@
 	</select>
 
 	<!-- 회원가입 -->
-	<insert id="membershipInfo" >
+	<insert id="membershipInfo" parameterType="model.MemberDTO">
 		insert into member (id,pw,nickname,email,phone,address,intro,img,enabled) 
 				values (#{0},#{1},#{2},#{3},#{4},#{5},#{6},#{7}, 1)
 	</insert>

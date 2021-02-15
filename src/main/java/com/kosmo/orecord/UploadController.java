@@ -25,6 +25,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import impl.AlbumImpl;
 import impl.AudioBoardImpl;
 import model.AlbumDTO;
+import model.AudioBoardDTO;
 
 @Controller
 public class UploadController {
@@ -37,7 +38,7 @@ public class UploadController {
 	
 	/*업로드*/
 	@RequestMapping("/upload.do")
-	public String upload(Principal principal, Model model) {
+	public String upload(Principal principal, Model model, AudioBoardDTO audioBoardDTO) {
 		
 		String id = null;
 		/*로그인 없이 접근시 nullpointerexception발생, security로 접근권한 설정해야함.*/
