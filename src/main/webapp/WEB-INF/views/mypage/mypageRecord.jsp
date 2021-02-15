@@ -24,7 +24,7 @@ background-color: #f2f2f2;cursor:pointer
 <c:forEach items="${audioList }" var="audio" varStatus="status">
 	<table style="width:95%;border:2px #f2f2f2 solid;margin:auto;margin-bottom:1em;">
 		<tr>
-			<td rowspan="5" style="width:7em;padding-left:1em;padding-right:1em;padding-top:1.5em;vertical-align:top">
+			<td rowspan="6" style="width:7em;padding-left:1em;padding-right:1em;padding-top:1.5em;vertical-align:top">
 				<img src="${audio.imagename }" alt="" style="width:6em"/>
 			</td>
 			<td style="padding-left:1em">

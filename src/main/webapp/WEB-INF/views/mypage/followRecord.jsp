@@ -325,7 +325,7 @@ $(function(){
 									<div class="btn-group" style="margin-bottom:1em;margin-left:1em;text-size:16px;">
 									  <button type="button" class="btn btn-dark" onclick="location.href='./record'" style="width:6em">myRecord</button>
 									  <button type="button" class="btn btn-outline-dark" onclick="location.href='./likeRecord'" style="width:6em">like</button>
-									  <button type="button" class="btn btn-outline-dark" onclick="location.href='./followRecord'" style="width:6em">followers</button>
+									  <button type="button" class="btn btn-dark" onclick="location.href='./followRecord'" style="width:6em">followers</button>
 									</div>
 								</div>
 								<div id="albumList">
