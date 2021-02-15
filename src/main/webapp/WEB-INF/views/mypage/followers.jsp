@@ -81,6 +81,22 @@ function unfollowbtn(follow) {
 		}
 	});
 }
+function deleteFollow(t,deleteId) {
+	$(t).parent().parent().parent().remove()
+	$.ajax({
+		url : "../deleteFollow.do",
+		type : "get",
+		contentType : "text/html;charset:utf-8",
+		data : {
+			followingId : "${pageContext.request.userPrincipal.name}",
+			userId : deleteId
+		},
+		dataType : "json",
+		success : function sucFunc(resData) {
+			alert("성공");
+		}
+	});
+}
 </script>
 </head>
 <body style="background-color:#f2f2f2;">
@@ -97,7 +113,7 @@ function unfollowbtn(follow) {
 					</div>
 				</div>
 				<c:if test="${artists.size() eq 0}">
-				<h4>팔로우한 아티스트가 없습니다.</h4>
+				<h4>나를 팔로우한 아티스트가 없습니다.</h4>
 				</c:if>
 				<c:forEach var="a" items="${artists}">
 				<table style="width: 60%; border: 2px #f2f2f2 solid;margin: auto;" class="feed">
@@ -111,6 +127,9 @@ function unfollowbtn(follow) {
 						</td>
 						<td style="text-align:right;padding-right:1em;">
 	               			<button type="button" class="btn btn-outline-secondary btn-sm follow ${a.id}" onclick="fBtn('${a.id}')" >팔로워</button>
+	               		</td>
+						<td style="text-align:right;padding-right:1em;">
+	               			<button type="button" class="btn btn-warning btn-sm" onclick="deleteFollow(this,'${a.id}')" >팔로워</button>
 	               		</td>
 					</tr>
 				</table>
