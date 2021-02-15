@@ -55,48 +55,39 @@ function writeValidate(f)
 </script>
 	<div>
 		<div class="content">
-			
-			<div style="background: linear-gradient(to right, #91888A, #5A5B82);">
-			<div class="row">
-				<div style="margin: 50px 0 0 80px;">
-					<h5 style="margin-left: 5px;">Report</h5>
-					<h2>신고</h2>
-				</div>
-			</div>
-		</div>
-		<br />
-		<hr color="gray">
+			<!-- 왼쪽 컨텐츠 -->
+			<div class="left-content-back">
 				<div class="left-content">
 <!-- <table style="width:100%;border:2px #f2f2f2 solid;margin:auto;margin-bottom:1em"> -->
-		<form name="writeFrm" method="post" onsubmit="return writeValidate(this);" action="../report/writeAction.do?r_idx=${row.r_idx}" >
+		<form name="writeFrm" method="post" onsubmit="return writeValidate(this);" action="<c:url value="/report/reportEditAction.do?r_idx=${reportDTO.r_idx}" />" >
 		<s:csrfInput />
 		<table class="table table-bordered">
-		<td><input type="hidden" name="r_idx" value="${ret.r_idx}"></td>
 	<tbody>
 		<tr>
 			<th class="text-center" style="vertical-align:middle;">신고한사람 아이디</th>
 			<td>
-				${pageContext.request.userPrincipal.name}
+				${reportDTO.s_id }
 			</td>
+			<td><input type="hidden" name="r_idx" value="${reportDTO.r_idx}"></td>
 		</tr>
 		<tr>
 			<th class="text-center" style="vertical-align:middle;">신고할사람 아이디</th>
 			<td>
-				<input type="text" class="form-control" style="width:100px;" name="r_id" value="" />
+				<input type="text" class="form-control" style="width:100px;" name="r_id" value="${reportDTO.r_id }" />
 			</td>
 		</tr>
 		<tr>
 			<th class="text-center" style="vertical-align:middle;">신고 사유</th>
 			<td>
-            <input type="radio" name="kind" value="욕설" id="rad_1" />
+            <input type="radio" name="kind" value="${reportDTO.kind }" id="rad_1" />
             <label for="rad_1">욕설</label>
-            <input type="radio" name="kind" value="음란물" id="rad_2" />
+            <input type="radio" name="kind" value="${reportDTO.kind }" id="rad_2" />
             <label for="rad_2">음란물</label>
-            <input type="radio" name="kind" value="불법/사기" id="rad_3" />
+            <input type="radio" name="kind" value="${reportDTO.kind }" id="rad_3" />
             <label for="rad_3">불법/사기</label>
-            <input type="radio" name="kind" value="표절" id="rad_4" />
+            <input type="radio" name="kind" value="${reportDTO.kind }" id="rad_4" />
             <label for="rad_4">표절</label>
-            <input type="radio" name="kind" value="기타" id="rad_5" />
+            <input type="radio" name="kind" value="${reportDTO.kind }" id="rad_5" />
             <label for="rad_5">기타</label>
 			</td>
 		</tr>
@@ -104,31 +95,23 @@ function writeValidate(f)
 		<tr>
 			<th class="text-center" style="vertical-align:middle;">기타</th>
 			<td>
-				<textarea rows="10" class="form-control" name="reason"></textarea>
+				<textarea rows="10" class="form-control" name="reason" >${reportDTO.reason }</textarea>
 			</td>
+			
 		</tr>	
 	</tbody>
 	</table>
 	
 	<div class="row text-center" style="">
 		<!-- 각종 버튼 부분 -->
-		<button type="submit" class="btn btn-danger">전송하기</button><br />
-		<button type="reset" class="btn btn-info">Reset</button><br />
-		<button type="button" class="btn btn-warning">리스트보기</button>
+		<button type="submit" class="btn btn-danger">수정하기</button><br />
 	</div>
 	</form> 
 </div>
-<!-- 			</table> -->
-		
 	</div>
-						
-						
-						
-<!-- 					</table> -->
 				</div>
-			
-			
-			<!-- 오른쪽 컨텐츠종료 -->
+			</div>
+
 		
 		<!-- 본문종료 -->
 	

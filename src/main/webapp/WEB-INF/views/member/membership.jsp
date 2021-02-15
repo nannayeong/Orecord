@@ -22,6 +22,7 @@
 <script type="text/javascript">
 	var length = /^[a-z0-9]{4,12}$/;
 	var space = /\s/;
+	var kor = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/; 
 	
 	var idCheckButton = 0;
 	var nickCheckButton = 0;
@@ -52,6 +53,11 @@
 		}
 		if(frm.nickname.value.length<2){
 			alert('2자 이내로 입력하세요.');
+			frm.nickname.focus();
+			return false;
+		}
+		if(frm.nickname.value.kor<2){
+			alert('2자 이내로 한글로 입력하세요.');
 			frm.nickname.focus();
 			return false;
 		}
@@ -156,10 +162,10 @@
 		
 		//아이디에 입력한 값을 id의 value값인 DOM을 통해 가져온다.
 		var nickname = document.getElementById("nickname").value;
-		
+
 		//아이디체크 - * 4자 이상 12자 이내의 영문/숫자 조합하여 공백 없이 기입.
-		if(!length.test(nickname) || space.test(nickname)==true){
-		    alert("닉네임은 2자 이상 12자 이내로 공백 없이 입력하세요."); 
+		if(space.test(nickname)==true || !kor.test(nickname)==true){
+		    alert("닉네임은 2자 이상 12자 이내로 공백 없이 한글로 입력하세요."); 
 		    frm.nickname.focus();
 		    return false;
 		}
@@ -249,8 +255,18 @@ $(function(){
 <body>
 	<div>
 		<div class="content">
+		<div style="background: linear-gradient(to right, #91888A, #5A5B82);">
+			<div class="row">
+				<div style="margin: 50px 0 0 80px;">
+					<h5 style="margin-left: 5px;">Join membership</h5>
+					<h2>회원가입</h2>
+				</div>
+			</div>
+		</div>
+		<br />
+		<hr color="gray">
 			<!-- 왼쪽 컨텐츠 -->
-			<div class="left-content-back">
+			
 				<div class="left-content">
 					<!-- <table style="width:100%;border:2px #f2f2f2 solid;margin:auto;margin-bottom:1em"> -->
 						<form name="registFrm" onsubmit="return isValidate(this);" method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/member/membership.do">
@@ -264,7 +280,7 @@ $(function(){
 							<br />
 						</div>
 						<div class="input-field col-md-6 pl-md-1"
-							style="margin-top: 15px;">
+							style="margin-top: 32px;">
 							<input type="button" class="btn btn-warning"
 								 onclick="id_check_person()" name="idcheck" value="중복확인">
 						</div>
@@ -277,7 +293,7 @@ $(function(){
 							name="nickname" id="nickname" min="4" maxlength="12" placeholder="닉네임을 입력해주세요."> <br />
 						</div>
 						<div class="input-field col-md-6 pl-md-1"
-							style="margin-top: 15px;">
+							style="margin-top: 32px;">
 							<input type="button" class="btn btn-warning"
 								id="nickname1" onclick="nick_check_person()" name="nicknamecheck" value="중복확인">
 						</div>
@@ -304,11 +320,11 @@ $(function(){
 								class="form-control" placeholder="이메일 입력" value="">
 							<br />
 						</div>
-						<div style="margin-top: 25px;">
+						<div style="margin-top: 36px;">
 							&nbsp;@ <br />
 						</div>
 						<div class="input-field col-md-4 px-md-1"
-							style="margin-top: 20px;">
+							style="margin-top: 32px;">
 							<input type="text" class="form-control" name="email_2"
 								id="email_2" readonly>
 							<br />
@@ -317,7 +333,7 @@ $(function(){
 							style="margin-bottom: 30px; height: 25px;">
 							<select name="select_email" id="select_email"
 								class="form-control"
-								style="margin-top: 23px; background-color: white;"
+								style="margin-top: 32px; background-color: white;"
 								onchange="email(this.value);">
 								<option value="no">선택해주세요</option>
 								<option value="직접입력">직접입력</option>
@@ -349,7 +365,7 @@ $(function(){
 								class="form-control" placeholder=""> <br />
 						</div>
 						<div class="input-field col-md-4 pl-md-1"
-							style="margin-top: 30px;">
+							style="margin-top: 32px;">
 							<input type="button" value="우편번호검색" class="btn btn-warning" onclick="zipcodeFind()" onkeypress=""  />
 <!-- 							<a href="javascript:;" title="새 창으로 열림" -->
 <!-- 								onclick="zipcodeFind()" onkeypress="">[우편번호검색]</a> <br /> -->
@@ -376,10 +392,14 @@ $(function(){
 							</div>
 						</div>
 					</div>
+					&nbsp;
+					<div class="button" align="center">
+						<button type="submit" class="btn btn-outline-warning" style="width: 45em">회원가입</button>
 					
-					<div align="center">
-						<input type="submit" class="btn btn-warning" value="회원가입"> &nbsp;&nbsp;&nbsp;&nbsp;
-						<button type="reset" class="btn btn-warning">RESET</button>
+					</div>
+					&nbsp;
+					<div>
+						<button type="reset" class="btn btn-outline-warning" style="width: 45em">RESET</button>
 					</div>
 				</form>
 						
@@ -393,16 +413,11 @@ $(function(){
 					<!-- </table> -->
 				</div>
 			</div>
-			<!-- 오른쪽 컨텐츠 -->
-			<div class="right-content-back">
-				<div class="right-content">
-					
-				</div>
-			</div>
+			
 			<!-- 오른쪽 컨텐츠종료 -->
 		</div>
 		<!-- 본문종료 -->
-	</div>
+	
 
 	<!-- 상단 메뉴바(위치옮기면안됨!) -->
 	<header>

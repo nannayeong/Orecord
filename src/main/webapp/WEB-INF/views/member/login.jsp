@@ -1,3 +1,4 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -150,8 +151,8 @@ https://kauth.kakao.com/oauth/authorize?response_type=code&client_id={e1dea648a0
 </head>
 <body>
 	<div>
-		<div class="content" style="padding-top:3em;">
-			<div style="width:80%;height:500px;">
+		<div class="content">
+			<div >
 			<c:choose>
 			<c:when test="${empty pageContext.request.userPrincipal.name }">
 			<c:url value="/member/loginAction.do" var="loginUrl" />
@@ -163,25 +164,33 @@ https://kauth.kakao.com/oauth/authorize?response_type=code&client_id={e1dea648a0
 				<p>로그아웃 하였습니다.</p>
 			</c:if>
 				<table>
+			<div style="background: linear-gradient(to right, #91888A, #5A5B82);">
+			<div class="row">
+				<div style="margin: 50px 0 0 60px;">
+					<h5 style="margin-left: 3px;">Login</h5>
+					<h2>로그인</h2>
+				</div>
+				</div>
+			</div>
+			<br />
+			
+			<hr color="gray">
+			
 					<div class="input-field col-md-7 pr-md-1">
 							<label>아이디</label><input type="text" name="id" required class="form-control"
-							value="<%=(save.length() == 0) ? "" : save %>" class="login_input"> 
+							value="" class="login_input"> 
 						</div>
 						<div class="input-field col-md-7 pr-md-1">
 							<label>비밀번호</label><input class="pswrd form-control" name="pw" type="password" required> 
 						</div>
-						&nbsp;
-						<div class="checkbox">
-							<lable><input type="checkbox" name="id_save" value="id_save" 
-								<%if(save.length() != 0){ %> 
-									checked="checked" 
-								<%} %>>아이디저장</lable>
-						</div>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+					<div class="input-field col-md-7 pr-md-1" >
 						<div class="button">
 							<div class="inner"></div>
-							<button  type="submit" class="btn btn-Warning">로그인</button>
+							<button  type="submit" class="btn btn-outline-warning">로그인</button>
 						</div>
-				
+					</div>
 					&nbsp;
 					
 					<div class="links">
@@ -211,16 +220,19 @@ https://kauth.kakao.com/oauth/authorize?response_type=code&client_id={e1dea648a0
 							  </script>
 						</div>
 					</div>
+					<div class="container">
 					<div class="signup">
-						회원 아니십니까? &nbsp; <a href="${pageContext.request.contextPath}/membershipsub.do">회원가입</a>
+						<a href="./membershipsub.do">회원가입</a>
 						&nbsp;
-
+					</div>
 					</div>
 					&nbsp;
 					<div class="idpw">
-						<a href="./id_pw.do">아이디/비밀번호 찾기</a>
+						
+						<a href="./id_pwSearch.do">아이디/비밀번호 찾기</a>
 						&nbsp;
 					</div>
+					<br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
 				</table>
 			</form:form>
 			</c:when>

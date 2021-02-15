@@ -1,6 +1,7 @@
 <%@page import="model.MemberDTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="s" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -26,7 +27,44 @@
 <title>Insert title here</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://ssl.daumcdn.net/dmaps/map_js_init/postcode.v2.js"></script>
 
+<script type="text/javascript">	
+	
+	function isValidate(frm1){
+		
+		var frm = document.registFrm;
+//////////공백 체크////////////
+		var pw = document.getElementById("pw").value;
+		if(frm.pw.value=='' || frm.pw2.value==''){
+			alert('비밀번호를 입력하세요');
+			frm.pw.focus();
+			return false;
+		}
+		
+		//비밀번호 유효성 검사//
+		if(!length.test(frm.pw.value) || space.test(frm.pw.value)==true){
+		    alert("비밀번호는 4자 이상 12자 이내의 영문/숫자 조합하여 공백 없이 입력하세요.");
+		    frm.pw.focus();      
+		    return false;
+		}
+		if(frm.email_1.value=='' || frm.email_2.value==''){
+			alert('이메일을 입력하세요');
+			frm.email_1.focus();
+			return false;
+		}
+		if(frm.phone.value==''){
+			alert('전화번호를 입력하세요');
+			frm.phone.focus();
+			return false;
+		}
+		if(frm.address.value=='' || frm.addr1.value=='' || frm.addr2.value==''){
+			alert('주소를 입력하세요');
+			frm.address.focus();
+			return false;
+		}
+	}
+</script>
 </head>
 
 <body id="page-top">
@@ -150,58 +188,60 @@
         <!-- Breadcrumbs-->
         <ol class="breadcrumb">
           <li class="breadcrumb-item">
-            <a href="">Orecord</a>
+            <a href="../admin/main">Orecord</a>
           </li>
-          <li class="breadcrumb-item active">sponsor</li>
+          <li class="breadcrumb-item active">memberEdit</li>
         </ol>
         
         <!-- DataTables Example -->
         <div class="card mb-3">
           <div class="card-header">
-            <i class="fas fa-table"></i>후원</div>
+            <i class="fas fa-table"></i>회원수정</div>
           <div class="card-body">
             <div class="table-responsive">
-              <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                <thead>
-                  	<tr>
-	                    <th class="text-center">NO</th>
-	                    <th class="text-center">후원자</th>
-	                    <th class="text-center">수혜자</th>
-	                    <th class="text-center">후원금액</th>
-	                    <th class="text-center">후원일</th>
-	                    <th class="text-center">수정</th>
-	                    <th class="text-center">삭제</th>
-                 	</tr>
-                </thead>
-                <tfoot>
-                	<tr>
-                    	<th class="text-center">NO</th>
-	                    <th class="text-center">후원자</th>
-	                    <th class="text-center">수혜자</th>
-	                    <th class="text-center">후원금액</th>
-	                    <th class="text-center">후원일</th>
-	                    <th class="text-center">수정</th>
-	                    <th class="text-center">삭제</th>
-                  </tr>
-                <tbody>
-                
-                <!-- 방명록 반복 부분 s -->
-				<c:forEach items="${sponsorshipList }" var="spon">
-						<div class="media">
-							<div class="media-body">
-							  	<tr>				 	
-								 	<td class="text-center">${spon.idx }</td>
-								 	<td class="text-center">${spon.sponsorId }</td>
-								 	<td class="text-center">${spon.patronId }</td>
-								 	<td class="text-center">${spon.sponPoint }</td>
-								 	<td class="text-center">${spon.regidate }</td>
-								 	<td class="text-center"><button class="btn btn-primary" onclick="location.href='sponsorshipEdit.do?idx=${spon.idx }';">수정</button></td>
-									<td class="text-center"><button class="btn btn-danger" onclick="location.href='sponsorDelete.do?idx=${spon.idx }';">삭제</button></td>
-							 	</tr>
-							</div>	
+              <form name="registFrm" onsubmit="return isValidate(this);" method="post" enctype="multipart/form-data" action="../chargeEditAction.do?idx=${chargeDTO.idx }">
+				<s:csrfInput />
+					<!-- 아이디 -->
+					<div class="row">
+						<div class="col-md-6 pr-md-1">
+							<label>아이디</label>
+							${chargeDTO.id }
 						</div>
-				</c:forEach>
-	            </table>
+						<div class="input-field col-md-6 pl-md-1">
+							<label>결제일</label>
+							${chargeDTO.regidate }
+							<input type="hidden" value="${chargeDTO.idx }" name="idx">
+						</div>
+					</div>
+					<div class="row">
+						<div class="input-field col-md-6 pr-md-1">
+							<label>결제금액</label>
+							<input type="text" class="form-control" name="totalPayment" value="${chargeDTO.totalPayment }">
+						</div>
+						<div class="col-md-6 pl-md-1">
+							<label>부가세</label>
+							<input type="text" class="form-control" name="VAT" value="${chargeDTO.VAT }">
+						<br />
+						</div>
+					</div>
+					<div class="row">
+						<div class="input-field col-md-6 pr-md-1">
+							<label>충전포인트</label>
+							<input type="text" class="form-control" name="chargePoint" value="${chargeDTO.chargePoint }">
+						</div>
+						<div class="col-md-6 pl-md-1">
+							<label>결제방법</label>
+							<input type="text" class="form-control" name="paymentType" value="${chargeDTO.paymentType }">
+						<br />
+						</div>
+					</div>
+					<div align="center">
+						<div>
+							<input type="submit" class="btn btn-fill btn-primary" value="수정하기">
+						</div>
+						<br /><br />
+					</div>
+				</form>
                </tbody>
             </div>
           </div>

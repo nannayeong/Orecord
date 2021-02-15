@@ -25,12 +25,21 @@
 	<div>
 		<div class="content">
 			<!-- 왼쪽 컨텐츠 -->
-			<div class="left-content-back">
-				<div class="left-content">
+			<div style="background: linear-gradient(to right, #91888A, #5A5B82);">
+			<div class="row">
+				<div style="margin: 50px 0 0 80px;">
+					<h5 style="margin-left: 5px;">Agreement</h5>
+					<h2>약관동의</h2>
+				</div>
+			</div>
+		</div>
+		<br>
+		<hr color="gray">
+			
 					<!-- <table style="width:100%;border:2px #f2f2f2 solid;margin:auto;margin-bottom:1em"> -->
 						
 						
-						
+						<div class="container" align="center">
 					<!-- 본문내용 -->
 						<form action="membership" method="post" id="form1">
 						<s:csrfInput />
@@ -49,7 +58,7 @@
 										<a href="#"><font size="2">이용약관 동의(필수)</font><input
 											type="checkbox" name="c1" id="c1" /></a>
 									</h3>
-									<td><textarea readonly="readonly" rows="5" cols="66">
+									<td><textarea readonly="readonly" rows="5" cols="100">
 									제 1 조 (목적)
 									
 									이 약관은 네이버 주식회사 ("회사" 또는 "네이버")가 제공하는 네이버 및 네이버 관련 제반 서비스의 이용과 관련하여 회사와 회원과의 권리, 의무 및 책임사항, 기타 필요한 사항을 규정함을 목적으로 합니다.
@@ -71,7 +80,7 @@
 												type="checkbox" name="c2" id="c2" /></a>
 										</h3>
 										<div>
-											<textarea readonly="readonly" rows="5" cols="66">
+											<textarea readonly="readonly" rows="5" cols="100">
 
 							정보통신망법 규정에 따라 네이버에 회원가입 신청하시는 분께 수집하는 개인정보의 항목, 개인정보의 수집 및 이용목적, 개인정보의 보유 및 이용기간을 안내 드리오니 자세히 읽은 후 동의하여 주시기 바랍니다.
 							
@@ -83,11 +92,11 @@
 							   </textarea>
 										</div>
 										<h3>
-											<a href="#"><font size="2" color="white">위치정보
+											<a href="#"><font size="2" color="">위치정보
 													이용약관 동의(선택)</font><input type="checkbox" name="c3" id="c3" /></a>
 										</h3>
 										<div>
-											<textarea readonly="readonly" rows="5" cols="66">
+											<textarea readonly="readonly" rows="5" cols="100">
 
 											위치정보 이용약관에 동의하시면, 위치를 활용한 광고 정보 수신 등을 포함하는 네이버 위치기반 서비스를 이용할 수 있습니다.
 											
@@ -110,34 +119,27 @@
 											 </textarea>
 										</div>
 								</div>
-								<div align="left">
+							</div>
+								<div  cols="80">
 									<a href="#"></a><font size="2">이벤트 등 프로모션 알림 메일 수신(선택)</font>
 									<input type="checkbox" name="c4" id="c4">
 								</div>
 									
-								<div align="center">
-									<br /> <input type="submit" value="동의" class="form-control"><input
-										type="reset" value="비동의" class="form-control"> <br />
+								<div class="button" align="center">
+									<br /> <button type="submit" value="동의" class="btn btn-outline-warning" style="width: 45em">동의</button>
 								</div>
+								&nbsp;
+								<div class="button" align="center">
+									<button type="reset" value="비동의" class="btn btn-outline-warning" style="width: 45em">비동의</button> 
+								</div>
+								<br /><br />
 							</div>
 						</form>	
 					<!-- </table> -->
 				</div>
 			</div>
-			<!-- 오른쪽 컨텐츠 -->
-			<div class="right-content-back">
-				<div class="right-content">
-					첫하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />
-					하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />
-					하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />
-					하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />
-					하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />막하이<br />
-				</div>
-			</div>
-			<!-- 오른쪽 컨텐츠종료 -->
-		</div>
-		<!-- 본문종료 -->
-	</div>
+			
+	
 	
 	<!-- 상단 메뉴바(위치옮기면안됨!) -->
 	<header>
