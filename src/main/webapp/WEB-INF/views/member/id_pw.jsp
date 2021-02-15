@@ -66,7 +66,7 @@ function passSearch(frm2){
 	
 }
 </script>
---%>
+
 <script type="text/javascript">
 /* 아이디찾기 */
 /**/
@@ -77,54 +77,55 @@ function passSearch(frm2){
 alert( '${id}'+'님의 비밀번호는 '+ '${pwSearch.pw}' + ' 입니다.');
 </c:if>
 </script>
-	<div>
-		<div class="content">
+	
+		
 			<!-- 왼쪽 컨텐츠 -->
-			<div class="left-content-back">
-				<div class="left-content">
-				<div class="top_title">
-					<p class="location">&nbsp;&nbsp;멤버쉽&nbsp;>&nbsp;아이디/비밀번호찾기<p>
-				<br />
+			<div class="content">
+			<div style="background: linear-gradient(to right, #91888A, #5A5B82);">
+			<div class="row">
+				<div style="margin: 50px 0 0 60px;">
+					<h5 style="margin-left: 3px;">ID/Passward Find</h5>
+					<h2>아이디/비밀번호찾기</h2>
 				</div>
+				</div>
+			</div>
+			<br />
+			<hr color="gray">
+				<div class="left-content">
+				
 					<!-- <div class="col-md-6 pr-md-1" style="margin-top: 15px;"> -->
 					<form onsubmit="return idSearch(this);" name="idfindscreen" method="post" action="${pageContext.request.contextPath}/member/idSearch.do" >
 					<s:csrfInput />
-						<div><span>닉네임&nbsp;&nbsp;<input type="text" name="nickname"class="login_input01" /></span></div>
+					
+						<div class="input-field col-md-6 pr-md-1">
+						<label>닉네임</label>&nbsp;&nbsp;<input type="text" name="nickname" class="login_input01" /></div>
 						<br />
-						<div><span>이메일&nbsp;&nbsp;<input type="text" name="email1" class="login_input01" /></span></div>
-						<br />
-						<div style="align-content: center; margin-left: 70px; margin-top: 40px;">
+						<div class="input-field col-md-6 pr-md-1"><label>이메일</label>&nbsp;&nbsp;<input type="text" name="email1" class="login_input01" /></div>
+						
+						<div class="input-field col-md-6 pr-md-1" style="align-content: center; margin-left: 70px; margin-top: 40px;">
 							<input type="submit" class="btn btn-warning" value="아이디찾기" style="color: white;"/></div>						
 					</form>	
+					<br /> 
 					<!-- </div> -->
 					
 					<div class="col-md-6 pl-md-1">
 						<form onsubmit="return passSearch(this);" name="passfindscreen" id="passfindscreen" method="post" action="${pageContext.request.contextPath}/member/pwSearch.do" >
 						<s:csrfInput />
-							<div><span>아이디&nbsp;&nbsp;<input type="text" name="id" class="login_input01" /></span></div>
+							<div><label>아이디</label>&nbsp;&nbsp;<input type="text" name="id" class="login_input01" /></div>
 							<br />
-							<div><span>닉네임&nbsp;&nbsp;<input type="text" name="nickname1" class="login_input01" /></span></div>
+							<div><label>닉네임</label>&nbsp;&nbsp;<input type="text" name="nickname1" class="login_input01" /></div>
 							<br />
-							<div><span>이메일&nbsp;&nbsp;<input type="text" name="email2" class="login_input01" /></span></div>
+							<div><label>이메일</label>&nbsp;&nbsp;<input type="text" name="email2" class="login_input01" /></div>
 							<br />
 							<div style="align-content: center; margin-left: 70px;"><input type="submit" class="btn btn-warning" value="비밀번호찾기" name="pwSearch" style="color: white;"/></div>
 						</form>
 					</div>
 				</div>
 			</div>
-			<!-- 오른쪽 컨텐츠종료 -->
-			<div class="right-content-back">
-				<div class="right-content">
-					첫하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />
-					하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />
-					하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />
-					하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />
-					하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />막하이<br />
-				</div>
-			</div>
-		</div>
+			
+		
 		<!-- 본문종료 -->
-	</div>
+	
 
 	<!-- 상단 메뉴바(위치옮기면안됨!) -->
 	<header>
