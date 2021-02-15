@@ -165,33 +165,35 @@ https://kauth.kakao.com/oauth/authorize?response_type=code&client_id={e1dea648a0
 			</c:if>
 				<table>
 			<div style="background: linear-gradient(to right, #91888A, #5A5B82);">
-			<div class="row">
-				<div style="margin: 50px 0 0 60px;">
-					<h5 style="margin-left: 3px;">Login</h5>
-					<h2>로그인</h2>
-				</div>
+				<div class="row">
+					<div style="margin: 50px 0 0 60px;">
+						<h5 style="margin-left: 3px;">Login</h5>
+						<h2>로그인</h2>
+					</div>
 				</div>
 			</div>
 			<br />
-			
 			<hr color="gray">
-			
-					<div class="input-field col-md-7 pr-md-1">
-							<label>아이디</label><input type="text" name="id" required class="form-control"
-							value="" class="login_input"> 
-						</div>
-						<div class="input-field col-md-7 pr-md-1">
-							<label>비밀번호</label><input class="pswrd form-control" name="pw" type="password" required> 
-						</div>
-						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-					<div class="input-field col-md-7 pr-md-1" >
-						<div class="button">
-							<div class="inner"></div>
-							<button  type="submit" class="btn btn-outline-warning">로그인</button>
-						</div>
-					</div>
-					&nbsp;
+			<div class="row" style="margin: 50px 300px 0 50px;">
+			<div class="col-md-3 pr-md-1">
+				<label>아이디</label>
+			</div>
+			<div class="col-md-7 pl-md-1">
+				<input type="text" name="id" required class="form-control login_input"></span>
+			</div>
+			</div>
+			<div class="input-field col-md-6 pr-md-1">
+				<label>비밀번호</label><input class="pswrd form-control" name="pw" type="password" required> 
+			</div>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		
+			<div class="input-field col-md-7 pr-md-1" >
+				<div class="button">
+					<div class="inner"></div>
+					<button  type="submit" class="btn btn-outline-warning">로그인</button>
+				</div>
+			</div>
+			&nbsp;
 					
 					<div class="links">
 						<div class="kakaotalk">
