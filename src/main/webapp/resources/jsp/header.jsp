@@ -52,6 +52,7 @@ function checkNull(t) {
 			<li><a href="${pageContext.request.contextPath}/admin/main">어드민페이지</a></li>
 			</c:if>
 			<li><a href="${pageContext.request.contextPath}/${pageContext.request.userPrincipal.name}/record">마이페이지</a></li>
+			<li><a href="${pageContext.request.contextPath }/chargeLog.do">포인트 조회</a></li>
 			<li><a href="${pageContext.request.contextPath }/pwCheck.do">정보수정</a></li>
 			<li><a href="${pageContext.request.contextPath }/logout.do">로그아웃</a></li>
 		</div>
