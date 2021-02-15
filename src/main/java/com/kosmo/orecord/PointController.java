@@ -29,29 +29,34 @@ public class PointController {
 	// 충전내역 조회 페이지 진입
 	@RequestMapping("/chargeLog.do")    
 	public String charge(Model model) {
-		UserDetails userInfo = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		String loginId = userInfo.getUsername();
+		String loginId = "";
 		try {
-			if (loginId == null) {
-				return "member/login";
-			}
+			UserDetails userInfo = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			loginId = userInfo.getUsername();
+			System.out.println(loginId);
 		}
 		catch (Exception e) {
-			
+			return "redirect:member/login.do";
 		}
 		
 		// 결제시 필요한 정보 입력을 위해 MemberDTO 반환
 		MemberDTO memberDTO = sqlSession.getMapper(PointImpl.class).selectUserInfo(loginId);
 		model.addAttribute("MemberDTO", memberDTO);
-		
 		return "point/chargeLog";
 	}
 
 	// 후원한 내역 조회 페이지 진입
 	@RequestMapping("/sponsorLog.do")
 	public String sponsor(Model model) {
-		UserDetails userInfo = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		String loginId = userInfo.getUsername();
+		String loginId = "";
+		try {
+			UserDetails userInfo = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			loginId = userInfo.getUsername();
+			System.out.println(loginId);
+		}
+		catch (Exception e) {
+			return "redirect:member/login.do";
+		}
 		model.addAttribute("loginId", loginId);
 	
 		MemberDTO memberDTO = sqlSession.getMapper(PointImpl.class).selectUserInfo(loginId);
@@ -62,8 +67,15 @@ public class PointController {
 	// 후원 받은 내역 조회 페이지 진입
 	@RequestMapping("/patronLog.do")
 	public String patron(Model model) {
-		UserDetails userInfo = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		String loginId = userInfo.getUsername();
+		String loginId = "";
+		try {
+			UserDetails userInfo = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			loginId = userInfo.getUsername();
+			System.out.println(loginId);
+		}
+		catch (Exception e) {
+			return "redirect:member/login.do";
+		}
 		model.addAttribute("loginId", loginId);
 		
 		MemberDTO memberDTO = sqlSession.getMapper(PointImpl.class).selectUserInfo(loginId);
@@ -74,8 +86,15 @@ public class PointController {
 	// 환전 내역 조회 페이지 진입
 	@RequestMapping("/exchangeLog.do")
 	public String exchange(Model model) {
-		UserDetails userInfo = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		String loginId = userInfo.getUsername();
+		String loginId = "";
+		try {
+			UserDetails userInfo = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			loginId = userInfo.getUsername();
+			System.out.println(loginId);
+		}
+		catch (Exception e) {
+			return "redirect:member/login.do";
+		}
 		model.addAttribute("loginId", loginId);
 		
 		MemberDTO memberDTO = sqlSession.getMapper(PointImpl.class).selectUserInfo(loginId);
@@ -87,9 +106,15 @@ public class PointController {
 	// 환전 신청 페이지 진입
 	@RequestMapping("/exchangeForm.do")
 	public String exchangeForm(Model model) {
-		UserDetails userInfo = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		String loginId = null;
-		loginId = userInfo.getUsername();
+		String loginId = "";
+		try {
+			UserDetails userInfo = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			loginId = userInfo.getUsername();
+			System.out.println(loginId);
+		}
+		catch (Exception e) {
+			return "redirect:member/login.do";
+		}
 		MemberDTO memberDTO = sqlSession.getMapper(PointImpl.class).selectUserInfo(loginId);
 		model.addAttribute("MemberDTO", memberDTO);
 		
@@ -102,8 +127,14 @@ public class PointController {
 	public Map searchingLog(@RequestParam Map<String,Object> param, HttpServletRequest req, Model model){
 		
 		// 로그인된 아이디 얻어와서 맵에 넣어주기
-		UserDetails userInfo = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		String loginId = userInfo.getUsername();
+		String loginId = "";
+		try {
+			UserDetails userInfo = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			loginId = userInfo.getUsername();
+			System.out.println(loginId);
+		}
+		catch (Exception e) {
+		}
 		param.put("loginId", loginId);
 		
 		
@@ -168,8 +199,14 @@ public class PointController {
 	public void insertChargeLog(@RequestParam Map<String,Object> param, HttpServletRequest req, Model model) {
 		
 		// 로그인된 아이디 얻어와서 맵에 넣어주기
-		UserDetails userInfo = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		String loginId = userInfo.getUsername();
+		String loginId = "";
+		try {
+			UserDetails userInfo = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			loginId = userInfo.getUsername();
+			System.out.println(loginId);
+		}
+		catch (Exception e) {
+		}
 		param.put("loginId", loginId);
 		
 		String paymentType = param.get("paymentType").toString();
@@ -191,8 +228,14 @@ public class PointController {
 	@ResponseBody
 	public void insertSponsorshipLog(@RequestParam Map<String, Object> param, Authentication authentication) {
 		// 로그인된 아이디 얻어와서 sponsorId 변수에 넣어주기
-		UserDetails userInfo = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		String sponsorId = userInfo.getUsername();
+		String sponsorId = "";
+		try {
+			UserDetails userInfo = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			sponsorId = userInfo.getUsername();
+			System.out.println(sponsorId);
+		}
+		catch (Exception e) {
+		}
 		int sponPoint = Integer.parseInt(param.get("sponPoint").toString());
 		String patronId = param.get("patronId").toString();
 		
@@ -204,6 +247,16 @@ public class PointController {
 	// 환전요청시 포인트 이동 처리
 	@RequestMapping(value="/insertExchangeLog.do", method=RequestMethod.POST)
 	public String insertExchangeLog(Model model, HttpServletRequest req) {
+		String loginId = "";
+		try {
+			UserDetails userInfo = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			loginId = userInfo.getUsername();
+			System.out.println(loginId);
+		}
+		catch (Exception e) {
+			return "redirect:member/login.do";
+		}
+		
 		String exchangeId = req.getParameter("exchangeId");
 		int exchangePoint = Integer.parseInt(req.getParameter("exchangePoint"));
 		String bankName = req.getParameter("bankName");
