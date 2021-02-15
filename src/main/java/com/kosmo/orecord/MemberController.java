@@ -119,7 +119,7 @@ public class MemberController {
 	
 	
 	/*회원가입처리*/
-	@RequestMapping(value = "/member/membership.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/member/membershipAction.do", method = RequestMethod.POST)
 	public String memberAction(Model model, MultipartHttpServletRequest req) {
 
 		//서버의 물리적경로 얻어오기
@@ -195,6 +195,9 @@ public class MemberController {
 			if(result==1) {
 				System.out.println("성공!");
 			}
+			else {
+				System.out.println("회원가입 실패..");
+			}
 			
 		}
 		catch (IOException e) {
@@ -204,7 +207,7 @@ public class MemberController {
 			e.printStackTrace();
 		}
 		
-		return "main/main";
+		return "redirect:/main.do";
 	}
 }
 
