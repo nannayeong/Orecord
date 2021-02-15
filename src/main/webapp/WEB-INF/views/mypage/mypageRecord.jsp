@@ -58,13 +58,13 @@ background-color: #f2f2f2;cursor:pointer
 		</tr>
 		<tr>
 			<td colspan="3">
-				<audio controls style="width:97%" id="${audio.albumName }">
+				<audio controls style="width:97%" id="${audio.albumName }" onended="endplay();">
 					<source src="${audio.audiofilename }" type="audio/mp4">
 				</audio>
 			</td>
 		</tr>
 		<tr>
-			<td>
+			<td colspan="2">
 				${audio.contents}
 			</td>
 		</tr>
