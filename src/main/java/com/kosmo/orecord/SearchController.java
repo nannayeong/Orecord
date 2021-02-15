@@ -385,7 +385,7 @@ public class SearchController {
 		int totalAudio = sqlSession.getMapper(SearchImpl.class).searchTotal(searchType, searchWord);
 		
 		ArrayList<AudioBoardDTO> audioByNameList = new ArrayList<AudioBoardDTO>();
-		if(totalAudio!=loadedCount) {
+		if(totalAudio>loadedCount) {
 			audioByNameList = sqlSession.getMapper(SearchImpl.class).search("artistname",searchWord,loadedCount+1,loadedCount+8);
 		}
 		
@@ -546,7 +546,7 @@ public class SearchController {
 		
 		//검색페이지에 출력할 오디오게시글 불러옴
 		String searchWord = req.getParameter("searchWord");
-		ArrayList<AudioBoardDTO> byContents = sqlSession.getMapper(SearchImpl.class).search("contents",searchWord,1,8);;
+		ArrayList<AudioBoardDTO> byContents = sqlSession.getMapper(SearchImpl.class).search("contents",searchWord,1,8);
 		for(AudioBoardDTO audios : byContents) {
 			String contents = cal.makeSearchText(audios.getContents(),searchWord);
 			audios.setContents(contents);
@@ -613,8 +613,12 @@ public class SearchController {
 		int loadedCount = Integer.parseInt(req.getParameter("loadlength"));
 		int totalAudio = sqlSession.getMapper(SearchImpl.class).searchTotal(searchType, searchWord);
 		ArrayList<AudioBoardDTO> byContents = new ArrayList<AudioBoardDTO>();
-		if(totalAudio!=loadedCount) {
+		System.out.println(loadedCount);
+		System.out.println(totalAudio);
+		if(totalAudio>loadedCount) {
 			byContents = sqlSession.getMapper(SearchImpl.class).search(searchType,searchWord,loadedCount+1,loadedCount+8);
+		}else {
+			byContents=null;
 		}
 		
 		String path = req.getContextPath();
@@ -670,10 +674,12 @@ public class SearchController {
 		totalAudio = sqlSession.getMapper(SearchImpl.class).searchTotal(searchType, searchWord);
 		
 		}		
+
 		Map<String, String> map = new HashMap<String, String>();
-		if(loaded==totalAudio) {
+		if(loaded>=totalAudio) {
 		map.put("nomoreFeed", "이전 게시물이 없습니다.");
-		
+		}else {
+			map.put("nomoreFeed", "");
 		}
 		return map;
 

@@ -228,4 +228,19 @@ public class FollowController {
 		
 		return "mypage/followers";
 	}
+	@RequestMapping("/deleteFollow.do")
+	public Map<String, Object> DeleteFollow(Model model, HttpServletRequest req) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+
+		FollowDTO follow = new FollowDTO();
+		String followingId = req.getParameter("followingId");
+		String userId = req.getParameter("userId");
+		follow.setFollowing_id(followingId);
+		follow.setUser_id(userId);
+		int sucFunc = sqlSession.delete("unFollow",follow);
+		System.out.println("deleteFollow 성공="+sucFunc);
+		
+		return map;
+	}
 }

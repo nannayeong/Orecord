@@ -18,6 +18,15 @@
 <!-- layout js-->
 <script src="${pageContext.request.contextPath}/resources/js/layout.js"></script>
 <script>
+function partyFunc(aidx){
+	if("${pageContext.request.userPrincipal.name}"==""){
+		alert('로그인 후 이용해주세요');
+		location.href="../member/login.do"
+	}
+	else{
+		location.href='../board/partyWrite.do?audio_idx='+aidx;
+	}
+}
 function recordDeleteFunc(aidx){
 	if("${pageContext.request.userPrincipal.name}"==""){
 		alert('로그인 후 이용해주세요');
@@ -361,7 +370,7 @@ $(function(){
 									<div class="btn-group" style="margin-bottom:1em;margin-left:1em;text-size:16px;">
 									  <button type="button" class="btn btn-dark" onclick="location.href='./record'" style="width:6em">myRecord</button>
 									  <button type="button" class="btn btn-outline-dark" onclick="location.href='./likeRecord'" style="width:6em">like</button>
-									  <button type="button" class="btn btn-outline-dark" onclick="location.href='./followRecord'" style="width:6em">followers</button>
+									  <button type="button" class="btn btn-dark" onclick="location.href='./followRecord'" style="width:6em">followers</button>
 									</div>
 								</div>
 								<div id="albumList">

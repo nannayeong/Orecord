@@ -67,8 +67,12 @@ public class MyPageController {
 			e.printStackTrace();
 		}
 
+		System.out.println("이미지"+memberDTO.getImg());
 		if(memberDTO.getImg()==null) {
 			memberDTO.setImg(path+"/resources/img/default.jpg");
+		}
+		else {
+			memberDTO.setImg(path+"/resources/upload/"+memberDTO.getImg());
 		}
 		
 		model.addAttribute("memberDTO", memberDTO);
@@ -446,9 +450,9 @@ public class MyPageController {
 				File serverFullName = new File(path + File.separator + saveFileName);
 				
 				/*서버 저장 imagename*/
-				if(fileName.equals("imagename")) {
+				if(fileName.equals("img")) {
 					img = saveFileName;
-					System.out.println("imagename"+img);
+					System.out.println("img"+img);
 				}
 				
 				mfile.transferTo(serverFullName);
