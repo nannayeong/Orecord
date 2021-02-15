@@ -372,6 +372,7 @@ public class AdminController {
 		ChargeDTO chargeDTO = sqlSession.getMapper(AdminImpl.class).chargeView(idx);
 		model.addAttribute("chargeDTO", chargeDTO);
 		System.out.println(chargeDTO.getIdx()+"-------------------");
+		System.out.println(chargeDTO.getTotalPayment()+"-----------------------");
 		return "admin/chargeEdit";
 	}
 	/*충전 수정하기*/
@@ -379,6 +380,11 @@ public class AdminController {
 	public String chargeEditAction(HttpServletRequest req) {
 		
 		int idx = Integer.parseInt(req.getParameter("idx"));
+		System.out.println(Integer.parseInt(req.getParameter("VAT")));
+		System.out.println(Integer.parseInt(req.getParameter("totalPayment")));
+		System.out.println(Integer.parseInt(req.getParameter("chargePoint")));
+		System.out.println(req.getParameter("paymentType"));
+		System.out.println(idx);
 		
 		//자꾸 널값나옴..... ㅜㅜㅠ
 		int totalPayment = Integer.parseInt(req.getParameter("totalPayment"));
@@ -417,6 +423,43 @@ public class AdminController {
 		return "admin/exchangeList";
 	}
 	/*환전수정폼*/
+	@RequestMapping("/admin/exchangeEdit.do")
+	public String exchangeEdit(Model model, HttpServletRequest req) {
+		
+		int idx = Integer.parseInt(req.getParameter("idx"));
+		
+		ExchangeDTO exchangeDTO = sqlSession.getMapper(AdminImpl.class).exchangeView(idx);
+		model.addAttribute("exchangeDTO",exchangeDTO);
+		
+		return "admin/exchangeEdit";
+	}
+	/*환전수정하기*/
+	@RequestMapping("/admin/exchangeEditAction.do")
+	public String exchangeEditAction(HttpServletRequest req) {
+		
+		int idx = Integer.parseInt(req.getParameter("idx"));
+		
+		int exchangePoint = Integer.parseInt(req.getParameter("exchangePoint"));
+		int exchangeFee = Integer.parseInt(req.getParameter("exchangeFee"));
+		int exchangedMoney = Integer.parseInt(req.getParameter("exchangedMoney"));
+		String accountBank = req.getParameter("accountBank");
+		String accountNumber = req.getParameter("accountNumber");
+		String accountName = req.getParameter("accountName");
+		
+		sqlSession.getMapper(AdminImpl.class).exchangeEdit(exchangePoint, exchangeFee, exchangedMoney, accountBank, accountNumber, accountName, idx);
+		
+		return "redirect:/admin/exchangeList.do";
+	}
+	/*환전삭제*/
+	@RequestMapping("/admin/exchangeDelete.do")
+	public String exchangeDelete(HttpServletRequest req) {
+		
+		int idx = Integer.parseInt(req.getParameter("idx"));
+		
+		int exchangeDelete = sqlSession.getMapper(AdminImpl.class).exchangeDelete(idx);
+		
+		return "redirect:/admin/exchangeList.do";
+	}
 	
 	
 	/*댓글리스트*/

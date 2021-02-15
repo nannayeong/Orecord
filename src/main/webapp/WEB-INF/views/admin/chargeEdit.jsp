@@ -199,7 +199,7 @@
             <i class="fas fa-table"></i>회원수정</div>
           <div class="card-body">
             <div class="table-responsive">
-              <form name="registFrm" onsubmit="return isValidate(this);" method="post" enctype="multipart/form-data" action="../admin/chargeEditAction.do?idx=${chargeDTO.idx }">
+              <form name="registFrm" onsubmit="return isValidate(this);" method="post" enctype="multipart/form-data" action="../chargeEditAction.do?idx=${chargeDTO.idx }">
 				<s:csrfInput />
 					<!-- 아이디 -->
 					<div class="row">

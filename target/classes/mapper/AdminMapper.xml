@@ -101,7 +101,7 @@
 	
 	<!-- 환전리스트 -->
 	<select id="exchangeList" resultType="model.ExchangeDTO">
-		SELECT * FROM exchageLog ORDER BY idx DESC
+		SELECT * FROM exchangeLog ORDER BY idx DESC
 	</select>
 	<!-- 환전 상세보기 -->
 	<select id="exchangeView" resultType="model.ExchangeDTO">
@@ -109,8 +109,8 @@
 	</select>
 	<!-- 환전 수정하기 -->
 	<update id="exchangeEdit">
-		UPDATE exchangeLog SET exchangePoint=#{0}, exchageFee=#{1}, exchangedMoney=#{2}, accountBank=#{3}, accountNumber=#{4}, 
-			accountName=#{5} WHERE idx=#{6} 
+		UPDATE exchangeLog SET exchangePoint=#{0}, exchangeFee=#{1}, exchangedMoney=#{2}, accountBank=#{3}, accountNumber=#{4}, 
+			accountName=#{5} WHERE idx=#{6} 						 
 	</update>
 	<!-- 환전 삭제하기 -->
 	<delete id="exchangeDelete">

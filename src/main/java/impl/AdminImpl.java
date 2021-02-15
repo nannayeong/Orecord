@@ -83,8 +83,8 @@ public interface AdminImpl {
 	public ArrayList<ExchangeDTO> exchangeList(ExchangeDTO exchangeDTO);
 	//환전상세보기
 	public ExchangeDTO exchangeView(int idx);
-	//환전수정하기
-	public int exchangeEdit(int exchangePoint, int exchageFee, int exchangedMoney, 
+	//환전수정하기 
+	public int exchangeEdit(int exchangePoint, int exchangeFee, int exchangedMoney, 
 		String accountBank, String accountNumber, String accountName, int idx);
 	//환전삭제하기
 	public int exchangeDelete(int idx);
