@@ -54,22 +54,20 @@
 <body>
 	<div>
 		<div class="content">
-			<!-- 왼쪽 컨텐츠 -->
-			<div class="left-content-back">
-				<div class="left-content">
 					<!-- <table style="width:100%;border:2px #f2f2f2 solid;margin:auto;margin-bottom:1em"> -->
 					<form name="registFrm" onsubmit="return isValidate(this);" method="post" enctype="multipart/form-data" action="">
 						<s:csrfInput />
 						<div align="center">
 							<div >
 								<input type="hidden" class="form-control" id="pw" value="${dto.pw }" name="pw" min="4" maxlength="20">	
-								<br />						
+								<br /><br /><br />						
 							</div>
 							<div class="input-field col-md-6 pl-md-1">
 								<label>비밀번호를 입력해주세요.</label>
 								<div><input type="password" class="form-control" id="pw2" name="pw2" min="4" maxlength="20"></div>
 								<br />
 								<div><input type="submit" class="btn btn-warning" value="확인" style="color: white;"></div>
+								<br /><br /><br />
 							</div>
 							
 						</div>
@@ -79,21 +77,7 @@
 					<!-- </table> -->
 				</div>
 			</div>
-			<!-- 오른쪽 컨텐츠 -->
-			<div class="right-content-back">
-				<div class="right-content">
-					첫하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />
-					하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />
-					하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />
-					하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />
-					하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />하이<br />막하이<br />
-				</div>
-			</div>
-			<!-- 오른쪽 컨텐츠종료 -->
-		</div>
 		<!-- 본문종료 -->
-	</div>
-
 	<!-- 상단 메뉴바(위치옮기면안됨!) -->
 	<header>
 		<%@include file="/resources/jsp/header.jsp" %>
