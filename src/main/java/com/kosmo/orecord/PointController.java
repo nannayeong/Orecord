@@ -7,11 +7,13 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -24,31 +26,11 @@ public class PointController {
 	@Autowired
 	private SqlSession sqlSession;   
 	
-	/*
-	 1. 다른 페이지에서 결제하기 메뉴 버튼 누르면 충전 내역 조회 페이지로 보내기
-	 2. 충전 내역 조회 페이지(결제하기 버튼 배치)
-	 	- 매핑명 : "/chargeLog.do", 함수명 : charge() 뷰페이지 : "point/chargeLog", DB명 : chargeLog
-	 	- 우상단 결제하기 버튼 클릭하면 결제모달 로드
-	 3. 스폰한 내역 조회 페이지(내가 스폰한 유저 아이디 누르면 유저 상세페이지로 보낼지?)
-	    - 매핑명 : "/sponsorLog.do" 함수명 : sponsor() 뷰페이지 : "point/sponsorLog", DB명 : sponsorshipLog 공유
-	    - 우상단에 조회기간에 따른 내가 스폰한 총 포인트, 유저수 보여주기
-	 4. 스폰 받은 내역 조회 페이지(나를 스폰해준 유저 아이디 누르면 유저 상세페이지로 보낼지?)
-	 	- 매핑명 : "/patronLog.do" 함수명 : patron() 뷰페이지 : "point/patronLog", DB명 : sponsorshipLog 공유
-	 	- 우상단에 조회기간에 따른 내가 스폰 받은 총 포인트, 유저수 보여주기
-	 5. 환전 내역 조회 페이지(환전하기 버튼 배치)
-	 	- 매핑명 : "/exchangeLog.do" 함수명 : exchange() 뷰페이지 : "point/exchangeLog", DB명 : exchangeLog
-	 	- 우상단에 환전하기 버튼 배치
-	 	- 새창으로 처리할지 다른 페이지로 보낼지 생각해서 폼 작성
-	  
-	 */
-	
-	
 	// 충전내역 조회 페이지 진입
 	@RequestMapping("/chargeLog.do")    
 	public String charge(Model model) {
 		UserDetails userInfo = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		String loginId = null;
-		loginId = userInfo.getUsername();
+		String loginId = userInfo.getUsername();
 		try {
 			if (loginId == null) {
 				return "member/login";
@@ -58,11 +40,8 @@ public class PointController {
 			
 		}
 		
-//		model.addAttribute("loginId", loginId);
 		// 결제시 필요한 정보 입력을 위해 MemberDTO 반환
 		MemberDTO memberDTO = sqlSession.getMapper(PointImpl.class).selectUserInfo(loginId);
-		
-//		int myPoint = sqlSession.getMapper(PointImpl.class).selectMyPoint(loginId);
 		model.addAttribute("MemberDTO", memberDTO);
 		
 		return "point/chargeLog";
@@ -75,6 +54,8 @@ public class PointController {
 		String loginId = userInfo.getUsername();
 		model.addAttribute("loginId", loginId);
 	
+		MemberDTO memberDTO = sqlSession.getMapper(PointImpl.class).selectUserInfo(loginId);
+		model.addAttribute("MemberDTO", memberDTO);
 		return "point/sponsorLog";
 	}
 	
@@ -85,6 +66,8 @@ public class PointController {
 		String loginId = userInfo.getUsername();
 		model.addAttribute("loginId", loginId);
 		
+		MemberDTO memberDTO = sqlSession.getMapper(PointImpl.class).selectUserInfo(loginId);
+		model.addAttribute("MemberDTO", memberDTO);
 		return "point/patronLog";
 	}
 	
@@ -95,7 +78,22 @@ public class PointController {
 		String loginId = userInfo.getUsername();
 		model.addAttribute("loginId", loginId);
 		
+		MemberDTO memberDTO = sqlSession.getMapper(PointImpl.class).selectUserInfo(loginId);
+		model.addAttribute("MemberDTO", memberDTO);
 		return "point/exchangeLog";
+	}
+	
+
+	// 환전 신청 페이지 진입
+	@RequestMapping("/exchangeForm.do")
+	public String exchangeForm(Model model) {
+		UserDetails userInfo = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String loginId = null;
+		loginId = userInfo.getUsername();
+		MemberDTO memberDTO = sqlSession.getMapper(PointImpl.class).selectUserInfo(loginId);
+		model.addAttribute("MemberDTO", memberDTO);
+		
+		return "point/exchangeForm";
 	}
 	
 	// 기간 설정후 조회버튼 눌렀을 때
@@ -167,7 +165,6 @@ public class PointController {
 	@RequestMapping("/insertChargeLog.do")
 	@ResponseBody
 	public void insertChargeLog(@RequestParam Map<String,Object> param, HttpServletRequest req, Model model) {
-		System.out.println("컨트롤러에 진입 파라미터 : " + param); // 주석
 		
 		// 로그인된 아이디 얻어와서 맵에 넣어주기
 		UserDetails userInfo = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -183,11 +180,57 @@ public class PointController {
 		param.put("VAT", VAT);
 		param.put("paymentType", paymentType);
 		
-		System.out.println("sql문 넘기기전에 파라미터 확인해보기" + param); // 주석
-		
 		sqlSession.getMapper(PointImpl.class).insertChargeLog(param);
+		sqlSession.getMapper(PointImpl.class).updateChargeMyPoint(param);
 		
 	}
 	
 	// 후원시 포인트 이동 처리
+	@RequestMapping("/insertSponsorshipLog.do")
+	@ResponseBody
+	public void insertSponsorshipLog(@RequestParam Map<String, Object> param, Authentication authentication) {
+		// 로그인된 아이디 얻어와서 sponsorId 변수에 넣어주기
+		UserDetails userInfo = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String sponsorId = userInfo.getUsername();
+		int sponPoint = Integer.parseInt(param.get("sponPoint").toString());
+		String patronId = param.get("patronId").toString();
+		
+		sqlSession.getMapper(PointImpl.class).updateSponsorPoint(sponsorId, sponPoint);
+		sqlSession.getMapper(PointImpl.class).updatePatronPoint(patronId, sponPoint);
+	}
+
+	
+	// 환전요청시 포인트 이동 처리
+	@RequestMapping(value="/insertExchangeLog.do", method=RequestMethod.POST)
+	public String insertExchangeLog(Model model, HttpServletRequest req) {
+		String exchangeId = req.getParameter("exchangeId");
+		int exchangePoint = Integer.parseInt(req.getParameter("exchangePoint"));
+		String bankName = req.getParameter("bankName");
+		String accountName = req.getParameter("accountName");
+		String accountNum = req.getParameter("accountNum");
+		
+		int exchangeFee = (int) (exchangePoint * 0.3);
+		int exchangedMoney = (int) (exchangePoint * 0.7);
+		
+		if (exchangePoint == (exchangeFee + exchangedMoney)) {
+			System.out.println("환전 수수료, 입금액 이상 없음");
+		}
+		else {
+			System.out.println("환전 수수료, 입금액 확인 필요");
+		}
+		
+		Map<String, Object> map = new HashMap(); 
+		map.put("exchangeId", exchangeId);
+		map.put("exchangePoint", exchangePoint);
+		map.put("exchangeFee", exchangeFee);
+		map.put("exchangedMoney", exchangedMoney);
+		map.put("bankName", bankName);
+		map.put("accountName", accountName);
+		map.put("accountNum", accountNum);
+
+		sqlSession.getMapper(PointImpl.class).insertExchangeLog(map);
+		sqlSession.getMapper(PointImpl.class).updateExchangeMyPoint(map);
+		
+		return "redirect:exchangeLog.do";   
+	}
 }
