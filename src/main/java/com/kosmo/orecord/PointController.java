@@ -153,6 +153,7 @@ public class PointController {
 		// Ajax로 호출되었으므로 URL아닌 map을 반환 
 		Map map = new HashMap();
 		map.put("list", list);
+		map.put("totalRecord", totalRecord);
 		map.put("endpageInBlock", endpageInBlock);
 		map.put("totalPage", totalPage);
 		map.put("startpageInBlock", startpageInBlock);
