@@ -33,7 +33,14 @@ function choiceAction(f){
 		else{
 			return false;
 		}
-	}	
+	}
+	var choice = confirm("채택하시겠습니까?");
+	if(choice==true){
+		return true;
+	}
+	else{
+		return false;
+	}
 }
 </script>
 <style>
