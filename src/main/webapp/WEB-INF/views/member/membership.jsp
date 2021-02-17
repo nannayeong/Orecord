@@ -353,7 +353,7 @@ $(function(){
 						</div>
 						<div class="input-field col-md-6 pl-md-1 ">
 							<label>프로필 이미지</label> <input type="file"
-								class="form-control" name="img" id="img" value="첨부파일"
+								class="form-control" name="img" id="img" value="${dto.img }"
 								 accept=".jpeg,.jpg,.png">
 						</div>
 					</div>
