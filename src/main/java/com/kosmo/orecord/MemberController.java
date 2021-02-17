@@ -186,17 +186,17 @@ public class MemberController {
 				mfile.transferTo(serverFullName);
 			}
 			
-			model.addAttribute("nickname", nickname);
-			
 			System.out.println(id+"**"+ pw+"**"+nickname+"**"+email+"**"+phone+"**"+address+"**"+intro+"**"+img);
 			int result = sqlSession.getMapper(MemberImpl.class).
 					membershipInfo(id, pw, nickname, email, phone, address, intro, img);
 			
 			if(result==1) {
 				System.out.println("성공!");
+				model.addAttribute("memberResult", "success");
 			}
 			else {
 				System.out.println("회원가입 실패..");
+				model.addAttribute("memberResult", "fail");
 			}
 			
 		}
@@ -207,7 +207,7 @@ public class MemberController {
 			e.printStackTrace();
 		}
 		
-		return "redirect:/main.do";
+		return "redirect:/member/login.do";
 	}
 }
 

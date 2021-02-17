@@ -29,6 +29,21 @@ if(cookies!=null){
 		}
 	}
 }
+
+if(request.getParameter("memberResult").equals("success")){
+%>
+<script>
+	alert('회원가입이 완료되었습니다.');
+</script>
+<%
+}
+else if(request.getParameter("memberResult").equals("fail")){
+%>
+<script>
+	alert('회원가입 실패');
+</script>
+<%	
+}
 %>
 <!DOCTYPE html>
 <html>
