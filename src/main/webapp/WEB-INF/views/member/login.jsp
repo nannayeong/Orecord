@@ -151,7 +151,18 @@ https://kauth.kakao.com/oauth/authorize?response_type=code&client_id={e1dea648a0
 </head>
 <body>
 	<div>
+	
 		<div class="content">
+		<div style="background: linear-gradient(to right, #91888A, #5A5B82);">
+				<div class="row">
+					<div style="margin: 50px 0 0 60px;">
+						<h5 style="margin-left: 3px;">Login</h5>
+						<h2>로그인</h2>
+					</div>
+				</div>
+			</div>
+			<br />
+			<hr color="gray">
 			<div >
 			<c:choose>
 			<c:when test="${empty pageContext.request.userPrincipal.name }">
@@ -164,16 +175,7 @@ https://kauth.kakao.com/oauth/authorize?response_type=code&client_id={e1dea648a0
 				<p>로그아웃 하였습니다.</p>
 			</c:if>
 				<table>
-			<div style="background: linear-gradient(to right, #91888A, #5A5B82);">
-				<div class="row">
-					<div style="margin: 50px 0 0 60px;">
-						<h5 style="margin-left: 3px;">Login</h5>
-						<h2>로그인</h2>
-					</div>
-				</div>
-			</div>
-			<br />
-			<hr color="gray">
+			
 
 			<br /><br /><br /><br />  
 					<div class="container" align="center">

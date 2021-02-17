@@ -58,13 +58,13 @@ background-color: #f2f2f2;cursor:pointer
 		</tr>
 		<tr>
 			<td colspan="3">
-				<audio controls style="width:97%" id="${audio.albumName }">
+				<audio controls style="width:97%" id="${audio.albumName }" onended="endplay();">
 					<source src="${audio.audiofilename }" type="audio/mp4">
 				</audio>
 			</td>
 		</tr>
 		<tr>
-			<td>
+			<td colspan="2">
 				${audio.contents}
 			</td>
 		</tr>
@@ -101,12 +101,6 @@ background-color: #f2f2f2;cursor:pointer
 				      		</c:forEach>
 				      	</select>
 				      	&nbsp&nbsp<span onclick="addplname();"><i class="fas fa-plus fa-lg"></i></span><br />
-				      	<span>저장할 플레이리스트 폴더 선택</span><br />
-				      	<select name="plname" id="" style="width:8em;text-align:center">
-				      		<c:forEach items="${plList}" var="pl" varStatus="status">
-				      		<option value="${pl.plname}">${pl.plname }</option>
-				      		</c:forEach>
-				      	</select>
 				      </div>
 				
 				      <!-- Modal footer -->

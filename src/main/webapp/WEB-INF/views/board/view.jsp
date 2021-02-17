@@ -36,6 +36,11 @@ function deleteRow(comment_idx, audio_idx){
 		location.href="delete.do?comment_idx="+ comment_idx+ "&audio_idx="+ audio_idx;
 	}
 }
+function deleteAction(audio_idx){
+	if(confirm("정말로 삭제하시겠습니까?")){
+		location.href="viewDelete.do?audio_idx="+audio_idx;
+	}
+}
 $(document).ready(function(){
 	/* 웹페이지를 열었을때 */
 	$("#img1").show();
@@ -130,28 +135,7 @@ $(function(){
 						</audio>
 					</div>
 					<div style="padding: 10px 0 0 35px;">
-						<div id="msg" style="color:white; font-size:16px;"></div>
-						<button type="button" onclick="control(event)" class="btn btn-outline-dark"
-							style="color:white;" id="play">
-							play
-						</button>
-						<button type="button" onclick="control(event)" class="btn btn-outline-dark"
-							style="color:white;" id="pause">
-							pause
-						</button>
-						<button type="button" onclick="control(event)" class="btn btn-outline-dark"
-							style="color:white;" id="replay">
-							replay
-						</button>
-						<button type="button" onclick="control(event)" class="btn btn-outline-dark"
-							style="color:white;" id="vol+">
-							vol+
-						</button>
-						<button type="button" onclick="control(event)" class="btn btn-outline-dark"
-							style="color:white;" id="vol-">
-							vol-
-						</button>
-						<img src="../resources/img/like.png" alt="좋아요 수" width="30" style="margin-left:50px;">
+						<img src="../resources/img/like.png" alt="좋아요 수" width="30" style="margin-left:5px;">
 						<span>${audio.like_count}</span>
 						<img src="../resources/img/playcount.png" alt="재생횟수" width="50">
 						<span id="playC">${audio.play_count}</span>
@@ -213,7 +197,7 @@ $(function(){
 					<c:if test="${audio.party eq 1 }">
 					<div style="margin-right: 60px;">
 						<button type="button" class="btn btn-outline-info"
-							onclick="location.href='deleteBoard.do?audio_idx=${audio.audio_idx}'">
+							onclick="javascript:deleteAction(${audio.audio_idx});">
 							삭제
 						</button>
 					</div>
@@ -237,6 +221,12 @@ $(function(){
 					<!-- 협업하기 불가능일때 -->
 					<c:if test="${audio.party ne 1 }">
 					<div style="margin-right: 60px;">
+						<button type="button" class="btn btn-outline-info"
+							onclick="javascript:deleteAction(${audio.audio_idx});">
+							삭제
+						</button>
+					</div>
+					<div style="margin-right: 10px;">
 						<button type="button" class="btn btn-outline-info"
 							onclick="location.href='modify.do?audio_idx=${audio.audio_idx}'">
 							수정
@@ -351,32 +341,9 @@ function control(e){
 	var id = e.target.id;
 	if(id == "img1"){
 		audio.play();
-		div.innerHTML = "재생중입니다.";
 	}
 	else if(id == "img2"){
 		audio.pause();
-		div.innerHTML = "일시중지되었습니다.";
-	}
-	else if(id == "replay"){
-		audio.load();
-		audio.play();
-		div.innerHTML = "처음부터 재생합니다.";
-	}
-	else if(id == "vol+"){
-		audio.volume += 0.1;
-		if(audio.volume > 0.9) audio.volume = 1.0;
-		div.innerHTML = "음량  증가 ";
-		if(audio.volume==1.0){
-			div.innerHTML = "최대음량입니다.";
-		}
-	}
-	else if(id == "vol-"){
-		audio.volume -= 0.1; 
-		if(audio.volume < 0.1) audio.volume = 0;
-		div.innerHTML = "음량 감소 ";
-		if(audio.volume==0){
-			div.innerHTML = "음소거";
-		}
 	}
 }
 </script>

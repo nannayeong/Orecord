@@ -34,52 +34,13 @@
 		INSERT INTO m_comment
 		(comment_idx, audio_idx, id, contents, regidate)
 		VALUES
-		(seq_comment.nextval,#{audio_idx},#{id},#{contents},sysdate)
+		(seq_comment.nextval,#{param1},#{param2},#{param3},sysdate)
 	</insert>
-	
-	<!-- 상세페이지 불러오기 -->
-	<select id="modify" resultType="model.AudioBoardDTO">
-		SELECT * FROM audioboard WHERE audio_idx=#{audio_idx} AND id=#{id}
-	</select> 
-	
-	<!-- 상세페이지 수정처리 -->
-	<update id="modifyAction" parameterType="model.AudioBoardDTO">
-		UPDATE audioboard
-			SET audiotitle=#{param1}, artistname=#{param2}, contents=#{param3},
-				audiofilename=#{param4}, imagename=#{param5}, category=#{param6},
-				party=#{param7}
-				WHERE audio_idx=#{param8} AND id=#{param9}
-	</update>
-	
-	<!-- 상세페이지 수정처리(오디오파일X) -->
-	<update id="modifyAction2" parameterType="model.AudioBoardDTO">
-		UPDATE audioboard
-			SET audiotitle=#{param1}, artistname=#{param2}, contents=#{param3},
-				imagename=#{param4}, category=#{param5}, party=#{param6}
-				WHERE audio_idx=#{param7} AND id=#{param8} 
-	</update>
-	
-	<!-- 상세페이지 수정처리(이미지파일X) -->
-	<update id="modifyAction3" parameterType="model.AudioBoardDTO">
-		UPDATE audioboard
-			SET audiotitle=#{param1}, artistname=#{param2}, contents=#{param3},
-				audiofilename=#{param4}, category=#{param5}, party=#{param6}
-				WHERE audio_idx=#{param7} AND id=#{param8}
-	</update>
-	
-	<!-- 상세페이지 수정처리(오디오,이미지X) -->
-	<update id="modifyAction4" parameterType="model.AudioBoardDTO">
-		UPDATE audioboard
-			SET audiotitle=#{param1}, artistname=#{param2}, contents=#{param3},
-				category=#{param4}, party=#{param5}
-				WHERE audio_idx=#{param6} AND id=#{param7}
-	</update>
 	
 	<!-- 댓글삭제 -->
 	<delete id="delete">
 		DELETE FROM m_comment
-		WHERE
-		comment_idx=#{comment_idx} AND id=#{id}
+		WHERE comment_idx=#{param1}
 	</delete>
 	
 	<!-- 협업자 불러오기 -->
@@ -99,4 +60,10 @@
 		select count(*) count from partyboard
 			where choice=1 and audio_idx=#{param1}
 	</select>
+	
+	<!-- 상세페이지 삭제 -->
+	<delete id="viewDelete">
+		DELETE FROM audioboard
+			WHERE audio_idx=#{param1} AND id=#{param2}
+	</delete>
 </mapper>
