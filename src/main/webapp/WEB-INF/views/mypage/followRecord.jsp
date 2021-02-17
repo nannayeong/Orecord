@@ -328,6 +328,9 @@ $(function(){
 					<span onclick="location.href='../${user_id}/record'" style="color:orange;">record</span>
 					<span onclick="location.href='../${user_id}/album'">album</span>
 					<span onclick="location.href='../${user_id}/playlist'">playlist</span>
+					<c:if test="${user_id eq pageContext.request.userPrincipal.name}">
+					<span onclick="location.href='../${user_id}/yParty'">party</span>
+					</c:if>
 					
 					<div style="float:right;margin-right:1em;">
 						<c:choose>
