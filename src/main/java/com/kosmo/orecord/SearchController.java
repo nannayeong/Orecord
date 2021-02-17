@@ -63,7 +63,8 @@ public class SearchController {
 		//아티스트명으로 검색5개
 		String path = req.getContextPath();
 		for(AudioBoardDTO audioDTO : audioList) {
-			
+			String contents = cal.contentsCut(audioDTO.getContents());
+			audioDTO.setContents(contents);
 			if(audioDTO.getImagename()==null){
 				audioDTO.setImagename(path+"/resources/img/default.jpg");
 			}
@@ -89,7 +90,8 @@ public class SearchController {
 		ArrayList<AudioBoardDTO> audioByNameList = sqlSession.getMapper(SearchImpl.class).searchAudioByArtistM(searchWord);
 		//아티스트명으로 검색5개
 		for(AudioBoardDTO audioDTO : audioByNameList) {
-			
+			String contents = cal.contentsCut(audioDTO.getContents());
+			audioDTO.setContents(contents);
 			if(audioDTO.getImagename()==null){
 				audioDTO.setImagename(path+"/resources/img/default.jpg");
 			}
@@ -205,7 +207,8 @@ public class SearchController {
 		ArrayList<AudioBoardDTO> audioList = sqlSession.getMapper(SearchImpl.class).search("AUDIOTITLE",searchWord,1,8);
 		String path = req.getContextPath();
 		for(AudioBoardDTO audioDTO : audioList) {
-			
+			String contents = cal.contentsCut(audioDTO.getContents());
+			audioDTO.setContents(contents);
 			if(audioDTO.getImagename()==null){
 				audioDTO.setImagename(path+"/resources/img/default.jpg");
 			}
@@ -273,7 +276,8 @@ public class SearchController {
 		
 		String path = req.getContextPath();
 		for(AudioBoardDTO audioDTO : audioList) {
-			
+			String contents = cal.contentsCut(audioDTO.getContents());
+			audioDTO.setContents(contents);
 			if(audioDTO.getImagename()==null){
 				audioDTO.setImagename(path+"/resources/img/default.jpg");
 			}
@@ -323,7 +327,8 @@ public class SearchController {
 		
 		String path = req.getContextPath();
 		for(AudioBoardDTO audioDTO : audioList) {
-			
+			String contents = cal.contentsCut(audioDTO.getContents());
+			audioDTO.setContents(contents);
 			if(audioDTO.getImagename()==null){
 				audioDTO.setImagename(path+"/resources/img/default.jpg");
 			}
@@ -391,7 +396,8 @@ public class SearchController {
 		
 		String path = req.getContextPath();
 		for(AudioBoardDTO audioDTO : audioByNameList) {
-			
+			String contents = cal.contentsCut(audioDTO.getContents());
+			audioDTO.setContents(contents);
 			if(audioDTO.getImagename()==null){
 				audioDTO.setImagename(path+"/resources/img/default.jpg");
 			}

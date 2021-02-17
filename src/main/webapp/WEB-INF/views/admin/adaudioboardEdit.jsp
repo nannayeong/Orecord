@@ -72,6 +72,16 @@ var modiValidate = function(f){
     		return false;
     	}
     }
+    
+    if(f.party.checked==true){
+    	f.party.value = "Y";
+    }
+    else{
+    	f.party.value = "N";
+    }
+	if(f.party.checked == false){
+		f.party.value == ${adaudio.party }
+    }
 }
 </script>
 </head>
@@ -142,17 +152,6 @@ $(document).ready(function(){
 	}; 
 	$('#input_file').setPreview(opt); 
 }); 
-
-function colChoice(){
-	var fn = document.regiform;
-	
-	if(fn.party.checked==true){
-		fn.party.value = "Y";
-	}
-	else{
-		fn.party.value = "N";
-	}
-}
 </script>
 <div>
 	<div class="content">
@@ -216,6 +215,8 @@ function colChoice(){
 										<option style="color: black;" value="Blues">Blues</option>
 									</select>
 								</div>
+								<span style="font-size:14px;">다른 유저와 협업</span>
+								<input type="checkbox" name="party" id="party" value="${adaudio.party }"/>
 							</div>
 						</div>
 						

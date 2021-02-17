@@ -67,13 +67,8 @@ var writeValidate = function(f){
     		return false;
    		}
    	}
-    /* } */
 }
-/* function partyRow(audio_idx){
-	if(confirm("신청 하시겠습니까?")){
-		location.href="partyWriteAction.do?audio_idx="+ audio_idx;
-	}
-} */
+
 </script>
 </head>
 <body>

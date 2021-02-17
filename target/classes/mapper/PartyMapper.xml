@@ -66,4 +66,8 @@
 		select count(*) from partyboard p inner join audioBoard a on p.audio_idx=a.audio_idx 
 		where p.id=#{param1} and choice=0
 	</select>
+	
+	<select id="partyMemberView" resultType="model.PartyBoardDTO">
+		SELECT p.id, p.audio_idx, p.kind, nickname FROM partyboard p inner join member m on p.id=m.id where audio_idx=#{0}
+	</select>
 </mapper>
