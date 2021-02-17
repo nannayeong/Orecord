@@ -5,7 +5,7 @@
 	<table>
 		<tr>
 			<td rowspan="2">
-				<img src="${memberDTO.img }" alt="" style="width:200px;border-radius:50%;margin:1.5em 0 2em 2em"/>
+				<img src="${memberDTO.img }" alt="" style="width:200px;height:200px;border-radius:50%;margin:1.5em 0 2em 2em"/>
 			</td>
 			<td> 
 				<div style="margin-left:2em;"> 

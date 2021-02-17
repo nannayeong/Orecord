@@ -269,7 +269,8 @@ $(function(){
 			
 				<div class="left-content">
 					<!-- <table style="width:100%;border:2px #f2f2f2 solid;margin:auto;margin-bottom:1em"> -->
-						<form name="registFrm" onsubmit="return isValidate(this);" method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/member/membershipAction.do">
+						<form name="registFrm" onsubmit="return isValidate(this);" method="post" enctype="multipart/form-data" 
+						action="${pageContext.request.contextPath}/member/membershipAction.do">
 				<s:csrfInput />
 					<!-- 아이디 -->
 					<div class="row">

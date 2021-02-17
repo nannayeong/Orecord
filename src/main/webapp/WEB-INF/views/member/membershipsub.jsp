@@ -41,7 +41,7 @@
 						
 						<div class="container" align="center">
 					<!-- 본문내용 -->
-						<form action="membership" method="post" id="form1">
+						<form action="membership.do" method="post" id="form1">
 						<s:csrfInput />
 							<div id="d1">
 								<br />
