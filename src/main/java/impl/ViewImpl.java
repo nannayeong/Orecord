@@ -16,32 +16,17 @@ public interface ViewImpl {
 	//상세페이지
 	public AudioBoardDTO View(int audio_idx);
 	
+	//상세페이지 삭제처리
+	public int viewDelete(int audio_idx, String id);
+	
 	//댓글리스트
 	public ArrayList<MCommentDTO> mComment(int audio_idx);
 	
 	//댓글추가
-	public int commentAction(
-		@Param("audio_idx") int audio_idx,
-		@Param("id") String id,
-		@Param("contents") String contents);
+	public int commentAction(int audio_idx, String id, String contents);
 	
-	//데이터 삭제
-	public int delete(@Param("comment_idx") int comment_idx,
-		@Param("id") String id);
-	
-	//기존게시물 조회
-	public AudioBoardDTO modify(@Param("audio_idx") int audio_idx,
-		@Param("id") String id);
-	
-	//게시물 수정하기
-	public int modifyAction(@Param("audiotitle") String audiotitle,
-		@Param("artistname") String aritstname,
-		@Param("contents") String contents,
-		@Param("audiofilename") String audiofilename,
-		@Param("imagename") String imagename,
-		@Param("category") String category,
-		@Param("audio_idx") int audio_idx,
-		@Param("id") String id);
+	//댓글 삭제
+	public int delete(int comment_idx);
 	
 	//협업자 불러오기
 	public ArrayList<PartyBoardDTO> partyMember(int audio_idx);

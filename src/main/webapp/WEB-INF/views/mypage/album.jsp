@@ -18,7 +18,16 @@
 <!-- layout js-->
 <script src="${pageContext.request.contextPath}/resources/js/layout.js"></script>
 <script>
-
+function addplname(){
+	if("${pageContext.request.userPrincipal.name}"==""){
+		alert('로그인 후 이용해주세요');
+		location.href="../member/login.do"
+	}
+	else{
+		var a = prompt('추가하실 이름을 입력해주세요');
+		$('select[name=plname]').prepend('<option value='+a+' selected>'+a+"</option>");
+	}
+}
 function deleteAlbumFunc(aidx){
 	if("${pageContext.request.userPrincipal.name}"==""){
 		alert('로그인 후 이용해주세요');
@@ -295,9 +304,9 @@ $(function(){
 <body style="background-color:#f2f2f2;">
 	<div>
 		<div class="content">
-			<div class="profile" style="background-color:brown;">
+
 				<%@include file="/resources/jsp/mypageProfile.jsp" %>
-			</div>
+
 			<div>
 				<div class="my-menu">
 					<span onclick="location.href='../${user_id}/record'">record</span>

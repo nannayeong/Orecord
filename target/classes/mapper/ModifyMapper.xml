@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="impl.ModifyImpl">
+	
+	<!-- 상세페이지 불러오기 -->
+	<select id="modify" resultType="model.AudioBoardDTO">
+		SELECT * FROM audioboard WHERE audio_idx=#{audio_idx} AND id=#{id}
+	</select> 
+	
+	<!-- 상세페이지 수정처리 -->
+	<update id="modifyAction" parameterType="model.AudioBoardDTO">
+		UPDATE audioboard
+			SET audiotitle=#{param1}, artistname=#{param2}, contents=#{param3},
+				audiofilename=#{param4}, imagename=#{param5}, category=#{param6},
+				party=#{param7}
+				WHERE audio_idx=#{param8} AND id=#{param9}
+	</update>
+	
+	<!-- 상세페이지 수정처리(오디오파일X) -->
+	<update id="modifyAction2" parameterType="model.AudioBoardDTO">
+		UPDATE audioboard
+			SET audiotitle=#{param1}, artistname=#{param2}, contents=#{param3},
+				imagename=#{param4}, category=#{param5}, party=#{param6}
+				WHERE audio_idx=#{param7} AND id=#{param8} 
+	</update>
+	
+	<!-- 상세페이지 수정처리(이미지파일X) -->
+	<update id="modifyAction3" parameterType="model.AudioBoardDTO">
+		UPDATE audioboard
+			SET audiotitle=#{param1}, artistname=#{param2}, contents=#{param3},
+				audiofilename=#{param4}, category=#{param5}, party=#{param6}
+				WHERE audio_idx=#{param7} AND id=#{param8}
+	</update>
+	
+	<!-- 상세페이지 수정처리(오디오,이미지X) -->
+	<update id="modifyAction4" parameterType="model.AudioBoardDTO">
+		UPDATE audioboard
+			SET audiotitle=#{param1}, artistname=#{param2}, contents=#{param3},
+				category=#{param4}, party=#{param5}
+				WHERE audio_idx=#{param6} AND id=#{param7}
+	</update>
+</mapper>

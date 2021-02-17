@@ -15,7 +15,7 @@
 	</properties>
 	<!-- 오라클 레파지토리  -->
 	<repositories>
-		<repository>  
+		<repository>
 			<id>oracle</id>
 			<name>ORACLE JDBC Repository</name>
 			<url>https://code.lds.org/nexus/content/groups/main-repo</url>
@@ -29,7 +29,7 @@
 			<version>${org.springframework-version}</version>
 			<exclusions>
 				<!-- Exclude Commons Logging in favor of SLF4j -->
-				<exclusion>
+				<exclusion>  
 					<groupId>commons-logging</groupId>
 					<artifactId>commons-logging</artifactId>
 				 </exclusion>
@@ -191,7 +191,6 @@
 			<artifactId>spring-security-taglibs</artifactId>
 			<version>4.2.1.RELEASE</version>
 		</dependency>	
-
 		
 	</dependencies>
     <build>

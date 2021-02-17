@@ -25,7 +25,8 @@
 	
 	<!-- 댓글리스트 -->
 	<select id="mComment" resultType="model.MCommentDTO">
-		SELECT * FROM m_comment WHERE audio_idx=#{audio_idx} ORDER BY comment_idx ASC
+		SELECT * FROM member M INNER JOIN m_comment C ON M.id=C.id
+			WHERE audio_idx=#{audio_idx} ORDER BY comment_idx ASC
 	</select>
 	
 	<!-- 댓글추가기능 -->
@@ -33,27 +34,13 @@
 		INSERT INTO m_comment
 		(comment_idx, audio_idx, id, contents, regidate)
 		VALUES
-		(seq_comment.nextval,#{audio_idx},#{id},#{contents},sysdate)
+		(seq_comment.nextval,#{param1},#{param2},#{param3},sysdate)
 	</insert>
-	
-	<!-- 상세페이지 불러오기 -->
-	<select id="modify" resultType="model.AudioBoardDTO">
-		SELECT * FROM audioboard WHERE audio_idx=#{audio_idx} AND id=#{id}
-	</select> 
-	
-	<!-- 상세페이지 수정처리 -->
-	<update id="modifyAction" parameterType="model.AudioBoardDTO">
-		UPDATE audioboard
-			SET audiotitle=#{audiotitle}, artistname=#{artistname}, contents=#{contents},
-				audiofilename=#{audiofilename}, imagename=#{imagename}, category=#{category}
-				WHERE audio_idx=#{audio_idx} AND id=#{id}
-	</update>
 	
 	<!-- 댓글삭제 -->
 	<delete id="delete">
 		DELETE FROM m_comment
-		WHERE
-		comment_idx=#{comment_idx} AND id=#{id}
+		WHERE comment_idx=#{param1}
 	</delete>
 	
 	<!-- 협업자 불러오기 -->
@@ -73,4 +60,10 @@
 		select count(*) count from partyboard
 			where choice=1 and audio_idx=#{param1}
 	</select>
+	
+	<!-- 상세페이지 삭제 -->
+	<delete id="viewDelete">
+		DELETE FROM audioboard
+			WHERE audio_idx=#{param1} AND id=#{param2}
+	</delete>
 </mapper>
