@@ -5,6 +5,9 @@
 a:link { color: red; text-decoration: none;}
 a:visited { color: black; text-decoration: none;}
 a:hover { color: blue; text-decoration: underline;}
+.menu.active{
+    background-color:#6c757d;
+}
 </style>
 <script type="text/javascript">
 function checkNull(t) {
@@ -12,15 +15,23 @@ function checkNull(t) {
 		alert("검색어를 입력하세요");
 		return false;
 	}
-	
-
 }
+
 </script>
+<%
+String a="", b="";
+if(request.getParameter("partyType")!=null){
+if(request.getParameter("partyType").equals("1")){
+	a= " active";
+}else if(request.getParameter("partyType").equals("0")){
+	b= " active";
+}}%>
 <div class="menu-back">
 	<!-- 오른정렬 -->
 	<a href="${pageContext.request.contextPath}/main.do"><div class="logo">Orecord</div></a>
-	<a href=""><div class="menu">menu1</div></a>
-	<a href=""><div class="menu">menu2</div></a>
+	<a href="${pageContext.request.contextPath}/Co_op_Main.do?partyType=1"><div class="menu<%=a%>">협업게시물</div></a>
+	<a href="${pageContext.request.contextPath}/Co_op_Main.do?partyType=0"><div class="menu<%=b%>">완성게시물</div></a>
+	
 	<div class="search">
 		<form action="${pageContext.request.contextPath}/search.do" onsubmit="return checkNull(this)">
 			<input type="text" value="" type="search" style="width:18em" name="searchWord"/>

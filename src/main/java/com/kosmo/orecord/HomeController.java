@@ -28,11 +28,13 @@ import model.AudioBoardDTO;
 import model.FollowDTO;
 import model.LikeDTO;
 import model.MemberDTO;
+import model.PartyBoardDTO;
 import model.PlayListDTO;
 import util.Calculate;
 import impl.AudioBoardImpl;
 import impl.FollowImpl;
 import impl.MainImpl;
+import impl.PartyImpl;
 import impl.PlayListImpl;
 
 /**
@@ -94,7 +96,8 @@ public class HomeController {
 		ArrayList<AudioBoardDTO> audiolist = sqlSession.getMapper(AudioBoardImpl.class).mainAudioList(0,7,1,8);
 		
 		for(AudioBoardDTO audioDTO : audiolist) {
-			
+			String contents = cal.contentsCut(audioDTO.getContents());
+			audioDTO.setContents(contents);
 			System.out.println(audioDTO.getImagename()); 
 			if(audioDTO.getImagename()==null){
 				audioDTO.setImagename(path+"/resources/img/default.jpg");
@@ -184,8 +187,103 @@ public class HomeController {
 		model.addAttribute("follows",follows);
 		
 		return "main/audiolistAdd";
-		
 	}
+	
+	@RequestMapping("/Co_op_Main.do")
+	public String coOpMain(Model model, HttpServletRequest req,
+			HttpSession session, Principal principal) {
+		
+		String path = req.getContextPath();
+		ArrayList<PlayListDTO> plList = null;
+		
+		//로그인
+		String id="";
+		try {
+			 id = principal.getName();
+			 
+			 /*로그인유저의 플레이리스트 가져오기*/
+			 plList = sqlSession.getMapper(PlayListImpl.class).select(id);
+				
+			 if(plList.size()==0) {
+				 PlayListDTO dto = new PlayListDTO();
+				 dto.setPlname("default");
+				 plList.add(dto);
+			 }
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+		model.addAttribute("plList", plList);
+		int party = Integer.parseInt(req.getParameter("partyType"));
+		//메인페이지에 출력할 오디오게시글 불러옴
+		ArrayList<AudioBoardDTO> audiolist = sqlSession.getMapper(AudioBoardImpl.class).mainAudioListCoop(0,14,1,8,party);
+		
+		for(AudioBoardDTO audioDTO : audiolist) {
+			
+			System.out.println(audioDTO.getImagename()); 
+			if(audioDTO.getImagename()==null){
+				audioDTO.setImagename(path+"/resources/img/default.jpg");
+			}
+			else {
+				String fileName = audioDTO.getImagename();
+				audioDTO.setImagename(path+"/resources/upload/"+fileName);
+			}
+			String fileName = audioDTO.getAudiofilename();
+			audioDTO.setAudiofilename(path+"/resources/upload/"+fileName);
+		}
+		
+		//인기순정렬 맵으로넣음
+		model.addAttribute("audiolist", audiolist);
+		
+		//협업중인 멤버 dto 모으기
+		HashMap<Integer, ArrayList<PartyBoardDTO>> partyMap = new HashMap<Integer, ArrayList<PartyBoardDTO>>();
+		for(AudioBoardDTO audio : audiolist) {
+			ArrayList<PartyBoardDTO> partys = sqlSession.getMapper(PartyImpl.class).partyMemberView(audio.getAudio_idx());
+			partyMap.put(audio.getAudio_idx(),partys);
+		}
+		
+		model.addAttribute("partyMap",partyMap);
+		
+		
+		//audio_idx별 앨범이름 넣음
+		ArrayList<AlbumDTO> album = new ArrayList<AlbumDTO>();
+		for(AudioBoardDTO dto : audiolist) {
+			album.add(sqlSession.selectOne("getalbum",dto.getAlbum_idx()));
+		}
+		model.addAttribute("album",album);
+		
+		ArrayList<LikeDTO> likes = loadLike(audiolist);
+		model.addAttribute("likes",likes);
+		
+		
+		ArrayList<MemberDTO> recFollow = new ArrayList<MemberDTO>();
+		HashMap<MemberDTO,Integer> recMemberMap = new HashMap<MemberDTO, Integer>();
+		if(id!=null) {
+			recMemberMap = cal.recommandFollowByFollowing(sqlSession,id);
+			recFollow = cal.arrayByFollow(recMemberMap);
+		}
+		for(MemberDTO recMemberDTO : recFollow) {
+			
+			if(recMemberDTO.getImg()==null){
+				recMemberDTO.setImg(path+"/resources/img/default.jpg");
+			}
+			else {
+				String fileName = recMemberDTO.getImg();
+				recMemberDTO.setImg(path+"/resources/upload/"+fileName);
+			}
+		}
+		
+		model.addAttribute("recFollow",recFollow);
+		model.addAttribute("recMemberMap",recMemberMap);
+		
+		
+		return "main/Co_op_Main";
+	}
+	
+	
+	
+	
+	
 	@RequestMapping("/loadMainCount.do")
 	@ResponseBody
 	public Map<String, String> countLoad(Model model, HttpServletRequest req, Principal principal, HttpSession session) {
