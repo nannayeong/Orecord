@@ -304,7 +304,9 @@ $(function(){
 <body style="background-color:#f2f2f2;">
 	<div>
 		<div class="content">
-			<%@include file="/resources/jsp/mypageProfile.jsp" %>
+
+				<%@include file="/resources/jsp/mypageProfile.jsp" %>
+
 			<div>
 				<div class="my-menu">
 					<span onclick="location.href='../${user_id}/record'">record</span>

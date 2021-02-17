@@ -224,6 +224,9 @@ function likeFunc(a){
 	}
 }
 
+function endplay(){
+	alert("끝");
+}
 $(function(){
 	
 	/* 페이징 */
@@ -320,9 +323,9 @@ $(function(){
 <body style="background-color:#f2f2f2;">
 	<div>
 		<div class="content">
-			<div class="profile" style="background-color:brown;">
+
 				<%@include file="/resources/jsp/mypageProfile.jsp" %>
-			</div>
+
 			<div>
 				<div class="my-menu">
 					<span onclick="location.href='../${user_id}/record'" style="color:orange;">record</span>
