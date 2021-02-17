@@ -213,6 +213,12 @@ $(function(){
 					<c:if test="${audio.party eq 1 }">
 					<div style="margin-right: 60px;">
 						<button type="button" class="btn btn-outline-info"
+							onclick="location.href='deleteBoard.do?audio_idx=${audio.audio_idx}'">
+							삭제
+						</button>
+					</div>
+					<div style="margin-right: 10px;">
+						<button type="button" class="btn btn-outline-info"
 							onclick="location.href='modify.do?audio_idx=${audio.audio_idx}'">
 							수정
 						</button>
@@ -308,7 +314,7 @@ $(function(){
 							value="${row.comment_idx }" />
 						<div class="row">
 							<div class="col-2" style="padding:23px 0 0 90px;text-align:center">
-								<img src="../resources/img/4.png" alt="작성자프로필" width="50"
+								<img src="${row.img}" alt="작성자프로필" width="50"
 									class="rounded-circle">
 								<p style="font-size: 12px;">${row.id}</p>
 							</div>
@@ -359,12 +365,18 @@ function control(e){
 	else if(id == "vol+"){
 		audio.volume += 0.1;
 		if(audio.volume > 0.9) audio.volume = 1.0;
-		div.innerHTML = "음량 0.1 증가 "+ "현재 "+ audio.volume;
+		div.innerHTML = "음량  증가 ";
+		if(audio.volume==1.0){
+			div.innerHTML = "최대음량입니다.";
+		}
 	}
 	else if(id == "vol-"){
 		audio.volume -= 0.1; 
 		if(audio.volume < 0.1) audio.volume = 0;
-		div.innerHTML = "음량 0.1 감소 "+ "현재 "+ audio.volume;
+		div.innerHTML = "음량 감소 ";
+		if(audio.volume==0){
+			div.innerHTML = "음소거";
+		}
 	}
 }
 </script>

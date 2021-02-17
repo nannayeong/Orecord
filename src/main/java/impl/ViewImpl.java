@@ -34,28 +34,24 @@ public interface ViewImpl {
 		@Param("id") String id);
 	
 	//게시물 수정하기
-	public int modifyAction(@Param("audiotitle") String audiotitle,
-		@Param("artistname") String aritstname,
-		@Param("contents") String contents,
-		@Param("audiofilename") String audiofilename,
-		@Param("imagename") String imagename,
-		@Param("category") String category,
-		@Param("audio_idx") int audio_idx,
-		@Param("id") String id);
+	public int modifyAction(String audiotitle, String aritstname,
+		String contents, String audiofilename, String imagename,
+		String category, int party, int audio_idx, String id);
 	
 	//게시물 수정하기(오디오파일X)
 	public int modifyAction2(String audiotitle, String artistname,
-		String contents, String imagename, String category, int audio_idx,
-		String id);
+		String contents, String imagename, String category, int party,
+		int audio_idx, String id);
 	
 	//게시물 수정하기(이미지파일X)
 	public int modifyAction3(String audiotitle, String artistname,
-			String contents, String audiofilename, String category, int audio_idx,
-			String id);
+		String contents, String audiofilename, String category, int party,
+		int audio_idx, String id);
 	
 	//게시물 수정하기(오디오, 이미지X)
 	public int modifyAction4(String audiotitle, String artistname,
-			String contents, String category, int audio_idx, String id);
+		String contents, String category, int party,
+		int audio_idx, String id);
 	
 	//협업자 불러오기
 	public ArrayList<PartyBoardDTO> partyMember(int audio_idx);

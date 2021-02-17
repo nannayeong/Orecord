@@ -34,10 +34,6 @@ var modiValidate = function(f){
 		f.audiotitle.focus();
 		return false;
 	}
-// 	if(f.audiofilename.value==""){
-//         alert('음원파일을 첨부하세요.');
-//         f.audiofilename.focus();
-//         return false;}
 	if(f.country.selectedIndex == 0){
         alert("나라를 선택하세요.");
         f.country.focus();
@@ -54,6 +50,7 @@ var modiValidate = function(f){
 		return false;
 	}
 	
+	console.log("1번");
 	// 다른 확장자 업로드시 경고창
 	if($("#imagename").val != ""){
     	var ext = $('#imagename').val().split('.').pop().toLowerCase();
@@ -72,6 +69,22 @@ var modiValidate = function(f){
     		return false;
     	}
     }
+    
+    if(f.party.checked==true){
+    	f.party.value = "Y";
+    }
+    else{
+    	f.party.value = "N";
+    }
+    
+    var z = confirm("수정하시겠습니까?");
+    if(z==true){
+    	return true;
+    }
+    else{
+    	return false;
+    }
+    console.log("2번");
 }
 </script>
 </head>
@@ -142,24 +155,13 @@ $(document).ready(function(){
 	}; 
 	$('#input_file').setPreview(opt); 
 }); 
-
-function colChoice(){
-	var fn = document.regiform;
-	
-	if(fn.party.checked==true){
-		fn.party.value = "Y";
-	}
-	else{
-		fn.party.value = "N";
-	}
-}
 </script>
 <div>
 	<div class="content">
 		<!-- 왼쪽 컨텐츠 -->
 		<form method="post" enctype="multipart/form-data" name="modiform"
-			onsubmit="return modiValidate(this);"
-			action="<c:url value="/board/modifyAction.do" />">
+			action="<c:url value="/board/modifyAction.do" />"
+			onsubmit="return modiValidate(this);">
 			<s:csrfInput />
 			<input type="hidden" name="audio_idx" value="${modify.audio_idx}">
 			<input type="hidden" name="id" value="${pageContext.request.userPrincipal.name}" />
@@ -217,6 +219,8 @@ function colChoice(){
 										<option style="color: black;" value="Blues">Blues</option>
 									</select>
 								</div>
+								<span style="font-size:14px;">다른 유저와 협업</span>
+								<input type="checkbox" name="party" id="party" value="Y" />
 							</div>
 						</div>
 						

@@ -25,7 +25,8 @@
 	
 	<!-- 댓글리스트 -->
 	<select id="mComment" resultType="model.MCommentDTO">
-		SELECT * FROM m_comment WHERE audio_idx=#{audio_idx} ORDER BY comment_idx ASC
+		SELECT * FROM member M INNER JOIN m_comment C ON M.id=C.id
+			WHERE audio_idx=#{audio_idx} ORDER BY comment_idx ASC
 	</select>
 	
 	<!-- 댓글추가기능 -->
@@ -44,33 +45,34 @@
 	<!-- 상세페이지 수정처리 -->
 	<update id="modifyAction" parameterType="model.AudioBoardDTO">
 		UPDATE audioboard
-			SET audiotitle=#{audiotitle}, artistname=#{artistname}, contents=#{contents},
-				audiofilename=#{audiofilename}, imagename=#{imagename}, category=#{category}
-				WHERE audio_idx=#{audio_idx} AND id=#{id}
+			SET audiotitle=#{param1}, artistname=#{param2}, contents=#{param3},
+				audiofilename=#{param4}, imagename=#{param5}, category=#{param6},
+				party=#{param7}
+				WHERE audio_idx=#{param8} AND id=#{param9}
 	</update>
 	
 	<!-- 상세페이지 수정처리(오디오파일X) -->
 	<update id="modifyAction2" parameterType="model.AudioBoardDTO">
 		UPDATE audioboard
 			SET audiotitle=#{param1}, artistname=#{param2}, contents=#{param3},
-				imagename=#{param4}, category=#{param5}
-				WHERE audio_idx=#{param6} AND id=#{param7} 
+				imagename=#{param4}, category=#{param5}, party=#{param6}
+				WHERE audio_idx=#{param7} AND id=#{param8} 
 	</update>
 	
 	<!-- 상세페이지 수정처리(이미지파일X) -->
 	<update id="modifyAction3" parameterType="model.AudioBoardDTO">
 		UPDATE audioboard
 			SET audiotitle=#{param1}, artistname=#{param2}, contents=#{param3},
-				audiofilename=#{param4}, category=#{param5}
-				WHERE audio_idx=#{param6} AND id=#{param7}
+				audiofilename=#{param4}, category=#{param5}, party=#{param6}
+				WHERE audio_idx=#{param7} AND id=#{param8}
 	</update>
 	
 	<!-- 상세페이지 수정처리(오디오,이미지X) -->
 	<update id="modifyAction4" parameterType="model.AudioBoardDTO">
 		UPDATE audioboard
 			SET audiotitle=#{param1}, artistname=#{param2}, contents=#{param3},
-				category=#{param4}
-				WHERE audio_idx=#{param5} AND id=#{param6}
+				category=#{param4}, party=#{param5}
+				WHERE audio_idx=#{param6} AND id=#{param7}
 	</update>
 	
 	<!-- 댓글삭제 -->
