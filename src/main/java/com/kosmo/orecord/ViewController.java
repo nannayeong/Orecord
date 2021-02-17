@@ -171,16 +171,12 @@ public class ViewController {
 		
 		//값이 넘어오는지 확인
 		String si = principal.getName();
-		System.out.println("아이디:"+ si);
-		String comment_idx = req.getParameter("comment_idx");
-		System.out.println("comment_idx = "+ comment_idx);
+		int comment_idx = Integer.parseInt(req.getParameter("comment_idx"));
 		String audio_idx = req.getParameter("audio_idx");
-		System.out.println("audio_idx = "+ audio_idx);
 		
 		//매퍼호출
 		int result = sqlSession.getMapper(ViewImpl.class).delete(
-			Integer.parseInt(req.getParameter("comment_idx")),
-			principal.getName());
+			comment_idx);
 		System.out.println("결과  = "+ result);
 		
 		//모델객체에 idx저장
@@ -222,6 +218,26 @@ public class ViewController {
 		
 		return map;
 	}
+	
+	//상세페이지 삭제처리
+	@RequestMapping("/board/viewDelete.do")
+	public String viewDelete(Principal principal, Model model, HttpServletRequest req) {
+		
+		String name = principal.getName();
+		int audio_idx = Integer.parseInt(req.getParameter("audio_idx"));
+		
+		//삭제 전 로그인 확인
+		if(principal.getName()==null) {
+			return "redirect:main.do"; 
+		}
+		//매퍼호출
+		int result = sqlSession.getMapper(ViewImpl.class).viewDelete(audio_idx, name);
+		System.out.println("결과  = "+ result);
+		
+		
+		return "redirect:/main.do";
+	}
+	
 } 
 
 

@@ -320,14 +320,17 @@ $(function(){
 <body style="background-color:#f2f2f2;">
 	<div>
 		<div class="content">
-			<div class="profile" style="background-color:brown;">
+
 				<%@include file="/resources/jsp/mypageProfile.jsp" %>
-			</div>
+
 			<div>
 				<div class="my-menu">
 					<span onclick="location.href='../${user_id}/record'" style="color:orange;">record</span>
 					<span onclick="location.href='../${user_id}/album'">album</span>
 					<span onclick="location.href='../${user_id}/playlist'">playlist</span>
+					<c:if test="${user_id eq pageContext.request.userPrincipal.name}">
+					<span onclick="location.href='../${user_id}/yParty'">party</span>
+					</c:if>
 					
 					<div style="float:right;margin-right:1em;">
 						<c:choose>

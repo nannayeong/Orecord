@@ -1,52 +1,25 @@
-
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
-
+<%@ page import="java.net.URLEncoder" %>
+<%@ page import="java.security.SecureRandom" %>
+<%@ page import="java.math.BigInteger" %>
 
 <%
-//리퀘스트 내장객체를 이용해서 생성된 쿠키를 가져온다.
-Cookie[] cookies = request.getCookies();
+    String clientId = "WTRSWBdAspUjsSDbYv2u";//애플리케이션 클라이언트 아이디값";
+    String redirectURI = URLEncoder.encode("http://localhost:8282", "UTF-8");
+    SecureRandom random = new SecureRandom();
+    String state = new BigInteger(130, random).toString();
+    String apiURL = "https://nid.naver.com/oauth2.0/authorize?response_type=code";
+    apiURL += "&client_id=" + clientId;
+    apiURL += "&redirect_uri=" + redirectURI;
+    apiURL += "&state=" + state;
+    session.setAttribute("state", state);
+ %>
+  <a href="<%=apiURL%>"><img height="50" src="http://static.nid.naver.com/oauth/small_g_in.PNG"/></a>
 
-//쿠키값을 저장할 변수
-String save = "";
-
-//생성된 쿠키가 존재한다면 
-if(cookies!=null){
-	for(Cookie ck : cookies){
-		// USER_ID가 있다면..
-		if(ck.getName().equals("ID")){
-			//로그인 아이디가 있는지 확인
-			save = ck.getValue();
-			
-			//저장쿠키 확인
-			System.out.println("save="+save);
-			
-			//쿠키값 req에 저장하기
-	         request.setAttribute("cookieID", save);
-		}
-	}
-}
-
-if(request.getParameter("memberResult")!=null){
-if(request.getParameter("memberResult").equals("success")){
-%>
-<script>
-	alert('회원가입이 완료되었습니다.');
-</script>
-<%
-}
-else if(request.getParameter("memberResult").equals("fail")){
-%>
-<script>
-	alert('회원가입 실패');
-</script>
-<%	
-}
-}
-%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -64,6 +37,8 @@ else if(request.getParameter("memberResult").equals("fail")){
 <script src="${pageContext.request.contextPath}/resources/js/layout.js"></script>
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
+<script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 
 <script type="text/javascript">
 $(document).ready(function() {
@@ -107,7 +82,7 @@ function deleteCookie(cookieName){
     var expireDate = new Date();
     expireDate.setDate(expireDate.getDate() - 1);
     document.cookie = cookieName + "= " + "; expires=" + expireDate.toGMTString();
-}
+} 
 
 //쿠키값 가져오기
 function getCookie(cookie_name) {
@@ -165,21 +140,23 @@ https://kauth.kakao.com/oauth/authorize?response_type=code&client_id={e1dea648a0
 	    "scope":"account_email profile"
 	}
 </script>
+<script>
+<!-- 네이버아이디로로그인 버튼 노출 영역 -->
+  <div id="naver_id_login"></div>
+  <!-- //네이버아이디로로그인 버튼 노출 영역 -->
+  <script type="text/javascript">
+  	var naver_id_login = new naver_id_login("YOUR_CLIENT_ID", "YOUR_CALLBACK_URL");
+  	var state = naver_id_login.getUniqState();
+  	naver_id_login.setButton("white", 2,40);
+  	naver_id_login.setDomain("YOUR_SERVICE_URL");
+  	naver_id_login.setState(state);
+  	naver_id_login.setPopup();
+  	naver_id_login.init_naver_id_login();
+  </script>
 </head>
 <body>
 	<div>
-	
 		<div class="content">
-		<div style="background: linear-gradient(to right, #91888A, #5A5B82);">
-				<div class="row">
-					<div style="margin: 50px 0 0 60px;">
-						<h5 style="margin-left: 3px;">Login</h5>
-						<h2>로그인</h2>
-					</div>
-				</div>
-			</div>
-			<br />
-			<hr color="gray">
 			<div >
 			<c:choose>
 			<c:when test="${empty pageContext.request.userPrincipal.name }">
@@ -192,7 +169,16 @@ https://kauth.kakao.com/oauth/authorize?response_type=code&client_id={e1dea648a0
 				<p>로그아웃 하였습니다.</p>
 			</c:if>
 				<table>
-			
+			<div style="background: linear-gradient(to right, #91888A, #5A5B82);">
+				<div class="row">
+					<div style="margin: 50px 0 0 60px;">
+						<h5 style="margin-left: 3px;">Login</h5>
+						<h2>로그인</h2>
+					</div>
+				</div>
+			</div>
+			<br />
+			<hr color="gray">
 
 			<br /><br /><br /><br />  
 					<div class="container" align="center">

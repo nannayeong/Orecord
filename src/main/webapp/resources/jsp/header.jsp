@@ -41,31 +41,40 @@ if(request.getParameter("partyType").equals("1")){
 	<!-- 왼정렬 -->
 	<c:choose>
 	<c:when test="${not empty pageContext.request.userPrincipal.name}">
-	<div class="noti" id="setting" onclick="settingFunc();">
-		<i class="fas fa-ellipsis-h fa-lg"></i>
-		<div style="position:relative;background-color:red;visibility:hidden" class="setting-down">
-			<li><a href="${pageContext.request.contextPath}/report/reportlist.do">신고하기</a></li>
-			<li>2</li>
+	<div class="noti" id="setting">
+		<div class="dropdown">
+		  <span class="dropdown-toggle" data-toggle="dropdown">
+		    <i class="fas fa-ellipsis-h fa-lg" style="color:white"></i>
+		  </span>
+		  <div class="dropdown-menu">
+		    <a class="dropdown-item" href="${pageContext.request.contextPath}/report/reportlist.do">신고하기</a>
+		  </div>
 		</div>
 	</div>
-	<div class="noti" id="noti" onclick="notiFunc();">
-		<i class="fas fa-bell fa-lg"></i>
-		<div style="position:relative;background-color:red;visibility:hidden" class="noti-down">
-			<li>1</li>
-			<li>2</li>
+	<div class="noti" id="noti">
+		<div class="dropdown">
+		  <span class="dropdown-toggle" data-toggle="dropdown">
+		    <i class="fas fa-bell fa-lg"></i>
+		  </span>
+		  <div class="dropdown-menu">
+		    <a class="dropdown-item" href="">알림</a>
+		  </div>
 		</div>
 	</div>
-	<div class="noti" id="user"onclick="userFunc();">
-		<img src="./resources/img/default.jpg" alt="" style="width:1.5em;border-radius:15px;margin-left:5px" />
-		<i class="fas fa-caret-down"></i>
-		<div style="position:relative;background-color:red;visibility:hidden" class="user-down">
-			<c:if test="${sessionScope.SPRING_SECURITY_CONTEXT.authentication.authorities eq '[ROLE_ADMIN]'}">
-			<li><a href="${pageContext.request.contextPath}/admin/main">어드민페이지</a></li>
+	<div class="noti" id="user">
+		<div class="dropdown">
+		  <span class="dropdown-toggle" data-toggle="dropdown">
+		 	<img src="./resources/img/default.jpg" alt="" style="width:1.5em;border-radius:15px;margin-left:5px" />
+		  </span>
+		  <div class="dropdown-menu">
+		    <c:if test="${sessionScope.SPRING_SECURITY_CONTEXT.authentication.authorities eq '[ROLE_ADMIN]'}">
+			<a class="dropdown-item" href="${pageContext.request.contextPath}/admin/main">어드민페이지</a>
 			</c:if>
-			<li><a href="${pageContext.request.contextPath}/${pageContext.request.userPrincipal.name}/record">마이페이지</a></li>
-			<li><a href="${pageContext.request.contextPath }/chargeLog.do">포인트 조회</a></li>
-			<li><a href="${pageContext.request.contextPath }/pwCheck.do">정보수정</a></li>
-			<li><a href="${pageContext.request.contextPath }/logout.do">로그아웃</a></li>
+			<a class="dropdown-item" href="${pageContext.request.contextPath}/${pageContext.request.userPrincipal.name}/record">마이페이지</a>
+			<a class="dropdown-item" href="${pageContext.request.contextPath }/chargeLog.do">포인트 조회</a>
+			<a class="dropdown-item" href="${pageContext.request.contextPath }/pwCheck.do">정보수정</a>
+			<a class="dropdown-item" href="${pageContext.request.contextPath }/logout.do">로그아웃</a>
+		  </div>
 		</div>
 	</div>
 	

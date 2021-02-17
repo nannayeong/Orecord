@@ -101,12 +101,6 @@ background-color: #f2f2f2;cursor:pointer
 				      		</c:forEach>
 				      	</select>
 				      	&nbsp&nbsp<span onclick="addplname();"><i class="fas fa-plus fa-lg"></i></span><br />
-				      	<span>저장할 플레이리스트 폴더 선택</span><br />
-				      	<select name="plname" id="" style="width:8em;text-align:center">
-				      		<c:forEach items="${plList}" var="pl" varStatus="status">
-				      		<option value="${pl.plname}">${pl.plname }</option>
-				      		</c:forEach>
-				      	</select>
 				      </div>
 				
 				      <!-- Modal footer -->

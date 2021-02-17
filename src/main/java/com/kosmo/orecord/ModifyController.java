@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import impl.ModifyImpl;
 import impl.ViewImpl;
 import model.AudioBoardDTO;
 import model.MCommentDTO;
@@ -43,7 +44,7 @@ public class ModifyController {
 		System.out.println("id = "+ name);
 		
 		AudioBoardDTO modify =
-			sqlSession.getMapper(ViewImpl.class).modify(
+			sqlSession.getMapper(ModifyImpl.class).modify(
 				Integer.parseInt(req.getParameter("audio_idx")),
 				principal.getName());
 		
@@ -160,28 +161,28 @@ public class ModifyController {
 			
 			//오디오,이미지X > 오디오X > 이미지X > 오디오,이미지O
 			if(audiofilename==null && imagename==null) {
-				int result3 = sqlSession.getMapper(ViewImpl.class)
+				int result3 = sqlSession.getMapper(ModifyImpl.class)
 					.modifyAction4(audiotitle, artistname, contents,
 						category, party, modi1, id);
 				System.out.println("오디오,이미지X="+result3);
 				model.addAttribute("audio_idx", modi1);
 			}
 			else if(audiofilename==null) {
-				int result = sqlSession.getMapper(ViewImpl.class)
+				int result = sqlSession.getMapper(ModifyImpl.class)
 					.modifyAction2(audiotitle, artistname,
 						contents, imagename, category, party, modi1, id);
 				System.out.println("오디오X="+ result);
 				model.addAttribute("audio_idx", modi1);
 			}
 			else if(imagename==null) {
-				int result2 = sqlSession.getMapper(ViewImpl.class)
+				int result2 = sqlSession.getMapper(ModifyImpl.class)
 					.modifyAction3(audiotitle, artistname, contents,
 						audiofilename, category, party, modi1, id);
 				System.out.println("이미지X="+ result2);
 				model.addAttribute("audio_idx", modi1);
 			}
 			else {
-				int applyRow = sqlSession.getMapper(ViewImpl.class)
+				int applyRow = sqlSession.getMapper(ModifyImpl.class)
 						.modifyAction(audiotitle, artistname, contents,
 								audiofilename, imagename, category, party, modi1, id);
 				System.out.println("수정처리된 레코드수 : "+ applyRow);

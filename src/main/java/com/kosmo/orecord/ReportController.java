@@ -57,13 +57,6 @@ public class ReportController {
 			e.printStackTrace();
 		}
 		
-		int r_idx = Integer.parseInt(req.getParameter("r_idx"));
-		System.out.println(r_idx);
-		
-		ReportDTO ret = sqlSession.getMapper(ReportImpl.class).View(r_idx);
-		System.out.println(ret.getR_idx()+"-------------------");
-		model.addAttribute("ret", ret);
-		
 		return "report/reportwrite";
 	}
 	
