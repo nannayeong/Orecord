@@ -40,7 +40,9 @@ function writeValidate(f)
 			break;
 		}
 	}
-	
+	if(frm.kind.selectedIndex == 0){
+		frm.kind.value == ${reportDTO.kind};
+    }
 	if(isReason != true){
 		alert("신고이유를 선택해주세요");
 		frm.kind[0].focus();

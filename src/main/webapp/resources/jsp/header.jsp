@@ -29,8 +29,8 @@ if(request.getParameter("partyType").equals("1")){
 <div class="menu-back">
 	<!-- 오른정렬 -->
 	<a href="${pageContext.request.contextPath}/main.do"><div class="logo">Orecord</div></a>
-	<a href="${pageContext.request.contextPath}/Co_op_Main.do?partyType=1"><div class="menu<%=a%>">협업게시물</div></a>
-	<a href="${pageContext.request.contextPath}/Co_op_Main.do?partyType=0"><div class="menu<%=b%>">완성게시물</div></a>
+	<a href="${pageContext.request.contextPath}/Co_op_Main.do?partyType=1"><div class="menu<%=a%>">협업</div></a>
+	<a href="${pageContext.request.contextPath}/Co_op_Main.do?partyType=0"><div class="menu<%=b%>">최신음악</div></a>
 	
 	<div class="search">
 		<form action="${pageContext.request.contextPath}/search.do" onsubmit="return checkNull(this)">

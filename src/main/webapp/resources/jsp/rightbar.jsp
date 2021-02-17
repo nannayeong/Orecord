@@ -15,8 +15,8 @@ table.recFollow{
 					</c:if>
 				<c:forEach var="r" items="${recFollow}">
 				<table height="50"
-				style="width: 100%; margin: auto;; "
-				class="recFollow">
+				style="width: 100%; margin: auto;"
+				class="recFollow"">
 				<tr>
 					<td rowspan="4"
 						style="width: 7em; padding-left: 1em; padding-right: 1em">
@@ -52,8 +52,10 @@ table.recFollow{
 					</td>
 				</tr>
 				</table>
+				
+				<hr />
 				</c:forEach>
-				<div style="border-top: 2px solid #d4d7da;">
+				<div style="margin-top:1.7em ">
 			<h6> (153-759) 서울시 금천구 가산동 426-5 월드메르디앙 2차 413호</h6>
 			<br>
 			<h6>팀장 남아영 / 010-9346-1822</h6>
