@@ -427,7 +427,7 @@ function userFunc(){
 					<table style="width:100%;border:2px #f2f2f2 solid;margin:auto;margin-bottom:1em" class="feed">
 						<tr>
 							<td rowspan="5" style="width:7em;padding-left:1em;padding-right:1em;padding-top:1.5em;vertical-align:top">
-								<img src="${b.imagename }" alt="" style="width:6em"/>
+								<img src="${b.imagename }" alt="" style="width:6em;height:6em"/>
 							</td>
 							<td style="padding-left:1em">
 								<div style="font-size:14px;cursor:pointer" onclick="location.href='./${b.id }/record'">
@@ -473,7 +473,7 @@ function userFunc(){
 						</tr>
 						<tr>
 							<td colspan="3">
-								${fn:length(audio.contents)>20 ? substring(audio.contents,0,20) : audio.contents}
+								${b.contents}
 							</td>
 						</tr>
 						<tr>
