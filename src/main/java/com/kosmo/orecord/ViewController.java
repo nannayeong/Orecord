@@ -46,11 +46,11 @@ public class ViewController {
 			sqlSession.getMapper(ViewImpl.class).View(
 			Integer.parseInt(req.getParameter("audio_idx")));
 		
-//		String temp2 = null;
-//		if(view.getContents()!=null) {
-//			temp2 = view.getContents().replace("\r\n", "<br/>");
-//		}
-//		view.setContents(temp2);
+		String temp2 = null;
+		if(view.getContents()!=null) {
+			temp2 = view.getContents().replace("\r\n", "<br/>");
+		}
+		view.setContents(temp2);
 		
 		if(view.getImg()==null) {
 			view.setImg("../resources/img/default.jpg");
@@ -76,10 +76,18 @@ public class ViewController {
 				Integer.parseInt(req.getParameter("audio_idx")));
 		
 		for(MCommentDTO dto : comments) {
-			
 			String temp = dto.getContents().replace("\r\n", "<br/>");
 			dto.setContents(temp);
+			
+			if(dto.getImg()==null) {
+				dto.setImg("../resources/img/default.jpg");
+			}
+			else {
+				dto.setImg(path+"/resources/upload/"+dto.getImg());
+			}
 		}
+		
+		
 		model.addAttribute("comments", comments);
 		
 		//협업자 목록 불러오는 매퍼 호출
@@ -94,6 +102,10 @@ public class ViewController {
 			}
 			else {
 				dto2.setImg(path+"/resources/upload/"+dto2.getImg());
+			}
+			
+			if(dto2.getAudiofilename()!=null) {
+				dto2.setAudiofilename(path+"/resources/upload/"+dto2.getAudiofilename());
 			}
 		}
 		

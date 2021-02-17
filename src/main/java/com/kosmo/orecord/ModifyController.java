@@ -83,8 +83,6 @@ public class ModifyController {
 		String id = null;
 		
 		
-		int modi1 = Integer.parseInt(req.getParameter("audio_idx"));
-		System.out.println("audio_idx2 = "+ modi1);
 		
 		try {
 			//업로드폼의 file속성의 필드를 가져온다.(여기서는 2개임)
@@ -95,13 +93,25 @@ public class ModifyController {
 			List resultList = new ArrayList();
 			
 			//파일외에 폼값 받음.
+			int modi1 = Integer.parseInt(req.getParameter("audio_idx"));
+			System.out.println("audio_idx2 = "+ modi1);
 			String audiotitle = req.getParameter("audiotitle");
 			id = principal.getName();
 			String artistname = req.getParameter("artistname");
 			String contents = req.getParameter("contents");
 			String category = req.getParameter("country")+" "+req.getParameter("genre");
+			int party = -1;
 			String audiofilename = null;
 			String imagename = null;
+			
+			if(req.getParameter("party")==null) {
+				party = 0;
+			}
+			else {
+				if(req.getParameter("party").equals("Y")) {
+					party = 1;
+				}
+			}
 			
 			/*
 			 물리적경로를 기반으로 File객체를 생성한 후 지정된 디렉토리가 있는지 확인한다.
@@ -148,13 +158,38 @@ public class ModifyController {
 				mfile.transferTo(serverFullName);
 			}
 			
-			int applyRow = sqlSession.getMapper(ViewImpl.class)
-					.modifyAction(audiotitle, artistname, contents,
-						audiofilename, imagename, category, modi1, id);
-			System.out.println("수정처리된 레코드수 : "+ applyRow);
+			//오디오,이미지X > 오디오X > 이미지X > 오디오,이미지O
+			if(audiofilename==null && imagename==null) {
+				int result3 = sqlSession.getMapper(ViewImpl.class)
+					.modifyAction4(audiotitle, artistname, contents,
+						category, party, modi1, id);
+				System.out.println("오디오,이미지X="+result3);
+				model.addAttribute("audio_idx", modi1);
+			}
+			else if(audiofilename==null) {
+				int result = sqlSession.getMapper(ViewImpl.class)
+					.modifyAction2(audiotitle, artistname,
+						contents, imagename, category, party, modi1, id);
+				System.out.println("오디오X="+ result);
+				model.addAttribute("audio_idx", modi1);
+			}
+			else if(imagename==null) {
+				int result2 = sqlSession.getMapper(ViewImpl.class)
+					.modifyAction3(audiotitle, artistname, contents,
+						audiofilename, category, party, modi1, id);
+				System.out.println("이미지X="+ result2);
+				model.addAttribute("audio_idx", modi1);
+			}
+			else {
+				int applyRow = sqlSession.getMapper(ViewImpl.class)
+						.modifyAction(audiotitle, artistname, contents,
+								audiofilename, imagename, category, party, modi1, id);
+				System.out.println("수정처리된 레코드수 : "+ applyRow);
+				
+				//모델객체에 idx저장
+				model.addAttribute("audio_idx", modi1);
+			}
 			
-			//모델객체에 idx저장
-			model.addAttribute("audio_idx", modi1);
 		}
 		catch (IOException e) {
 			e.printStackTrace();
