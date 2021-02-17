@@ -57,12 +57,12 @@ a {
 	height : 100%;
 	width:30%;
 	display:inline-block;
-	position: fixed;
 	top: 0px;
 	float: left;
 }
 .right-content{
 	background-color:white;
+	max-width:288px;
 	width:100%;
 	height : 960px!;
 	margin:auto;
@@ -169,6 +169,9 @@ li {
 	background-color: white;
 	width: 8em;
 	border: 2px #f2f2f2 solid;
+}
+.table.table-hover.searchBtns td:hover{
+ cursor:pointer;
 }
 </style>
 <script>
@@ -937,14 +940,18 @@ function checktotalLoad(type) {
 					<div class=""></div>
 				</c:forEach>
 			</div>
+
 			<div class="sidebar myF"></div>
-			<ul>
-			<li><a href="./search.do?searchWord=${searchWord }">전체 검색</a></li>
-			<li><a href="./searchAudio.do?searchWord=${searchWord }">제목으로 검색</a></li>
-			<li><a href="./searchAudioByArtist.do?searchWord=${searchWord }">아티스트명으로 검색</a></li>
-			<li><a href="./searchArtist.do?searchWord=${searchWord }">아티스트 검색</a></li>
-			<li><a href="./searchContents.do?searchWord=${searchWord }">내용으로 검색</a></li>
-			</ul>
+			
+			<table class="table table-hover searchBtns"> 
+			<thead><tr><td><h5>[${searchWord }]로 검색결과</h5></td></tr></thead>
+			<tr><td onclick="location.href='./search.do?searchWord=${searchWord }'">전체 검색</td></tr>
+			<tr><td onclick="location.href='./searchAudio.do?searchWord=${searchWord }'">제목으로 검색</td></tr>
+			<tr><td onclick="location.href='./searchAudioByArtist.do?searchWord=${searchWord }'">아티스트명으로 검색</td></tr>
+			<tr><td onclick="location.href='./searchArtist.do?searchWord=${searchWord }'">아티스트 검색</td></tr>
+			<tr><td style=" border-bottom: 1px solid #d4d7da; " onclick="location.href='./searchContents.do?searchWord=${searchWord }'">내용으로 검색</td></tr>
+			</table>
+			<span> (153-759) 서울시 금천구 가산동 426-5 월드메르디앙 2차 413호 / 팀장 남아영 / 010-9346-1822 - swkosmo@daum.net <a href="">오시는길</a> </span>
 					<c:forEach var="r" items="${recFollow}">
 				<table
 				style="width: 100%; border: 2px #f2f2f2 solid; margin: auto; margin-bottom: 1em"
