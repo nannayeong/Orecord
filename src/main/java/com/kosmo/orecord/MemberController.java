@@ -178,9 +178,9 @@ public class MemberController {
 				File serverFullName = new File(path + File.separator + saveFileName);
 				
 				/*서버 저장 imagename*/
-				if(fileName.equals("imagename")) {
+				if(fileName.equals("img")) {
 					img = saveFileName;
-					System.out.println("imagename"+img);
+					System.out.println("img"+img);
 				}
 				
 				mfile.transferTo(serverFullName);
