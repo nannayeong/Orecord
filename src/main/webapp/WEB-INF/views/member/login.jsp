@@ -30,6 +30,7 @@ if(cookies!=null){
 	}
 }
 
+if(request.getParameter("memberResult")!=null){
 if(request.getParameter("memberResult").equals("success")){
 %>
 <script>
@@ -43,6 +44,7 @@ else if(request.getParameter("memberResult").equals("fail")){
 	alert('회원가입 실패');
 </script>
 <%	
+}
 }
 %>
 <!DOCTYPE html>

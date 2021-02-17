@@ -186,6 +186,8 @@ public class MemberController {
 				mfile.transferTo(serverFullName);
 			}
 			
+			model.addAttribute("nickname", nickname);
+			
 			System.out.println(id+"**"+ pw+"**"+nickname+"**"+email+"**"+phone+"**"+address+"**"+intro+"**"+img);
 			int result = sqlSession.getMapper(MemberImpl.class).
 					membershipInfo(id, pw, nickname, email, phone, address, intro, img);
