@@ -73,8 +73,7 @@
 	            </table>
 	            <div>
 					<tr>
-					<!-- r_idx어떻게 넘겨주지.. ㅜ -->
-						<td><input type="button" class="btn btn-warning" style="color: white; align-content: center; margin-left: -0.1em;" value="신고하기" onclick="location.href='./write.do';"></td>
+						<td><input type="button" class="btn btn-warning" style="color: white; align-content: center; margin-left: -0.1em;" value="신고하기" onclick="location.href='./write.do?s_id=${pageContext.request.userPrincipal.name}';"></td>
 					</tr>
 					<br /><br />
 				</div>

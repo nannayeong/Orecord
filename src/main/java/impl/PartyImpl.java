@@ -49,4 +49,6 @@ public interface PartyImpl {
 	
 	public int mypartychoicecount(String id);
 	public int mypartynotchoicecount(String id);
+	
+	public ArrayList<PartyBoardDTO> partyMemberView(int audio_idx);
 }

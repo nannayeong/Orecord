@@ -68,10 +68,9 @@ function writeValidate(f)
 		<hr color="gray">
 				<div class="left-content">
 <!-- <table style="width:100%;border:2px #f2f2f2 solid;margin:auto;margin-bottom:1em"> -->
-		<form name="writeFrm" method="post" onsubmit="return writeValidate(this);" action="../report/writeAction.do?r_idx=${row.r_idx}" >
+		<form name="writeFrm" method="post" onsubmit="return writeValidate(this);" action="../report/writeAction.do?s_id=${pageContext.request.userPrincipal.name}" >
 		<s:csrfInput />
 		<table class="table table-bordered">
-		<td><input type="hidden" name="r_idx" value="${ret.r_idx}"></td>
 	<tbody>
 		<tr>
 			<th class="text-center" style="vertical-align:middle;">신고한사람 아이디</th>

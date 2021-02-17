@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Orecord</title>
+<title>Insert title here</title>
 <!-- Jquery, BootStrap -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -50,14 +50,14 @@ body{
 	height : 100%;
 	width:30%;
 	display:inline-block;
+	position: fixed;
 	top: 0px;
 	float: left;
 }
 .right-content{
 	background-color:white;
-	max-width:288px;
 	width:100%;
-	height : 1060px;
+	height : 960px!;
 	margin:auto;
 	padding-top:3em;
 	padding-bottom:1em;
@@ -195,7 +195,7 @@ $($.checktotalLoad = function () {
 	      url : "./loadMainCount.do",
 	      type : "get",
            contentType : "text/html;charset:utf-8",
-	      data : { loadlength :loadedSize}, 
+	      data : { loadlength :loadedSize, partyType:<%=request.getParameter("partyType")%>}, 
 	      dataType : "json",
 	      success : function(resData) {
 	    	  if(resData.nomoreFeed!=null){
@@ -423,15 +423,21 @@ function userFunc(){
 		<div class="content">
 			<div class="left-content-back">
 				<div class="left-content">
-        <c:forEach var="b" items="${audiolist}">
+		        <c:forEach var="b" items="${audiolist}">
+		        <c:set var="total" value=""/>
+		        <c:forEach var="p" items="${partyMap[b.audio_idx]}">
+		        <c:set var="total" value="${total}${p.nickname } : ${p.kind}&#10;"/>
+		        </c:forEach>
 					<table style="width:100%;border:2px #f2f2f2 solid;margin:auto;margin-bottom:1em" class="feed">
 						<tr>
 							<td rowspan="5" style="width:7em;padding-left:1em;padding-right:1em;padding-top:1.5em;vertical-align:top">
-								<img src="${b.imagename }" alt="" style="width:6em;height:6em"/>
+								<img src="${b.imagename }" alt="" style="width:6em"/>
 							</td>
 							<td style="padding-left:1em">
-								<div style="font-size:14px;cursor:pointer" onclick="location.href='./${b.id }/record'">
-									${b.id }
+								<div style="font-size:14px;">
+									<a href="./${b.id }/record"> ${b.id } </a>  
+									<c:if test="${partyMap[b.audio_idx].size() ne 0}">
+									<i class="fas fa-user-friends" title="${total}"></i></c:if>
 								</div>
 								<div style="font-size:18px">
 									<a href="./board/view.do?audio_idx=${b.audio_idx}">${b.audiotitle}</a>
@@ -473,7 +479,7 @@ function userFunc(){
 						</tr>
 						<tr>
 							<td colspan="3">
-								${b.contents}
+								${fn:length(audio.contents)>20 ? substring(audio.contents,0,20) : audio.contents}
 							</td>
 						</tr>
 						<tr>
@@ -564,7 +570,8 @@ function userFunc(){
 					</div>
 					<div class="sidebar myF"> 
 					</div>
-			<%@include file="/resources/jsp/rightbar.jsp"%>
+		
+				<%@include file="/resources/jsp/rightbar.jsp"%>
 				</div>
 			</div>
 		</div>
