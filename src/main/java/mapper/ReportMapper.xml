@@ -12,7 +12,7 @@
 	</select>
 
 	<select id="View" resultType="model.ReportDTO">
-		select * from report WHERE r_idx=#{param1}
+		select * from report WHERE s_id=#{param1}
 	</select>
 	
 	<select id="rpView" resultType="model.ReportDTO">
@@ -20,7 +20,7 @@
 	</select>
 
 	<!-- 신고하기 작성 -->
-	<insert id="ReportInfo" >
+	<insert id="ReportInfo"  >
 		insert into report (r_idx, s_id, r_id, kind, reason)
 			values (seq_report.nextval, #{0}, #{1}, #{2}, #{3})
 	</insert>

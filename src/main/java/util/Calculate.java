@@ -88,7 +88,7 @@ public class Calculate {
 	public String makeSearchText(String a,String searchWord) {
 		String key = searchWord;
 		int indexofkey = a.indexOf(key);
-		int stringSize = 10;
+		int stringSize = 12;
 		int front = 0;
 		int back = 0;
 		String frontString = "";
@@ -115,7 +115,21 @@ public class Calculate {
 		String totalString = frontString+slice+backString;
 		return totalString;
 	}
-	
+	public String contentsCut(String a) {
+		int front = 0;
+		int back = 0;
+		String backString = "";
+		
+		if(a.length()<=25) {
+			back=a.length();
+		}else {
+			back=26;
+			backString = "...";
+		}
+		String slice = a.substring(front, back);
+		String totalString = slice+backString;
+		return totalString;
+	}
 	
 	public ArrayList<MemberDTO> arrayByFollow(HashMap<MemberDTO,Integer> memberMap) {
 		ArrayList<MemberDTO> ret = new ArrayList<MemberDTO>();

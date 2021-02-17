@@ -17,6 +17,7 @@ public interface AudioBoardImpl {
 	public AudioBoardDTO audioBoardView(AudioBoardDTO audioBoardDTO);
 	public ArrayList<AudioBoardDTO> audioListPaging(String id, int start, int end);
 	public ArrayList<AudioBoardDTO> mainAudioList(int date1, int date2, int rownum1, int rownum2);
+	public ArrayList<AudioBoardDTO> mainAudioListCoop(int date1, int date2, int rownum1, int rownum2, int party);
 	public ArrayList<AudioBoardDTO> audioListLast(String id);
 	public int audioCount();
 	public int myAudioCount(String id);
