@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Orecord</title>
 <!-- Jquery, BootStrap -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -50,14 +50,14 @@ body{
 	height : 100%;
 	width:30%;
 	display:inline-block;
-	position: fixed;
 	top: 0px;
 	float: left;
 }
 .right-content{
 	background-color:white;
+	max-width:288px;
 	width:100%;
-	height : 960px!;
+	height : 1060px;
 	margin:auto;
 	padding-top:3em;
 	padding-bottom:1em;
@@ -427,7 +427,7 @@ function userFunc(){
 					<table style="width:100%;border:2px #f2f2f2 solid;margin:auto;margin-bottom:1em" class="feed">
 						<tr>
 							<td rowspan="5" style="width:7em;padding-left:1em;padding-right:1em;padding-top:1.5em;vertical-align:top">
-								<img src="${b.imagename }" alt="" style="width:6em"/>
+								<img src="${b.imagename }" alt="" style="width:6em;height:6em"/>
 							</td>
 							<td style="padding-left:1em">
 								<div style="font-size:14px;cursor:pointer" onclick="location.href='./${b.id }/record'">
@@ -473,7 +473,7 @@ function userFunc(){
 						</tr>
 						<tr>
 							<td colspan="3">
-								${fn:length(audio.contents)>20 ? substring(audio.contents,0,20) : audio.contents}
+								${b.contents}
 							</td>
 						</tr>
 						<tr>
@@ -564,49 +564,7 @@ function userFunc(){
 					</div>
 					<div class="sidebar myF"> 
 					</div>
-					<c:if test="${recFollow.size() ne 0}">
-					<h5>친구가 팔로우중인 아티스트</h5>
-					</c:if>
-				<c:forEach var="r" items="${recFollow}">
-				<table
-				style="width: 100%; border: 2px #f2f2f2 solid; margin: auto; margin-bottom: 1em"
-				class="artist">
-				<tr>
-					<td rowspan="4"
-						style="width: 7em; padding-left: 1em; padding-right: 1em">
-						<img src="${r.img }" alt="" style="width: 6em" />
-					</td>
-					<td><h4 style="padding-top: 1em;"><a href="./${r.id }/record">${r.nickname}</a></h4></td>
-				</tr>
-				<tr>
-					<td colspan="2"></td>
-				</tr>
-				<tr>
-					<td style="padding-top: 1em; padding-bottom: 1em; text-align: left;">
-				<c:set var="followB" value="false"/>
-        		<c:forEach var="f" items="${follows }">
-        		<c:if test="${r.id eq f.following_id}">
-        		<c:set var="followB" value="true"/>
-        		</c:if>
-        		</c:forEach>
-        		     <c:choose>
-               <c:when test="${followB}">
-               <button type="button" class="btn btn-outline-secondary btn-sm follow ${r.id}" onclick="fBtn('${r.id}')" >팔로우</button>
-                 </c:when>
-                 <c:otherwise>
-                   <button type="button" class="btn btn-secondary btn-sm follow ${r.id}" onclick="fBtn('${r.id}')" >팔로우</button>
-                 </c:otherwise>
-               </c:choose>	</td>
-					<td style="text-align: center; padding-right: 5px;">
-						<h6 class="pCount ${r.id }">팔로워 : ${recMemberMap[r]}</h6>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="2">
-					</td>
-				</tr>
-			</table>
-		</c:forEach>
+			<%@include file="/resources/jsp/rightbar.jsp"%>
 				</div>
 			</div>
 		</div>

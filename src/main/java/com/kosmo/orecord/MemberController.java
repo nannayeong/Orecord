@@ -178,9 +178,9 @@ public class MemberController {
 				File serverFullName = new File(path + File.separator + saveFileName);
 				
 				/*서버 저장 imagename*/
-				if(fileName.equals("imagename")) {
+				if(fileName.equals("img")) {
 					img = saveFileName;
-					System.out.println("imagename"+img);
+					System.out.println("img"+img);
 				}
 				
 				mfile.transferTo(serverFullName);
@@ -194,9 +194,11 @@ public class MemberController {
 			
 			if(result==1) {
 				System.out.println("성공!");
+				model.addAttribute("memberResult", "success");
 			}
 			else {
 				System.out.println("회원가입 실패..");
+				model.addAttribute("memberResult", "fail");
 			}
 			
 		}
@@ -207,7 +209,7 @@ public class MemberController {
 			e.printStackTrace();
 		}
 		
-		return "redirect:/main.do";
+		return "redirect:/member/login.do";
 	}
 }
 

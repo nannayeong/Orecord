@@ -24,7 +24,7 @@ public class ReportController {
 	private SqlSession sqlSession;
 	
 	@RequestMapping("/report/reportlist.do")
-	public String reportList(Model model, Principal principal, ReportDTO reportDTO) {
+	public String reportList(Model model, Principal principal) {
 		
 		String id = null;
 		/*로그인 없이 접근시 nullpointerexception발생, security로 접근권한 설정해야함.*/
@@ -56,9 +56,6 @@ public class ReportController {
 		catch(Exception e) {
 			e.printStackTrace();
 		}
-		
-		ReportDTO ret = sqlSession.getMapper(ReportImpl.class).View(principal.getName());
-		model.addAttribute("ret", ret);
 		
 		return "report/reportwrite";
 	}

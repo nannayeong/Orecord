@@ -29,6 +29,23 @@ if(cookies!=null){
 		}
 	}
 }
+
+if(request.getParameter("memberResult")!=null){
+if(request.getParameter("memberResult").equals("success")){
+%>
+<script>
+	alert('회원가입이 완료되었습니다.');
+</script>
+<%
+}
+else if(request.getParameter("memberResult").equals("fail")){
+%>
+<script>
+	alert('회원가입 실패');
+</script>
+<%	
+}
+}
 %>
 <!DOCTYPE html>
 <html>
@@ -151,7 +168,18 @@ https://kauth.kakao.com/oauth/authorize?response_type=code&client_id={e1dea648a0
 </head>
 <body>
 	<div>
+	
 		<div class="content">
+		<div style="background: linear-gradient(to right, #91888A, #5A5B82);">
+				<div class="row">
+					<div style="margin: 50px 0 0 60px;">
+						<h5 style="margin-left: 3px;">Login</h5>
+						<h2>로그인</h2>
+					</div>
+				</div>
+			</div>
+			<br />
+			<hr color="gray">
 			<div >
 			<c:choose>
 			<c:when test="${empty pageContext.request.userPrincipal.name }">
@@ -164,38 +192,51 @@ https://kauth.kakao.com/oauth/authorize?response_type=code&client_id={e1dea648a0
 				<p>로그아웃 하였습니다.</p>
 			</c:if>
 				<table>
-			<div style="background: linear-gradient(to right, #91888A, #5A5B82);">
-			<div class="row">
-				<div style="margin: 50px 0 0 60px;">
-					<h5 style="margin-left: 3px;">Login</h5>
-					<h2>로그인</h2>
-				</div>
-				</div>
-			</div>
-			<br />
 			
-			<hr color="gray">
-			
-					<div class="input-field col-md-7 pr-md-1">
-							<label>아이디</label><input type="text" name="id" required class="form-control"
-							value="" class="login_input"> 
-						</div>
-						<div class="input-field col-md-7 pr-md-1">
-							<label>비밀번호</label><input class="pswrd form-control" name="pw" type="password" required> 
-						</div>
-						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-					<div class="input-field col-md-7 pr-md-1" >
-						<div class="button">
-							<div class="inner"></div>
-							<button  type="submit" class="btn btn-outline-warning">로그인</button>
+			<br /><br /><br /><br />  
+					<div class="container" align="center">
+						<div class="row" style="margin: 50px 100px 0 80px;">   
+					         <div class="col-md-3 pr-md-0">
+					            <label>아이디</label>
+					         </div>
+					         <div class="col-md-13  pl-md-0" style="margin:1px">      
+					            <input type="text" name="id" class="form-control login_input" style="width: 27em; height: 40px;">     
+					         </div>
+				        </div> 
+			         
+						<br /> 
+						<div class="row" style="margin: 50px 100px 0 80px;">  
+							<div class="col-md-3 pr-md-0" >
+					            <label>비밀번호</label>
+					        </div>
+					        
+					        <div> 
+						        <div class="col-md-12 pl-md-0" style="1em">	   
+						        	<input class="pswrd form-control" name="pw" type="password" style="width: 27em; height: 40px;">               
+						        </div>
+							</div> 
 						</div>
 					</div>
-					&nbsp;
+					<div class="container" align="center">  
+						<div class="button" style="margin: 50px 100px 0 160px">               
+ 							<div class="inner"></div> 
+							<button  type="submit" class="btn btn-outline-warning" style="width: 14em; height: 40px;">로그인</button>       
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+							 
+							<br /> 
+						</div>
+					</div> 
+					<br />
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<br /> 
+					</div>
+					<!-- 
 					
 					<div class="links">
+
 						<div class="kakaotalk">
-<!-- 							<a id="kakao-login-btn" href="javascript:loginWithKakao()"> -->
+							<a id="kakao-login-btn" href="javascript:loginWithKakao()">
 							<a id="kakao-login-btn" href="https://kauth.kakao.com/oauth/authorize
 							    ?client_id=5de051009d4dd68062be58fd9608a661
 							    &redirect_uri=http://localhost:8282/login
@@ -219,12 +260,14 @@ https://kauth.kakao.com/oauth/authorize?response_type=code&client_id={e1dea648a0
 							    
 							  </script>
 						</div>
-					</div>
+					</div> -->
+					
+				<div class="container" align="center">
 					<div class="container">
-					<div class="signup">
-						<a href="./membershipsub.do">회원가입</a>
-						&nbsp;
-					</div>
+						<div class="signup">
+							<a href="./membershipsub.do">회원가입</a>
+							&nbsp;
+						</div>
 					</div>
 					&nbsp;
 					<div class="idpw">
@@ -232,7 +275,12 @@ https://kauth.kakao.com/oauth/authorize?response_type=code&client_id={e1dea648a0
 						<a href="./id_pwSearch.do">아이디/비밀번호 찾기</a>
 						&nbsp;
 					</div>
+				</div>
+				
+			
+			
 					<br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+					
 				</table>
 			</form:form>
 			</c:when>

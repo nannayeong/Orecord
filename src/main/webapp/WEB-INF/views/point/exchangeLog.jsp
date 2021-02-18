@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Orecord - 환전내역 조회</title>
 
 <!-- Jquery, BootStrap -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -83,7 +83,7 @@ h4 {
 </style>
 <script>
 	$(document).ready(function() {
-		selectLastWeek(); // 문서 로드되면 기본 조회일자 1주일전으로 설정
+		searchingLastWeek(); // 문서 로드되면 기본 조회일자 1주일전으로 설정하고 조회
 	});
 </script>
 </head>
@@ -105,10 +105,10 @@ h4 {
 						<button type="button" class="btn btn-secondary" disabled>환전 내역</button>
 					</div>
 					<div class="datepicker">
-						<button type="button" class="btn btn-info btn-sm" id="btnToday" onClick="selectToday()">오늘</button>
-						<button type="button" class="btn btn-info btn-sm" id="btnWeek" onClick="selectLastWeek()">1주일</button>
-						<button type="button" class="btn btn-info btn-sm" id="btnMonth" onClick="selectLastMonth()">1개월</button>
-						<button type="button" class="btn btn-info btn-sm" id="btnYear" onClick="selectLastYear()">1년</button>
+						<button type="button" class="btn btn-info btn-sm" id="btnToday" onClick="searchingToday()">오늘</button>
+						<button type="button" class="btn btn-info btn-sm" id="btnWeek" onClick="searchingLastWeek()">1주일</button>
+						<button type="button" class="btn btn-info btn-sm" id="btnMonth" onClick="searchingLastMonth()">1개월</button>
+						<button type="button" class="btn btn-info btn-sm" id="btnYear" onClick="searchingLastYear()">1년</button>
 							<input type="text" id="textBox" value="기간 :" size="3">  
 							<input type="text" id="date_from" size="8" style="text-align: center;">
 						~ <input type="text" id="date_to" size="8" style="text-align: center;">
@@ -131,7 +131,7 @@ h4 {
 						</thead>
 				    <tbody>
 							<tr>
-								<td colspan="4" align="center"> 기간을 설정하고 조회버튼을 클릭해주세요 </td>
+								<td colspan="4" align="center"></td>
 							</tr>
 						</tbody>
 					</table>
@@ -291,14 +291,31 @@ function selectLastYear() {
 		    if (data != null) {
 		    	changingTableFunc(data); // HTML 테이블 작성 함수 호출
 				}
-				else {
-					alert("조회된 내역이 없습니다.");
-				}
 			},
 			error : function(error) {
 				alert("error : " + error);
 			}
 		});
+	}
+</script>
+
+<!-- 기간설정 버튼 클릭시 자동으로 조회까지 실행 -->
+<script>
+	function searchingToday(){
+		selectToday()
+		searchingLog()
+	}
+	function searchingLastWeek(){
+		selectLastWeek()
+		searchingLog()
+	}
+	function searchingLastMonth(){
+		selectLastMonth()
+		searchingLog()
+	}
+	function searchingLastYear(){
+		selectLastYear()
+		searchingLog()
 	}
 </script>
 
@@ -313,37 +330,44 @@ function changingTableFunc(obj) {
 			html += '		<th width="30%">날짜</th><th width="25%">환전 요청포인트</th><th width="25%">입금액</th><th width="20%">상태</th></thead>';
 			html += '	</thead>';
 			html += '	<tbody>';
-	for (var i=0; i<resultLog.length; i++) {
-			html += '<tr><td>' + resultLog[i].regidate + '</td><td>' + resultLog[i].exchangePoint
-					 + '</td><td> ' + resultLog[i].exchangeMoney + '</td><td>' + resultLog[i].exchangeResult + '</td></tr>';
+	if (obj.totalRecord == 0) {
+			html += '<tr>';
+			html += '	<td colspan="4" align="center"> 조회된 내역이 없습니다. </td>';
+			html += '</tr></tbody></table></div>';
 	}
-			html += '	</tbody></table></div>';
-			html += '<nav class="paginationPostion" style="margin-bottom: 200px;">';
-			html += '<ul class="pagination justify-content-center pagination-sm">';
-			
-				if(obj.startpageInBlock = 1) {
-					html += '<li class="page-item disabled"><a class="page-link">&laquo;</a></li>';
-				}
-				else {
-					html += '<li class="page-item"><a class="page-link">&laquo;</a></li>';
-				}
-	
-				for (var i=obj.startpageInBlock; i<=obj.endpageInBlock; i++) {
-					if(i==obj.currentPage) {
-						html += '<li class="page-item disabled"><a class="page-link" onClick="searchingLog(' + i + ');">' + i + '</a></li>';
+	else {
+		for (var i=0; i<resultLog.length; i++) {
+				html += '<tr><td>' + resultLog[i].regidate + '</td><td>' + resultLog[i].exchangePoint
+						 + '</td><td> ' + resultLog[i].exchangeMoney + '</td><td>' + resultLog[i].exchangeResult + '</td></tr>';
+		}
+				html += '	</tbody></table></div>';
+				html += '<nav class="paginationPostion" style="margin-bottom: 200px;">';
+				html += '<ul class="pagination justify-content-center pagination-sm">';
+				
+					if(obj.startpageInBlock = 1) {
+						html += '<li class="page-item disabled"><a class="page-link">&laquo;</a></li>';
 					}
 					else {
-						html += '<li class="page-item"><a class="page-link" onClick="searchingLog(' + i + ');">' + i + '</a></li>';
+						html += '<li class="page-item"><a class="page-link">&laquo;</a></li>';
 					}
-				}
-				
-				if(obj.endpageInBlock >= obj.totalPage) {
-					html += '<li class="page-item disabled"><a class="page-link">&raquo;</a></li>';
-				}
-				else{
-					html += '<li class="page-item"><a class="page-link">&raquo;</a></li>';
-				}
-			html +=  '</ul></nav>';
+		
+					for (var i=obj.startpageInBlock; i<=obj.endpageInBlock; i++) {
+						if(i==obj.currentPage) {
+							html += '<li class="page-item disabled"><a class="page-link" onClick="searchingLog(' + i + ');">' + i + '</a></li>';
+						}
+						else {
+							html += '<li class="page-item"><a class="page-link" onClick="searchingLog(' + i + ');">' + i + '</a></li>';
+						}
+					}
+					
+					if(obj.endpageInBlock >= obj.totalPage) {
+						html += '<li class="page-item disabled"><a class="page-link">&raquo;</a></li>';
+					}
+					else{
+						html += '<li class="page-item"><a class="page-link">&raquo;</a></li>';
+					}
+				html +=  '</ul></nav>';
+	}
 	table.innerHTML = html;
 }
 </script>

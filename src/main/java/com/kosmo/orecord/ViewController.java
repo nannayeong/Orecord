@@ -46,11 +46,11 @@ public class ViewController {
 			sqlSession.getMapper(ViewImpl.class).View(
 			Integer.parseInt(req.getParameter("audio_idx")));
 		
-//		String temp2 = null;
-//		if(view.getContents()!=null) {
-//			temp2 = view.getContents().replace("\r\n", "<br/>");
-//		}
-//		view.setContents(temp2);
+		String temp2 = null;
+		if(view.getContents()!=null) {
+			temp2 = view.getContents().replace("\r\n", "<br/>");
+		}
+		view.setContents(temp2);
 		
 		if(view.getImg()==null) {
 			view.setImg("../resources/img/default.jpg");
@@ -76,10 +76,18 @@ public class ViewController {
 				Integer.parseInt(req.getParameter("audio_idx")));
 		
 		for(MCommentDTO dto : comments) {
-			
 			String temp = dto.getContents().replace("\r\n", "<br/>");
 			dto.setContents(temp);
+			
+			if(dto.getImg()==null) {
+				dto.setImg("../resources/img/default.jpg");
+			}
+			else {
+				dto.setImg(path+"/resources/upload/"+dto.getImg());
+			}
 		}
+		
+		
 		model.addAttribute("comments", comments);
 		
 		//협업자 목록 불러오는 매퍼 호출
@@ -94,6 +102,10 @@ public class ViewController {
 			}
 			else {
 				dto2.setImg(path+"/resources/upload/"+dto2.getImg());
+			}
+			
+			if(dto2.getAudiofilename()!=null) {
+				dto2.setAudiofilename(path+"/resources/upload/"+dto2.getAudiofilename());
 			}
 		}
 		
@@ -115,6 +127,25 @@ public class ViewController {
 		
 		return "board/view";
 		
+	}
+	
+	//상세페이지 삭제처리
+	@RequestMapping("/board/viewDelete.do")
+	public String viewDelete(Principal principal, Model model, HttpServletRequest req) {
+		
+		String name = principal.getName();
+		int audio_idx = Integer.parseInt(req.getParameter("audio_idx"));
+		
+		//삭제 전 로그인 확인
+		if(principal.getName()==null) {
+			return "redirect:main.do"; 
+		}
+		//매퍼호출
+		int result = sqlSession.getMapper(ViewImpl.class).viewDelete(audio_idx, name);
+		System.out.println("결과  = "+ result);
+		
+		
+		return "redirect:/main.do";
 	}
 	
 	//댓글입력처리
@@ -159,16 +190,12 @@ public class ViewController {
 		
 		//값이 넘어오는지 확인
 		String si = principal.getName();
-		System.out.println("아이디:"+ si);
-		String comment_idx = req.getParameter("comment_idx");
-		System.out.println("comment_idx = "+ comment_idx);
+		int comment_idx = Integer.parseInt(req.getParameter("comment_idx"));
 		String audio_idx = req.getParameter("audio_idx");
-		System.out.println("audio_idx = "+ audio_idx);
 		
 		//매퍼호출
 		int result = sqlSession.getMapper(ViewImpl.class).delete(
-			Integer.parseInt(req.getParameter("comment_idx")),
-			principal.getName());
+			comment_idx);
 		System.out.println("결과  = "+ result);
 		
 		//모델객체에 idx저장
@@ -208,6 +235,68 @@ public class ViewController {
 			e.printStackTrace();
 		}
 		
+		return map;
+	}
+	
+	@RequestMapping("/board/like.do")
+	@ResponseBody
+	public Map<String, Object> like(Principal principal,
+			HttpServletRequest req){
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		String login_id = null;
+		int audio_idx = Integer.parseInt(req.getParameter("audio_idx"));
+		
+		try {
+			login_id = principal.getName();
+			
+			//좋아요 추가 매퍼 생성
+			int result = sqlSession.getMapper(ViewImpl.class).likeBoard(
+				audio_idx, login_id);
+			System.out.println("좋아요 추가완료="+result);
+			
+			//audioboard like_count 증가
+			sqlSession.getMapper(ViewImpl.class).likeUp(audio_idx);
+			
+			//현재 like 수
+			int likeCount = sqlSession.getMapper(ViewImpl.class).likeCount(audio_idx);
+			
+			map.put("result", result);
+			map.put("likeCount", likeCount);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		return map;
+	}
+	
+	@RequestMapping("/board/noLike.do")
+	@ResponseBody
+	public Map<String, Object> noLike(Principal principal,
+			HttpServletRequest req){
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		String login_id = null;
+		int audio_idx = Integer.parseInt(req.getParameter("audio_idx"));
+		
+		//좋아요 취소 매퍼 생성
+		int result = sqlSession.getMapper(ViewImpl.class).noLikeBoard(audio_idx, login_id);
+		
+		//audioboard like_count 감소
+		sqlSession.getMapper(ViewImpl.class).likeDown(audio_idx);
+		
+		//현재 like 수
+		int likeCount = sqlSession.getMapper(ViewImpl.class).likeCount(audio_idx);
+		
+		map.put("result", result);
+		map.put("likeCount", likeCount);
+		
+		try {
+			login_id = principal.getName();
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 		return map;
 	}
 } 

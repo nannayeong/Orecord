@@ -70,6 +70,9 @@ public class MyPageController {
 		if(memberDTO.getImg()==null) {
 			memberDTO.setImg(path+"/resources/img/default.jpg");
 		}
+		else {
+			memberDTO.setImg(path+"/resources/upload/"+memberDTO.getImg());
+		}
 		
 		model.addAttribute("memberDTO", memberDTO);
 		model.addAttribute("loginDTO", loginDTO);
@@ -99,6 +102,9 @@ public class MyPageController {
 
 		if(memberDTO.getImg()==null) {
 			memberDTO.setImg(path+"/resources/img/default.jpg");
+		}
+		else {
+			memberDTO.setImg(path+"/resources/upload/"+memberDTO.getImg());
 		}
 		
 		model.addAttribute("memberDTO", memberDTO);
@@ -130,6 +136,9 @@ public class MyPageController {
 		if(memberDTO.getImg()==null) {
 			memberDTO.setImg(path+"/resources/img/default.jpg");
 		}
+		else {
+			memberDTO.setImg(path+"/resources/upload/"+memberDTO.getImg());
+		}
 		
 		model.addAttribute("memberDTO", memberDTO);
 		model.addAttribute("loginDTO", loginDTO);
@@ -160,7 +169,10 @@ public class MyPageController {
 		if(memberDTO.getImg()==null) {
 			memberDTO.setImg(path+"/resources/img/default.jpg");
 		}
-	
+		else {
+			memberDTO.setImg(path+"/resources/upload/"+memberDTO.getImg());
+		}
+		
 		model.addAttribute("memberDTO", memberDTO);
 		model.addAttribute("loginDTO", loginDTO);
 		model.addAttribute("user_id", user_id);
@@ -190,7 +202,10 @@ public class MyPageController {
 		if(memberDTO.getImg()==null) {
 			memberDTO.setImg(path+"/resources/img/default.jpg");
 		}
-
+		else {
+			memberDTO.setImg(path+"/resources/upload/"+memberDTO.getImg());
+		}
+		
 		model.addAttribute("memberDTO", memberDTO);
 		model.addAttribute("loginDTO", loginDTO);
 		model.addAttribute("user_id", user_id);
@@ -209,6 +224,9 @@ public class MyPageController {
 		MemberDTO memberDTO = sqlSession.getMapper(MemberImpl.class).memberInfo(user_id);	
 		if(memberDTO.getImg()==null) {
 			memberDTO.setImg(path+"/resources/img/default.jpg");
+		}
+		else {
+			memberDTO.setImg(path+"/resources/upload/"+memberDTO.getImg());
 		}
 		
 		/*로그인 유저의 계정정보*/
@@ -263,6 +281,9 @@ public class MyPageController {
 		MemberDTO memberDTO = sqlSession.getMapper(MemberImpl.class).memberInfo(user_id);	
 		if(memberDTO.getImg()==null) {
 			memberDTO.setImg(path+"/resources/img/default.jpg");
+		}
+		else {
+			memberDTO.setImg(path+"/resources/upload/"+memberDTO.getImg());
 		}
 		
 		/*로그인 유저의 계정정보*/
@@ -446,9 +467,9 @@ public class MyPageController {
 				File serverFullName = new File(path + File.separator + saveFileName);
 				
 				/*서버 저장 imagename*/
-				if(fileName.equals("imagename")) {
+				if(fileName.equals("img")) {
 					img = saveFileName;
-					System.out.println("imagename"+img);
+					System.out.println("img"+img);
 				}
 				
 				mfile.transferTo(serverFullName);

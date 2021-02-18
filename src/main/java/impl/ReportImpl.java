@@ -18,8 +18,8 @@ public interface ReportImpl {
 	//신고수정폼
 	public ReportDTO rpView(int r_idx);
 	
-	/* 신고하기 */
-	public int ReportInfo(@Param("s_id") String s_id, @Param("r_id") String r_id, @Param("kind") String kind, @Param("reason") String reason);
+	/* 신고하기  */
+	public int ReportInfo(String s_id, String r_id, String kind, String reason);
 	
 	/*신고글 수정하기*/
 	public int ReportModify(String kind, String reason, String r_id, int r_idx);

@@ -68,12 +68,14 @@ var writeValidate = function(f){
    		}
    	}
     /* } */
+    var partyRow = confirm("신청하시겠습니까?");
+    if(partyRow==true){
+    	return true;
+    }
+    else{
+    	return false;
+    }
 }
-/* function partyRow(audio_idx){
-	if(confirm("신청 하시겠습니까?")){
-		location.href="partyWriteAction.do?audio_idx="+ audio_idx;
-	}
-} */
 </script>
 </head>
 <body>
@@ -122,7 +124,9 @@ var writeValidate = function(f){
 							class="form-control">
 							<option style="color: black;" value="noValue">선택해주세요</option>
 							<option style="color: black;" value="작곡">작곡</option>
+							<option style="color: black;" value="편곡">편곡</option>
 							<option style="color: black;" value="작사">작사</option>
+							<option style="color: black;" value="보컬">보컬</option>
 						</select>
 					</div>
 				</div>
@@ -201,8 +205,8 @@ var writeValidate = function(f){
 						style="margin: 40px 30px 0 0;">
 						<input type="button" class="btn btn-outline-info" value="취소"
 							onclick="location.href='./view.do?audio_idx=${party.audio_idx}'">
-						&nbsp;&nbsp; <input type="submit" class="btn btn-outline-info"
-							value="신청하기">
+						&nbsp;&nbsp;
+						<input type="submit" class="btn btn-outline-info" value="신청하기">
 					</div>
 				</div>
 			</div>

@@ -63,8 +63,6 @@ public class AdminAudioEditController {
 	public String audioEditAction(Model model, MultipartHttpServletRequest req , AudioBoardDTO audioBoardDTO) {
 		
 		String albumName = req.getParameter("albumName");
-		String party = req.getParameter("party");
-		
 		
 		//서버의 물리적경로 얻어오기
 		String path = req.getSession().getServletContext().getRealPath("/resources/upload");
@@ -89,8 +87,19 @@ public class AdminAudioEditController {
 			String artistname = req.getParameter("artistname");
 			String contents = req.getParameter("contents");
 			String category = req.getParameter("country")+" "+req.getParameter("genre");
+			int party = -1;
 			String audiofilename = null;
 			String imagename = null;
+			
+			
+			if(req.getParameter("party")==null) {
+				party = 0;
+			}
+			else {
+				if(req.getParameter("party").equals("Y")) {
+					party = 1;
+				}
+			}
 			
 			/*
 			 물리적경로를 기반으로 File객체를 생성한 후 지정된 디렉토리가 있는지 확인한다.
@@ -138,7 +147,7 @@ public class AdminAudioEditController {
 			}
 			
 			int audioEditAction = sqlSession.getMapper(AdminImpl.class).adAudioEdit
-					(audiotitle, audiofilename, artistname, albumName, imagename, category, Integer.parseInt(party), audio_idx);
+					(audiotitle, audiofilename, artistname, albumName, imagename, category, party, audio_idx);
 			
 			System.out.println("수정처리된 레코드수 : "+ audioEditAction);
 			

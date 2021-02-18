@@ -36,6 +36,43 @@ function deleteRow(comment_idx, audio_idx){
 		location.href="delete.do?comment_idx="+ comment_idx+ "&audio_idx="+ audio_idx;
 	}
 }
+function deleteAction(audio_idx){
+	if(confirm("정말로 삭제하시겠습니까?")){
+		location.href="viewDelete.do?audio_idx="+audio_idx;
+	}
+}
+function likeChange(a){
+	if($('#likeIcon').hasClass('on')){//이미 좋아요상태일 때
+		$.ajax({
+			url : "../board/noLike.do",
+			type : "get",
+			contentType : "text/html;charset:utf-8",
+			data : { audio_idx : a}, 
+			dataType : "json",
+			success : function sucFunc(resData){
+				if(resData.result==1){
+	    	  		$('#likeIcon').removeClass('on');
+		    	  	$('#likeCount').html(resData.likeCount);
+				}
+			}
+		});
+	}
+	else{
+		$.ajax({
+			url : "../board/like.do",
+			type : "get",
+			contentType : "text/html;charset:utf-8",
+			data : { audio_idx : a}, 
+			dataType : "json",
+			success : function sucFunc(resData) {
+		    	if(resData.result==1){
+					$('#likeIcon').addClass('on');
+					$('#likeCount').html(resData.likeCount);
+		    	}
+			}    
+		});  
+	}
+}
 $(document).ready(function(){
 	/* 웹페이지를 열었을때 */
 	$("#img1").show();
@@ -85,11 +122,11 @@ $(function(){
 				<div class="col-8" style="padding: 20px 0 0 40px; font-size: 20px;">
 					<div class="row">
 						<div class="col-2" style="margin-left: 15px;">
-							<img src="../resources/img/play.png" alt="재생버튼" width="70"
-								height="70" style="padding: 5px 0 0 15px; cursor:pointer;"
+							<img src="../resources/img/play.png" alt="재생버튼" width="80px"
+								height="70px" style="padding: 5px 0 0 15px; cursor:pointer;"
 								id="img1" onclick="control(event)">
-							<img src="../resources/img/stop.png" alt="정지버튼" width="70"
-								height="70" style="padding: 5px 0 0 15px; cursor:pointer;"
+							<img src="../resources/img/stop.png" alt="정지버튼" width="80px"
+								height="70px" style="padding: 5px 0 0 15px; cursor:pointer;"
 								id="img2" onclick="control(event)">
 						</div>
 						<div class="col-9"
@@ -130,28 +167,11 @@ $(function(){
 						</audio>
 					</div>
 					<div style="padding: 10px 0 0 35px;">
-						<div id="msg" style="color:white; font-size:16px;"></div>
-						<button type="button" onclick="control(event)" class="btn btn-outline-dark"
-							style="color:white;" id="play">
-							play
+						<button type="button" class="btn btn-secondary btn-sm" title="좋아요" onclick="likeChange('${audio.audio_idx}')">
+							<i class="fas fa-heart ${audio.like eq 'true' ? 'on' : '' }" id="likeIcon"></i>&nbsp;
+							<span id="likeCount">${audio.like_count }</span>
 						</button>
-						<button type="button" onclick="control(event)" class="btn btn-outline-dark"
-							style="color:white;" id="pause">
-							pause
-						</button>
-						<button type="button" onclick="control(event)" class="btn btn-outline-dark"
-							style="color:white;" id="replay">
-							replay
-						</button>
-						<button type="button" onclick="control(event)" class="btn btn-outline-dark"
-							style="color:white;" id="vol+">
-							vol+
-						</button>
-						<button type="button" onclick="control(event)" class="btn btn-outline-dark"
-							style="color:white;" id="vol-">
-							vol-
-						</button>
-						<img src="../resources/img/like.png" alt="좋아요 수" width="30" style="margin-left:50px;">
+						<img src="../resources/img/like.png" alt="좋아요 수" width="30" style="margin-left:5px;">
 						<span>${audio.like_count}</span>
 						<img src="../resources/img/playcount.png" alt="재생횟수" width="50">
 						<span id="playC">${audio.play_count}</span>
@@ -167,49 +187,41 @@ $(function(){
 		<br>
 		<!-- 참여자 목록 -->
 		<div class="row">
-			<div class="col-8">
-				<div style="padding-left: 50px;">
-					<textarea name="contents" cols="80" rows="10" readonly>${audio.contents }</textarea>
+			<div class="col-7">
+				<div style="padding-left: 50px;padding-bottom:1em">
+					<div style="height:13em">${audio.contents }</div>
 				</div>
 			</div>
-			<div class="col-4" style="padding-left:70px;">
-				<button type="button" class="btn btn-outline-primary" data-toggle="collapse"
-					data-target="#demo" style="width:170px;">참여자 목록</button>
-				<div id="demo" class="collapse" style="padding-left:23px;">
-					<ul class="list-group">
-						<li class="list-group-item active">
-							작성자 <br />
-							<a href="/orecord/${audio.id }/myFollowing" style="color:white;">
-								<span style="color:white;">${audio.id }</span>
-							</a> <br />
-						</li>
-						<c:choose>
-							<c:when test="${audio.party eq 1 and notChoice.count ne 0 }">
-							<li class="list-group-item">
-								참여자 <br />
-								<c:forEach items="${partyMember }" var="mem">
-								<a href="/orecord/${mem.id}/myFollowing">${mem.id }</a> <br />
-								</c:forEach>
-							</li>
-							</c:when>
-							<c:when test="${notParty.count ne 0 and audio.party eq 1 }">
-								<li class="list-group-item">
-									<p style="color:gray; font-size:10px;">
-										참여자가 없습니다. <br />
-										참여를 해주세요.
-									</p>
-								</li>
-							</c:when>
-							<c:otherwise>
-								<li class="list-group-item">
-									<p style="color:gray; font-size:10px;">
-										협업신청 불가
-									</p>
-								</li>
-							</c:otherwise>
-						</c:choose>
-					</ul>
+			<div class="col-5" style="padding-right:3em">
+				<c:choose>
+				<c:when test="${audio.party eq 1 and notChoice.count ne 0 }">
+				<c:forEach items="${partyMember }" var="mem">
+				<div id="accordion">
+				  <div class="card" style="text-align:center">
+				  	<div class="card-header">
+					    <a class="collapsed card-link" data-toggle="collapse" href="#collapse${mem.party_idx }">
+							${mem.nickname}(${mem.id })님의 ${mem.kind }
+					    </a>
+				   	</div>
+				    <div id="collapse${mem.party_idx }" class="collapse show" data-parent="#accordion">
+				      <div style="text-align:center;padding-bottom:1em">
+				      	<div style="padding-top:1em">
+					      <c:if test="${not empty mem.audiofilename}">
+					      	<audio src="${mem.audiofilename}" controls style="width:20em"></audio>
+					      </c:if>
+					    </div>
+					    <div style="padding-top:1em">
+					      <c:if test="${not empty mem.audiocontents }">
+					      	${mem.audiocontents}
+					      </c:if>
+				      	</div>
+				      </div>
+				    </div>
+				  </div>
 				</div>
+				</c:forEach>
+				</c:when>
+				</c:choose>
 			</div>
 		</div>
 		<!-- #17A2B8 -->
@@ -220,6 +232,12 @@ $(function(){
 				<div class="d-flex flex-row-reverse" style="margin-top: 15px;">
 					<c:if test="${audio.party eq 1 }">
 					<div style="margin-right: 60px;">
+						<button type="button" class="btn btn-outline-info"
+							onclick="javascript:deleteAction(${audio.audio_idx});">
+							삭제
+						</button>
+					</div>
+					<div style="margin-right: 10px;">
 						<button type="button" class="btn btn-outline-info"
 							onclick="location.href='modify.do?audio_idx=${audio.audio_idx}'">
 							수정
@@ -239,6 +257,12 @@ $(function(){
 					<!-- 협업하기 불가능일때 -->
 					<c:if test="${audio.party ne 1 }">
 					<div style="margin-right: 60px;">
+						<button type="button" class="btn btn-outline-info"
+							onclick="javascript:deleteAction(${audio.audio_idx});">
+							삭제
+						</button>
+					</div>
+					<div style="margin-right: 10px;">
 						<button type="button" class="btn btn-outline-info"
 							onclick="location.href='modify.do?audio_idx=${audio.audio_idx}'">
 							수정
@@ -292,6 +316,7 @@ $(function(){
 <!-- 			<div class="row"> -->
 				<!-- 댓글 작성 -->
 <!-- 				<div class="col-12"> -->
+					<c:if test="${not empty pageContext.request.userPrincipal.name}">
 					<div class="row" style="padding:10px 0 0 70px;">
 						<div class="col-2" style="padding: 0px; margin-left: 50px;">
 							<input type="text" readonly class="form-control"
@@ -309,13 +334,13 @@ $(function(){
 					</div>
 						<hr align="center" width="90%" style="border:outset 1px gray;">
 					<!-- 댓글영역 -->
+					
 					<c:forEach items="${comments}" var="row">
 						<input type="hidden" name="comment_idx"
 							value="${row.comment_idx }" />
 						<div class="row">
-							<div class="col-2" style="padding:23px 0 0 90px;"
-								align="center">
-								<img src="../resources/img/4.png" alt="작성자프로필" width="50"
+							<div class="col-2" style="padding:23px 0 0 90px;text-align:center">
+								<img src="${row.img}" alt="작성자프로필" width="50"
 									class="rounded-circle">
 								<p style="font-size: 12px;">${row.id}</p>
 							</div>
@@ -332,6 +357,7 @@ $(function(){
 							</c:if>
 						</div>
 					</c:forEach>
+					</c:if>
 <!-- 				</div> -->
 <!-- 			</div> -->
 		</form>
@@ -351,26 +377,9 @@ function control(e){
 	var id = e.target.id;
 	if(id == "img1"){
 		audio.play();
-		div.innerHTML = "재생중입니다.";
 	}
 	else if(id == "img2"){
 		audio.pause();
-		div.innerHTML = "일시중지되었습니다.";
-	}
-	else if(id == "replay"){
-		audio.load();
-		audio.play();
-		div.innerHTML = "처음부터 재생합니다.";
-	}
-	else if(id == "vol+"){
-		audio.volume += 0.1;
-		if(audio.volume > 0.9) audio.volume = 1.0;
-		div.innerHTML = "음량 0.1 증가 "+ "현재 "+ audio.volume;
-	}
-	else if(id == "vol-"){
-		audio.volume -= 0.1;
-		if(audio.volume < 0.1) audio.volume = 0;
-		div.innerHTML = "음량 0.1 감소 "+ "현재 "+ audio.volume;
 	}
 }
 </script>

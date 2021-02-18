@@ -6,8 +6,17 @@ public class MCommentDTO {
 	private String id;
 	private String contents;
 	private java.sql.Date regidate;
-	 
+	//inner join
+	private String img;
+	
+	
 	//getter,setter
+	public String getImg() {
+		return img;
+	}
+	public void setImg(String img) {
+		this.img = img;
+	}
 	public int getComment_idx() {
 		return comment_idx;
 	}
