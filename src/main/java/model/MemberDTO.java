@@ -14,7 +14,16 @@ public class MemberDTO {
 	private int mypoint;//내 포인트
 	private String img;//프로필이미지
 	private int enabled;
+	private int follower;
 	
+	
+	//팔로우 수 저장
+	public int getFollower() {
+		return follower;
+	}
+	public void setFollower(int follower) {
+		this.follower = follower;
+	}
 	//select구간을 위한 멤버변수
 	private int start;//select의 시작
 	private int end;//끝
