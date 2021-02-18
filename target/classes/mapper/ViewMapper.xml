@@ -93,4 +93,9 @@
 	<select id="likeCount" parameterType="int" resultType="int">
 		SELECT like_count FROM audioboard WHERE audio_idx=#{param1}
 	</select>
+	
+	<!-- 나의 좋아요 -->
+	<select id="myLike" resultType="int">
+		select count(*) from like_board where audio_idx=#{param1} and like_id=#{param2}
+	</select>
 </mapper>

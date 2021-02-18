@@ -54,4 +54,7 @@ public interface ViewImpl {
 	
 	//좋아요 카운트
 	public int likeCount(int audio_idx);
+	
+	//나의 좋아요
+	public int myLike(int audio_idx, String like_id);
 } 

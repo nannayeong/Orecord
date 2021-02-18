@@ -54,6 +54,9 @@ function likeChange(a){
 	    	  		$('#likeIcon').removeClass('on');
 		    	  	$('#likeCount').html(resData.likeCount);
 				}
+			},
+			error : function(error) {
+				alert("error : " + error);
 			}
 		});
 	}
@@ -167,12 +170,13 @@ $(function(){
 						</audio>
 					</div>
 					<div style="padding: 10px 0 0 35px;">
-						<button type="button" class="btn btn-secondary btn-sm" title="좋아요" onclick="likeChange('${audio.audio_idx}')">
-							<i class="fas fa-heart ${audio.like eq 'true' ? 'on' : '' }" id="likeIcon"></i>&nbsp;
+						<button type="button" class="btn btn-secondary btn-sm" title="좋아요" onclick="likeChange('${audio.audio_idx}')"
+							style="width:80px;">
+							<i class="fas fa-heart ${audio.like eq 'true' ? 'on' : '' }" id="likeIcon"></i>&nbsp;&nbsp;
 							<span id="likeCount">${audio.like_count }</span>
 						</button>
-						<img src="../resources/img/like.png" alt="좋아요 수" width="30" style="margin-left:5px;">
-						<span>${audio.like_count}</span>
+						<%-- <img src="../resources/img/like.png" alt="좋아요 수" width="30" style="margin-left:5px;">
+						<span>${audio.like_count}</span> --%>
 						<img src="../resources/img/playcount.png" alt="재생횟수" width="50">
 						<span id="playC">${audio.play_count}</span>
 					</div>
