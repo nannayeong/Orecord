@@ -87,3 +87,7 @@ function recordDeleteFunc(aidx){
 		}
 	}
 }
+
+function openmusicbox(){
+	window.open("/orecord/musicbox", "musicbox", "width=400,height=550,toolbars=no,status=no");
+}

@@ -238,8 +238,7 @@ public class PartyController {
 		//Mapper 호출
 		PartyBoardDTO partyView =
 			sqlSession.getMapper(PartyImpl.class).partyView(
-				Integer.parseInt(req.getParameter("party_idx")),
-				req.getParameter("id"));
+				Integer.parseInt(req.getParameter("party_idx")));
 			
 		partyView.setAudiofilename(path+"/resources/upload/"+partyView.getAudiofilename());
 			

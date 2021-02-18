@@ -26,6 +26,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import impl.MemberImpl;
+import impl.MypageImpl;
+import model.MemberDTO;
 
 @Controller
 public class MemberController {
@@ -56,10 +58,31 @@ public class MemberController {
 	
 	/*로그인 이전페이지로 이동*/
 	@RequestMapping("/member/loginPrev.do")
-	public String loginP(HttpSession session) {
+	public String loginP(HttpSession session, Principal principal, HttpServletRequest req) {
+		String path = req.getContextPath();
+		/*로그인된 계정의 정보 session에 저장*/
+		try {
+			String login_id = principal.getName();
+			
+			MemberDTO userdto = sqlSession.getMapper(MypageImpl.class).memberView(login_id);
+			if(userdto.getImg()!=null) {
+				userdto.setImg(path+"/resources/upload/"+userdto.getImg());
+			}
+			else {
+				userdto.setImg(path+"/resources/img/default.jpg");
+			}
+			session.setAttribute("user", userdto);
+		}
+		catch(Exception e) {
+			System.out.println(e.getMessage());
+		}
 		
 		String prv = session.getAttribute("prevPage").toString();
 		System.out.println(prv);
+		
+		if(prv!=null||prv.equals("http://localhost:8080/orecord/member/membership.do")) {
+			return "redirect:/main.do";
+		}
 		
 		return "redirect:"+prv;
 	}
