@@ -70,4 +70,8 @@
 	<select id="partyMemberView" resultType="model.PartyBoardDTO">
 		SELECT p.id, p.audio_idx, p.kind, nickname FROM partyboard p inner join member m on p.id=m.id where audio_idx=#{0}
 	</select>
+	
+	<select id="party1" resultType="model.AudioBoardDTO">
+		select * from audioboard where id=#{param1} and party=1
+	</select>
 </mapper>

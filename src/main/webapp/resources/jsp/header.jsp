@@ -81,6 +81,7 @@ if(request.getParameter("partyType").equals("1")){
 			<a class="dropdown-item" href="${pageContext.request.contextPath}/admin/main">어드민페이지</a>
 			</c:if>
 			<a class="dropdown-item" href="${pageContext.request.contextPath}/${pageContext.request.userPrincipal.name}/record">마이페이지</a>
+			<a class="dropdown-item" href="${pageContext.request.contextPath}/board/partyList.do">협업신청서조회</a>
 			<a class="dropdown-item" href="${pageContext.request.contextPath }/chargeLog.do">포인트 조회</a>
 			<a class="dropdown-item" href="${pageContext.request.contextPath }/pwCheck.do">정보수정</a>
 			<a class="dropdown-item" href="${pageContext.request.contextPath }/logout.do">로그아웃</a>
