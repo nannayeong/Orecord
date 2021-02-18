@@ -54,6 +54,9 @@ function likeChange(a){
 	    	  		$('#likeIcon').removeClass('on');
 		    	  	$('#likeCount').html(resData.likeCount);
 				}
+			},
+			error : function(error) {
+				alert("error : " + error);
 			}
 		});
 	}
@@ -167,14 +170,19 @@ $(function(){
 						</audio>
 					</div>
 					<div style="padding: 10px 0 0 35px;">
-						<button type="button" class="btn btn-secondary btn-sm" title="좋아요" onclick="likeChange('${audio.audio_idx}')">
-							<i class="fas fa-heart ${audio.like eq 'true' ? 'on' : '' }" id="likeIcon"></i>&nbsp;
-							<span id="likeCount">${audio.like_count }</span>
+						<button type="button" class="btn btn-outline-light btn-sm" title="좋아요" onclick="likeChange('${audio.audio_idx}')"
+							style="width:80px; height:50px;">
+							<i class="fas fa-heart ${audio.like eq 'true' ? 'on' : '' }" id="likeIcon"
+								style="font-size:20px;"></i>&nbsp;&nbsp;
+							<span id="likeCount" style="margin-bottom:20px;">${audio.like_count }</span>
 						</button>
-						<img src="../resources/img/like.png" alt="좋아요 수" width="30" style="margin-left:5px;">
-						<span>${audio.like_count}</span>
-						<img src="../resources/img/playcount.png" alt="재생횟수" width="50">
-						<span id="playC">${audio.play_count}</span>
+						<%-- <img src="../resources/img/like.png" alt="좋아요 수" width="30" style="margin-left:5px;">
+						<span>${audio.like_count}</span> --%>
+						<!-- <img src="../resources/img/playcount.png" alt="재생횟수" width="50"> -->&nbsp;
+						<button type="button" class="btn btn-outline-light" title="재생횟수" style="width:80px; height:50px;">
+							<i class='fab fa-google-play' style='font-size:20px; color:red;'></i>&nbsp;
+							<span id="playC">${audio.play_count}</span>
+						</button>
 					</div>
 				</div>
 				<!-- 앨범사진 -->
