@@ -132,7 +132,7 @@ function getCookie(cookie_name) {
 
 
 
-<script type="text/javascript">
+<!-- <script type="text/javascript">
 		
 		
 GET /oauth/authorize?client_id={e1dea648a00c2082d1e6c90ec387bf1e}&redirect_uri={http://localhost:8282, http://localhost:8080, http://localhost:9999}&response_type=code HTTP/1.1
@@ -164,9 +164,13 @@ https://kauth.kakao.com/oauth/authorize?response_type=code&client_id={e1dea648a0
 	    "refresh_token_expires_in":25184000,
 	    "scope":"account_email profile"
 	}
-</script>
+</script> -->
 </head>
 <body>
+<!-- <a href="https://kauth.kakao.com/oauth/authorize -->
+<!--     ?client_id=5de051009d4dd68062be58fd9608a661 -->
+<!--     &redirect_uri=http://localhost:8282/login -->
+<!--     &response_type=code">로그인</a> -->
 	<div>
 	
 		<div class="content">
@@ -231,9 +235,9 @@ https://kauth.kakao.com/oauth/authorize?response_type=code&client_id={e1dea648a0
 					&nbsp;&nbsp;&nbsp;&nbsp;
 					<br /> 
 					</div>
-					<!-- 
 					
-					<div class="links">
+					
+					<!-- <div class="links">
 
 						<div class="kakaotalk">
 							<a id="kakao-login-btn" href="javascript:loginWithKakao()">
@@ -259,7 +263,7 @@ https://kauth.kakao.com/oauth/authorize?response_type=code&client_id={e1dea648a0
 						    });
 							    
 							  </script>
-						</div>
+						</div> 
 					</div> -->
 					
 				<div class="container" align="center">
