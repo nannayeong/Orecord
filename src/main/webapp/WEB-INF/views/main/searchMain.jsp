@@ -57,20 +57,19 @@ a {
 	height : 100%;
 	width:30%;
 	display:inline-block;
-	position: fixed;
 	top: 0px;
 	float: left;
 }
 .right-content{
 	background-color:white;
+	max-width:288px;
 	width:100%;
-	height : 960px!;
+	height : 1060px;
 	margin:auto;
 	padding-top:3em;
 	padding-bottom:1em;
 	text-align: center;
 }
-
 .fix {
 	position: fixed;
 	right: 0;
@@ -169,6 +168,13 @@ li {
 	background-color: white;
 	width: 8em;
 	border: 2px #f2f2f2 solid;
+}
+.table.table-hover.searchBtns td:hover{
+ cursor:pointer;
+}
+.table.table-hover.searchBtns td{
+padding-bottom: 0;
+padding-top: 0;
 }
 </style>
 <script>
@@ -396,9 +402,9 @@ li {
 <div class="content">
 <div class="left-content-back">
 	<div class="left-content">
-		<h2>제목으로 검색결과</h2>
+		<h4>제목으로 검색결과</h4>
 		<c:if test="${popMap1.size() eq 0}">
-		<h4>검색 결과가 없습니다.</h4>
+		<h6>검색 결과가 없습니다.</h6>
 		</c:if>
 		<c:forEach var="a" begin="0" end="${popMap1.size()}" step="1">
 			<c:forEach var="b" items="${popMap1}">
@@ -450,7 +456,7 @@ li {
 						</tr>
 						<tr>
 							<td colspan="3">
-								${fn:length(b.value.contents)>20 ? substring(audio.contents,0,20) : b.value.contents}
+								${b.value.contents}
 							</td>
 						</tr>
 						<tr>
@@ -532,9 +538,9 @@ li {
 				</c:if>
 			</c:forEach>
 		</c:forEach>
-		<h3>아티스트명으로 곡 검색결과</h3>
+		<h4>아티스트명으로 곡 검색결과</h4>
 					<c:if test="${popMap2.size() eq 0}">
-			<h4>검색 결과가 없습니다.</h4>
+			<h6>검색 결과가 없습니다.</h6>
 			</c:if>
 		<c:forEach var="a" begin="0" end="${popMap2.size()}" step="1">
 			<c:forEach var="b" items="${popMap2}">
@@ -668,9 +674,9 @@ li {
 				</c:if>
 			</c:forEach>
 		</c:forEach>
-		<h3>아티스트 검색결과</h3>
+		<h4>아티스트 검색결과</h4>
 			<c:if test="${ artists.size() eq 0}">
-		<h4>검색 결과가 없습니다.</h4>
+		<h6>검색 결과가 없습니다.</h6>
 		</c:if>
 		<c:forEach var="a" items="${ artists}">
 	
@@ -716,9 +722,9 @@ li {
 				</tr>
 			</table>
 		</c:forEach>
-		<h3>내용으로 검색결과</h3>
+		<h4>내용으로 검색결과</h4>
 		<c:if test="${popMap3.size() eq 0}">
-		<h4>검색 결과가 없습니다.</h4>
+		<h6>검색 결과가 없습니다.</h6>
 		</c:if>
 		<c:forEach var="a" begin="0" end="${popMap3.size()}" step="1">
 			<c:forEach var="b" items="${popMap3}">
@@ -769,7 +775,7 @@ li {
 						</tr>
 						<tr>
 							<td colspan="3">
-								${fn:length(b.value.contents)>20 ? substring(audio.contents,0,20) : b.value.contents}
+								${b.value.contents}
 							</td>
 						</tr>
 						<tr>
@@ -861,56 +867,15 @@ li {
 				</c:forEach>
 			</div>
 			<div class="sidebar myF"></div>
-			<ul>
-			<li><a href="./search.do?searchWord=${searchWord }">전체 검색</a></li>
-			<li><a href="./searchAudio.do?searchWord=${searchWord }">제목으로 검색</a></li>
-			<li><a href="./searchAudioByArtist.do?searchWord=${searchWord }">아티스트명으로 검색</a></li>
-			<li><a href="./searchArtist.do?searchWord=${searchWord }">아티스트 검색</a></li>
-			<li><a href="./searchContents.do?searchWord=${searchWord }">내용으로 검색</a></li>
-			</ul>
-			<c:if test="${recFollow.size() ne 0}">
-					<h5>친구가 팔로우중인 아티스트</h5>
-					</c:if>
-			<c:forEach var="r" items="${recFollow}">
-				<table
-				style="width: 100%; border: 2px #f2f2f2 solid; margin: auto; margin-bottom: 1em"
-				class="pcount">
-				<tr>
-					<td rowspan="4"
-						style="width: 7em; padding-left: 1em; padding-right: 1em">
-						<img src="${r.img }" alt="" style="width: 6em" />
-					</td>
-					<td><h4 style="padding-top: 1em;"><a href="./${r.id }/record">${r.nickname}</a></h4></td>
-				</tr>
-				<tr>
-					<td colspan="2"></td>
-				</tr>
-				<tr>
-					<td style="padding-top: 1em; padding-bottom: 1em;">
-				<c:set var="followB" value="false"/>
-        		<c:forEach var="f" items="${follows }">
-        		<c:if test="${r.id eq f.following_id}">
-        		<c:set var="followB" value="true"/>
-        		</c:if>
-        		</c:forEach>
-        		     <c:choose>
-               <c:when test="${followB}">
-               <button type="button" class="btn btn-outline-secondary btn-sm follow ${r.id}" onclick="fBtn('${r.id}')" >팔로우</button>
-                 </c:when>
-                 <c:otherwise>
-                   <button type="button" class="btn btn-secondary btn-sm follow ${r.id}" onclick="fBtn('${r.id}')" >팔로우</button>
-                 </c:otherwise>
-               </c:choose>	
-					<td style="text-align: center">
-						<h6 class="pCount ${r.id }">팔로워 : ${recMemberMap[r]}</h6>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="2">
-					</td>
-				</tr>
+			<table class="table table-hover searchBtns"> 
+			<thead><tr><td><h5>[${searchWord }] 검색결과</h5></td></tr></thead>
+			<tr><td class="totalSearch" onclick="location.href='./search.do?searchWord=${searchWord }'">전체 검색</td></tr>
+			<tr><td class="titleSearch" onclick="location.href='./searchAudio.do?searchWord=${searchWord }'">제목으로 검색</td></tr>
+			<tr><td class="byArtistSearch" onclick="location.href='./searchAudioByArtist.do?searchWord=${searchWord }'">아티스트명으로 검색</td></tr>
+			<tr><td class="artistSearch" onclick="location.href='./searchArtist.do?searchWord=${searchWord }'">아티스트 검색</td></tr>
+			<tr><td class="contentsSearch" style=" border-bottom: 2px solid #d4d7da; " onclick="location.href='./searchContents.do?searchWord=${searchWord }'">내용으로 검색</td></tr>
 			</table>
-		</c:forEach>
+		<%@include file="/resources/jsp/rightbar.jsp"%>
 		</div>
 	</div>
 </div>

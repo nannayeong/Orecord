@@ -12,7 +12,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title>admin - main</title>
+<title>admin - member</title>
 
 <!-- Custom fonts for this template-->
 <link href="${pageContext.request.contextPath}/resources/admin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -285,7 +285,7 @@ $(function(){
 					<div class="row">
 						<div class="input-field col-md-6 pr-md-1">
 							<label>비밀번호</label>
-							<input type="password" class="form-control" id="pw" value="${dto.pw }"
+							<input type="text" class="form-control" id="pw" value="${dto.pw }"
 								name="pw" min="4" maxlength="20" placeholder="비밀번호를 입력해주세요.">
 							<font id="chkNotice" size="2"></font>	
 							<br />						

@@ -8,7 +8,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>상세페이지 수정</title>
+<title>admin - audioboard</title>
 <!-- Jquery, BootStrap -->
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -71,6 +71,16 @@ var modiValidate = function(f){
     		$("#audiofilename").val("");
     		return false;
     	}
+    }
+    
+    if(f.party.checked==true){
+    	f.party.value = "Y";
+    }
+    else{
+    	f.party.value = "N";
+    }
+	if(f.party.checked == false){
+		f.party.value == ${adaudio.party }
     }
 }
 </script>
@@ -142,21 +152,9 @@ $(document).ready(function(){
 	}; 
 	$('#input_file').setPreview(opt); 
 }); 
-
-function colChoice(){
-	var fn = document.regiform;
-	
-	if(fn.party.checked==true){
-		fn.party.value = "Y";
-	}
-	else{
-		fn.party.value = "N";
-	}
-}
 </script>
 <div>
 	<div class="content">
-		<!-- 왼쪽 컨텐츠 -->
 		<form method="post" enctype="multipart/form-data" name="modiform" onsubmit="return modiValidate(this);"
 			action="<c:url value="${pageContext.request.contextPath}/admin/admemberEditAction.do" />">
 			<s:csrfInput />
@@ -216,6 +214,8 @@ function colChoice(){
 										<option style="color: black;" value="Blues">Blues</option>
 									</select>
 								</div>
+								<span style="font-size:14px;">다른 유저와 협업</span>
+								<input type="checkbox" name="party" id="party" value="${adaudio.party }"/>
 							</div>
 						</div>
 						

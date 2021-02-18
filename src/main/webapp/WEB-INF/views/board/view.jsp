@@ -41,6 +41,38 @@ function deleteAction(audio_idx){
 		location.href="viewDelete.do?audio_idx="+audio_idx;
 	}
 }
+function likeChange(a){
+	if($('#likeIcon').hasClass('on')){//이미 좋아요상태일 때
+		$.ajax({
+			url : "../board/noLike.do",
+			type : "get",
+			contentType : "text/html;charset:utf-8",
+			data : { audio_idx : a}, 
+			dataType : "json",
+			success : function sucFunc(resData){
+				if(resData.result==1){
+	    	  		$('#likeIcon').removeClass('on');
+		    	  	$('#likeCount').html(resData.likeCount);
+				}
+			}
+		});
+	}
+	else{
+		$.ajax({
+			url : "../board/like.do",
+			type : "get",
+			contentType : "text/html;charset:utf-8",
+			data : { audio_idx : a}, 
+			dataType : "json",
+			success : function sucFunc(resData) {
+		    	if(resData.result==1){
+					$('#likeIcon').addClass('on');
+					$('#likeCount').html(resData.likeCount);
+		    	}
+			}    
+		});  
+	}
+}
 $(document).ready(function(){
 	/* 웹페이지를 열었을때 */
 	$("#img1").show();
@@ -135,6 +167,10 @@ $(function(){
 						</audio>
 					</div>
 					<div style="padding: 10px 0 0 35px;">
+						<button type="button" class="btn btn-secondary btn-sm" title="좋아요" onclick="likeChange('${audio.audio_idx}')">
+							<i class="fas fa-heart ${audio.like eq 'true' ? 'on' : '' }" id="likeIcon"></i>&nbsp;
+							<span id="likeCount">${audio.like_count }</span>
+						</button>
 						<img src="../resources/img/like.png" alt="좋아요 수" width="30" style="margin-left:5px;">
 						<span>${audio.like_count}</span>
 						<img src="../resources/img/playcount.png" alt="재생횟수" width="50">
