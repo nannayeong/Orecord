@@ -10,6 +10,9 @@
 	<select id="select" resultType="model.PlayListDTO">
 		select idx, plid, audio_idx, plname from playlist where plid=#{param1}
 	</select>
+	<select id="selectgroup" resultType="model.PlayListDTO">
+		select plname from playlist where plid=#{param1} group by plname
+	</select>
 	<insert id="addPlayList">
 		insert into playlist(idx, plid, audio_idx, plname) values(seq_playlist.nextval, #{param1}, #{param2}, #{param3})
 	</insert>

@@ -25,4 +25,5 @@ public interface AudioBoardImpl {
 	public int recordDelete(String id, int audio_idx);
 	
 	public ArrayList<AudioBoardDTO> recordFollow(String user_id, int start, int end);
+	public AudioBoardDTO selectaudioidx(String audio_idx);
 } 

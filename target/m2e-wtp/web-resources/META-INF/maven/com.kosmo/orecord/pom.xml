@@ -15,7 +15,7 @@
 	</properties>
 	<!-- 오라클 레파지토리  -->
 	<repositories>
-		<repository>
+		<repository> 
 			<id>oracle</id>
 			<name>ORACLE JDBC Repository</name>
 			<url>https://code.lds.org/nexus/content/groups/main-repo</url>
@@ -191,6 +191,27 @@
 			<artifactId>spring-security-taglibs</artifactId>
 			<version>4.2.1.RELEASE</version>
 		</dependency>	
+		
+		<!-- naver -->
+		<dependency>
+			<groupId>com.github.scribejava</groupId>
+			<artifactId>scribejava-core</artifactId>
+		<version>2.8.1</version>
+		</dependency>
+		<!-- 제이슨 파싱 -->
+		<dependency>
+		<groupId>com.googlecode.json-simple</groupId>
+		<artifactId>json-simple</artifactId>
+		<version>1.1.1</version>
+		</dependency>
+		<!-- jstl -->
+		<dependency>
+		<groupId>javax.servlet</groupId>
+		<artifactId>jstl</artifactId>
+		<version>1.2</version>
+		</dependency>
+
+
 		
 	</dependencies>
     <build>

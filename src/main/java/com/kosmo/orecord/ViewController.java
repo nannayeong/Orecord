@@ -37,6 +37,8 @@ public class ViewController {
 		//idx값이 넘어오는지 확인
 		String idx = req.getParameter("audio_idx");
 		System.out.println("audio_idx = "+ idx);
+		int audio_idx = Integer.parseInt(req.getParameter("audio_idx"));
+		String login_id = principal.getName();
 		
 		/*절대경로*/
 		String path = req.getContextPath();
@@ -65,6 +67,14 @@ public class ViewController {
 			view.setImagename(path+"/resources/upload/"+view.getImagename());
 		}
 		view.setAudiofilename(path+"/resources/upload/"+view.getAudiofilename());
+		
+		int likeResult = sqlSession.getMapper(ViewImpl.class).myLike(audio_idx, login_id);
+		if(likeResult==1) {
+			view.setLike(true);
+		}
+		else {
+			view.setLike(false);
+		}
 		
 		
 		//모델객체에 데이터 저장
@@ -279,20 +289,21 @@ public class ViewController {
 		String login_id = null;
 		int audio_idx = Integer.parseInt(req.getParameter("audio_idx"));
 		
-		//좋아요 취소 매퍼 생성
-		int result = sqlSession.getMapper(ViewImpl.class).noLikeBoard(audio_idx, login_id);
-		
-		//audioboard like_count 감소
-		sqlSession.getMapper(ViewImpl.class).likeDown(audio_idx);
-		
-		//현재 like 수
-		int likeCount = sqlSession.getMapper(ViewImpl.class).likeCount(audio_idx);
-		
-		map.put("result", result);
-		map.put("likeCount", likeCount);
 		
 		try {
 			login_id = principal.getName();
+			
+			//좋아요 취소 매퍼 생성
+			int result = sqlSession.getMapper(ViewImpl.class).noLikeBoard(audio_idx, login_id);
+			System.out.println("좋아요 취소="+result);
+			//audioboard like_count 감소
+			sqlSession.getMapper(ViewImpl.class).likeDown(audio_idx);
+			
+			//현재 like 수
+			int likeCount = sqlSession.getMapper(ViewImpl.class).likeCount(audio_idx);
+			
+			map.put("result", result);
+			map.put("likeCount", likeCount);
 		}
 		catch(Exception e) {
 			e.printStackTrace();
