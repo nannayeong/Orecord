@@ -145,7 +145,9 @@ h4 {
 					    </div>
 					  </div>
 					</div>
-					<h2>${MemberDTO.id }님</h2> 
+					<h2>${MemberDTO.id }님</h2>
+					<input type="hidden" id="loginId" value="${MemberDTO.id }"/>
+					<input type="hidden" id="loginEmail" value="${MemberDTO.email }"/>
 					<h4>보유 포인트 : ${MemberDTO.mypoint }Point</h4>
 				</div>
 				<div class="pointSubMenu" style="margin-top:20px;">
@@ -202,7 +204,8 @@ h4 {
 function paymentConfirm(param) {
 	var IMP = window.IMP; // 생략가능
 	var lastAmount = parseInt(param);
-	var loginId = 'kosmo';
+	var loginId = document.getElementById("loginId").value;
+	var loginEmail = document.getElementById("loginEmail").value;
 	IMP.init('imp83561682'); 
 	IMP.request_pay({
 		pg: 'inicis', // version 1.1.0부터 지원.
@@ -210,7 +213,7 @@ function paymentConfirm(param) {
     merchant_uid: 'merchant_' + new Date().getTime(),
     name: 'orecord : 포인트 구매',
     amount: lastAmount, 
-    buyer_email: 'o-in-ho@hanmail.net',
+    buyer_email: loginEmail,
     buyer_name: loginId,
     buyer_tel: '',
     buyer_addr: '',
