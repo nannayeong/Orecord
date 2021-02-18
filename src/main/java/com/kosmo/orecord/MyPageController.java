@@ -409,11 +409,12 @@ public class MyPageController {
 	
 	/*회원 수정하기*/
 	@RequestMapping(value = "/{user_id}/memberEditAction.do", method = RequestMethod.POST)
-	public String memberEditAction(Principal principal, MultipartHttpServletRequest req)
+	public String memberEditAction(Principal principal, MultipartHttpServletRequest req, HttpSession session)
 	{		
 		
 		//서버의 물리적경로 얻어오기
 		String path = req.getSession().getServletContext().getRealPath("/resources/upload");
+		String path2 = req.getContextPath();
 		System.out.println(path);
 		String id = null;
 		
@@ -470,6 +471,9 @@ public class MyPageController {
 				if(fileName.equals("img")) {
 					img = saveFileName;
 					System.out.println("img"+img);
+					
+					MemberDTO user = (MemberDTO)session.getAttribute("user");
+					user.setImg(path2+"/resources/upload/"+img);
 				}
 				
 				mfile.transferTo(serverFullName);
