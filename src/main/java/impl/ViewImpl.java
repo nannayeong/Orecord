@@ -41,4 +41,20 @@ public interface ViewImpl {
 	public int addPlay(int audio_idx);
 	//재생횟수 가져오기
 	public int playCount(int audio_idx);
+	
+	//좋아요 누를시 likeboard추가
+	public int likeBoard(int audio_idx, String like_id);
+	//좋아요 취소시 likeboard삭제
+	public int noLikeBoard(int audio_idx, String like_id);
+	
+	//좋아요 누를시 audioboard like_count 증가
+	public int likeUp(int audio_idx);
+	//좋아요 취소시 audioboard like_count 감소
+	public int likeDown(int audio_idx);
+	
+	//좋아요 카운트
+	public int likeCount(int audio_idx);
+	
+	//나의 좋아요
+	public int myLike(int audio_idx, String like_id);
 } 

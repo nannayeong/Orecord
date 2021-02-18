@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Orecord - 환전내역 조회</title>
 
 <!-- Jquery, BootStrap -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -131,7 +131,7 @@ h4 {
 						</thead>
 				    <tbody>
 							<tr>
-								<td colspan="4" align="center"> 기간을 설정하고 조회버튼을 클릭해주세요 </td>
+								<td colspan="4" align="center"></td>
 							</tr>
 						</tbody>
 					</table>
@@ -332,7 +332,7 @@ function changingTableFunc(obj) {
 			html += '	<tbody>';
 	if (obj.totalRecord == 0) {
 			html += '<tr>';
-			html += '	<td colspan="3" align="center"> 조회된 내역이 없습니다. </td>';
+			html += '	<td colspan="4" align="center"> 조회된 내역이 없습니다. </td>';
 			html += '</tr></tbody></table></div>';
 	}
 	else {

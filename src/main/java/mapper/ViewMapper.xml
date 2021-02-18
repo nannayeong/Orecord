@@ -66,4 +66,36 @@
 		DELETE FROM audioboard
 			WHERE audio_idx=#{param1} AND id=#{param2}
 	</delete>
+	
+	<!-- 좋아요 누를시 like_board 추가 -->
+	<insert id="likeBoard">
+		INSERT INTO like_board (audio_idx, like_id)
+			VALUES (#{param1}, #{param2})
+	</insert>
+	
+	<!-- 좋아요 취소시 like_board 삭제 -->
+	<delete id="noLikeBoard">
+		DELETE FROM like_board 
+			WHERE audio_idx=#{param1} AND like_id=#{param2}
+	</delete>
+	
+	<!-- 오디오보드 like_count 증가 -->
+	<update id="likeUp" parameterType="int">
+		UPDATE audioboard SET like_count = (like_count+1) WHERE audio_idx = #{param1}
+	</update>
+	
+	<!-- 오디오보드 like_count 감소 -->
+	<update id="likeDown" parameterType="int">
+		UPDATE audioboard SET like_count = (like_count-1) WHERE audio_idx = #{param1}
+	</update>
+	
+	<!-- 현재 like 수 -->
+	<select id="likeCount" parameterType="int" resultType="int">
+		SELECT like_count FROM audioboard WHERE audio_idx=#{param1}
+	</select>
+	
+	<!-- 나의 좋아요 -->
+	<select id="myLike" resultType="int">
+		select count(*) from like_board where audio_idx=#{param1} and like_id=#{param2}
+	</select>
 </mapper>

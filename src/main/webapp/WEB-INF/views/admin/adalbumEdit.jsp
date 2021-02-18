@@ -12,7 +12,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title>admin - main</title>
+<title>admin - album</title>
 
 <!-- Custom fonts for this template-->
 <link href="${pageContext.request.contextPath}/resources/admin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -34,33 +34,10 @@
 	function isValidate(frm1){
 		
 		var frm = document.registFrm;
-//////////공백 체크////////////
-		var pw = document.getElementById("pw").value;
-		if(frm.pw.value=='' || frm.pw2.value==''){
-			alert('비밀번호를 입력하세요');
-			frm.pw.focus();
-			return false;
-		}
 		
-		//비밀번호 유효성 검사//
-		if(!length.test(frm.pw.value) || space.test(frm.pw.value)==true){
-		    alert("비밀번호는 4자 이상 12자 이내의 영문/숫자 조합하여 공백 없이 입력하세요.");
-		    frm.pw.focus();      
-		    return false;
-		}
-		if(frm.email_1.value=='' || frm.email_2.value==''){
-			alert('이메일을 입력하세요');
-			frm.email_1.focus();
-			return false;
-		}
-		if(frm.phone.value==''){
-			alert('전화번호를 입력하세요');
-			frm.phone.focus();
-			return false;
-		}
-		if(frm.address.value=='' || frm.addr1.value=='' || frm.addr2.value==''){
-			alert('주소를 입력하세요');
-			frm.address.focus();
+		if(frm.albumName.value=='' || frm.albumName.value==''){
+			alert('앨범이름을 입력해주세요.');
+			frm.pw.focus();
 			return false;
 		}
 	}

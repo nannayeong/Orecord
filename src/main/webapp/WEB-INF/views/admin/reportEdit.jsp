@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Orecord - main</title>
+<title>admin - report</title>
 
 <!-- Jquery, BootStrap -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -40,7 +40,9 @@ function writeValidate(f)
 			break;
 		}
 	}
-	
+	if(frm.kind.selectedIndex == 0){
+		frm.kind.value == ${reportDTO.kind};
+    }
 	if(isReason != true){
 		alert("신고이유를 선택해주세요");
 		frm.kind[0].focus();

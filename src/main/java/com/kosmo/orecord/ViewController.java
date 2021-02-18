@@ -37,6 +37,8 @@ public class ViewController {
 		//idx값이 넘어오는지 확인
 		String idx = req.getParameter("audio_idx");
 		System.out.println("audio_idx = "+ idx);
+		int audio_idx = Integer.parseInt(req.getParameter("audio_idx"));
+		String login_id = principal.getName();
 		
 		/*절대경로*/
 		String path = req.getContextPath();
@@ -65,6 +67,14 @@ public class ViewController {
 			view.setImagename(path+"/resources/upload/"+view.getImagename());
 		}
 		view.setAudiofilename(path+"/resources/upload/"+view.getAudiofilename());
+		
+		int likeResult = sqlSession.getMapper(ViewImpl.class).myLike(audio_idx, login_id);
+		if(likeResult==1) {
+			view.setLike(true);
+		}
+		else {
+			view.setLike(false);
+		}
 		
 		
 		//모델객체에 데이터 저장
@@ -127,6 +137,25 @@ public class ViewController {
 		
 		return "board/view";
 		
+	}
+	
+	//상세페이지 삭제처리
+	@RequestMapping("/board/viewDelete.do")
+	public String viewDelete(Principal principal, Model model, HttpServletRequest req) {
+		
+		String name = principal.getName();
+		int audio_idx = Integer.parseInt(req.getParameter("audio_idx"));
+		
+		//삭제 전 로그인 확인
+		if(principal.getName()==null) {
+			return "redirect:main.do"; 
+		}
+		//매퍼호출
+		int result = sqlSession.getMapper(ViewImpl.class).viewDelete(audio_idx, name);
+		System.out.println("결과  = "+ result);
+		
+		
+		return "redirect:/main.do";
 	}
 	
 	//댓글입력처리
@@ -219,25 +248,68 @@ public class ViewController {
 		return map;
 	}
 	
-	//상세페이지 삭제처리
-	@RequestMapping("/board/viewDelete.do")
-	public String viewDelete(Principal principal, Model model, HttpServletRequest req) {
+	@RequestMapping("/board/like.do")
+	@ResponseBody
+	public Map<String, Object> like(Principal principal,
+			HttpServletRequest req){
 		
-		String name = principal.getName();
+		Map<String, Object> map = new HashMap<String, Object>();
+		String login_id = null;
 		int audio_idx = Integer.parseInt(req.getParameter("audio_idx"));
 		
-		//삭제 전 로그인 확인
-		if(principal.getName()==null) {
-			return "redirect:main.do"; 
+		try {
+			login_id = principal.getName();
+			
+			//좋아요 추가 매퍼 생성
+			int result = sqlSession.getMapper(ViewImpl.class).likeBoard(
+				audio_idx, login_id);
+			System.out.println("좋아요 추가완료="+result);
+			
+			//audioboard like_count 증가
+			sqlSession.getMapper(ViewImpl.class).likeUp(audio_idx);
+			
+			//현재 like 수
+			int likeCount = sqlSession.getMapper(ViewImpl.class).likeCount(audio_idx);
+			
+			map.put("result", result);
+			map.put("likeCount", likeCount);
 		}
-		//매퍼호출
-		int result = sqlSession.getMapper(ViewImpl.class).viewDelete(audio_idx, name);
-		System.out.println("결과  = "+ result);
-		
-		
-		return "redirect:/main.do";
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		return map;
 	}
 	
+	@RequestMapping("/board/noLike.do")
+	@ResponseBody
+	public Map<String, Object> noLike(Principal principal,
+			HttpServletRequest req){
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		String login_id = null;
+		int audio_idx = Integer.parseInt(req.getParameter("audio_idx"));
+		
+		
+		try {
+			login_id = principal.getName();
+			
+			//좋아요 취소 매퍼 생성
+			int result = sqlSession.getMapper(ViewImpl.class).noLikeBoard(audio_idx, login_id);
+			System.out.println("좋아요 취소="+result);
+			//audioboard like_count 감소
+			sqlSession.getMapper(ViewImpl.class).likeDown(audio_idx);
+			
+			//현재 like 수
+			int likeCount = sqlSession.getMapper(ViewImpl.class).likeCount(audio_idx);
+			
+			map.put("result", result);
+			map.put("likeCount", likeCount);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		return map;
+	}
 } 
 
 
