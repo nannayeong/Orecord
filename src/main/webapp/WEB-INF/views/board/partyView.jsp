@@ -165,14 +165,24 @@ function choiceAction(f){
 			<div class="col-10">
 				<div class="form-group">
 					<div class="d-flex flex-row-reverse">
-						<button type="submit" class="btn btn-outline-danger">
+					<c:choose>
+						<c:when test="${partyView.choice eq 1 }">
+							<button type="button" class="btn btn-outline-primary"
+								onclick="location.href='partyList.do?audio_idx=${partyView.audio_idx}'">
+								뒤로가기
+							</button>
+						</c:when>
+						<c:otherwise>
+							<button type="submit" class="btn btn-outline-danger">
 							채택하기
-						</button>
-						<button type="button" class="btn btn-outline-primary"
+							</button>
+							<button type="button" class="btn btn-outline-primary"
 							style="margin-right: 10px;"
 							onclick="location.href='partyList.do?audio_idx=${partyView.audio_idx}'">
 							뒤로가기
 						</button>
+						</c:otherwise>
+					</c:choose>
 					</div>
 				</div>
 			</div>

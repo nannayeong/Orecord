@@ -101,7 +101,7 @@
 								<tr>
 									<td>${par.party_idx }</td>
 									<td>
-										<a href="./partyView.do?party_idx=${par.party_idx}&id=${par.id}">
+										<a href="./partyView.do?party_idx=${par.party_idx}">
 											${par.id }
 										</a>
 									</td>

@@ -37,7 +37,7 @@
 	
 	<!-- 협업신청서상세 -->
 	<select id="partyView" resultType="model.PartyBoardDTO">
-		SELECT * FROM partyboard WHERE party_idx=#{party_idx} AND id=#{id}
+		SELECT * FROM partyboard WHERE party_idx=#{party_idx}
 	</select>
 	
 	<!-- 나의 포인트 가져오기 -->
