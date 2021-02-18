@@ -116,6 +116,7 @@ public class Calculate {
 		return totalString;
 	}
 	public String contentsCut(String a) {
+		if(a!=null) {
 		int front = 0;
 		int back = 0;
 		String backString = "";
@@ -129,37 +130,28 @@ public class Calculate {
 		String slice = a.substring(front, back);
 		String totalString = slice+backString;
 		return totalString;
+	}else{
+			return "";
+		}
 	}
-	
-	public ArrayList<MemberDTO> arrayByFollow(HashMap<MemberDTO,Integer> memberMap) {
-		ArrayList<MemberDTO> ret = new ArrayList<MemberDTO>();
-		ArrayList<ToCal> before = new ArrayList<ToCal>();
-		for( MemberDTO dto : memberMap.keySet() ){
-		  ToCal c = new ToCal(memberMap.get(dto),dto.getId());
-		  before.add(c);
+	public ArrayList<MemberDTO> arrayByDTOFollow(HashMap<String,MemberDTO> memberMap) {
+		ArrayList<MemberDTO> before = new ArrayList<MemberDTO>();
+		for( String id: memberMap.keySet() ){
+			before.add(memberMap.get(id));
         }
 		if(before.size()>1) {
 		for(int i=before.size()-2;i>=0;i--) {
 			for(int j=0;j<=i;j++) {
-				if(before.get(j).followNum<before.get(j+1).followNum) {
+				if(before.get(j).getFollower()<before.get(j+1).getFollower()) {
 					before.add(j,before.get(j+1));
 					before.remove(j+2);
-				
-					
 				}
 			}
 		}}
-		for(ToCal c:before) {
-			for( MemberDTO dto : memberMap.keySet() ){
-				if(dto.getId()==c.id) {
-				ret.add(dto);
-				}
-			}
-		}
-		return ret;
+		return before;
 	}
-	public HashMap<MemberDTO,Integer> recommandFollowByFollowing(SqlSession sqlSession,String id){
-		HashMap<MemberDTO,Integer> memberMap = new HashMap<MemberDTO, Integer>();
+	public HashMap<String,MemberDTO> recommandFollowByFollowing(SqlSession sqlSession,String id){
+		HashMap<String,MemberDTO> memberMap = new HashMap<String, MemberDTO>();
 		
 		//유저가 팔로우중인 아이디들
 		ArrayList<FollowDTO> followings = sqlSession.getMapper(FollowImpl.class).following(id);
@@ -168,41 +160,31 @@ public class Calculate {
 			String followingId = followDTO.getFollowing_id();
 			ArrayList<FollowDTO> followrec = sqlSession.getMapper(FollowImpl.class).following(followingId);
 			for(FollowDTO rec : followrec) {
-				if(rec.getFollowing_id()!=id) {
 					int audioCount = sqlSession.getMapper(AudioBoardImpl.class).audioList(rec.getFollowing_id()).size();
 					if(audioCount>0) {
 						int  followCount = sqlSession.getMapper(FollowImpl.class).followerCount(rec.getFollowing_id());
 						MemberDTO recmember = sqlSession.getMapper(MemberImpl.class).memberInfo(rec.getFollowing_id());
-						memberMap.put(recmember, followCount);
+						recmember.setFollower(followCount);
+						memberMap.put(recmember.getId(), recmember);
 					}
-				}
 			}
 		}
 		for (FollowDTO fDTO : followings) {
-			for(MemberDTO mdto : memberMap.keySet()) {
-				if(mdto.getId().equals(fDTO.getFollowing_id())) {
-					memberMap.remove(mdto);
+			for(String memberid : memberMap.keySet()) {
+				if(memberMap.get(memberid).getId().equals(fDTO.getFollowing_id())||memberMap.get(memberid).getId().equals(id)) {
+					memberMap.remove(memberMap.get(memberid));
 					break;
 				}
 			}
 		}
 		
-		for(MemberDTO dto:memberMap.keySet()) {
+		for(String memberid:memberMap.keySet()) {
 			if(memberMap.size()<=4) {
 				break;
 			}else {
-				memberMap.remove(dto);
+				memberMap.remove(memberMap.get(memberid));
 			}
 		}
 		return memberMap;
-	}
-}
-
-class ToCal{
-	public int followNum;
-	public String id;
-	public	ToCal(int f, String i) {
-		followNum = f;
-		id=i;
 	}
 }

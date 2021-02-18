@@ -68,6 +68,6 @@
 	</select>
 	
 	<select id="partyMemberView" resultType="model.PartyBoardDTO">
-		SELECT p.id, p.audio_idx, p.kind, nickname FROM partyboard p inner join member m on p.id=m.id where audio_idx=#{0}
+		SELECT p.id, p.audio_idx, p.kind, nickname FROM partyboard p inner join member m on p.id=m.id where audio_idx=#{0} and choice=#{1}
 	</select>
 </mapper>
