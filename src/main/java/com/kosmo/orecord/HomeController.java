@@ -34,6 +34,7 @@ import util.Calculate;
 import impl.AudioBoardImpl;
 import impl.FollowImpl;
 import impl.MainImpl;
+import impl.MemberImpl;
 import impl.PartyImpl;
 import impl.PlayListImpl;
 
@@ -94,11 +95,13 @@ public class HomeController {
 		
 		//메인페이지에 출력할 오디오게시글 불러옴
 		ArrayList<AudioBoardDTO> audiolist = sqlSession.getMapper(AudioBoardImpl.class).mainAudioList(0,7,1,8);
-		
+		HashMap<String, String> nicknames = new HashMap<String, String>();
 		for(AudioBoardDTO audioDTO : audiolist) {
+			MemberDTO mdto = sqlSession.getMapper(MemberImpl.class).memberInfo(audioDTO.getId());
+			nicknames.put(audioDTO.getId(), mdto.getNickname());
+			
 			String contents = cal.contentsCut(audioDTO.getContents());
 			audioDTO.setContents(contents);
-			System.out.println(audioDTO.getImagename()); 
 			if(audioDTO.getImagename()==null){
 				audioDTO.setImagename(path+"/resources/img/default.jpg");
 			}
@@ -113,6 +116,7 @@ public class HomeController {
 		
 		//인기순정렬 맵으로넣음
 		model.addAttribute("audiolist", audiolist);
+		model.addAttribute("nicknames", nicknames);
 		//audio_idx별 앨범이름 넣음
 		ArrayList<AlbumDTO> album = new ArrayList<AlbumDTO>();
 		for(AudioBoardDTO dto : audiolist) {
@@ -127,13 +131,11 @@ public class HomeController {
 		
 		
 		ArrayList<MemberDTO> recFollow = new ArrayList<MemberDTO>();
-		HashMap<MemberDTO,Integer> recMemberMap = new HashMap<MemberDTO, Integer>();
-		
-		
+		HashMap<String,MemberDTO> recMemberMap = new HashMap<String,MemberDTO>();
 		if(id!=null) {
-			recMemberMap = cal.recommandFollowByFollowing(sqlSession,id);
-			recFollow = cal.arrayByFollow(recMemberMap);
-		}
+					recMemberMap = cal.recommandFollowByFollowing(sqlSession,id);
+					recFollow = cal.arrayByDTOFollow(recMemberMap);
+				}
 		for(MemberDTO recMemberDTO : recFollow) {
 			
 			if(recMemberDTO.getImg()==null){
@@ -164,12 +166,17 @@ public class HomeController {
 			audiolist = sqlSession.getMapper(AudioBoardImpl.class).mainAudioList(dateCheck,dateCheck+40,loadedCount+1,loadedCount+8);
 		}
 		
-		model.addAttribute("audiolist", audiolist); 
+	
 		//댓글수 카운트해서 넣음
 		String path = req.getContextPath();
+		HashMap<String, String> nicknames = new HashMap<String, String>();
 		for(AudioBoardDTO audioDTO : audiolist) {
+			MemberDTO mdto = sqlSession.getMapper(MemberImpl.class).memberInfo(audioDTO.getId());
+			nicknames.put(audioDTO.getId(), mdto.getNickname());
 			
-			System.out.println(audioDTO.getImagename()); 
+			String contents = cal.contentsCut(audioDTO.getContents());
+			audioDTO.setContents(contents);
+			
 			if(audioDTO.getImagename()==null){
 				audioDTO.setImagename(path+"/resources/img/default.jpg");
 			}
@@ -180,6 +187,8 @@ public class HomeController {
 			String fileName = audioDTO.getAudiofilename();
 			audioDTO.setAudiofilename(path+"/resources/upload/"+fileName);
 		}
+		model.addAttribute("audiolist", audiolist); 
+		model.addAttribute("nicknames", nicknames);
 		
 		ArrayList<LikeDTO> likes = loadLike(audiolist);
 		ArrayList<FollowDTO>  follows = loadFollow(audiolist);
@@ -216,11 +225,37 @@ public class HomeController {
 		model.addAttribute("plList", plList);
 		int party = Integer.parseInt(req.getParameter("partyType"));
 		//메인페이지에 출력할 오디오게시글 불러옴
-		ArrayList<AudioBoardDTO> audiolist = sqlSession.getMapper(AudioBoardImpl.class).mainAudioListCoop(0,14,1,8,party);
+		int loadedCount = 0;
+		if(req.getParameter("loadlength")!=null) {
+			loadedCount = Integer.parseInt(req.getParameter("loadlength"));
+		}
+		int totalAudio = sqlSession.selectOne("audioCoopCount",party);
+		
+		ArrayList<AudioBoardDTO> audiolist= new ArrayList<AudioBoardDTO>();
+		
+		Boolean add = false;
+		if(req.getParameter("loadlength")!=null) {
+			add=true;
+		}
+		if(add) {
+			if(loadedCount>=totalAudio){
+				audiolist = sqlSession.getMapper(AudioBoardImpl.class).mainAudioListCoop(0,14,loadedCount+1,loadedCount+8,party);
+			}
+			
+		}else {
+			audiolist = sqlSession.getMapper(AudioBoardImpl.class).mainAudioListCoop(0,14,1,8,party);
+		}
+		
+		
+		HashMap<String, String> nicknames = new HashMap<String, String>();
 		
 		for(AudioBoardDTO audioDTO : audiolist) {
+			MemberDTO mdto = sqlSession.getMapper(MemberImpl.class).memberInfo(audioDTO.getId());
+			nicknames.put(audioDTO.getId(), mdto.getNickname());
 			
-			System.out.println(audioDTO.getImagename()); 
+			String contents = cal.contentsCut(audioDTO.getContents());
+			audioDTO.setContents(contents);
+			
 			if(audioDTO.getImagename()==null){
 				audioDTO.setImagename(path+"/resources/img/default.jpg");
 			}
@@ -234,11 +269,12 @@ public class HomeController {
 		
 		//인기순정렬 맵으로넣음
 		model.addAttribute("audiolist", audiolist);
+		model.addAttribute("nicknames", nicknames);
 		
 		//협업중인 멤버 dto 모으기
 		HashMap<Integer, ArrayList<PartyBoardDTO>> partyMap = new HashMap<Integer, ArrayList<PartyBoardDTO>>();
 		for(AudioBoardDTO audio : audiolist) {
-			ArrayList<PartyBoardDTO> partys = sqlSession.getMapper(PartyImpl.class).partyMemberView(audio.getAudio_idx());
+			ArrayList<PartyBoardDTO> partys = sqlSession.getMapper(PartyImpl.class).partyMemberView(audio.getAudio_idx(),1);
 			partyMap.put(audio.getAudio_idx(),partys);
 		}
 		
@@ -257,11 +293,11 @@ public class HomeController {
 		
 		
 		ArrayList<MemberDTO> recFollow = new ArrayList<MemberDTO>();
-		HashMap<MemberDTO,Integer> recMemberMap = new HashMap<MemberDTO, Integer>();
+		HashMap<String,MemberDTO> recMemberMap = new HashMap<String,MemberDTO>();
 		if(id!=null) {
-			recMemberMap = cal.recommandFollowByFollowing(sqlSession,id);
-			recFollow = cal.arrayByFollow(recMemberMap);
-		}
+					recMemberMap = cal.recommandFollowByFollowing(sqlSession,id);
+					recFollow = cal.arrayByDTOFollow(recMemberMap);
+				}
 		for(MemberDTO recMemberDTO : recFollow) {
 			
 			if(recMemberDTO.getImg()==null){
@@ -277,7 +313,12 @@ public class HomeController {
 		model.addAttribute("recMemberMap",recMemberMap);
 		
 		
-		return "main/Co_op_Main";
+		if(add) {
+			return "main/Co_op_MainAdd";
+		}else {
+			return "main/Co_op_Main";
+		}
+		
 	}
 	
 	
@@ -288,7 +329,13 @@ public class HomeController {
 	@ResponseBody
 	public Map<String, String> countLoad(Model model, HttpServletRequest req, Principal principal, HttpSession session) {
 		int loaded = Integer.parseInt(req.getParameter("loadlength"));
-		int totalAudio = sqlSession.selectOne("audioCount");
+		int totalAudio = 0;
+		if(req.getParameter("partyType")!=null) {
+			int party = Integer.parseInt(req.getParameter("partyType"));
+			totalAudio = sqlSession.selectOne("audioCoopCount",party);
+		}else {
+			totalAudio = sqlSession.selectOne("audioCount");			
+		}
 		Map<String, String> map = new HashMap<String, String>();
 		if(loaded==totalAudio) {
 		map.put("nomoreFeed", "이전 게시물이 없습니다.");

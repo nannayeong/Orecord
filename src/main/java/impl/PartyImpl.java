@@ -50,7 +50,11 @@ public interface PartyImpl {
 	public int mypartychoicecount(String id);
 	public int mypartynotchoicecount(String id);
 	
+
 	public ArrayList<PartyBoardDTO> partyMemberView(int audio_idx);
 	
 	public ArrayList<AudioBoardDTO> party1(String id);
+
+	public ArrayList<PartyBoardDTO> partyMemberView(int audio_idx, int choice);
+
 }

@@ -44,7 +44,7 @@ table.recFollow{
                  </c:otherwise>
                </c:choose>	</td>
 					<td style="text-align: center; padding-right: 5px;">
-						<h6 class="pCount ${r.id }">팔로워 : ${recMemberMap[r]}</h6>
+						<h6 class="pCount ${r.id }">팔로워 : ${recMemberMap[r.id].follower}</h6>
 					</td>
 				</tr>
 				<tr>

@@ -114,19 +114,17 @@ public class SearchController {
 		
 		
 		
-		HashMap<MemberDTO,Integer> memberMap = new HashMap<MemberDTO, Integer>();
-		//검색페이지에 출력할 오디오게시글 불러옴
-		ArrayList<MemberDTO> artists = sqlSession.getMapper(SearchImpl.class).searchArtistM(searchWord);
+	
+		HashMap<String,MemberDTO> memberMap = new HashMap<String,MemberDTO>();
+		
+		ArrayList<MemberDTO> artists = sqlSession.getMapper(SearchImpl.class).searchArtist(searchWord);
 		for(MemberDTO dto : artists) {
 			String followingId = dto.getId();
-			HashSet<String> followerSet = new HashSet<String>();
 			ArrayList<FollowDTO> follows = sqlSession.getMapper(FollowImpl.class).followers(followingId);
-			for(FollowDTO fdto : follows) {
-				followerSet.add(fdto.getUser_id());
-			}
-			memberMap.put(dto, follows.size());
+			dto.setFollower(follows.size());
+			memberMap.put(dto.getId(), dto );
 		}
-		ArrayList<MemberDTO> arrayByF = cal.arrayByFollow(memberMap);
+		ArrayList<MemberDTO> arrayByF = cal.arrayByDTOFollow(memberMap);
 		if(arrayByF.size()>8) {
 		for(int i=arrayByF.size()-1;i>7;i--) {
 			arrayByF.remove(i);
@@ -172,11 +170,11 @@ public class SearchController {
 		
 		//팔로우추천 4명
 		ArrayList<MemberDTO> recFollow = new ArrayList<MemberDTO>();
-		HashMap<MemberDTO,Integer> recMemberMap = new HashMap<MemberDTO, Integer>();
+		HashMap<String,MemberDTO> recMemberMap = new HashMap<String,MemberDTO>();
 		if(id!=null) {
-			recMemberMap = cal.recommandFollowByFollowing(sqlSession,id);
-			recFollow = cal.arrayByFollow(recMemberMap);
-		}
+					recMemberMap = cal.recommandFollowByFollowing(sqlSession,id);
+					recFollow = cal.arrayByDTOFollow(recMemberMap);
+				}
 		model.addAttribute("recFollow",recFollow);
 		model.addAttribute("recMemberMap",recMemberMap);
 		for(MemberDTO recMemberDTO : recFollow) {
@@ -235,11 +233,11 @@ public class SearchController {
 		
 		//팔로우추천 4명
 		ArrayList<MemberDTO> recFollow = new ArrayList<MemberDTO>();
-		HashMap<MemberDTO,Integer> recMemberMap = new HashMap<MemberDTO, Integer>();
+		HashMap<String,MemberDTO> recMemberMap = new HashMap<String,MemberDTO>();
 		if(id!=null) {
-			recMemberMap = cal.recommandFollowByFollowing(sqlSession,id);
-			recFollow = cal.arrayByFollow(recMemberMap);
-		}
+					recMemberMap = cal.recommandFollowByFollowing(sqlSession,id);
+					recFollow = cal.arrayByDTOFollow(recMemberMap);
+				}
 		model.addAttribute("recFollow",recFollow);
 		model.addAttribute("recMemberMap",recMemberMap);
 		for(MemberDTO recMemberDTO : recFollow) {
@@ -299,11 +297,11 @@ public class SearchController {
 		
 		//팔로우추천 4명
 		ArrayList<MemberDTO> recFollow = new ArrayList<MemberDTO>();
-		HashMap<MemberDTO,Integer> recMemberMap = new HashMap<MemberDTO, Integer>();
+		HashMap<String,MemberDTO> recMemberMap = new HashMap<String,MemberDTO>();
 		if(id!=null) {
-			recMemberMap = cal.recommandFollowByFollowing(sqlSession,id);
-			recFollow = cal.arrayByFollow(recMemberMap);
-		}
+					recMemberMap = cal.recommandFollowByFollowing(sqlSession,id);
+					recFollow = cal.arrayByDTOFollow(recMemberMap);
+				}
 		model.addAttribute("recFollow",recFollow);
 		model.addAttribute("recMemberMap",recMemberMap);
 		
@@ -353,11 +351,11 @@ public class SearchController {
 		
 		//팔로우추천 4명
 		ArrayList<MemberDTO> recFollow = new ArrayList<MemberDTO>();
-		HashMap<MemberDTO,Integer> recMemberMap = new HashMap<MemberDTO, Integer>();
+		HashMap<String,MemberDTO> recMemberMap = new HashMap<String,MemberDTO>();
 		if(id!=null) {
-			recMemberMap = cal.recommandFollowByFollowing(sqlSession,id);
-			recFollow = cal.arrayByFollow(recMemberMap);
-		}
+					recMemberMap = cal.recommandFollowByFollowing(sqlSession,id);
+					recFollow = cal.arrayByDTOFollow(recMemberMap);
+				}
 		model.addAttribute("recFollow",recFollow);
 		model.addAttribute("recMemberMap",recMemberMap);
 		for(MemberDTO recMemberDTO : recFollow) {
@@ -422,10 +420,10 @@ public class SearchController {
 		
 		//팔로우추천 4명
 		ArrayList<MemberDTO> recFollow = new ArrayList<MemberDTO>();
-		HashMap<MemberDTO,Integer> recMemberMap = new HashMap<MemberDTO, Integer>();
+		HashMap<String,MemberDTO> recMemberMap = new HashMap<String,MemberDTO>();
 		if(id!=null) {
 			recMemberMap = cal.recommandFollowByFollowing(sqlSession,id);
-			recFollow = cal.arrayByFollow(recMemberMap);
+			recFollow = cal.arrayByDTOFollow(recMemberMap);
 		}
 		model.addAttribute("recFollow",recFollow);
 		model.addAttribute("recMemberMap",recMemberMap);
@@ -442,19 +440,17 @@ public class SearchController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} 
-		HashMap<MemberDTO,Integer> memberMap = new HashMap<MemberDTO, Integer>();
 		String searchWord = req.getParameter("searchWord");
+		HashMap<String,MemberDTO> memberMap = new HashMap<String,MemberDTO>();
+		
 		ArrayList<MemberDTO> artists = sqlSession.getMapper(SearchImpl.class).searchArtist(searchWord);
 		for(MemberDTO dto : artists) {
 			String followingId = dto.getId();
-			HashSet<String> followerSet = new HashSet<String>();
 			ArrayList<FollowDTO> follows = sqlSession.getMapper(FollowImpl.class).followers(followingId);
-			for(FollowDTO fdto : follows) {
-				followerSet.add(fdto.getUser_id());
-			}
-			memberMap.put(dto, follows.size());
+			dto.setFollower(follows.size());
+			memberMap.put(dto.getId(), dto );
 		}
-		ArrayList<MemberDTO> arrayByF = cal.arrayByFollow(memberMap);
+		ArrayList<MemberDTO> arrayByF = cal.arrayByDTOFollow(memberMap);
 		if(arrayByF.size()>8) {
 		for(int i=arrayByF.size()-1;i>7;i--) {
 			arrayByF.remove(i);
@@ -468,11 +464,11 @@ public class SearchController {
 		
 		//팔로우추천 4명
 		ArrayList<MemberDTO> recFollow = new ArrayList<MemberDTO>();
-		HashMap<MemberDTO,Integer> recMemberMap = new HashMap<MemberDTO, Integer>();
+		HashMap<String,MemberDTO> recMemberMap = new HashMap<String,MemberDTO>();
 		if(id!=null) {
-			recMemberMap = cal.recommandFollowByFollowing(sqlSession,id);
-			recFollow = cal.arrayByFollow(recMemberMap);
-		}
+					recMemberMap = cal.recommandFollowByFollowing(sqlSession,id);
+					recFollow = cal.arrayByDTOFollow(recMemberMap);
+				}
 		model.addAttribute("recFollow",recFollow);
 		model.addAttribute("recMemberMap",recMemberMap);
 		String path = req.getContextPath();
@@ -499,20 +495,17 @@ public class SearchController {
 			e.printStackTrace();
 		} 
 		
-		HashMap<MemberDTO,Integer> memberMap = new HashMap<MemberDTO, Integer>();
+		HashMap<String,MemberDTO> memberMap = new HashMap<String, MemberDTO>();
 		//검색페이지에 출력할 오디오게시글 불러옴
 		String searchWord = req.getParameter("searchWord");
 		ArrayList<MemberDTO> artists = sqlSession.getMapper(SearchImpl.class).searchArtist(searchWord);
 		for(MemberDTO dto : artists) {
 			String followingId = dto.getId();
-			HashSet<String> followerSet = new HashSet<String>();
 			ArrayList<FollowDTO> follows = sqlSession.getMapper(FollowImpl.class).followers(followingId);
-			for(FollowDTO fdto : follows) {
-				followerSet.add(fdto.getUser_id());
-			}
-			memberMap.put(dto, follows.size());
+			dto.setFollower(follows.size());
+			memberMap.put(dto.getId(), dto );
 		}
-		ArrayList<MemberDTO> arrayByF = cal.arrayByFollow(memberMap);
+		ArrayList<MemberDTO> arrayByF = cal.arrayByDTOFollow(memberMap);
 		int loadedCount = Integer.parseInt(req.getParameter("loadlength"));
 		int totalMember = artists.size();
 		if(loadedCount<totalMember) {
@@ -529,11 +522,11 @@ public class SearchController {
 		
 		//팔로우추천 4명
 		ArrayList<MemberDTO> recFollow = new ArrayList<MemberDTO>();
-		HashMap<MemberDTO,Integer> recMemberMap = new HashMap<MemberDTO, Integer>();
+		HashMap<String,MemberDTO> recMemberMap = new HashMap<String,MemberDTO>();
 		if(id!=null) {
-			recMemberMap = cal.recommandFollowByFollowing(sqlSession,id);
-			recFollow = cal.arrayByFollow(recMemberMap);
-		}
+					recMemberMap = cal.recommandFollowByFollowing(sqlSession,id);
+					recFollow = cal.arrayByDTOFollow(recMemberMap);
+				}
 		model.addAttribute("recFollow",recFollow);
 		model.addAttribute("recMemberMap",recMemberMap);
 		
@@ -584,11 +577,11 @@ public class SearchController {
 		
 		//팔로우추천 4명
 		ArrayList<MemberDTO> recFollow = new ArrayList<MemberDTO>();
-		HashMap<MemberDTO,Integer> recMemberMap = new HashMap<MemberDTO, Integer>();
+		HashMap<String,MemberDTO> recMemberMap = new HashMap<String,MemberDTO>();
 		if(id!=null) {
-			recMemberMap = cal.recommandFollowByFollowing(sqlSession,id);
-			recFollow = cal.arrayByFollow(recMemberMap);
-		}
+					recMemberMap = cal.recommandFollowByFollowing(sqlSession,id);
+					recFollow = cal.arrayByDTOFollow(recMemberMap);
+				}
 		model.addAttribute("recFollow",recFollow);
 		model.addAttribute("recMemberMap",recMemberMap);
 		for(MemberDTO recMemberDTO : recFollow) {
@@ -654,11 +647,11 @@ public class SearchController {
 		
 		//팔로우추천 4명
 		ArrayList<MemberDTO> recFollow = new ArrayList<MemberDTO>();
-		HashMap<MemberDTO,Integer> recMemberMap = new HashMap<MemberDTO, Integer>();
+		HashMap<String,MemberDTO> recMemberMap = new HashMap<String,MemberDTO>();
 		if(id!=null) {
-			recMemberMap = cal.recommandFollowByFollowing(sqlSession,id);
-			recFollow = cal.arrayByFollow(recMemberMap);
-		}
+					recMemberMap = cal.recommandFollowByFollowing(sqlSession,id);
+					recFollow = cal.arrayByDTOFollow(recMemberMap);
+				}
 		model.addAttribute("recFollow",recFollow);
 		model.addAttribute("recMemberMap",recMemberMap);
 		return "main/audiolistContentsAdd";
