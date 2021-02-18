@@ -203,7 +203,7 @@ public class PartyController {
 			e.printStackTrace();
 		}
 		
-		return "redirect:view.do?audio_idx="+ party3;
+		return "redirect:/"+name+"/nParty";
 	}
 	
 	//협업신청서 상세페이지
