@@ -133,13 +133,13 @@ function choiceAction(f){
 					<div class="col-8" align="center" style="margin: 10px 0 0 35px;">
 						<div class="form-group">
 							<span style="color:blue;">음원파일</span>
-							<p style="color:gray; font-size:12px;"> * 채택시 다운로드가 가능합니다.</p>
+							<!-- <p style="color:gray; font-size:12px;"> * 채택시 다운로드가 가능합니다.</p> -->
 							<audio controls style="width: 500px;">
 								<source src="${partyView.audiofilename }"/>
 							</audio>
 						</div>
 					</div>
-					<c:if test="${partyView.choice eq 1 }">
+					<%-- <c:if test="${partyView.choice eq 1 }">
 					<div class="col-2" style="padding-top:80px;" align="center">
 						<div>
 							<a href="download.do?audiofilename=${partyView.audiofilename }&oriFileName=${partyView.id}님의작곡">
@@ -147,7 +147,7 @@ function choiceAction(f){
 							</a>
 						</div>
 					</div>
-					</c:if>
+					</c:if> --%>
 				</div>
 			</div>
 		</div>
