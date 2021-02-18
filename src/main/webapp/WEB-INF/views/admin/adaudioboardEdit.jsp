@@ -8,7 +8,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>상세페이지 수정</title>
+<title>admin - audioboard</title>
 <!-- Jquery, BootStrap -->
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -155,7 +155,6 @@ $(document).ready(function(){
 </script>
 <div>
 	<div class="content">
-		<!-- 왼쪽 컨텐츠 -->
 		<form method="post" enctype="multipart/form-data" name="modiform" onsubmit="return modiValidate(this);"
 			action="<c:url value="${pageContext.request.contextPath}/admin/admemberEditAction.do" />">
 			<s:csrfInput />

@@ -294,7 +294,8 @@ function addAlbumFunc(){
                     </div>
                   </div>
                   	<div class="form-group" align="center">
-                		<input type="submit" class="btn btn-fill btn-outline-warning" style="" value="업로드">
+                		<input type="submit" class="btn btn-fill btn-outline-warning" value="업로드">
+                		<input type="reset" class="btn btn-fill btn-outline-warning" value="취소">
               		</div>
               	<br>
 			<br>
@@ -305,8 +306,9 @@ function addAlbumFunc(){
 		<!-- 본문종료 -->
 	<!-- 상단 메뉴바(위치옮기면안됨!) -->
 	<header>
-		<%@include file="/resources/jsp/header.jsp" %>
+		<div class="menu-back">
+			<%@include file="/resources/jsp/header.jsp" %>
+		</div>
 	</header>
-
 </body>
 </html> 
