@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import impl.AudioBoardImpl;
 import impl.ChoiceImpl;
 import impl.PartyImpl;
 import model.AudioBoardDTO;
@@ -42,12 +43,27 @@ public class PartyController {
 		String partyIdx = req.getParameter("audio_idx");
 		System.out.println("audio_idx="+ partyIdx);
 		
+		/*접근가능한 아이디인지 확인*/
+		
+		AudioBoardDTO adto = sqlSession.getMapper(AudioBoardImpl.class).selectaudioidx(partyIdx);
+		String login_id = null;
+		try {
+			login_id = principal.getName();
+		}
+		catch(Exception e) {
+			
+		}
+		
+		if(login_id==null||!login_id.equals(adto.getId())) {
+			return "redirect:/member/accessDenied.do";
+		}
+		
 		ArrayList<PartyBoardDTO> partyList = null;
 		
 		if(partyIdx!=null) {
 			partyList =
 				sqlSession.getMapper(PartyImpl.class).partyList(
-					Integer.parseInt(partyIdx));
+					Integer.parseInt(partyIdx)); 
 		}
 		
 		model.addAttribute("audio_idx", partyIdx);
