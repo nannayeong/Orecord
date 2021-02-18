@@ -515,7 +515,7 @@ public class MyPageController {
 		ArrayList<PlayListDTO> plList = null;
 		try {
 			login_id = principal.getName();
-			plList = sqlSession.getMapper(PlayListImpl.class).select(login_id);
+			plList = sqlSession.getMapper(PlayListImpl.class).selectgroup(login_id);
 			
 			if(plList.size()==0) {
 				PlayListDTO dto = new PlayListDTO();

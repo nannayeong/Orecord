@@ -121,9 +121,7 @@ function logincheck(bt){
 		}		 
 	}
 }
-function clickAudio(audioFileName,playerName){
-	$('#'+playerName).attr('src',audioFileName).attr('autoplay',true);
-}
+
 function pointCheck(){
 	var sponPoint = $("#sponPoint").val();
 	var myPoint = $("#myPoint").val();
