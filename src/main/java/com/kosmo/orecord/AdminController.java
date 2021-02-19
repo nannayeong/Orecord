@@ -414,11 +414,19 @@ public class AdminController {
 	
 	/*환전리스트*/
 	@RequestMapping("/admin/exchangeList.do")
-	public String exchangeList(Model model, ExchangeDTO exchangeDTO) {
+	public String exchangeList(Model model, HttpServletRequest req, ExchangeDTO exchangeDTO) {
 		
 		ArrayList<ExchangeDTO> exchangeList = sqlSession.getMapper(AdminImpl.class).exchangeList(exchangeDTO);
+		int exchangeResult = -1;
+		int check = -1;
 		
+		if (req.getParameter("check")=="Y") {
+			exchangeResult=1;
+		}
+		
+		//int chresult = sqlSession.getMapper(AdminImpl.class).chresultEdit(exchangeResult);
 		model.addAttribute("exchangeList", exchangeList);
+		//model.addAttribute("chresult", chresult);
 		
 		return "admin/exchangeList";
 	}
