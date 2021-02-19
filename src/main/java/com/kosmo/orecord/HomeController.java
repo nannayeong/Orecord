@@ -96,7 +96,9 @@ public class HomeController {
 		//메인페이지에 출력할 오디오게시글 불러옴
 		ArrayList<AudioBoardDTO> audiolist = sqlSession.getMapper(AudioBoardImpl.class).mainAudioList(0,7,1,8);
 		HashMap<String, String> nicknames = new HashMap<String, String>();
-		for(AudioBoardDTO audioDTO : audiolist) {
+		for(AudioBoardDTO audioDTO : audiolist) {;
+			int commentCount = sqlSession.selectOne("commentCount",audioDTO.getAudio_idx());
+			audioDTO.setCommentCount(commentCount);
 			MemberDTO mdto = sqlSession.getMapper(MemberImpl.class).memberInfo(audioDTO.getId());
 			nicknames.put(audioDTO.getId(), mdto.getNickname());
 			
@@ -171,6 +173,9 @@ public class HomeController {
 		String path = req.getContextPath();
 		HashMap<String, String> nicknames = new HashMap<String, String>();
 		for(AudioBoardDTO audioDTO : audiolist) {
+			int commentCount = sqlSession.selectOne("commentCount",audioDTO.getAudio_idx());
+			audioDTO.setCommentCount(commentCount);
+			
 			MemberDTO mdto = sqlSession.getMapper(MemberImpl.class).memberInfo(audioDTO.getId());
 			nicknames.put(audioDTO.getId(), mdto.getNickname());
 			
@@ -250,6 +255,10 @@ public class HomeController {
 		HashMap<String, String> nicknames = new HashMap<String, String>();
 		
 		for(AudioBoardDTO audioDTO : audiolist) {
+			
+			int commentCount = sqlSession.selectOne("commentCount",audioDTO.getAudio_idx());
+			audioDTO.setCommentCount(commentCount);
+			
 			MemberDTO mdto = sqlSession.getMapper(MemberImpl.class).memberInfo(audioDTO.getId());
 			nicknames.put(audioDTO.getId(), mdto.getNickname());
 			

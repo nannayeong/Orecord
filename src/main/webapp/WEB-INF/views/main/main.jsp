@@ -59,7 +59,7 @@ body{
 	width:100%;
 	height : 1060px;
 	margin:auto;
-	padding-top:3em;
+	padding-top:4em!important;
 	padding-bottom:1em;
 	text-align: center;
 }
@@ -238,7 +238,7 @@ function checknull(form) {
 <script type="text/javascript">
 function heartbtn(audioIdx) {
 	var a = audioIdx;
-	var clas = document.getElementsByClassName("btn btn-outline-secondary btn-sm heart "+a);
+	var clas = document.getElementsByClassName("btn  btn-sm heart "+a);
 	if("${pageContext.request.userPrincipal.name}"==""||"${pageContext.request.userPrincipal.name}"==null){
 		alert("로그인후 이용하세요");
 		location.href="${pageContext.request.contextPath}/member/login.do";
@@ -263,7 +263,7 @@ function like(audioIdx){
 	    	 var section1s = document.getElementsByClassName("btn btn-secondary btn-sm heart "+a);
 	    	 for(var i = section1s.length-1; i>=0; i--){
 	         var sec1 = section1s.item(0);
-	         sec1.className="btn btn-outline-secondary btn-sm heart "+a;
+	         sec1.className="btn  btn-sm heart "+a;
 	          count = resData.likecount;
 	          $(sec1).html("좋아요&nbsp;&nbsp;&nbsp;"
                       +count);
@@ -281,7 +281,7 @@ function nolike(audioIdx){
       data : { audio_idx :a,like_id:"${pageContext.request.userPrincipal.name}"}, 
       dataType : "json",
       success : function sucFunc(resData){
-    	 var section1s = document.getElementsByClassName("btn btn-outline-secondary btn-sm heart "+a);
+    	 var section1s = document.getElementsByClassName("btn  btn-sm heart "+a);
     	 for(var i = section1s.length-1; i>=0; i--){
          var sec1 = section1s.item(0);
          sec1.className="btn btn-secondary btn-sm heart "+a;
@@ -297,7 +297,7 @@ function nolike(audioIdx){
 	/* 버튼눌렀을때 팔로잉중인경우 언팔로우, 팔로우 안하는중이면 팔로우 함수로 이동 */
 function fBtn(follow) {
 	var f = follow;
-	var clas = document.getElementsByClassName("btn btn-outline-secondary btn-sm follow " + f);
+	var clas = document.getElementsByClassName("btn btn-warning btn-sm follow " + f);
 	if("${pageContext.request.userPrincipal.name}"==""||"${pageContext.request.userPrincipal.name}"==null){
 	alert("로그인후 이용하세요");
 	location.href="${pageContext.request.contextPath}/member/login.do";
@@ -326,7 +326,7 @@ function followbtn(follow) {
 					.getElementsByClassName("btn btn-secondary btn-sm follow " + f);
 			for (var i = section1s.length - 1; i >= 0; i--) {
 				var sec1 = section1s.item(i);
-				sec1.className = "btn btn-outline-secondary btn-sm follow " + f;
+				sec1.className = "btn btn-warning btn-sm follow " + f;
 			}
 			count = resData.followcount;
 			$('.pCount.' + f).html('팔로워 : ' + count);
@@ -347,7 +347,7 @@ function unfollowbtn(follow) {
 		dataType : "json",
 		success : function sucFunc(resData) {
 			var section1s = document
-					.getElementsByClassName("btn btn-outline-secondary btn-sm follow " + f);
+					.getElementsByClassName("btn btn-warning btn-sm follow " + f);
 			for (var i = section1s.length - 1; i >= 0; i--) {
 				var sec1 = section1s.item(i);
 				sec1.className = "btn btn-secondary btn-sm follow " + f;
@@ -436,138 +436,7 @@ function userFunc(){
 		<div class="content">
 			<div class="left-content-back">
 				<div class="left-content">
-        		<c:forEach var="b" items="${audiolist}">
-					<table style="width:100%;border:2px #f2f2f2 solid;margin:auto;margin-bottom:1em" class="feed">
-						<tr>
-							<td rowspan="5" style="width:7em;padding-left:1em;padding-right:1em;padding-top:1.5em;vertical-align:top">
-								<img src="${b.imagename }" alt="" style="width:6em;height:6em"/>
-								<span onclick='openmusicbox(${b.audio_idx})'><i class="far fa-play-circle"></i></span>
-							</td>
-								<td style="padding-left:1em">
-								<div style="font-size:14px;cursor:pointer" onclick="location.href='./${b.id }/record'">
-									${nicknames[b.id] }
-								</div>
-								<div style="font-size:18px">
-									<a href="./board/view.do?audio_idx=${b.audio_idx}">${b.audiotitle}</a>
-									- <a href="${pageContext.request.contextPath}/search.do?searchWord=${b.artistname}">${b.artistname}</a>
-								</div>
-							</td>
-							<td style="text-align:right; color:#423e3e; font-size:14px; padding-right:2em">
-								<div>${b.regidate }</div>
-								<div>${b.category }</div>
-							</td>	
-							<td colspan="2" style="padding-right:0.5em">
-								<div>
-									<div class="dropdown">
-									  <span data-toggle="dropdown" style="cursor:pointer">
-									    <i class="fas fa-bars"></i>
-									  </span>
-									  <div class="dropdown-menu">
-									  <c:if test="${pageContext.request.userPrincipal.name eq b.id }">
-									    <a class="dropdown-item" href="javascript:recordDeleteFunc(${b.audio_idx });">삭제하기</a>
-									    <a class="dropdown-item" href="#">수정하기</a>
-									    <c:if test="${b.party eq 1}">
-									    <a class="dropdown-item" href="#">협업신청리스트</a>
-									    </c:if>
-									  </c:if>
-									  <c:if test="${not empty pageContext.request.userPrincipal.name}">
-									  	<a class="dropdown-item" href="${pageContext.request.contextPath}/report/reportlist.do">신고하기</a>
-									  </c:if>
-									  </div>
-									</div>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td colspan="3">
-								<audio  style="width:97%" id="${b.albumName }">
-									<source src="${b.audiofilename }" type="audio/mp4">
-								</audio>
-							</td>
-						</tr>
-						<tr>
-							<td colspan="3">
-								${b.contents}
-							</td>
-						</tr>
-						<tr>
-							<td>
-							<c:set var="likeB" value="false"/>
-								<c:forEach var="l" items="${likes }">
-        		<c:if test="${b.audio_idx eq l.audio_idx and pageContext.request.userPrincipal.name eq l.like_id}">
-        		<c:set var="likeB" value="true"/>
-        		</c:if>
-        		</c:forEach>
-					<c:choose>
-               			<c:when test="${likeB}">
-                      		<button type="button" class="btn btn-outline-secondary btn-sm heart ${b.audio_idx}" title="좋아요" onclick="heartbtn('${b.audio_idx}')" name="minibtn">
-                      		좋아요 &nbsp
-                      		${b.like_count }
-                      		</button> 
-                 		</c:when>
-                 <c:otherwise>
-                      <button type="button" class="btn btn-secondary btn-sm heart ${b.audio_idx}" title="좋아요" onclick="heartbtn('${b.audio_idx}')"  name="minibtn">
-                      좋아요 &nbsp
-                      ${b.like_count }
-                      </button> 
-                 </c:otherwise>
-               		</c:choose>
-						<button type="button" class="btn btn-secondary btn-sm" id="addplaylist" onclick="logincheck(this);" data-toggle="modal" data-target="#play${b.audio_idx}">
-							플레이리스트
-						</button>
-						<!-- The Modal -->
-						<c:if test="${not empty pageContext.request.userPrincipal.name}">
-				<div class="modal" id="play${b.audio_idx}">
-				  <div class="modal-dialog">
-				    <div class="modal-content">
-				      <!-- Modal Header -->
-				      <div class="modal-header">
-				        <h4 class="modal-title">플레이리스트 추가하기</h4>
-				        <button type="button" class="close" data-dismiss="modal">&times;</button>
-				      </div>
-				      <!-- Modal body -->
-				      <form action="${pageContext.request.contextPath}/addPlayList.do?${_csrf.parameterName}=${_csrf.token}" method="post">
-				      <input type="hidden" name="audio_idx" value="${b.audio_idx }" />
-				      <div class="modal-body" style="text-align:center">
-				      	<div><img src="${b.imagename }" alt="" style="width:25px"/> 
-							${b.audiotitle } - ${b.artistname }
-						</div><br />
-						<div style="margin-bottom:0.3em">저장할 플레이리스트 폴더 선택</div>
-				      	<select name="plname" class="custom-select" style="width:12em;text-align:center">
-				      		<c:forEach items="${plList}" var="pl" varStatus="status">
-				      		<option value="${pl.plname}">${pl.plname }</option>
-				      		</c:forEach>
-				      	</select>
-				      	&nbsp&nbsp<span onclick="addplname();"><i class="fas fa-plus fa-lg"></i></span><br />
-				      </div>
-				
-				      <!-- Modal footer -->
-				      <div class="modal-footer">
-				        <button type="submit" class="btn btn-warning btn-sm">추가하기</button>
-				      </div>
-					</form>
-				    </div>
-				  </div>
-				</div>
-				</c:if>
-						<c:if test="${pageContext.request.userPrincipal.name ne b.id && b.party eq 1}">
-						<button type="button" class="btn btn-secondary btn-sm" onclick="partyFunc(${b.audio_idx})">참여</button>
-						</c:if>
-							</td>
-							<td style="text-align:right;padding-right:1.5em;color:#423e3e;font-size:14px" colspan="2">
-								재생 : ${b.play_count} &nbsp&nbsp
-								댓글수 : ${b.commentCount }
-							</td>
-						</tr>
-						<tr>
-							<td colspan="3">
-							<form action="${pageContext.request.contextPath}/board/commentAction.do?audio_idx=${b.audio_idx}" method="post" onsubmit="return commentNcheck(this)">
-								<input type="text" name="contents" style="width:80%;"/>&nbsp&nbsp<input type="submit" value="댓글달기" class="btn btn-secondary btn-sm" style="margin-bottom:5px"/>
-							</form>
-							</td>
-						</tr>
-					</table>
-           </c:forEach>
+				<%@include file="./audiolistAdd.jsp"%>
 				</div>
 			</div>
 			<div class="right-content-back">
