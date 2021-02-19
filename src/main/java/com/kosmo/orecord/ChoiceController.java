@@ -3,6 +3,7 @@ package com.kosmo.orecord;
 import java.security.Principal;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,8 @@ public class ChoiceController {
 	
 	//채택하기
 	@RequestMapping(value="/board/choiceAction.do",method=RequestMethod.POST)
-	public String choiceAction(Model model, HttpServletRequest req, Principal principal) {
+	public String choiceAction(Model model, HttpServletRequest req, Principal principal,
+			HttpSession session) {
 		
 		int idx = Integer.parseInt(req.getParameter("audio_idx"));
 		String name = principal.getName();
@@ -51,6 +53,36 @@ public class ChoiceController {
 				id, party_idx);
 		System.out.println("입력결과:"+ result3);
 		
-		return "redirect:partyList.do?audio_idx="+idx;
+		model.addAttribute("audio_idx", idx);
+		
+		
+		/* return "/orecord/board/SendMessage.do?="+idx+"&r_id="+id; */
+		/* return "redirect:partyList.do?audio_idx="+idx; */
+		return "redirect:partyView.do?party_idx="+party_idx;
+		/* return "board/SendMessage"; */
+	}
+	
+	//웹소켓 + 웹노티 보내기
+	@RequestMapping(value="/board/SendMessage.do", method=RequestMethod.GET)
+	public String webMessage(HttpSession session, Principal principal,
+			HttpServletRequest req, Model model) {
+		
+		int idx = Integer.parseInt(req.getParameter("audio_idx"));
+		String s_id = principal.getName();
+		System.out.println("s_id="+s_id);
+		String r_id = req.getParameter("r_id");
+		String msg = req.getParameter("msg");
+		model.addAttribute("audio_idx", idx);
+		model.addAttribute("r_id", r_id);
+		
+		session.setAttribute("chat_room", "myRoom1");
+		//본인이 사용할 아이디 입력
+		session.setAttribute("chat_id", s_id);
+		
+		//알림테이블에 추가
+//		int result = sqlSession.getMapper(ChoiceImpl.class).notification(s_id, r_id, msg);
+//		System.out.println("알림테이블추가="+result);
+		
+		return "board/SendMessage";
 	}
 }
