@@ -361,7 +361,8 @@ $(function(){
 									      	<td>${status.count }</td>
 									      	<td><a href="../board/view.do?audio_idx=${p.audio_idx}">${p.audiotitle}</a></td>
 									        <td>${p.kind }</td>
-									        <td onclick=''>${p.title }</td>
+									        <td><a href='../board/partyView.do?party_idx=${p.party_idx}&id=${pageContext.request.userPrincipal.name}'>
+									        ${p.title }</a></td>
 									        <td>${p.point }p</td>
 									        <td>${exDate < nowDate ? '기한종료' : p.exdate}</td>
 									      </tr>

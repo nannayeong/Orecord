@@ -20,8 +20,10 @@ public interface AudioBoardImpl {
 	public ArrayList<AudioBoardDTO> mainAudioListCoop(int date1, int date2, int rownum1, int rownum2, int party);
 	public ArrayList<AudioBoardDTO> audioListLast(String id);
 	public int audioCount();
+	public int audioCoopCount(int partyType);
 	public int myAudioCount(String id);
 	public int recordDelete(String id, int audio_idx);
 	
 	public ArrayList<AudioBoardDTO> recordFollow(String user_id, int start, int end);
+	public AudioBoardDTO selectaudioidx(String audio_idx);
 } 

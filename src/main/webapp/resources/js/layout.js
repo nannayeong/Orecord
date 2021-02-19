@@ -44,3 +44,50 @@ function userFunc(){
 		$('.user-down').css('visibility','hidden');
 	}
 }
+
+function addplname(){
+	if("${pageContext.request.userPrincipal.name}"==""){
+		alert('로그인 후 이용해주세요');
+		location.href="/orecord/member/login.do"
+	}
+	else{
+		var a = prompt('추가하실 이름을 입력해주세요');
+		$('select[name=plname]').prepend('<option value='+a+' selected>'+a+"</option>");
+	}
+}
+function partyFunc(aidx){
+	if("${pageContext.request.userPrincipal.name}"==""){
+		alert('로그인 후 이용해주세요');
+		location.href="/orecord/member/login.do"
+	}
+	else{
+		location.href='/orecord/board/partyWrite.do?audio_idx='+aidx;
+	}
+}
+function recordDeleteFunc(aidx){
+	if("${pageContext.request.userPrincipal.name}"==""){
+		alert('로그인 후 이용해주세요');
+		location.href="/orecord/member/login.do"
+	}
+	else{
+		if(confirm('삭제하시겠습니까?')){
+			$.ajax({
+			     url : "/orecord/recordDelete.do",
+			     type : "get",
+			     contentType : "text/html;charset:utf-8",
+			     data : {audio_idx:aidx},
+			     dataType : "json",
+			     success : function sucFunc(resData) {
+			    	 if(resData.result==1){
+							alert("정상적으로 삭제되었습니다");
+							location.href="./record";
+					 }
+			     }    
+			});
+		}
+	}
+}
+
+function openmusicbox(){
+	window.open("/orecord/musicbox", "musicbox", "width=400,height=550,toolbars=no,status=no");
+}

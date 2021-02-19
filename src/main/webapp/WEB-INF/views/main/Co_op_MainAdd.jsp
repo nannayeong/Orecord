@@ -21,7 +21,7 @@
 							</td>
 							<td style="padding-left:1em">
 								<div style="font-size:14px;">
-									<a href="./${b.id }/record"> ${b.id } </a>  
+									<a href="./${b.id }/record"> ${nicknames[b.id] } </a>  
 									<c:if test="${partyMap[b.audio_idx].size() ne 0}">
 									<i class="fas fa-user-friends" title="${total}"></i></c:if>
 								</div>
@@ -65,7 +65,7 @@
 						</tr>
 						<tr>
 							<td colspan="3">
-								${fn:length(audio.contents)>20 ? substring(audio.contents,0,20) : audio.contents}
+								${b.contents}
 							</td>
 						</tr>
 						<tr>

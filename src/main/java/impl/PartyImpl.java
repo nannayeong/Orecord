@@ -38,8 +38,7 @@ public interface PartyImpl {
 			@Param("point") int point);
 	
 	//협업신청서 상세페이지
-	public PartyBoardDTO partyView(@Param("party_idx") int party_idx,
-			@Param("id") String id);
+	public PartyBoardDTO partyView(@Param("party_idx") int party_idx);
 	
 	//나의 포인트 조회
 	public MemberDTO myPoint(String id);
@@ -50,5 +49,11 @@ public interface PartyImpl {
 	public int mypartychoicecount(String id);
 	public int mypartynotchoicecount(String id);
 	
+
 	public ArrayList<PartyBoardDTO> partyMemberView(int audio_idx);
+	
+	public ArrayList<AudioBoardDTO> party1(String id);
+
+	public ArrayList<PartyBoardDTO> partyMemberView(int audio_idx, int choice);
+
 }
