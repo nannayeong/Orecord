@@ -112,7 +112,7 @@ function notify(notiMsg) {
 </script>
 <div class="container">
 	<input type="hid den" name="audio_idx" id="audio_idx" value="${audio_idx }" />
-	<input type="hid den" name="r_id" id="r_id" value="${r_id }" />
+	<input type="hid den" name="r_id" id="r_id" value="${sessionScope.r_id }" />
 	<input type="hid den" value="${sessionScope.chat_id }" />
 	<input type="hid den" name="chat_id" id="chat_id" value="${pageContext.request.userPrincipal.name}" />
 	<table class="table table-bordered">
@@ -124,7 +124,7 @@ function notify(notiMsg) {
 		<tr>
 			<td>받는사람 아이디:</td>
 			<td><input type="text" id="r_id" class="form-control"
-				value="${r_id }" readonly/></td>
+				value="${sessionScope.r_id }" readonly/></td>
 		</tr>
 		<tr>
 			<td>쪽지내용:</td>

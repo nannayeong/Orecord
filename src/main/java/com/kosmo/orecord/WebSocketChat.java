@@ -19,8 +19,7 @@ import org.springframework.stereotype.Controller;
 @ServerEndpoint("/EchoServer.do")
 public class WebSocketChat {
 	
-	private static final List<Session> sessionList =
-		new ArrayList<Session>();
+	private static final List<Session> sessionList = new ArrayList<Session>();
 	private static final Logger logger = LoggerFactory.getLogger(WebSocketChat.class);
 	
 	public WebSocketChat() {
@@ -39,6 +38,7 @@ public class WebSocketChat {
 		}
 		
 		sessionList.add(session);
+		logger.info("{} 연결됨", session.getId());
 	}
 	
 	private void sendAllSessionToMessage(Session self, String message) {

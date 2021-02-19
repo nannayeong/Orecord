@@ -22,6 +22,11 @@
 <!-- layout js-->
 <script src="${pageContext.request.contextPath}/resources/js/layout.js"></script>
 <script type="text/javascript">
+window.onload = function(){
+	webSocket = new WebSocket("ws://localhost:8080/orecord/EchoServer.do");
+}
+</script>
+<script type="text/javascript">
 function comentValidate(f){
 	
 	if(f.contents.value==""){
