@@ -133,6 +133,15 @@ public class SearchController {
 		
 		ArrayList<MemberDTO> artists = sqlSession.getMapper(SearchImpl.class).searchArtist(searchWord);
 		for(MemberDTO dto : artists) {
+			if(dto.getImg()==null){
+				dto.setImg(path+"/resources/img/default.jpg");
+			}
+			else {
+				String fileName = dto.getImg();
+				dto.setImg(path+"/resources/upload/"+fileName);
+			}
+			
+			
 			String followingId = dto.getId();
 			ArrayList<FollowDTO> follows = sqlSession.getMapper(FollowImpl.class).followers(followingId);
 			dto.setFollower(follows.size());
@@ -466,10 +475,18 @@ public class SearchController {
 			e.printStackTrace();
 		} 
 		String searchWord = req.getParameter("searchWord");
+		String path = req.getContextPath();
 		HashMap<String,MemberDTO> memberMap = new HashMap<String,MemberDTO>();
 		
 		ArrayList<MemberDTO> artists = sqlSession.getMapper(SearchImpl.class).searchArtist(searchWord);
 		for(MemberDTO dto : artists) {
+			if(dto.getImg()==null){
+				dto.setImg(path+"/resources/img/default.jpg");
+			}
+			else {
+				String fileName = dto.getImg();
+				dto.setImg(path+"/resources/upload/"+fileName);
+			}
 			String followingId = dto.getId();
 			ArrayList<FollowDTO> follows = sqlSession.getMapper(FollowImpl.class).followers(followingId);
 			dto.setFollower(follows.size());
@@ -496,7 +513,6 @@ public class SearchController {
 				}
 		model.addAttribute("recFollow",recFollow);
 		model.addAttribute("recMemberMap",recMemberMap);
-		String path = req.getContextPath();
 		for(MemberDTO recMemberDTO : recFollow) {
 			
 			if(recMemberDTO.getImg()==null){
@@ -524,7 +540,15 @@ public class SearchController {
 		//검색페이지에 출력할 오디오게시글 불러옴
 		String searchWord = req.getParameter("searchWord");
 		ArrayList<MemberDTO> artists = sqlSession.getMapper(SearchImpl.class).searchArtist(searchWord);
+		String path = req.getContextPath();
 		for(MemberDTO dto : artists) {
+			if(dto.getImg()==null){
+				dto.setImg(path+"/resources/img/default.jpg");
+			}
+			else {
+				String fileName = dto.getImg();
+				dto.setImg(path+"/resources/upload/"+fileName);
+			}
 			String followingId = dto.getId();
 			ArrayList<FollowDTO> follows = sqlSession.getMapper(FollowImpl.class).followers(followingId);
 			dto.setFollower(follows.size());

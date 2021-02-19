@@ -69,7 +69,7 @@
         		<c:if test="${b.id ne pageContext.request.userPrincipal.name }">
 					<c:choose>
                			<c:when test="${likeB}">
-                      		<button type="button" class="btn btn-outline-secondary btn-sm heart ${b.audio_idx}" title="좋아요" onclick="heartbtn('${b.audio_idx}')" name="minibtn">
+                      		<button type="button" class="btn btn-warning btn-sm heart ${b.audio_idx}" title="좋아요" onclick="heartbtn('${b.audio_idx}')" name="minibtn">
                       		좋아요 &nbsp
                       		${b.like_count }
                       		</button> 
@@ -126,13 +126,6 @@
 							<td style="text-align:right;padding-right:1.5em;color:#423e3e;font-size:14px" colspan="2">
 								재생 : ${b.play_count} &nbsp&nbsp
 								댓글수 : ${b.commentCount }
-							</td>
-						</tr>
-						<tr>
-							<td colspan="3">
-							<form action="${pageContext.request.contextPath}/board/commentAction.do?audio_idx=${b.audio_idx}" method="post" onsubmit="return commentNcheck(this)">
-								<input type="text" name="contents" style="width:80%;"/>&nbsp&nbsp<input type="submit" value="댓글달기" class="btn btn-secondary btn-sm" style="margin-bottom:5px"/>
-							</form>
 							</td>
 						</tr>
 					</table>
