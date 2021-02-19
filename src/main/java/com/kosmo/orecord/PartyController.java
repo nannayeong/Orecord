@@ -43,9 +43,8 @@ public class PartyController {
 		String partyIdx = req.getParameter("audio_idx");
 		System.out.println("audio_idx="+ partyIdx);
 		
-		/*접근가능한 아이디인지 확인*/
 		
-		AudioBoardDTO adto = sqlSession.getMapper(AudioBoardImpl.class).selectaudioidx(partyIdx);
+	
 		String login_id = null;
 		try {
 			login_id = principal.getName();
@@ -53,6 +52,22 @@ public class PartyController {
 		catch(Exception e) {
 			
 		}
+		
+		
+		
+		/*내가 작성한 보드에서 party 1인것만 가져옴*/
+		ArrayList<AudioBoardDTO> ptdto = sqlSession.getMapper(PartyImpl.class).party1(login_id);
+		
+		model.addAttribute("ptdto", ptdto);
+		
+		if(partyIdx==null) {
+			for(AudioBoardDTO abdto : ptdto) {
+				partyIdx = String.valueOf(abdto.getAudio_idx());
+			}
+		}
+		
+		/*접근가능한 아이디인지 확인*/
+		AudioBoardDTO adto = sqlSession.getMapper(AudioBoardImpl.class).selectaudioidx(partyIdx);
 		
 		if(login_id==null||!login_id.equals(adto.getId())) {
 			return "redirect:/member/accessDenied.do";
@@ -223,8 +238,7 @@ public class PartyController {
 		//Mapper 호출
 		PartyBoardDTO partyView =
 			sqlSession.getMapper(PartyImpl.class).partyView(
-				Integer.parseInt(req.getParameter("party_idx")),
-				req.getParameter("id"));
+				Integer.parseInt(req.getParameter("party_idx")));
 			
 		partyView.setAudiofilename(path+"/resources/upload/"+partyView.getAudiofilename());
 			

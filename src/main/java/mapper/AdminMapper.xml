@@ -89,6 +89,10 @@
 	<select id="chargeView" resultType="model.ChargeDTO">
 		SELECT * FROM chargeLog WHERE idx=#{idx}
 	</select>
+	<!-- 충전 결과 수정하기 -->
+	<update id="chresultEdit">
+		UPDATE chargeLog SET exchangeResult=#{exchangeResult} WHERE idx=#{idx}
+	</update>
 	<!-- 충전 수정하기 -->
 	<update id="chargeEdit">
 		UPDATE chargeLog SET totalPayment=#{0}, VAT=#{1}, chargePoint=#{2}, paymentType=#{3} WHERE idx=#{4}

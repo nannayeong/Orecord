@@ -121,12 +121,18 @@ public class Calculate {
 		int back = 0;
 		String backString = "";
 		
-		if(a.length()<=25) {
-			back=a.length();
-		}else {
-			back=26;
-			backString = "...";
+		try {
+			if(a.length()<=25) {
+				back=a.length();
+			}else {
+				back=26;
+				backString = "...";
+			}
 		}
+		catch(Exception e) {
+			System.out.println("예외"+e.getMessage());
+		}
+		
 		String slice = a.substring(front, back);
 		String totalString = slice+backString;
 		return totalString;

@@ -67,4 +67,5 @@
 	<select id="selectaudioidx" resultType="model.AudioBoardDTO">
 		select * from audioboard where audio_idx=#{param1}
 	</select>
+
 </mapper> 
