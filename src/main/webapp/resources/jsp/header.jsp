@@ -1,3 +1,4 @@
+<%@page import="java.security.Principal"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -35,7 +36,8 @@ if(request.getParameter("partyType").equals("1")){
 	a= " active";
 }else if(request.getParameter("partyType").equals("0")){
 	b= " active";
-}}%>
+}}
+%>
 <div class="menu-back">
 	<!-- 오른정렬 -->
 	<a href="${pageContext.request.contextPath}/main.do"><div class="logo">Orecord</div></a>
@@ -44,27 +46,20 @@ if(request.getParameter("partyType").equals("1")){
 	
 	<div class="search">
 		<form action="${pageContext.request.contextPath}/search.do" onsubmit="return checkNull(this)">
-			<input type="text" value="" type="search" style="width:18em" name="searchWord"/>
+			<input type="text" value="" type="search" style="width:15em" name="searchWord"/>
 			<button type="submit" onclick="" class="btn btn-secondary btn-sm" style="margin-bottom:4px"><i class="fas fa-search"></i></button>
 		</form>
 	</div>
 	<!-- 왼정렬 -->
 	<c:choose>
 	<c:when test="${not empty pageContext.request.userPrincipal.name}">
-	<div class="noti" id="setting">
-		<div class="dropdown">
-		  <span class="dropdown-toggle" data-toggle="dropdown">
-		    <i class="fas fa-ellipsis-h fa-lg" style="color:white"></i>
-		  </span>
-		  <div class="dropdown-menu">
-		    <a class="dropdown-item" href="${pageContext.request.contextPath}/report/reportlist.do">신고하기</a>
-		  </div>
-		</div>
+	<div class="noti2" id="musicbox">
+		<i class="fas fa-music fa-lg" onclick="openmusicboxnull();"></i>
 	</div>
-	<div class="noti" id="noti">
+	<div class="noti2" id="noti">
 		<div class="dropdown">
 		  <span class="dropdown-toggle" data-toggle="dropdown">
-		    <i class="fas fa-bell fa-lg"></i>
+		    <i class="fas fa-bell fa-lg" style="margin-left:15px"></i>
 		  </span>
 		  <div class="dropdown-menu">
 		    <a class="dropdown-item" href="">알림</a>
@@ -74,9 +69,12 @@ if(request.getParameter("partyType").equals("1")){
 	<div class="noti" id="user">
 		<div class="dropdown">
 		  <span class="dropdown-toggle" data-toggle="dropdown">
-		 	<img src="./resources/img/default.jpg" alt="" style="width:1.5em;border-radius:15px;margin-left:5px" />
+		 	<img src="${sessionScope.user.img }" alt="" style="width:1.8em;height:1.8em;border-radius:15px;margin-left:5px" />
+		 	<span>${sessionScope.user.nickname }님</span>
 		  </span>
 		  <div class="dropdown-menu">
+		  	<div class="dropdown-item" style="text-align:center">보유포인트 <br /> ${sessionScope.user.mypoint}원</div>
+		  	<hr />
 		    <c:if test="${sessionScope.SPRING_SECURITY_CONTEXT.authentication.authorities eq '[ROLE_ADMIN]'}">
 			<a class="dropdown-item" href="${pageContext.request.contextPath}/admin/main">어드민페이지</a>
 			</c:if>
@@ -85,13 +83,16 @@ if(request.getParameter("partyType").equals("1")){
 			<a class="dropdown-item" href="${pageContext.request.contextPath }/chargeLog.do">포인트 조회</a>
 			<a class="dropdown-item" href="${pageContext.request.contextPath }/pwCheck.do">정보수정</a>
 			<a class="dropdown-item" href="${pageContext.request.contextPath }/logout.do">로그아웃</a>
+			<a class="dropdown-item" href="${pageContext.request.contextPath}/report/reportlist.do">신고하기</a>
 		  </div>
 		</div>
 	</div>
-	
 	<a href="${pageContext.request.contextPath}/upload.do"><div class="menu-r">Upload</div></a>
 	</c:when>
 	<c:otherwise>
+	<div class="menu-unlogin">
+		<i class="fas fa-music fa-lg" onclick='openmusicboxnull();'></i>
+	</div>
 	<div class="menu-unlogin">
 		<button type="button" class="btn btn-secondary btn-sm" onclick="location.href='${pageContext.request.contextPath}/member/membershipsub.do'">회원가입</button>
 	</div>

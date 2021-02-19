@@ -227,7 +227,7 @@ $(window).on("scroll", function() {
 			      url : "./searchArtistLoad.do",
 			      type : "get",
 		            contentType : "text/html;charset:utf-8",
-			      data : { loadlength :loadedSize,searchWord:'${searchWord}'}, 
+			      data : { loadlength :loadedSize,searchWord:'${searchWord}',searchType:'nickname'}, 
 			      dataType : "html",
 			      success : function(resData) {
 			    	  $('.feed').last().after(resData);
@@ -274,6 +274,7 @@ function checktotalLoad(type) {
 	    	  
 	      },
 	      error : function(e) {
+	    	  alert("checktotalLoad 실패");
 		}
 	      
 	 });
@@ -498,7 +499,7 @@ function checktotalLoad(type) {
 							</td>
 							<td style="padding-left:1em">
 								<div style="font-size:14px;cursor:pointer" onclick="location.href='./${b.id }/record'">
-									${b.id }
+									${nicknames[b.id] }
 								</div>
 								<div style="font-size:18px">
 									<a href="./board/view.do?audio_idx=${b.audio_idx}">${b.audiotitle}</a>
@@ -631,7 +632,7 @@ function checktotalLoad(type) {
 							</td>
 							<td style="padding-left:1em">
 								<div style="font-size:14px;cursor:pointer" onclick="location.href='./${b.id }/record'">
-									${b.id }
+									${nicknames[b.id] }
 								</div>
 								<div style="font-size:18px">
 									<a href="./board/view.do?audio_idx=${b.audio_idx}">${b.audiotitle}</a>
@@ -790,7 +791,7 @@ function checktotalLoad(type) {
                  </c:otherwise>
                </c:choose>
 					<td style="text-align: center">
-						<h6 class="pCount ${a.id }">팔로워 : ${memberMap[a]}</h6>
+						<h6 class="pCount ${a.id }">팔로워 : ${a.follower}</h6>
 					</td>
 				</tr>
 				<tr>
@@ -813,7 +814,7 @@ function checktotalLoad(type) {
 							</td>
 							<td style="padding-left:1em">
 								<div style="font-size:14px;cursor:pointer" onclick="location.href='./${b.id }/record'">
-									${b.id }
+									${nicknames[b.id] }
 								</div>
 								<div style="font-size:18px">
 									<a href="./board/view.do?audio_idx=${b.audio_idx}">${b.audiotitle}</a>
@@ -863,6 +864,7 @@ function checktotalLoad(type) {
         		<c:set var="likeB" value="true"/>
         		</c:if>
         		</c:forEach>
+        		<c:if test="${b.id ne pageContext.request.userPrincipal.name }">
 					<c:choose>
                			<c:when test="${likeB}">
                       		<button type="button" class="btn btn-outline-secondary btn-sm heart ${b.audio_idx}" title="좋아요" onclick="heartbtn('${b.audio_idx}')" name="minibtn">
@@ -877,6 +879,7 @@ function checktotalLoad(type) {
                       </button> 
                  </c:otherwise>
                		</c:choose>
+               		</c:if>
 						<button type="button" class="btn btn-secondary btn-sm" id="addplaylist" onclick="logincheck(this);" data-toggle="modal" data-target="#play${b.audio_idx}">
 							플레이리스트
 						</button>

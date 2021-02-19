@@ -139,4 +139,8 @@
 	<update id="updateExchangeMyPoint">
 		UPDATE MEMBER set myPoint = (myPoint - #{exchangePoint}) WHERE id=#{exchangeId}
 	</update>
+	
+	<update id="exchangeApprove">
+		UPDATE EXCHANGELOG set EXCHANGERESULT = 1 WHERE IDX=#{0}
+	</update>
 </mapper>
