@@ -112,13 +112,8 @@ border:1px solid #f2f2f2;
                    				</span>
                    				</c:if>	
                    				<c:if test="${pageContext.request.userPrincipal.name eq user_id}">
-                   				<span class="dropdown">
-								  <span data-toggle="dropdown" style="cursor:pointer">
-								    <i class="fas fa-ellipsis-h fa-lg"></i>
-								  </span>
-								  <div class="dropdown-menu">
-								    <a class="dropdown-item" href="javascript:plAudioDeleteFunc(${audio.idx}, ${audio.audio_idx });">삭제하기</a>
-								  </div>
+                   				<span>
+								  <a href="javascript:plAudioDeleteFunc(${audio.idx}, ${audio.audio_idx });"><i class="fas fa-trash-alt"></i></a>
 								</span>
 								</c:if>
 							</td>

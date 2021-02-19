@@ -307,7 +307,7 @@ $(function(){
 					<c:otherwise>
 					<div style="margin-right: 60px;">
 						<button type="button" class="btn btn-outline-info"
-							onclick="location.href='/orecord/main.do'">
+							onclick="location.href='${pageContext.request.contextPath}/${audio.id}/album'">
 							목록
 						</button>
 					</div>

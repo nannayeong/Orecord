@@ -65,6 +65,10 @@ public class SearchController {
 		String path = req.getContextPath();
 		HashMap<String, String> nicknames = new HashMap<String, String>();
 		for(AudioBoardDTO audioDTO : audioList) {
+			
+			int commentCount = sqlSession.selectOne("commentCount",audioDTO.getAudio_idx());
+			audioDTO.setCommentCount(commentCount);
+			
 			MemberDTO mdto = sqlSession.getMapper(MemberImpl.class).memberInfo(audioDTO.getId());
 			nicknames.put(audioDTO.getId(), mdto.getNickname());
 			String contents = cal.contentsCut(audioDTO.getContents());
@@ -95,6 +99,9 @@ public class SearchController {
 		ArrayList<AudioBoardDTO> audioByNameList = sqlSession.getMapper(SearchImpl.class).searchAudioByArtistM(searchWord);
 		//아티스트명으로 검색5개
 		for(AudioBoardDTO audioDTO : audioByNameList) {
+			int commentCount = sqlSession.selectOne("commentCount",audioDTO.getAudio_idx());
+			audioDTO.setCommentCount(commentCount);
+			
 			MemberDTO mdto = sqlSession.getMapper(MemberImpl.class).memberInfo(audioDTO.getId());
 			nicknames.put(audioDTO.getId(), mdto.getNickname());
 			String contents = cal.contentsCut(audioDTO.getContents());
@@ -147,6 +154,8 @@ public class SearchController {
 		//컨텐츠로 검색
 		ArrayList<AudioBoardDTO> byContents = sqlSession.getMapper(SearchImpl.class).searchContentM(searchWord);
 		for(AudioBoardDTO audioDTO : byContents) {
+			int commentCount = sqlSession.selectOne("commentCount",audioDTO.getAudio_idx());
+			audioDTO.setCommentCount(commentCount);
 			MemberDTO mdto = sqlSession.getMapper(MemberImpl.class).memberInfo(audioDTO.getId());
 			nicknames.put(audioDTO.getId(), mdto.getNickname());
 			if(audioDTO.getImagename()==null){
@@ -213,6 +222,8 @@ public class SearchController {
 		ArrayList<AudioBoardDTO> audioList = sqlSession.getMapper(SearchImpl.class).search("AUDIOTITLE",searchWord,1,8);
 		String path = req.getContextPath();
 		for(AudioBoardDTO audioDTO : audioList) {
+			int commentCount = sqlSession.selectOne("commentCount",audioDTO.getAudio_idx());
+			audioDTO.setCommentCount(commentCount);
 			String contents = cal.contentsCut(audioDTO.getContents());
 			audioDTO.setContents(contents);
 			if(audioDTO.getImagename()==null){
@@ -282,6 +293,8 @@ public class SearchController {
 		
 		String path = req.getContextPath();
 		for(AudioBoardDTO audioDTO : audioList) {
+			int commentCount = sqlSession.selectOne("commentCount",audioDTO.getAudio_idx());
+			audioDTO.setCommentCount(commentCount);
 			String contents = cal.contentsCut(audioDTO.getContents());
 			audioDTO.setContents(contents);
 			if(audioDTO.getImagename()==null){
@@ -333,6 +346,8 @@ public class SearchController {
 		
 		String path = req.getContextPath();
 		for(AudioBoardDTO audioDTO : audioList) {
+			int commentCount = sqlSession.selectOne("commentCount",audioDTO.getAudio_idx());
+			audioDTO.setCommentCount(commentCount);
 			String contents = cal.contentsCut(audioDTO.getContents());
 			audioDTO.setContents(contents);
 			if(audioDTO.getImagename()==null){
@@ -402,6 +417,8 @@ public class SearchController {
 		
 		String path = req.getContextPath();
 		for(AudioBoardDTO audioDTO : audioByNameList) {
+			int commentCount = sqlSession.selectOne("commentCount",audioDTO.getAudio_idx());
+			audioDTO.setCommentCount(commentCount);
 			String contents = cal.contentsCut(audioDTO.getContents());
 			audioDTO.setContents(contents);
 			if(audioDTO.getImagename()==null){
@@ -561,6 +578,8 @@ public class SearchController {
 		
 		String path = req.getContextPath();
 		for(AudioBoardDTO audioDTO : byContents) {
+			int commentCount = sqlSession.selectOne("commentCount",audioDTO.getAudio_idx());
+			audioDTO.setCommentCount(commentCount);
 			
 			if(audioDTO.getImagename()==null){
 				audioDTO.setImagename(path+"/resources/img/default.jpg");
@@ -632,6 +651,8 @@ public class SearchController {
 		String path = req.getContextPath();
 		if(byContents!=null) {
 		for(AudioBoardDTO audioDTO : byContents) {
+			int commentCount = sqlSession.selectOne("commentCount",audioDTO.getAudio_idx());
+			audioDTO.setCommentCount(commentCount);
 			
 			if(audioDTO.getImagename()==null){
 				audioDTO.setImagename(path+"/resources/img/default.jpg");
