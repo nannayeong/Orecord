@@ -43,4 +43,5 @@ public interface PointImpl {
 	// 환전신청시 환전 내역 삽입, 마이포인트 업데이트 쿼리
 	public void insertExchangeLog(Map<String, Object> obj);
 	public void updateExchangeMyPoint(Map<String, Object> obj);
+	public int  exchangeApprove(int idx);
 }

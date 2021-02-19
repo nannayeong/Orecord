@@ -417,7 +417,7 @@ padding-top: 0;
 							</td>
 							<td style="padding-left:1em">
 								<div style="font-size:14px;cursor:pointer" onclick="location.href='./${b.value.id }/record'">
-									${b.value.id }
+									${nicknames[b.value.id] }
 								</div>
 								<div style="font-size:18px">
 									<a href="./board/view.do?audio_idx=${b.value.audio_idx}">${b.value.audiotitle}</a>
@@ -553,7 +553,7 @@ padding-top: 0;
 							</td>
 							<td style="padding-left:1em">
 								<div style="font-size:14px;cursor:pointer" onclick="location.href='./${b.value.id }/record'">
-									${b.value.id }
+									${nicknames[b.value.id] }
 								</div>
 								<div style="font-size:18px">
 									<a href="./board/view.do?audio_idx=${b.value.audio_idx}">${b.value.audiotitle}</a>
@@ -592,7 +592,7 @@ padding-top: 0;
 						</tr>
 						<tr>
 							<td colspan="3">
-								${fn:length(b.value.contents)>20 ? substring(audio.contents,0,20) : b.value.contents}
+								${b.value.contents}
 							</td>
 						</tr>
 						<tr>
@@ -713,7 +713,7 @@ padding-top: 0;
                
 						
 					<td style="text-align: center">
-						<h6 class="pCount ${a.id }">팔로워 : ${memberMap[a]}</h6>
+						<h6 class="pCount ${a.id }">팔로워 : ${a.follower}</h6>
 					</td>
 				</tr>
 				<tr>
@@ -736,7 +736,7 @@ padding-top: 0;
 							</td>
 							<td style="padding-left:1em">
 								<div style="font-size:14px;cursor:pointer" onclick="location.href='./${b.value.id }/record'">
-									${b.value.id }
+									${nicknames[b.value.id] }
 								</div>
 								<div style="font-size:18px">
 									<a href="./board/view.do?audio_idx=${b.value.audio_idx}">${b.value.audiotitle}</a>

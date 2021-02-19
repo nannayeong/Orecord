@@ -59,9 +59,34 @@ function fnCheck(){
         }
     } */
     
+    var arr = { };
+    var num = 0;
     $("input:checkbox[name=check]").each(function(){
-    	this.checked = true;
-    });
+    	var par = $(this).parent().parent();
+    	if(this.checked == true){
+    		num+=1;
+    		arr[num]=par.children('td').first().text();
+   		 
+  		}		
+    }); 
+    arr[0]=num;
+    $.ajax({
+	      url : "./exchangeApprove.do",
+	      type : "get",
+          contentType : "text/html;charset:utf-8",
+	      data : arr,
+	      dataType : "json",
+	      success : function(resData) {
+	    	  for(var key in resData){
+	    		  var idx = resData[key];
+	    		  $('td[name='+idx+']').html('결제성공');
+	    	  }
+	      },
+	      error : function(request,status,error) {
+	    	  alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		}
+	      
+	 });  
 }
 </script>
 </head>
@@ -239,7 +264,7 @@ function fnCheck(){
 								 	<td class="text-center">${exchange.exchangedMoney }</td>
 								 	<td class="text-center">${exchange.exchangeFee }</td>
 								 	<td class="text-center">${exchange.regidate }</td>
-								 	<td class="text-center">
+								 	<td class="text-center" name="${exchange.idx }">
 								 	<c:if test="${exchange.exchangeResult eq 0}">
 								 		대기 &nbsp;<input type="checkbox" name="check" id="check" value="${exchange.exchangeResult }">
 								 	</c:if>
