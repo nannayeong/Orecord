@@ -441,11 +441,12 @@ function userFunc(){
 						<tr>
 							<td rowspan="5" style="width:7em;padding-left:1em;padding-right:1em;padding-top:1.5em;vertical-align:top">
 								<img src="${b.imagename }" alt="" style="width:6em;height:6em"/>
+								<span onclick='openmusicbox(${b.audio_idx})'><i class="far fa-play-circle"></i></span>
 							</td>
 								<td style="padding-left:1em">
 								<div style="font-size:14px;cursor:pointer" onclick="location.href='./${b.id }/record'">
 									${nicknames[b.id] }
-							</div>
+								</div>
 								<div style="font-size:18px">
 									<a href="./board/view.do?audio_idx=${b.audio_idx}">${b.audiotitle}</a>
 									- <a href="${pageContext.request.contextPath}/search.do?searchWord=${b.artistname}">${b.artistname}</a>
@@ -479,7 +480,7 @@ function userFunc(){
 						</tr>
 						<tr>
 							<td colspan="3">
-								<audio controls style="width:97%" id="${b.albumName }">
+								<audio  style="width:97%" id="${b.albumName }">
 									<source src="${b.audiofilename }" type="audio/mp4">
 								</audio>
 							</td>
