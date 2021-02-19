@@ -32,6 +32,7 @@
         		</c:if>
         		</c:forEach>
         		</c:forEach>
+        		<c:if test=""></c:if>
         		     <c:choose>
                <c:when test="${followB}">
                <button type="button" class="btn btn-outline-secondary btn-sm follow ${a.id}" onclick="fBtn('${a.id}')" >팔로우</button>
@@ -41,9 +42,9 @@
                  </c:otherwise>
                </c:choose>
                
-						
+					</td>
 					<td style="text-align: center">
-						<h6 class="pCount ${a.id }">팔로워 : ${memberMap[a]}</h6>
+						<h6 class="pCount ${a.id }">팔로워 : ${a.follower}</h6>
 					</td>
 				</tr>
 				<tr>

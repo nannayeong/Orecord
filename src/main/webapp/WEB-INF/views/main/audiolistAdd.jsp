@@ -10,7 +10,7 @@
 		</td>
 		<td style="padding-left:1em">
 			<div style="font-size:14px;cursor:pointer" onclick="location.href='./${b.id }/record'">
-				${b.id }
+				${nicknames[b.id] }
 			</div>
 			<div style="font-size:18px">
 				<a href="./board/view.do?audio_idx=${b.audio_idx}">${b.audiotitle}</a>
