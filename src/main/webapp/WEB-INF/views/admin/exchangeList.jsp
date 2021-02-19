@@ -22,11 +22,48 @@
 <!-- Custom styles for this template-->
 <link href="${pageContext.request.contextPath}/resources/admin/css/sb-admin.css" rel="stylesheet">
 
-<meta charset="UTF-8">
-<title>Insert title here</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
+
+<script type="text/javascript">
+//name속성으로 checkbox의 DOM을 배열로 얻어옴
+var chkArr = document.getElementsByName("check");
+
+//전체선택
+function allChecked(){
+    for(var i=0 ; i<chkArr.length ; i++){
+        //체크시에는 아래 두가지 모두 사용가능
+        //chkArr[i].checked = 'checked';
+        chkArr[i].checked = true;
+    }
+}
+
+//전체선택해제
+function allUnChecked(){
+    for(var i=0 ; i<chkArr.length ; i++){
+        //체크해제시에도 아래 두 가지 모두 사용가능
+        //chkArr[i].checked = null;
+        chkArr[i].checked = false;
+    }
+}
+
+function fnCheck(){
+	
+    /* for(var i=0 ; i<chkArr.length ; i++){
+        
+        if(chkArr[i].checked == true){
+        	
+        	chkArr[i].value == 1;
+        	//${exchange.exchangeResult } == 1;
+        }
+    } */
+    
+    $("input:checkbox[name=check]").each(function(){
+    	this.checked = true;
+    });
+}
+</script>
 </head>
 
 <body id="page-top">
@@ -170,6 +207,8 @@
 	                    <th class="text-center">입금금액</th>
 	                    <th class="text-center">수수료</th>
 	                    <th class="text-center">결제일시</th>
+	                    <th class="text-center">결제결과&nbsp;
+	                    <input type="button" value="선택" onclick="allChecked()"><input type="button" value="해제" onclick="allUnChecked()"><input type="button" value="승인" onclick="fnCheck()" ></th>
 	                    <th class="text-center">수정</th>
 	                    <th class="text-center">삭제</th>
                   	</tr>
@@ -182,9 +221,11 @@
 	                    <th class="text-center">입금금액</th>
 	                    <th class="text-center">수수료</th>
 	                    <th class="text-center">결제일시</th>
+	                    <th class="text-center">결제결과</th>
 	                    <th class="text-center">수정</th>
 	                    <th class="text-center">삭제</th>
-                  </tr>
+                  	</tr>
+                </tfoot>
                 <tbody>
                 
                 <!-- 방명록 반복 부분 s -->
@@ -198,6 +239,17 @@
 								 	<td class="text-center">${exchange.exchangedMoney }</td>
 								 	<td class="text-center">${exchange.exchangeFee }</td>
 								 	<td class="text-center">${exchange.regidate }</td>
+								 	<td class="text-center">
+								 	<c:if test="${exchange.exchangeResult eq 0}">
+								 		대기 &nbsp;<input type="checkbox" name="check" id="check" value="${exchange.exchangeResult }">
+								 	</c:if>
+								 	<c:if test="${exchange.exchangeResult eq 1}">
+								 		결제성공
+								 	</c:if>
+								 	<c:if test="${exchange.exchangeResult eq 2}">
+								 		결제실패
+								 	</c:if>
+								 	</td>
 								 	<td class="text-center"><button class="btn btn-primary" onclick="location.href='./exchangeEdit.do?idx=${exchange.idx }';">수정</button></td>
 									<td class="text-center"><button class="btn btn-danger" onclick="location.href='./exchangeDelete.do?idx=${exchange.idx }';">삭제</button></td>
 							 	</tr>

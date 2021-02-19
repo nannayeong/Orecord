@@ -199,7 +199,14 @@
 								 	<td class="text-center">${party.audio_idx }</td>
 								 	<td class="text-center">${party.kind }</td>
 								 	<td class="text-center">${party.point }</td>
-								 	<td class="text-center">${party.choice }</td>
+								 	<td class="text-center">
+								 		<c:if test="${party.choice eq 0 }">
+								 			미채택
+								 		</c:if>
+								 		<c:if test="${party.choice eq 1 }">
+								 			채택
+								 		</c:if>
+								 	</td>
 								 	<td class="text-center">${party.exdate }</td>
 								 	<td class="text-center"><button class="btn btn-primary" onclick="location.href='./partyEdit.do?party_idx=${party.party_idx }';">수정</button></td>
 									<td class="text-center"><button class="btn btn-danger" onclick="location.href='./partyDelete.do?party_idx=${party.party_idx }';">삭제</button></td>
