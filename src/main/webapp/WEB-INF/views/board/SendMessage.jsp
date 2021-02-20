@@ -15,7 +15,6 @@ var inputMessage;
 var chat_id;
 var webSocket;
 var logWindow;
-
 window.onload = function(){
 	messageWindow = document.getElementById("messageWindow");
 	inputMessage = document.getElementById("msg");
