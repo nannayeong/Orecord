@@ -69,7 +69,7 @@ $(function(){
 // 	    	 $('#audioList').html(resData);
 // 	     }    
 // 	});
-});
+// });
 
 function noEvent() {
 	if (event.keyCode == 116) {
@@ -194,40 +194,29 @@ function playprev(){
 <body style="width:400px;" oncontextmenu="return false">
 <!-- 로고 -->
 	<div>
-		<span>O!record</span>
+		<h3>O!record</h3>
 	</div>
-<!-- 두번째 박스 -->
 	<div>
-		<table>
+		<table style="margin:auto;text-align:center;width:100%">
 			<tr>
-				<td><img src="${pageContext.request.contextPath}/resources/img/default.jpg" alt="" style="width:90px;height:90px;" id="nowaudioimg"/></td>
-				<td>
-					<span id="title">${firstAudio.audiotitle }</span><br />
-					<span id="artist">${firstAudio.artistname }</span><br />
-					<span>
-						<i class="fas fa-fast-backward" onclick="playprev()"></i>
-						<i id="playstop" class="fa fa-play" onclick="playstop()"></i>
-						<i class="fas fa-fast-forward" onclick="playnext();"></i>
-						<audio id="nowaudiosource" autoplay onended="playnext();" >
-							<c:forEach items="${audioList}" var="a">
-							<source src="${pageContext.request.contextPath}/resources/upload/${a.audiofilename }">
-							</c:forEach>
-						</audio>
-					</span>
-				</td>
+				<td style="width:50%;" class="bg-light" onclick="location.href='./musicbox?state=freelist'">재생목록</td>
+				<td style="width:50%;" class="bg-warning" onclick="location.href='./musicbox?state=playlist'">나의 플레이리스트</td>
 			</tr>
 		</table>
 	</div>
-<!-- 세번째 박스 -->
-	<div id="audioList">
-		<table style="width:100%">
-		<c:forEach items="${audioList}" var="a" varStatus="state">
-		<tr id="${state.count}" onclick="playAudio('${a.imagename}','${a.audiofilename}','${a.audiotitle }','${a.artistname }',${state.count})" style="cursor:pointer">
-			<td colspan="2"><img src="${pageContext.request.contextPath}/resources/upload/${a.imagename}" alt="" style="width:35px;height:35px;" /></td>
-			<td>${a.audiotitle } - ${a.id }</td>
-		</tr>
-		</c:forEach>
-		</table>
+	<!-- 본문 -->
+	<div id="here">
+		<div class="card-deck">
+		  <c:forEach items='${plSet }' var="plName">
+		  <div class="card bg-light" style="width:80%;margin:auto;margin-top:1em;">
+		    <div class="card-body text-center" onclick="location.href='./musicbox?state=playlist&pl=${plName}'">
+		      <p class="card-text">
+		      ${plName }
+		      </p>
+		    </div>
+		  </div>
+		  </c:forEach>
+		</div>
 	</div>
 </body>
 </html>
