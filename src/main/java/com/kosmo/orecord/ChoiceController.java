@@ -58,8 +58,8 @@ public class ChoiceController {
 		
 		/* return "/orecord/board/SendMessage.do?="+idx+"&r_id="+id; */
 		/* return "redirect:partyList.do?audio_idx="+idx; */
-		return "redirect:partyView.do?party_idx="+party_idx; 
-		/* return "board/SendMessage"; */
+		//return "redirect:partyView.do?party_idx="+party_idx;
+		return "redirect:SendMessage.do?r_id="+id; 
 	}
 	
 	//웹소켓 + 웹노티 보내기
