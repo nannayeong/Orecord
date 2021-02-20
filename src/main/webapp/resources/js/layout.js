@@ -181,3 +181,20 @@ function notify(notiMsg) {
 		delay : 5000
 	}).toast('show');
 }
+function addpl(){
+	var pln = $("select[name=plname]").val();
+	var aidx = $("input[name=audio_idx]").val();
+	$.ajax({
+	     url : "/orecord/addpl.do",
+	     type : "get",
+	     contentType : "text/html;charset:utf-8",
+	     data : {plname:pln,audio_idx:aidx},
+	     dataType : "json",
+	     success : function sucFunc(resData) {
+	    	 if(resData.result==1){
+					alert("플레이리스트에 등록되었습니다");
+					window.open("/orecord/musicbox?state=playlist&pl="+pln, "musicbox", "width=400,height=550,toolbars=no,status=no");
+			 }
+	     }    
+	});
+}
