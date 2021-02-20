@@ -217,17 +217,22 @@ function playprev(){
 	<div>
 		<table style="margin:auto;text-align:center;width:100%">
 			<tr>
-				<td style="width:50%;" class="bg-light" onclick="location.href='./musicbox?state=freelist'">재생목록</td>
-				<td style="width:50%;;" class="bg-warning" onclick="plLoginC();">나의 플레이리스트</td>
+				<td style="width:50%;cursor:pointer;" class="bg-light" onclick="location.href='./musicbox?state=freelist'">재생목록</td>
+				<td style="width:50%;cursor:pointer;" class="bg-warning" onclick="plLoginC();">나의 플레이리스트</td>
 			</tr>
 		</table>
 	</div>
 	<!-- 본문 -->
 	<div id="here">
 	<div>
-		<table>
+		<table style="width:100%; " >
 			<tr>
-				<td><img src="${pageContext.request.contextPath}/resources/img/default.jpg" alt="" style="width:90px;height:90px;" id="nowaudioimg"/></td>
+				<td colspan="2" class="bg-light text-dark" style="border:2px solid #f1f1f1">
+					<h5 style="text-align:center">${pln }</h5>
+				</td>
+			</tr>
+			<tr>
+				<td style="width:90px;height:90px;"><img src="${pageContext.request.contextPath}/resources/img/default.jpg" alt="" style="width:90px;height:90px;" id="nowaudioimg"/></td>
 				<td>
 					<span id="title">${firstAudio.audiotitle }</span><br />
 					<span id="artist">${firstAudio.artistname }</span><br />
@@ -247,11 +252,8 @@ function playprev(){
 	</div>
 	<div id="audioList">
 		<table style="width:100%">
-		<tr>
-			<td>${pln }</td>
-		</tr>
 		<c:forEach items="${audioList}" var="a" varStatus="state">
-		<tr id="${state.count}" onclick="playAudio('${a.imagename}','${a.audiofilename}','${a.audiotitle }','${a.artistname }',${state.count})" style="cursor:pointer">
+		<tr id="${state.count}" onclick="playAudio('${a.imagename}','${a.audiofilename}','${a.audiotitle }','${a.artistname }',${state.count})" style="cursor:pointer;border:2px solid #f1f1f1">
 			<td><img src="${pageContext.request.contextPath}/resources/upload/${a.imagename}" alt="" style="width:35px;height:35px;" /> ${a.audiotitle } - ${a.id }</td>
 		</tr>
 		</c:forEach>

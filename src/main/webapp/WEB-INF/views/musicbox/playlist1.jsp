@@ -199,8 +199,8 @@ function playprev(){
 	<div>
 		<table style="margin:auto;text-align:center;width:100%">
 			<tr>
-				<td style="width:50%;" class="bg-light" onclick="location.href='./musicbox?state=freelist'">재생목록</td>
-				<td style="width:50%;" class="bg-warning" onclick="location.href='./musicbox?state=playlist'">나의 플레이리스트</td>
+				<td style="width:50%;cursor:pointer;" class="bg-light" onclick="location.href='./musicbox?state=freelist'">재생목록</td>
+				<td style="width:50%;cursor:pointer;" class="bg-warning" onclick="location.href='./musicbox?state=playlist'">나의 플레이리스트</td>
 			</tr>
 		</table>
 	</div>
@@ -208,7 +208,7 @@ function playprev(){
 	<div id="here">
 		<div class="card-deck">
 		  <c:forEach items='${plSet }' var="plName">
-		  <div class="card bg-light" style="width:80%;margin:auto;margin-top:1em;">
+		  <div class="card bg-light" style="width:80%;margin:auto;margin-top:1em;cursor:pointer;">
 		    <div class="card-body text-center" onclick="location.href='./musicbox?state=playlist&pl=${plName}'">
 		      <p class="card-text">
 		      ${plName }
