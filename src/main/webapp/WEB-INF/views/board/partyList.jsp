@@ -23,9 +23,6 @@
 </head>
 <body>
 <script type="text/javascript">
-window.onload = function(){
-	webSocket = new WebSocket("ws://localhost:8080/orecord/EchoServer.do");
-}
 </script>
 <div>
 	<div class="content">

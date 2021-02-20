@@ -79,18 +79,19 @@ $(document).ready(function() {
     $("#loginid").val(userInputId); 
     
     //로그인 버튼 클릭
-    $('#loginbtn').click(function() {
-        if($("#idSaveCheck").is(":checked")){ 
-            var userInputId = $("#loginid").val();
-            setCookie("userInputId", userInputId, 60); 
-            setCookie("setCookieYN", "Y", 60);
-        } else {
-            deleteCookie("userInputId");
-            deleteCookie("setCookieYN");
-        }
+//     $('#loginbtn').click(function() {
+//         if($("#idSaveCheck").is(":checked")){ 
+//             var userInputId = $("#loginid").val();
+//             setCookie("userInputId", userInputId, 60); 
+//             setCookie("setCookieYN", "Y", 60);
+//         } else {
+//             deleteCookie("userInputId");
+//             deleteCookie("setCookieYN");
+//         }
+//         if
         
-        document.fform.submit();
-    });
+//         document.fform.submit();
+//     });
 });
 
 //쿠키값 Set
@@ -123,6 +124,12 @@ function getCookie(cookie_name) {
           return unescape(y); // unescape로 디코딩 후 값 리턴
         }
     }
+}
+
+function checkPop(){
+	if(pop!=null){
+		pop.close();
+	}
 }
 </script>
 
@@ -188,7 +195,7 @@ https://kauth.kakao.com/oauth/authorize?response_type=code&client_id={e1dea648a0
 			<c:choose>
 			<c:when test="${empty pageContext.request.userPrincipal.name }">
 			<c:url value="/member/loginAction.do" var="loginUrl" />
-			<form:form name="loginFrm" action="${loginUrl }" method="post">
+			<form:form name="loginFrm" action="${loginUrl }" method="post" onsubmit="return checkPop();">
 			<c:if test="${param.error != null }">
 				<p>아이디와 패스워드가 잘못되었습니다.</p>
 			</c:if>

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -196,7 +197,7 @@ public class PointController {
 	// 결제 진행시 충전 내역 로그에 삽입
 	@RequestMapping("/insertChargeLog.do")
 	@ResponseBody
-	public void insertChargeLog(@RequestParam Map<String,Object> param, HttpServletRequest req, Model model) {
+	public void insertChargeLog(@RequestParam Map<String,Object> param, HttpServletRequest req, Model model, HttpSession session) {
 		
 		// 로그인된 아이디 얻어와서 맵에 넣어주기
 		String loginId = "";
@@ -204,6 +205,8 @@ public class PointController {
 			UserDetails userInfo = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			loginId = userInfo.getUsername();
 			System.out.println(loginId);
+			
+			
 		}
 		catch (Exception e) {
 		}
@@ -217,6 +220,9 @@ public class PointController {
 		param.put("chargePoint", chargePoint);
 		param.put("VAT", VAT);
 		param.put("paymentType", paymentType);
+		
+		MemberDTO mdto = (MemberDTO)session.getAttribute("user");
+		mdto.setMypoint(mdto.getMypoint()+chargePoint);
 		
 		sqlSession.getMapper(PointImpl.class).insertChargeLog(param);
 		sqlSession.getMapper(PointImpl.class).updateChargeMyPoint(param);

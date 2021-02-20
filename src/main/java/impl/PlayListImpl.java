@@ -17,4 +17,8 @@ public interface PlayListImpl {
 	
 	public int plAudioDelete(String plid, String idx, String audio_idx);
 	public ArrayList<PlayListDTO> selectgroup(String plid);
+	
+	public ArrayList<String> myplaylistName(String plid);
+	
+	public ArrayList<PlayListDTO> selectpl(String pln, String login_id);
 }
