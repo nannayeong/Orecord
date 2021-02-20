@@ -70,9 +70,9 @@ if(request.getParameter("partyType").equals("1")){
 		<div class="dropdown">
 		  <span class="dropdown-toggle" data-toggle="dropdown">
 		 	<img src="${sessionScope.user.img }" alt="" style="width:1.8em;height:1.8em;border-radius:15px;margin-left:5px" />
-		 	<span>${sessionScope.user.nickname }님</span>
+		 	<span style="cursor:pointer">${sessionScope.user.nickname }님</span>
 		  </span>
-		  <div class="dropdown-menu">
+		  <div class="dropdown-menu" style=";cursor:pointer">
 		  	<div class="dropdown-item" style="text-align:center">보유포인트 <br /> ${sessionScope.user.mypoint}원</div>
 		  	<hr />
 		    <c:if test="${sessionScope.SPRING_SECURITY_CONTEXT.authentication.authorities eq '[ROLE_ADMIN]'}">

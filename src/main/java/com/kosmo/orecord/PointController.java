@@ -223,6 +223,8 @@ public class PointController {
 		mdto.setMypoint(mdto.getMypoint()+chargePoint);
 		session.setAttribute("user", mdto);
 		
+		session.setAttribute("user", mdto);
+		
 		sqlSession.getMapper(PointImpl.class).insertChargeLog(param);
 		sqlSession.getMapper(PointImpl.class).updateChargeMyPoint(param);
 		

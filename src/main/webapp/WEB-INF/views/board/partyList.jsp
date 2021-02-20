@@ -80,6 +80,11 @@
 						</tr>
 					</thead>
 					<tbody>
+						<c:if test="${empty partyList}">
+						<tr>
+							<td colspan="8" style="text-align:center">협업 가능한 게시글이 존재하지 않습니다.</td>
+						</tr>
+						</c:if>
 						<c:forEach items="${partyList }" var="par">
 						<input type="hidden" name="" />
 						<c:choose>
