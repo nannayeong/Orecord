@@ -22,91 +22,94 @@
 <!-- layout js-->
 <script src="${pageContext.request.contextPath}/resources/js/layout.js"></script>
 <script type="text/javascript">
-var webSocket;
-var chat_id;
-window.onload = function(){
-	chat_id = document.getElementById("chat_id").value;
+function comentValidate(f){
 	
-	webSocket = new WebSocket("ws://localhost:8080/orecord/EchoServer.do");
-	webSocket.onopen = function(event){
-		wsOpen(event);
-	};
-	webSocket.onmessage = function(event){
-		wsMessage(event);
-	};
-	webSocket.onclose = function(event){
-		wsClose(event);
-	};
-	webSocket.onerror = function(event){
-		wsError(event);
-	};
+	if(f.contents.value==""){
+		alert("내용을 입력하세요");
+		f.contents.focus();
+		return false;
+	}
+	
 }
-function wsOpen(event){
-	writeResponse("연결성공");
+function deleteRow(comment_idx, audio_idx){
+	if(confirm("정말로 삭제하시겠습니까?")){
+		location.href="delete.do?comment_idx="+ comment_idx+ "&audio_idx="+ audio_idx;
+	}
 }
-function wsMessage(event){
-	var message = event.data.split("|");
-	var sender = message[0];//닉네임
-	var content = "temp";
-	content = message[1];//메세지
-	
-	writeResponse(event.data);
-	
-	if(content == ""){
-		//날라온 내용이 없으므로 아무것도 하지 않는다.
+function deleteAction(audio_idx){
+	if(confirm("정말로 삭제하시겠습니까?")){
+		location.href="viewDelete.do?audio_idx="+audio_idx;
+	}
+}
+function likeChange(a){
+	if($('#likeIcon').hasClass('on')){//이미 좋아요상태일 때
+		$.ajax({
+			url : "../board/noLike.do",
+			type : "get",
+			contentType : "text/html;charset:utf-8",
+			data : { audio_idx : a}, 
+			dataType : "json",
+			success : function sucFunc(resData){
+				if(resData.result==1){
+	    	  		$('#likeIcon').removeClass('on');
+		    	  	$('#likeCount').html(resData.likeCount);
+				}
+			}
+		});
 	}
 	else{
-		//내용에 / 가 있다면 귓속말
-		if(content.match("/")){
-			//귓속말
-			if(content.match(("/"+ chat_id))){
-				console.log("notify()");
-				//노티 함수 호출
-				notify(content);
-			}
-		}
-		else{}
+		$.ajax({
+			url : "../board/like.do",
+			type : "get",
+			contentType : "text/html;charset:utf-8",
+			data : { audio_idx : a}, 
+			dataType : "json",
+			success : function sucFunc(resData) {
+		    	if(resData.result==1){
+					$('#likeIcon').addClass('on');
+					$('#likeCount').html(resData.likeCount);
+		    	}
+			}    
+		});  
 	}
 }
-function wsClose(event){
-	writeResponse("대화 종료");
-}
-function wsError(event){
-	writeResponse("에러 발생");
-	writeResponse(event.data);
-}
-function enterkey(){
-	if(window.event.keyCode==13){
-		sendMessage();
-	}
-}
-function writeResponse(text){
-	console.log(text);
-}
-function notify(notiMsg) {
+$(document).ready(function(){
+	/* 웹페이지를 열었을때 */
+	$("#img1").show();
+	$("#img2").hide();
 	
-	if (Notification.permission !== 'granted') {
-		alert('notification is disabled');
-	}
-	else {
-		var notification = new Notification(
-			notiMsg,
-			{
-				icon : 'https://t4.ftcdn.net/jpg/00/78/87/93/500_F_78879336_2f2Ivwq2jN2EFMSJSi72OevDAQob2JJv.jpg',
-				body : '쪽지가 왔습니다.',
-			});
-		//Noti에 핸들러를 사용한다.
-		notification.onclick = function() {
-			alert('링크를 이용해서 해당페이지로 이동할 수 있다.');
-		};
-	}
+	/* img1을 클릭했을때 img2를 보여줌 */
+	$("#img1").click(function(){
+		$("#img1").hide();
+		$("#img2").show();
+	});
 	
-	//토스트로 표시
-	$('.toast-body').html(notiMsg);
-	$('.toast').toast({
-		delay : 5000
-	}).toast('show');
-}
+	/* img2를 클릭했을때 img1을 보여줌 */
+	$("#img2").click(function(){
+		$("#img1").show();
+		$("#img2").hide();
+	});
+});
+$(function(){
+	$('#img1').click(function(){
+		$.ajax({
+			url : "../board/playAction.do",
+			type : "get",
+			contentType : "text/html;charset:utf-8",
+			data : { audio_idx : $("#audio_idx").val()},
+			dataType : "json",
+			success : function(resData){
+	            if(resData!=null){
+					$('#playC').html(resData.playCount);
+	            }	
+			},
+			error : function(error) {
+				alert("error : " + error);
+			}   
+		});
+	});
+});
+
 </script>
 </head>
 <body>
@@ -165,15 +168,13 @@ function notify(notiMsg) {
 					</div>
 					<div style="padding: 10px 0 0 35px;">
 						<button type="button" class="btn btn-outline-light btn-sm" title="좋아요" onclick="likeChange('${audio.audio_idx}')"
-							style="width:80px; height:50px;">
+							style="width:120px; height:50px;">
 							<i class="fas fa-heart ${audio.like eq 'true' ? 'on' : '' }" id="likeIcon"
 								style="font-size:20px;"></i>&nbsp;&nbsp;
 							<span id="likeCount" style="margin-bottom:20px;">${audio.like_count }</span>
 						</button>
-						<%-- <img src="../resources/img/like.png" alt="좋아요 수" width="30" style="margin-left:5px;">
-						<span>${audio.like_count}</span> --%>
-						<!-- <img src="../resources/img/playcount.png" alt="재생횟수" width="50"> -->&nbsp;
-						<button type="button" class="btn btn-outline-light" title="재생횟수" style="width:80px; height:50px;">
+						<button type="button" class="btn btn-outline-light" title="재생횟수"
+							style="width:120px; height:50px;">
 							<i class='fab fa-google-play' style='font-size:20px; color:red;'></i>&nbsp;
 							<span id="playC">${audio.play_count}</span>
 						</button>
@@ -191,11 +192,9 @@ function notify(notiMsg) {
 		<div class="row">
 			<div class="col-7">
 				<div style="padding-left: 50px;padding-bottom:1em">
-					<div style="height:13em">${audio.contents }
-					<div class="audio-control-btn btn-play">
-						<i class="fa fa-play"></i>
-					</div>
-					</div>
+					${audio.contents }
+					<!-- <div style="height:13em">
+					</div> -->
 				</div>
 			</div>
 			<div class="col-5" style="padding-right:3em">
@@ -310,8 +309,6 @@ function notify(notiMsg) {
 				</div>
 			</c:otherwise>
 		</c:choose>
-		<br>
-		<br>
 		<!-- 하단영역 -->
 		<form method="post"
 			action="<c:url value="/board/commentAction.do" />" name="writeFrm"

@@ -170,10 +170,6 @@ function choiceAction(f){
 					<div class="d-flex flex-row-reverse">
 					<c:choose>
 						<c:when test="${partyView.choice eq 1 }">
-							<button type="button" class="btn btn-outline-danger"
-								onclick="location.href='./SendMessage.do?audio_idx=${partyView.audio_idx}&r_id=${partyView.id }&s_id=${pageContext.request.userPrincipal.name }'">
-								메세지 보내기
-							</button>
 							<button type="button" class="btn btn-outline-primary"
 								onclick="location.href='partyList.do?audio_idx=${partyView.audio_idx}'"
 								style="margin-right: 10px;">

@@ -109,15 +109,16 @@ function notify(notiMsg) {
 		delay : 5000
 	}).toast('show');
 }
+
 </script>
 <div class="container">
-	<input type="hid den" name="r_id" id="r_id" value="${r_id }" />
-	<input type="hid den" value="${sessionScope.chat_id }" />
-	<input type="hid den" name="chat_id" id="chat_id" value="${pageContext.request.userPrincipal.name}" />
+	<input type="hidden" name="audio_idx" id="audio_idx" value="${audio_idx }" />
+	<input type="hidden" name="r_id" id="r_id" value="${r_id }" />
+	<input type="hidden" name="chat_id" id="chat_id" value="${pageContext.request.userPrincipal.name}" />
 	<table class="table table-bordered">
-		<tr>
+		<tr> 
 			<td>닉네임:</td>
-			<td><input type="text" id="chat_id" class="form=control"
+			<td><input type="text" id="chat_id" class="form-control"
 				value="${pageContext.request.userPrincipal.name}" readonly/></td>
 		</tr>
 		<tr>
@@ -131,10 +132,18 @@ function notify(notiMsg) {
 				<input type="text" name="msg" id="msg" class="form-control float-left mr-1"
 					style="width:70%" onkeyup="enterkey();" />
 				<input type="button" value="쪽지전송" onclick="sendMessage();"
-					class="btn btn-info float-left"/>
+					class="btn btn-info float-left" id="send"/>
 			</td>
 		</tr>
 	</table>
 </div>
+<script>
+var audio_idx = document.getElementById("audio_idx");
+$(document).ready(function(){
+	$('#send').click(function(){
+		location.href="/orecord/board/partyList.do?audio_idx=${audio_idx}";
+	});
+});
+</script>
 </body>
 </html>
