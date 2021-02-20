@@ -193,8 +193,6 @@ $(function(){
 			<div class="col-7">
 				<div style="padding-left: 50px;padding-bottom:1em">
 					${audio.contents }
-					<!-- <div style="height:13em">
-					</div> -->
 				</div>
 			</div>
 			<div class="col-5" style="padding-right:3em">

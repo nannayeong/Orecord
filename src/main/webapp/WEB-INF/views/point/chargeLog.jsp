@@ -418,7 +418,7 @@ function selectLastYear() {
 </script>
 
 <!-- ajax 콜백 데이터로 받은 조회내역으로 뷰테이블을 대체하기 위해 HTML 작성 함수-->
-<script >
+<script > 
 function changingTableFunc(obj) {
 	var table = document.querySelector('#changingTableId');
   var resultLog = obj.list;
