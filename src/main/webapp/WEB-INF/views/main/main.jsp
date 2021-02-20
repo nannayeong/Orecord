@@ -158,7 +158,7 @@ li{list-style:none;color:black;background-color:white;width:8em;border:2px #f2f2
 $(window).on("scroll", function() {
 	var scrollHeight = $(document).height();
 	var scrollPosition = $(window).height() + $(window).scrollTop();		
-	var loadedSize = $('table').length;
+	var loadedSize = $('.feed').length;
 	var feedEnd = $(".feedEnd").val();
 	$("#scrollHeight").text(scrollHeight);
 	$("#scrollPosition").text(scrollPosition);
@@ -189,7 +189,7 @@ $(window).on("scroll", function() {
 
 
 $($.checktotalLoad = function () {
-	var loadedSize = $('table').length;
+	var loadedSize = $('.feed').length;
 	var end = $('.end').val();
 	 $.ajax({
 	      url : "./loadMainCount.do",
@@ -238,7 +238,7 @@ function checknull(form) {
 <script type="text/javascript">
 function heartbtn(audioIdx) {
 	var a = audioIdx;
-	var clas = document.getElementsByClassName("btn  btn-sm heart "+a);
+	var clas = document.getElementsByClassName("btn btn-warning btn-sm heart "+a);
 	if("${pageContext.request.userPrincipal.name}"==""||"${pageContext.request.userPrincipal.name}"==null){
 		alert("로그인후 이용하세요");
 		location.href="${pageContext.request.contextPath}/member/login.do";
@@ -263,7 +263,7 @@ function like(audioIdx){
 	    	 var section1s = document.getElementsByClassName("btn btn-secondary btn-sm heart "+a);
 	    	 for(var i = section1s.length-1; i>=0; i--){
 	         var sec1 = section1s.item(0);
-	         sec1.className="btn  btn-sm heart "+a;
+	         sec1.className="btn btn-warning btn-sm heart "+a;
 	          count = resData.likecount;
 	          $(sec1).html("좋아요&nbsp;&nbsp;&nbsp;"
                       +count);
@@ -281,7 +281,7 @@ function nolike(audioIdx){
       data : { audio_idx :a,like_id:"${pageContext.request.userPrincipal.name}"}, 
       dataType : "json",
       success : function sucFunc(resData){
-    	 var section1s = document.getElementsByClassName("btn  btn-sm heart "+a);
+    	 var section1s = document.getElementsByClassName("btn btn-warning btn-sm heart "+a);
     	 for(var i = section1s.length-1; i>=0; i--){
          var sec1 = section1s.item(0);
          sec1.className="btn btn-secondary btn-sm heart "+a;

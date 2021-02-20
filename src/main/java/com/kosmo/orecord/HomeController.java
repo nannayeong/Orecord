@@ -78,7 +78,7 @@ public class HomeController {
 		String id="";
 		try {
 			 id = principal.getName();
-			 session.setAttribute("chat_id", id);
+			 
 			 /*로그인유저의 플레이리스트 가져오기*/
 			 plList = sqlSession.getMapper(PlayListImpl.class).select(id);
 				

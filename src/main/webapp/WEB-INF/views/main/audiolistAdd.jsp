@@ -7,7 +7,6 @@
 						<tr>
 							<td rowspan="5" style="width:7em;padding-left:1em;padding-right:1em;padding-top:1.5em;vertical-align:top">
 								<img src="${b.imagename }" alt="" style="width:6em;height:6em"/>
-								<span onclick='openmusicbox(${b.audio_idx})'><i class="far fa-play-circle"></i></span>
 							</td>
 								<td style="padding-left:1em">
 								<div style="font-size:14px;cursor:pointer" onclick="location.href='./${b.id }/record'">
@@ -46,7 +45,7 @@
 						</tr>
 						<tr>
 							<td colspan="3">
-								<audio  style="width:97%" id="${b.albumName }">
+								<audio controls style="width:97%" id="${b.albumName }" >
 									<source src="${b.audiofilename }" type="audio/mp4">
 								</audio>
 							</td>
@@ -109,13 +108,16 @@
 				
 				      <!-- Modal footer -->
 				      <div class="modal-footer">
-				        <button type="submit" class="btn btn-warning btn-sm">추가하기</button>
+				        <button type="button" class="btn btn-warning btn-sm" onclick="addpl();">추가하기</button>
 				      </div>
 					</form>
 				    </div>
 				  </div>
 				</div>
 				</c:if>
+						<button type="button" class="btn btn-secondary btn-sm" onclick="openmusicbox(${b.audio_idx})">
+							재생목록+
+						</button>
 						<c:if test="${pageContext.request.userPrincipal.name ne b.id && b.party eq 1}">
 						<button type="button" class="btn btn-secondary btn-sm" onclick="partyFunc(${b.audio_idx})">참여</button>
 						</c:if>

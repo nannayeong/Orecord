@@ -22,8 +22,90 @@
 <!-- layout js-->
 <script src="${pageContext.request.contextPath}/resources/js/layout.js"></script>
 <script type="text/javascript">
+var webSocket;
+var chat_id;
 window.onload = function(){
+	chat_id = document.getElementById("chat_id").value;
+	
 	webSocket = new WebSocket("ws://localhost:8080/orecord/EchoServer.do");
+	webSocket.onopen = function(event){
+		wsOpen(event);
+	};
+	webSocket.onmessage = function(event){
+		wsMessage(event);
+	};
+	webSocket.onclose = function(event){
+		wsClose(event);
+	};
+	webSocket.onerror = function(event){
+		wsError(event);
+	};
+}
+function wsOpen(event){
+	writeResponse("연결성공");
+}
+function wsMessage(event){
+	var message = event.data.split("|");
+	var sender = message[0];//닉네임
+	var content = "temp";
+	content = message[1];//메세지
+	
+	writeResponse(event.data);
+	
+	if(content == ""){
+		//날라온 내용이 없으므로 아무것도 하지 않는다.
+	}
+	else{
+		//내용에 / 가 있다면 귓속말
+		if(content.match("/")){
+			//귓속말
+			if(content.match(("/"+ chat_id))){
+				console.log("notify()");
+				//노티 함수 호출
+				notify(content);
+			}
+		}
+		else{}
+	}
+}
+function wsClose(event){
+	writeResponse("대화 종료");
+}
+function wsError(event){
+	writeResponse("에러 발생");
+	writeResponse(event.data);
+}
+function enterkey(){
+	if(window.event.keyCode==13){
+		sendMessage();
+	}
+}
+function writeResponse(text){
+	console.log(text);
+}
+function notify(notiMsg) {
+	
+	if (Notification.permission !== 'granted') {
+		alert('notification is disabled');
+	}
+	else {
+		var notification = new Notification(
+			notiMsg,
+			{
+				icon : 'https://t4.ftcdn.net/jpg/00/78/87/93/500_F_78879336_2f2Ivwq2jN2EFMSJSi72OevDAQob2JJv.jpg',
+				body : '쪽지가 왔습니다.',
+			});
+		//Noti에 핸들러를 사용한다.
+		notification.onclick = function() {
+			alert('링크를 이용해서 해당페이지로 이동할 수 있다.');
+		};
+	}
+	
+	//토스트로 표시
+	$('.toast-body').html(notiMsg);
+	$('.toast').toast({
+		delay : 5000
+	}).toast('show');
 }
 </script>
 <script type="text/javascript">
@@ -122,6 +204,7 @@ $(function(){
 </head>
 <body>
 <div>
+	<input type="hidden" name="chat_id" id="chat_id" value="${pageContext.request.userPrincipal.name}" />
 	<div class="content">
 		<!-- 왼쪽 컨텐츠 -->
 		<input type="hidden" name="audio_idx" id="audio_idx" value="${audio.audio_idx}">

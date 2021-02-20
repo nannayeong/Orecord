@@ -338,7 +338,7 @@ function changingTableFunc(obj) {
 	else {
 		for (var i=0; i<resultLog.length; i++) {
 				html += '<tr><td>' + resultLog[i].regidate + '</td><td>' + resultLog[i].exchangePoint
-						 + '</td><td> ' + resultLog[i].exchangeMoney + '</td><td>' + resultLog[i].exchangeResult + '</td></tr>';
+						 + '</td><td> ' + resultLog[i].exchangedMoney + '</td><td>' + resultLog[i].exchangeResult + '</td></tr>';
 		}
 				html += '	</tbody></table></div>';
 				html += '<nav class="paginationPostion" style="margin-bottom: 200px;">';
