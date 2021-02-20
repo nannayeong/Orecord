@@ -323,7 +323,18 @@ function selectLastYear() {
 <script >
 function changingTableFunc(obj) {
 	var table = document.querySelector('#changingTableId');
-  var resultLog = obj.list;
+	var resultLog = obj.list;
+	for (var i=0; i<resultLog.length; i++) {
+		if (resultLog[i].exchangeResult == "0"){
+			resultLog[i].exchangeResult = "환전 대기";
+		}
+		else if(resultLog[i].exchangeResult == "1"){
+			resultLog[i].exchangeResult = "환전 완료";
+		}
+		else if(resultLog[i].exchangeResult == "2"){ 
+			resultLog[i].exchangeResult = "환전 실패";
+		}
+	}
 	var html = '<div class="table" id="changingTableId">';
 			html = '<table class="table table-hover text-center">';
 			html += '	<thead class="thead-light text-center">';
