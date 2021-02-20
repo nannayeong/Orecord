@@ -9,7 +9,6 @@ border:2px #f2f2f2 solid
 background-color: #f2f2f2;cursor:pointer
 }
 </style>
-</style>
 <table style="width:95%;margin:auto;">
 <c:choose>
 <c:when test="${empty audioList and nowPage eq 1}">
@@ -112,7 +111,7 @@ background-color: #f2f2f2;cursor:pointer
 				  </div>
 				</div>
 				</c:if>
-				<button type="button" class="btn btn-secondary btn-sm" id="addplaylist" onclick="openmusicbox(${b.audio_idx})" data-toggle="modal" data-target="#play${b.audio_idx}">
+				<button type="button" class="btn btn-secondary btn-sm" onclick="openmusicbox(${b.audio_idx})">
 					재생목록+
 				</button>
 				<c:if test="${pageContext.request.userPrincipal.name ne audio.id && audio.party eq 1}">

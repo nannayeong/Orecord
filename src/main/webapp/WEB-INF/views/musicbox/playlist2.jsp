@@ -100,10 +100,10 @@ function audioSelectFunc(){
 $(function(){
 	var size = '${listsize}';
 	$.ajax({
- 	     url : "./nextList.do",
+ 	     url : "./nextListpl.do",
  	     type : "get",
  	     contentType : "text/html;charset:utf-8",
- 	     data : {arr:i},
+ 	     data : {arr:i,pln:'${pln}'},
  	     dataType : "json",
  	     success : function sucFunc(resData) {
  	    	$('#nowaudioimg').attr('src','${pageContext.request.contextPath}/resources/upload/'+resData.dto.imagename);
@@ -148,10 +148,10 @@ function playnext(){
 	}
 	
 	$.ajax({
- 	     url : "./nextList.do",
+ 	     url : "./nextListpl.do",
  	     type : "get",
  	     contentType : "text/html;charset:utf-8",
- 	     data : {arr:i},
+ 	     data : {arr:i,pln:'${pln}'},
  	     dataType : "json",
  	     success : function sucFunc(resData) {
  	    	$('#nowaudioimg').attr('src','${pageContext.request.contextPath}/resources/upload/'+resData.dto.imagename);
@@ -180,10 +180,10 @@ function playprev(){
 	}
 	var size = '${listsize}';
 	$.ajax({
- 	     url : "./nextList.do",
+ 	     url : "./nextListpl.do",
  	     type : "get",
  	     contentType : "text/html;charset:utf-8",
- 	     data : {arr:i},
+ 	     data : {arr:i,pln:'${pln}'},
  	     dataType : "json",
  	     success : function sucFunc(resData) {
  	    	$('#nowaudioimg').attr('src','${pageContext.request.contextPath}/resources/upload/'+resData.dto.imagename);
@@ -217,15 +217,15 @@ function playprev(){
 	<div>
 		<table style="margin:auto;text-align:center;width:100%">
 			<tr>
-				<td style="width:50%;" class="bg-warning" onclick="location.href='./musicbox?state=freelist'">재생목록</td>
-				<td style="width:50%" class="bg-light" onclick="plLoginC();">나의 플레이리스트</td>
+				<td style="width:50%;" class="bg-light" onclick="location.href='./musicbox?state=freelist'">재생목록</td>
+				<td style="width:50%;;" class="bg-warning" onclick="plLoginC();">나의 플레이리스트</td>
 			</tr>
 		</table>
 	</div>
 	<!-- 본문 -->
 	<div id="here">
 	<div>
-		<table >
+		<table>
 			<tr>
 				<td><img src="${pageContext.request.contextPath}/resources/img/default.jpg" alt="" style="width:90px;height:90px;" id="nowaudioimg"/></td>
 				<td>
@@ -235,7 +235,7 @@ function playprev(){
 						<i class="fas fa-fast-backward" onclick="playprev()"></i>
 						<i id="playstop" class="fa fa-play" onclick="playstop()"></i>
 						<i class="fas fa-fast-forward" onclick="playnext();"></i>
-						<audio id="nowaudiosource" ${not empty audioparam ? 'autoplay' : '' } onended="playnext();" >
+						<audio id="nowaudiosource" onended="playnext();" >
 							<c:forEach items="${audioList}" var="a">
 							<source src="${pageContext.request.contextPath}/resources/upload/${a.audiofilename }">
 							</c:forEach>
@@ -247,6 +247,9 @@ function playprev(){
 	</div>
 	<div id="audioList">
 		<table style="width:100%">
+		<tr>
+			<td>${pln }</td>
+		</tr>
 		<c:forEach items="${audioList}" var="a" varStatus="state">
 		<tr id="${state.count}" onclick="playAudio('${a.imagename}','${a.audiofilename}','${a.audiotitle }','${a.artistname }',${state.count})" style="cursor:pointer">
 			<td><img src="${pageContext.request.contextPath}/resources/upload/${a.imagename}" alt="" style="width:35px;height:35px;" /> ${a.audiotitle } - ${a.id }</td>

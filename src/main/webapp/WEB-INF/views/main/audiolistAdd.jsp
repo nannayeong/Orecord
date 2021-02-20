@@ -115,7 +115,7 @@
 				  </div>
 				</div>
 				</c:if>
-								<button type="button" class="btn btn-secondary btn-sm" id="addplaylist" onclick="openmusicbox(${b.audio_idx})" data-toggle="modal" data-target="#play${b.audio_idx}">
+						<button type="button" class="btn btn-secondary btn-sm" onclick="openmusicbox(${b.audio_idx})">
 							재생목록+
 						</button>
 						<c:if test="${pageContext.request.userPrincipal.name ne b.id && b.party eq 1}">
