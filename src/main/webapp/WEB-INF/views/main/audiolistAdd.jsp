@@ -108,7 +108,7 @@
 				
 				      <!-- Modal footer -->
 				      <div class="modal-footer">
-				        <button type="submit" class="btn btn-warning btn-sm">추가하기</button>
+				        <button type="button" class="btn btn-warning btn-sm" onclick="addpl();">추가하기</button>
 				      </div>
 					</form>
 				    </div>

@@ -64,4 +64,30 @@ public class PlayListController {
 		map.put("result", result);
 		return map;
 	}
+	
+	@RequestMapping("/addpl.do")
+	@ResponseBody
+	public Map<String, Object> addpl(Principal principal, HttpServletRequest req){
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		int idx = Integer.parseInt(req.getParameter("audio_idx"));
+		String pln = req.getParameter("plname");
+		
+		String login_id = null;
+		int result = -1;
+		try {
+			login_id = principal.getName();
+			
+			result = sqlSession.getMapper(PlayListImpl.class).addPlayList(login_id, idx, pln);
+			
+		}
+		catch(Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		map.put("result", 1);
+		return map;
+	}
+	
 }
