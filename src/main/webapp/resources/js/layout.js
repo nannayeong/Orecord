@@ -88,9 +88,10 @@ function recordDeleteFunc(aidx){
 	}
 }
 
+var pop;
 function openmusicbox(audio_idx){
-	window.open("/orecord/musicbox?audio_idx="+audio_idx, "musicbox", "width=400,height=550,toolbars=no,status=no");
+	pop = window.open("/orecord/musicbox?audio_idx="+audio_idx, "musicbox", "width=400,height=550,toolbars=no,status=no");
 }
 function openmusicboxnull(){
-	window.open("/orecord/musicbox", "musicbox", "width=400,height=550,toolbars=no,status=no");
+	pop = window.open("/orecord/musicbox", "musicbox", "width=400,height=550,toolbars=no,status=no");
 }
