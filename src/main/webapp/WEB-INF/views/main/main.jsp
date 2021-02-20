@@ -158,7 +158,7 @@ li{list-style:none;color:black;background-color:white;width:8em;border:2px #f2f2
 $(window).on("scroll", function() {
 	var scrollHeight = $(document).height();
 	var scrollPosition = $(window).height() + $(window).scrollTop();		
-	var loadedSize = $('table').length;
+	var loadedSize = $('.feed').length;
 	var feedEnd = $(".feedEnd").val();
 	$("#scrollHeight").text(scrollHeight);
 	$("#scrollPosition").text(scrollPosition);
@@ -189,7 +189,7 @@ $(window).on("scroll", function() {
 
 
 $($.checktotalLoad = function () {
-	var loadedSize = $('table').length;
+	var loadedSize = $('.feed').length;
 	var end = $('.end').val();
 	 $.ajax({
 	      url : "./loadMainCount.do",
