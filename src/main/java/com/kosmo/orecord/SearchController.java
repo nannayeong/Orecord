@@ -30,6 +30,7 @@ import model.MemberDTO;
 import util.Calculate;
 import impl.FollowImpl;
 import impl.MainImpl;
+import impl.MemberImpl;
 import impl.SearchImpl;
  
 /**
@@ -62,8 +63,16 @@ public class SearchController {
 		ArrayList<AudioBoardDTO> audioList = sqlSession.getMapper(SearchImpl.class).searchAudioM(searchWord);
 		//아티스트명으로 검색5개
 		String path = req.getContextPath();
+		HashMap<String, String> nicknames = new HashMap<String, String>();
 		for(AudioBoardDTO audioDTO : audioList) {
+			
+			int commentCount = sqlSession.selectOne("commentCount",audioDTO.getAudio_idx());
+			audioDTO.setCommentCount(commentCount);
+			
+			MemberDTO mdto = sqlSession.getMapper(MemberImpl.class).memberInfo(audioDTO.getId());
+			nicknames.put(audioDTO.getId(), mdto.getNickname());
 			String contents = cal.contentsCut(audioDTO.getContents());
+			nicknames.put(audioDTO.getId(), mdto.getNickname());
 			audioDTO.setContents(contents);
 			if(audioDTO.getImagename()==null){
 				audioDTO.setImagename(path+"/resources/img/default.jpg");
@@ -90,6 +99,11 @@ public class SearchController {
 		ArrayList<AudioBoardDTO> audioByNameList = sqlSession.getMapper(SearchImpl.class).searchAudioByArtistM(searchWord);
 		//아티스트명으로 검색5개
 		for(AudioBoardDTO audioDTO : audioByNameList) {
+			int commentCount = sqlSession.selectOne("commentCount",audioDTO.getAudio_idx());
+			audioDTO.setCommentCount(commentCount);
+			
+			MemberDTO mdto = sqlSession.getMapper(MemberImpl.class).memberInfo(audioDTO.getId());
+			nicknames.put(audioDTO.getId(), mdto.getNickname());
 			String contents = cal.contentsCut(audioDTO.getContents());
 			audioDTO.setContents(contents);
 			if(audioDTO.getImagename()==null){
@@ -119,6 +133,15 @@ public class SearchController {
 		
 		ArrayList<MemberDTO> artists = sqlSession.getMapper(SearchImpl.class).searchArtist(searchWord);
 		for(MemberDTO dto : artists) {
+			if(dto.getImg()==null){
+				dto.setImg(path+"/resources/img/default.jpg");
+			}
+			else {
+				String fileName = dto.getImg();
+				dto.setImg(path+"/resources/upload/"+fileName);
+			}
+			
+			
 			String followingId = dto.getId();
 			ArrayList<FollowDTO> follows = sqlSession.getMapper(FollowImpl.class).followers(followingId);
 			dto.setFollower(follows.size());
@@ -140,7 +163,10 @@ public class SearchController {
 		//컨텐츠로 검색
 		ArrayList<AudioBoardDTO> byContents = sqlSession.getMapper(SearchImpl.class).searchContentM(searchWord);
 		for(AudioBoardDTO audioDTO : byContents) {
-			
+			int commentCount = sqlSession.selectOne("commentCount",audioDTO.getAudio_idx());
+			audioDTO.setCommentCount(commentCount);
+			MemberDTO mdto = sqlSession.getMapper(MemberImpl.class).memberInfo(audioDTO.getId());
+			nicknames.put(audioDTO.getId(), mdto.getNickname());
 			if(audioDTO.getImagename()==null){
 				audioDTO.setImagename(path+"/resources/img/default.jpg");
 			}
@@ -187,7 +213,7 @@ public class SearchController {
 				recMemberDTO.setImg(path+"/resources/upload/"+fileName);
 			}
 		}
-		
+		model.addAttribute("nicknames", nicknames);
 		return "main/searchMain";
 	}
 	
@@ -205,6 +231,8 @@ public class SearchController {
 		ArrayList<AudioBoardDTO> audioList = sqlSession.getMapper(SearchImpl.class).search("AUDIOTITLE",searchWord,1,8);
 		String path = req.getContextPath();
 		for(AudioBoardDTO audioDTO : audioList) {
+			int commentCount = sqlSession.selectOne("commentCount",audioDTO.getAudio_idx());
+			audioDTO.setCommentCount(commentCount);
 			String contents = cal.contentsCut(audioDTO.getContents());
 			audioDTO.setContents(contents);
 			if(audioDTO.getImagename()==null){
@@ -274,6 +302,8 @@ public class SearchController {
 		
 		String path = req.getContextPath();
 		for(AudioBoardDTO audioDTO : audioList) {
+			int commentCount = sqlSession.selectOne("commentCount",audioDTO.getAudio_idx());
+			audioDTO.setCommentCount(commentCount);
 			String contents = cal.contentsCut(audioDTO.getContents());
 			audioDTO.setContents(contents);
 			if(audioDTO.getImagename()==null){
@@ -325,6 +355,8 @@ public class SearchController {
 		
 		String path = req.getContextPath();
 		for(AudioBoardDTO audioDTO : audioList) {
+			int commentCount = sqlSession.selectOne("commentCount",audioDTO.getAudio_idx());
+			audioDTO.setCommentCount(commentCount);
 			String contents = cal.contentsCut(audioDTO.getContents());
 			audioDTO.setContents(contents);
 			if(audioDTO.getImagename()==null){
@@ -394,6 +426,8 @@ public class SearchController {
 		
 		String path = req.getContextPath();
 		for(AudioBoardDTO audioDTO : audioByNameList) {
+			int commentCount = sqlSession.selectOne("commentCount",audioDTO.getAudio_idx());
+			audioDTO.setCommentCount(commentCount);
 			String contents = cal.contentsCut(audioDTO.getContents());
 			audioDTO.setContents(contents);
 			if(audioDTO.getImagename()==null){
@@ -441,10 +475,18 @@ public class SearchController {
 			e.printStackTrace();
 		} 
 		String searchWord = req.getParameter("searchWord");
+		String path = req.getContextPath();
 		HashMap<String,MemberDTO> memberMap = new HashMap<String,MemberDTO>();
 		
 		ArrayList<MemberDTO> artists = sqlSession.getMapper(SearchImpl.class).searchArtist(searchWord);
 		for(MemberDTO dto : artists) {
+			if(dto.getImg()==null){
+				dto.setImg(path+"/resources/img/default.jpg");
+			}
+			else {
+				String fileName = dto.getImg();
+				dto.setImg(path+"/resources/upload/"+fileName);
+			}
 			String followingId = dto.getId();
 			ArrayList<FollowDTO> follows = sqlSession.getMapper(FollowImpl.class).followers(followingId);
 			dto.setFollower(follows.size());
@@ -471,7 +513,6 @@ public class SearchController {
 				}
 		model.addAttribute("recFollow",recFollow);
 		model.addAttribute("recMemberMap",recMemberMap);
-		String path = req.getContextPath();
 		for(MemberDTO recMemberDTO : recFollow) {
 			
 			if(recMemberDTO.getImg()==null){
@@ -499,7 +540,15 @@ public class SearchController {
 		//검색페이지에 출력할 오디오게시글 불러옴
 		String searchWord = req.getParameter("searchWord");
 		ArrayList<MemberDTO> artists = sqlSession.getMapper(SearchImpl.class).searchArtist(searchWord);
+		String path = req.getContextPath();
 		for(MemberDTO dto : artists) {
+			if(dto.getImg()==null){
+				dto.setImg(path+"/resources/img/default.jpg");
+			}
+			else {
+				String fileName = dto.getImg();
+				dto.setImg(path+"/resources/upload/"+fileName);
+			}
 			String followingId = dto.getId();
 			ArrayList<FollowDTO> follows = sqlSession.getMapper(FollowImpl.class).followers(followingId);
 			dto.setFollower(follows.size());
@@ -553,6 +602,8 @@ public class SearchController {
 		
 		String path = req.getContextPath();
 		for(AudioBoardDTO audioDTO : byContents) {
+			int commentCount = sqlSession.selectOne("commentCount",audioDTO.getAudio_idx());
+			audioDTO.setCommentCount(commentCount);
 			
 			if(audioDTO.getImagename()==null){
 				audioDTO.setImagename(path+"/resources/img/default.jpg");
@@ -618,10 +669,14 @@ public class SearchController {
 			byContents = sqlSession.getMapper(SearchImpl.class).search(searchType,searchWord,loadedCount+1,loadedCount+8);
 		}else {
 			byContents=null;
+			return "main/audiolistContentsAdd";
 		}
 		
 		String path = req.getContextPath();
+		if(byContents!=null) {
 		for(AudioBoardDTO audioDTO : byContents) {
+			int commentCount = sqlSession.selectOne("commentCount",audioDTO.getAudio_idx());
+			audioDTO.setCommentCount(commentCount);
 			
 			if(audioDTO.getImagename()==null){
 				audioDTO.setImagename(path+"/resources/img/default.jpg");
@@ -633,7 +688,7 @@ public class SearchController {
 			
 			String fileName = audioDTO.getAudiofilename();
 			audioDTO.setAudiofilename(path+"/resources/upload/"+fileName);
-		}
+		}}
 		
 		model.addAttribute("audiolist", byContents);
 		//댓글수 카운트해서 넣음

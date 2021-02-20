@@ -104,12 +104,23 @@ header{
 	color:white;
 	background-color:#333333;
 	height:3em;
-	width:4em;
+	width:7em;
 	float:right;
     vertical-align:middle;
     padding-top:0.6em;
     text-align:center;
-    
+    margin-left:20px;
+}
+.noti2{
+	color:white;
+	background-color:#333333;
+	height:3em;
+	width:3em;
+	float:right;
+    vertical-align:middle;
+    padding-top:0.6em;
+    text-align:center;
+    margin-left:10px;
 }
 .menu-unlogin{
 	color:white;

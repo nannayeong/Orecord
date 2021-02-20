@@ -66,44 +66,6 @@ border:1px solid #f2f2f2;
                    					<i class="fas fa-play"></i>
                    				</span>&nbsp&nbsp 
                    				
-                   				<!-- 플레이리스트추가 -->
-                   				<span id="addplaylist" class="iconPoint" onclick="logincheck(this);" data-toggle="modal" data-target="#play${audio.audio_idx}">
-                   					<i class="fas fa-plus fa-lg"></i>
-                   				</span>&nbsp&nbsp
-                   				<!-- The Modal -->
-								<c:if test="${not empty pageContext.request.userPrincipal.name}">
-								<div class="modal" id="play${audio.audio_idx}">
-								  <div class="modal-dialog">
-								    <div class="modal-content">
-								      <!-- Modal Header -->
-								      <div class="modal-header">
-								        <h4 class="modal-title">플레이리스트 추가하기</h4>
-								        <button type="button" class="close" data-dismiss="modal">&times;</button>
-								      </div>
-								      <!-- Modal body -->
-								      <form action="../addPlayList.do?${_csrf.parameterName}=${_csrf.token}" method="post">
-								      <input type="hidden" name="audio_idx" value="${audio.audio_idx }" />
-								      <div class="modal-body" style="text-align:center">
-								      	<div><img src="${audio.imagename }" alt="" style="width:25px"/> 
-											${audio.audiotitle } - ${audio.artistname }
-										</div><br />
-										<div style="margin-bottom:0.3em">저장할 플레이리스트 폴더 선택</div>
-								      	<select name="plname" class="custom-select" style="width:12em;text-align:center">
-								      		<c:forEach items="${plList}" var="pl" varStatus="status">
-								      		<option value="${pl.plname}">${pl.plname }</option>
-								      		</c:forEach>
-								      	</select>
-								      	&nbsp&nbsp<span onclick="addplname();"><i class="fas fa-plus fa-lg"></i></span><br />
-								      </div>
-								      <!-- Modal footer -->
-								      <div class="modal-footer">
-								        <button type="submit" class="btn btn-warning btn-sm">추가하기</button>
-								      </div>
-									</form>
-								    </div>
-								  </div>
-								</div>
-								</c:if>
 								
                    				<!-- like -->
                    				<c:if test="${pageContext.request.userPrincipal.name ne user_id}">
@@ -112,13 +74,8 @@ border:1px solid #f2f2f2;
                    				</span>
                    				</c:if>	
                    				<c:if test="${pageContext.request.userPrincipal.name eq user_id}">
-                   				<span class="dropdown">
-								  <span data-toggle="dropdown" style="cursor:pointer">
-								    <i class="fas fa-ellipsis-h fa-lg"></i>
-								  </span>
-								  <div class="dropdown-menu">
-								    <a class="dropdown-item" href="javascript:plAudioDeleteFunc(${audio.idx}, ${audio.audio_idx });">삭제하기</a>
-								  </div>
+                   				<span>
+								  <a href="javascript:plAudioDeleteFunc(${audio.idx}, ${audio.audio_idx });"><i class="fas fa-trash-alt"></i></a>
 								</span>
 								</c:if>
 							</td>

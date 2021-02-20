@@ -26,4 +26,11 @@
 		WHERE id=#{param1} AND party_idx=#{param2}
 	</update>
 	
+	<!-- 알림 보내기 -->
+	<insert id="notification">
+		INSERT INTO notification
+		(n_Idx, s_Id, r_Id, stime, msg)
+		VALUES
+		(seq_notification.nextval, #{param1}, #{param2}, sysdate, #{param3})
+	</insert>
 </mapper>

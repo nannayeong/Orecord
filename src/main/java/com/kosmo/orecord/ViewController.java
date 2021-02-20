@@ -38,7 +38,12 @@ public class ViewController {
 		String idx = req.getParameter("audio_idx");
 		System.out.println("audio_idx = "+ idx);
 		int audio_idx = Integer.parseInt(req.getParameter("audio_idx"));
-		String login_id = principal.getName();
+		String login_id = "";
+		try {
+			login_id = principal.getName();
+		} catch (Exception e) {
+		}
+		
 		
 		/*절대경로*/
 		String path = req.getContextPath();

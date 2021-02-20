@@ -201,7 +201,7 @@
 								 	<td class="text-center">${charge.VAT }</td>
 								 	<td class="text-center">${charge.paymentType }</td>
 								 	<td class="text-center">${charge.regidate }</td>
-								 	<td class="text-center"><button class="btn btn-primary" onclick="location.href='./chargeEditAction.do?idx=${charge.idx }';">수정</button></td>
+								 	<td class="text-center"><button class="btn btn-primary" onclick="location.href='./chargeEdit.do?idx=${charge.idx }';">수정</button></td>
 									<td class="text-center"><button class="btn btn-danger" onclick="location.href='./chargeDelete.do?idx=${charge.idx }';">삭제</button></td>
 							 	</tr>
 							</div>	

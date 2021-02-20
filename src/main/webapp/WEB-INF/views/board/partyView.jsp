@@ -19,11 +19,17 @@
 <link href="${pageContext.request.contextPath}/resources/css/layout.css" rel="stylesheet" />
 <!-- layout js-->
 <script src="${pageContext.request.contextPath}/resources/js/layout.js"></script>
-
+<script type="text/javascript">
+window.onload = function(){
+	webSocket = new WebSocket("ws://localhost:8080/orecord/EchoServer.do");
+}
+</script>
 <script type="text/javascript">
 function choiceAction(f){
 	var youPoint = f.point.value;
 	var myPoint = f.myPoint.value;
+	var audio_idx = f.audio_idx.value;
+	var r_id = f.id.value;
 	if(myPoint < youPoint){
 		var pointCon = confirm("포인트가 부족합니다. 충전하시겠습니까?");
 		if(pointCon==true){
@@ -165,14 +171,29 @@ function choiceAction(f){
 			<div class="col-10">
 				<div class="form-group">
 					<div class="d-flex flex-row-reverse">
-						<button type="submit" class="btn btn-outline-danger">
+					<c:choose>
+						<c:when test="${partyView.choice eq 1 }">
+							<button type="button" class="btn btn-outline-danger"
+								onclick="location.href='./SendMessage.do?audio_idx=${partyView.audio_idx}&r_id=${partyView.id }'">
+								메세지 보내기
+							</button>
+							<button type="button" class="btn btn-outline-primary"
+								onclick="location.href='partyList.do?audio_idx=${partyView.audio_idx}'"
+								style="margin-right: 10px;">
+								뒤로가기
+							</button>
+						</c:when>
+						<c:otherwise>
+							<button type="submit" class="btn btn-outline-danger">
 							채택하기
-						</button>
-						<button type="button" class="btn btn-outline-primary"
+							</button>
+							<button type="button" class="btn btn-outline-primary"
 							style="margin-right: 10px;"
 							onclick="location.href='partyList.do?audio_idx=${partyView.audio_idx}'">
 							뒤로가기
 						</button>
+						</c:otherwise>
+					</c:choose>
 					</div>
 				</div>
 			</div>

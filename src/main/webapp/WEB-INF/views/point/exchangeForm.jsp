@@ -18,8 +18,6 @@
 <link href="${pageContext.request.contextPath}/resources/css/layout.css" rel="stylesheet" />
 <!-- layout js-->
 <script src="${pageContext.request.contextPath}/resources/js/layout.js"></script>
-<!-- 아임포트 결제 API 추가 -->
-<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
 <!-- 날짜 선택기 -->
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -232,13 +230,13 @@ function valiCheck(){
 		$('#exchangePoint').focus();
 		return false;
 	}
-	if(exchangePoint < 100000){
-		alert('환전신청은 100000포인트 이상부터 가능합니다.');
+	if(exchangePoint < 1000){
+		alert('환전신청은 1000포인트 이상부터 가능합니다.');
 		$('#exchangePoint').focus();
 		return false;
 	}
-	if((exchangePoint % 10000) != 0){
-		alert('환전 포인트는 10000포인트 단위로 입력해주세요.');
+	if((exchangePoint % 100) != 0){
+		alert('환전 포인트는 100포인트 단위로 입력해주세요.');
 		$('#exchangePoint').focus();
 		return false;
 	}

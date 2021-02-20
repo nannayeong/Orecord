@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="impl.MusicBoxImpl">
+	
+	<insert id="addFreeList">
+		insert into freeplay(fp_idx, fp_id, audio_idx, guestip) values(seq_freeplayboard.nextval, #{param1}, #{param2}, #{param3})
+	</insert>
+	
+	<select id="selectFreeList" resultType="model.AudioBoardDTO">
+		select * from (select tb.*, rownum rnum from 
+		(select * from freeplay f inner join audioboard a on f.audio_idx=a.audio_idx where fp_id=#{param1} or guestip=#{param2} 
+		order by fp_regidate desc)tb) 
+		where rnum between #{param3} and #{param4} 
+	</select>
+	
+	<select id="np" resultType="model.AudioBoardDTO">
+		select * from freeplay f inner join audioboard a on f.audio_idx=a.audio_idx where fp_id=#{param1} or guestip=#{param2} 
+		order by fp_regidate desc
+	</select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+

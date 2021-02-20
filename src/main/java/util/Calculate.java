@@ -121,12 +121,18 @@ public class Calculate {
 		int back = 0;
 		String backString = "";
 		
-		if(a.length()<=25) {
-			back=a.length();
-		}else {
-			back=26;
-			backString = "...";
+		try {
+			if(a.length()<=25) {
+				back=a.length();
+			}else {
+				back=26;
+				backString = "...";
+			}
 		}
+		catch(Exception e) {
+			System.out.println("예외"+e.getMessage());
+		}
+		
 		String slice = a.substring(front, back);
 		String totalString = slice+backString;
 		return totalString;
@@ -151,33 +157,33 @@ public class Calculate {
 		return before;
 	}
 	public HashMap<String,MemberDTO> recommandFollowByFollowing(SqlSession sqlSession,String id){
+		System.out.println("id="+id);
 		HashMap<String,MemberDTO> memberMap = new HashMap<String, MemberDTO>();
-		
-		//유저가 팔로우중인 아이디들
 		ArrayList<FollowDTO> followings = sqlSession.getMapper(FollowImpl.class).following(id);
-
-		for (FollowDTO followDTO : followings) {
-			String followingId = followDTO.getFollowing_id();
+		for (FollowDTO myfollowing : followings) {
+			String followingId = myfollowing.getFollowing_id();
 			ArrayList<FollowDTO> followrec = sqlSession.getMapper(FollowImpl.class).following(followingId);
 			for(FollowDTO rec : followrec) {
-					int audioCount = sqlSession.getMapper(AudioBoardImpl.class).audioList(rec.getFollowing_id()).size();
-					if(audioCount>0) {
-						int  followCount = sqlSession.getMapper(FollowImpl.class).followerCount(rec.getFollowing_id());
-						MemberDTO recmember = sqlSession.getMapper(MemberImpl.class).memberInfo(rec.getFollowing_id());
-						recmember.setFollower(followCount);
-						memberMap.put(recmember.getId(), recmember);
+					if(!rec.getFollowing_id().equals(id)&&!rec.getFollowing_id().equals(followingId)) {
+						int audioCount = sqlSession.getMapper(AudioBoardImpl.class).myAudioCount(rec.getFollowing_id());
+						if(audioCount>0) {
+							int  followCount = sqlSession.getMapper(FollowImpl.class).followerCount(rec.getFollowing_id());
+							MemberDTO recmember = sqlSession.getMapper(MemberImpl.class).memberInfo(rec.getFollowing_id());
+							recmember.setFollower(followCount);
+							memberMap.put(recmember.getId(), recmember);
+						}
 					}
 			}
 		}
+		//유저가 팔로우중인 아이디들
 		for (FollowDTO fDTO : followings) {
 			for(String memberid : memberMap.keySet()) {
-				if(memberMap.get(memberid).getId().equals(fDTO.getFollowing_id())||memberMap.get(memberid).getId().equals(id)) {
-					memberMap.remove(memberMap.get(memberid));
+				if(memberMap.get(memberid).getId().equals(fDTO.getFollowing_id())) {
+					memberMap.remove(memberid);
 					break;
 				}
 			}
 		}
-		
 		for(String memberid:memberMap.keySet()) {
 			if(memberMap.size()<=4) {
 				break;

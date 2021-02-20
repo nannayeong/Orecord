@@ -12,6 +12,8 @@
 <!-- Jquery, BootStrap -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
 
 <!-- layout css -->
@@ -20,6 +22,11 @@
 <script src="${pageContext.request.contextPath}/resources/js/layout.js"></script>
 </head>
 <body>
+<script type="text/javascript">
+window.onload = function(){
+	webSocket = new WebSocket("ws://localhost:8080/orecord/EchoServer.do");
+}
+</script>
 <div>
 	<div class="content">
 		<!-- 페이지 제목 -->
@@ -36,6 +43,16 @@
 		<br>
 		<hr color="gray" width="95%">
 		<br>
+		<!-- 헙업가능게시물출력 -->
+		<form action="">
+		<select name="audio_idx" class="custom-select" style="width:20em;margin-left:2em">
+			<c:forEach items="${ptdto }" var="pt">
+			<option value="${pt.audio_idx }" ${audio_idx eq pt.audio_idx ? 'selected' : '' }>${pt.audiotitle }</option>
+			</c:forEach>
+		</select>
+		<input type="submit" value="검색"/>
+		</form>
+		
 		<!-- 협업신청목록 시작 -->
 		<div class="row" style="padding: 15px;">
 			<div class="col-12">
@@ -89,7 +106,7 @@
 								<tr>
 									<td>${par.party_idx }</td>
 									<td>
-										<a href="./partyView.do?party_idx=${par.party_idx}&id=${par.id}">
+										<a href="./partyView.do?party_idx=${par.party_idx}">
 											${par.id }
 										</a>
 									</td>

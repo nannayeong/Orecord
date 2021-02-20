@@ -65,7 +65,7 @@ a {
 	width:100%;
 	height : 1060px;
 	margin:auto;
-	padding-top:3em;
+	padding-top: 4em!important;
 	padding-bottom:1em;
 	text-align: center;
 }
@@ -227,7 +227,7 @@ $(window).on("scroll", function() {
 			      url : "./searchArtistLoad.do",
 			      type : "get",
 		            contentType : "text/html;charset:utf-8",
-			      data : { loadlength :loadedSize,searchWord:'${searchWord}'}, 
+			      data : { loadlength :loadedSize,searchWord:'${searchWord}',searchType:'nickname'}, 
 			      dataType : "html",
 			      success : function(resData) {
 			    	  $('.feed').last().after(resData);
@@ -274,6 +274,7 @@ function checktotalLoad(type) {
 	    	  
 	      },
 	      error : function(e) {
+	    	  alert("checktotalLoad 실패");
 		}
 	      
 	 });
@@ -283,7 +284,7 @@ function checktotalLoad(type) {
 	function heartbtn(audioIdx) {
 		var a = audioIdx;
 		var clas = document
-				.getElementsByClassName("btn btn-outline-secondary btn-sm heart "
+				.getElementsByClassName("btn btn-warning btn-sm heart "
 						+ a);
 		if ("${pageContext.request.userPrincipal.name}" == ""
 				|| "${pageContext.request.userPrincipal.name}" == null) {
@@ -316,7 +317,7 @@ function checktotalLoad(type) {
 										+ a);
 						for (var i = section1s.length - 1; i >= 0; i--) {
 							var sec1 = section1s.item(0);
-							sec1.className = "btn btn-outline-secondary btn-sm heart "
+							sec1.className = "btn btn-warning btn-sm heart "
 									+ a;
 							count = resData.likecount;
 					          $(sec1).html("좋아요&nbsp;&nbsp;&nbsp;"
@@ -340,7 +341,7 @@ function checktotalLoad(type) {
 					dataType : "json",
 					success : function sucFunc(resData) {
 						var section1s = document
-								.getElementsByClassName("btn btn-outline-secondary btn-sm heart "
+								.getElementsByClassName("btn btn-warning btn-sm heart "
 										+ a);
 						for (var i = section1s.length - 1; i >= 0; i--) {
 							var sec1 = section1s.item(0);
@@ -358,7 +359,7 @@ function checktotalLoad(type) {
 	/* 버튼눌렀을때 팔로잉중인경우 언팔로우, 팔로우 안하는중이면 팔로우 함수로 이동 */
 	function fBtn(follow) {
 		var f = follow;
-		var clas = document.getElementsByClassName("btn btn-outline-secondary btn-sm follow " + f);
+		var clas = document.getElementsByClassName("btn btn-warning btn-sm follow " + f);
 		if ("${pageContext.request.userPrincipal.name}" == ""
 				|| "${pageContext.request.userPrincipal.name}" == null) {
 			alert("로그인후 이용하세요");
@@ -388,7 +389,7 @@ function checktotalLoad(type) {
 						.getElementsByClassName("btn btn-secondary btn-sm follow " + f);
 				for (var i = section1s.length - 1; i >= 0; i--) {
 					var sec1 = section1s.item(i);
-					sec1.className = "btn btn-outline-secondary btn-sm follow " + f;
+					sec1.className = "btn btn-warning btn-sm follow " + f;
 				}
 				count = resData.followcount;
 				$('.pCount.' + f).html('팔로워 : ' + count);
@@ -409,7 +410,7 @@ function checktotalLoad(type) {
 			dataType : "json",
 			success : function sucFunc(resData) {
 				var section1s = document
-						.getElementsByClassName("btn btn-outline-secondary btn-sm follow " + f);
+						.getElementsByClassName("btn btn-warning btn-sm follow " + f);
 				for (var i = section1s.length - 1; i >= 0; i--) {
 					var sec1 = section1s.item(i);
 					sec1.className = "btn btn-secondary btn-sm follow " + f;
@@ -498,7 +499,7 @@ function checktotalLoad(type) {
 							</td>
 							<td style="padding-left:1em">
 								<div style="font-size:14px;cursor:pointer" onclick="location.href='./${b.id }/record'">
-									${b.id }
+									${nicknames[b.id] }
 								</div>
 								<div style="font-size:18px">
 									<a href="./board/view.do?audio_idx=${b.audio_idx}">${b.audiotitle}</a>
@@ -550,7 +551,7 @@ function checktotalLoad(type) {
         		</c:forEach>
 					<c:choose>
                			<c:when test="${likeB}">
-                      		<button type="button" class="btn btn-outline-secondary btn-sm heart ${b.audio_idx}" title="좋아요" onclick="heartbtn('${b.audio_idx}')" name="minibtn">
+                      		<button type="button" class="btn btn-warning btn-sm heart ${b.audio_idx}" title="좋아요" onclick="heartbtn('${b.audio_idx}')" name="minibtn">
                       		좋아요 &nbsp
                       		${b.like_count }
                       		</button> 
@@ -610,9 +611,6 @@ function checktotalLoad(type) {
 						</tr>
 						<tr>
 							<td colspan="3">
-							<form action="${pageContext.request.contextPath}/board/commentAction.do?audio_idx=${b.audio_idx}" method="post" onsubmit="return commentNcheck(this)">
-								<input type="text" name="contents" style="width:80%;"/>&nbsp&nbsp<input type="submit" value="댓글달기" class="btn btn-secondary btn-sm" style="margin-bottom:5px"/>
-							</form>
 							</td>
 						</tr>
 					</table>
@@ -631,7 +629,7 @@ function checktotalLoad(type) {
 							</td>
 							<td style="padding-left:1em">
 								<div style="font-size:14px;cursor:pointer" onclick="location.href='./${b.id }/record'">
-									${b.id }
+									${nicknames[b.id] }
 								</div>
 								<div style="font-size:18px">
 									<a href="./board/view.do?audio_idx=${b.audio_idx}">${b.audiotitle}</a>
@@ -685,7 +683,7 @@ function checktotalLoad(type) {
         		</c:forEach>
 					<c:choose>
                			<c:when test="${likeB}">
-                      		<button type="button" class="btn btn-outline-secondary btn-sm heart ${b.audio_idx}" title="좋아요" onclick="heartbtn('${b.audio_idx}')" name="minibtn">
+                      		<button type="button" class="btn btn-warning btn-sm heart ${b.audio_idx}" title="좋아요" onclick="heartbtn('${b.audio_idx}')" name="minibtn">
                       		좋아요 &nbsp
                       		${b.like_count }
                       		</button> 
@@ -745,9 +743,6 @@ function checktotalLoad(type) {
 						</tr>
 						<tr>
 							<td colspan="3">
-							<form action="${pageContext.request.contextPath}/board/commentAction.do?audio_idx=${b.audio_idx}" method="post" onsubmit="return commentNcheck(this)">
-								<input type="text" name="contents" style="width:80%;"/>&nbsp&nbsp<input type="submit" value="댓글달기" class="btn btn-secondary btn-sm" style="margin-bottom:5px"/>
-							</form>
 							</td>
 						</tr>
 					</table>
@@ -758,47 +753,7 @@ function checktotalLoad(type) {
 			<c:if test="${ artists.size() eq 0}">
 		<h6>검색 결과가 없습니다.</h6>
 		</c:if>
-		<c:forEach var="a" items="${artists}">
-			<table
-				style="width: 100%; border: 2px #f2f2f2 solid; margin: auto; margin-bottom: 1em"
-				class="feed">
-				<tr>
-					<td rowspan="4"
-						style="width: 7em; padding-left: 1em; padding-right: 1em">
-						<img src="./resources/default.jpg" alt="" style="width: 6em" />
-					</td>
-					<td><h3 style="padding-top: 1em;"><a href="./${a.id }/record">${a.nickname}</a></h3></td>
-				</tr>
-				<tr>
-					<td colspan="2"></td>
-				</tr>
-				<tr>
-					<td style="padding-top: 1em; padding-bottom: 1em;">
-				<c:set var="followB" value="false"/>
-        		<c:forEach var="f" items="${follows }">
-        		<c:if test="${a.id eq f.following_id}">
-        		<c:set var="followB" value="true"/>
-        		</c:if>
-        		</c:forEach>
-
-        		     <c:choose>
-               <c:when test="${followB}">
-               <button type="button" class="btn btn-outline-secondary btn-sm follow ${a.id}" onclick="fBtn('${a.id}')" >팔로우</button>
-                 </c:when>
-                 <c:otherwise>
-                   <button type="button" class="btn btn-secondary btn-sm follow ${a.id}" onclick="fBtn('${a.id}')" >팔로우</button>
-                 </c:otherwise>
-               </c:choose>
-					<td style="text-align: center">
-						<h6 class="pCount ${a.id }">팔로워 : ${memberMap[a]}</h6>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="2">
-					</td>
-				</tr>
-			</table>
-		</c:forEach>
+		<%@include file="./artistAdd.jsp"%>
 		</c:if>
 		<c:if test="${searchType eq 'contents'}">
 		<h4>내용으로 검색결과</h4>
@@ -813,7 +768,7 @@ function checktotalLoad(type) {
 							</td>
 							<td style="padding-left:1em">
 								<div style="font-size:14px;cursor:pointer" onclick="location.href='./${b.id }/record'">
-									${b.id }
+									${nicknames[b.id] }
 								</div>
 								<div style="font-size:18px">
 									<a href="./board/view.do?audio_idx=${b.audio_idx}">${b.audiotitle}</a>
@@ -863,9 +818,10 @@ function checktotalLoad(type) {
         		<c:set var="likeB" value="true"/>
         		</c:if>
         		</c:forEach>
+        		<c:if test="${b.id ne pageContext.request.userPrincipal.name }">
 					<c:choose>
                			<c:when test="${likeB}">
-                      		<button type="button" class="btn btn-outline-secondary btn-sm heart ${b.audio_idx}" title="좋아요" onclick="heartbtn('${b.audio_idx}')" name="minibtn">
+                      		<button type="button" class="btn btn-warning btn-sm heart ${b.audio_idx}" title="좋아요" onclick="heartbtn('${b.audio_idx}')" name="minibtn">
                       		좋아요 &nbsp
                       		${b.like_count }
                       		</button> 
@@ -877,6 +833,7 @@ function checktotalLoad(type) {
                       </button> 
                  </c:otherwise>
                		</c:choose>
+               		</c:if>
 						<button type="button" class="btn btn-secondary btn-sm" id="addplaylist" onclick="logincheck(this);" data-toggle="modal" data-target="#play${b.audio_idx}">
 							플레이리스트
 						</button>
@@ -925,9 +882,6 @@ function checktotalLoad(type) {
 						</tr>
 						<tr>
 							<td colspan="3">
-							<form action="${pageContext.request.contextPath}/board/commentAction.do?audio_idx=${b.audio_idx}" method="post" onsubmit="return commentNcheck(this)">
-								<input type="text" name="contents" style="width:80%;"/>&nbsp&nbsp<input type="submit" value="댓글달기" class="btn btn-secondary btn-sm" style="margin-bottom:5px"/>
-							</form>
 							</td>
 						</tr>
 					</table>
@@ -937,16 +891,8 @@ function checktotalLoad(type) {
 </div>
 	<div class="right-content-back">
 		<div class="right-content">
-			<div class="sidebar recF">
-				<c:forEach var="rf" items="recommendF">
-					<div class=""></div>
-				</c:forEach>
-			</div>
-
-			<div class="sidebar myF"></div>
-			
+			<h5>[${searchWord }] 검색결과</h5>
 			<table class="table table-hover searchBtns"> 
-			<thead><tr><td><h5>[${searchWord }] 검색결과</h5></td></tr></thead>
 			<tr><td onclick="location.href='./search.do?searchWord=${searchWord }'">전체 검색</td></tr>
 			<tr><td onclick="location.href='./searchAudio.do?searchWord=${searchWord }'">제목으로 검색</td></tr>
 			<tr><td onclick="location.href='./searchAudioByArtist.do?searchWord=${searchWord }'">아티스트명으로 검색</td></tr>
