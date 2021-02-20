@@ -101,4 +101,5 @@ if(request.getParameter("partyType").equals("1")){
 	</div>
 	</c:otherwise>
 	</c:choose>
+	<input type="hidden" name="chat_id" id="chat_id" value="${pageContext.request.userPrincipal.name}" />
 </div> 
