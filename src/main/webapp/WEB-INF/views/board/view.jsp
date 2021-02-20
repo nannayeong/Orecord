@@ -285,10 +285,7 @@ $(function(){
 		<div class="row">
 			<div class="col-7">
 				<div style="padding-left: 50px;padding-bottom:1em">
-					<div style="height:13em">${audio.contents }
-					<div class="audio-control-btn btn-play">
-						<i class="fa fa-play"></i>
-					</div>
+					<div style="">${audio.contents }
 					</div>
 				</div>
 			</div>

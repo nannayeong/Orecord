@@ -224,6 +224,8 @@ public class PointController {
 		MemberDTO mdto = (MemberDTO)session.getAttribute("user");
 		mdto.setMypoint(mdto.getMypoint()+chargePoint);
 		
+		session.setAttribute("user", mdto);
+		
 		sqlSession.getMapper(PointImpl.class).insertChargeLog(param);
 		sqlSession.getMapper(PointImpl.class).updateChargeMyPoint(param);
 		
