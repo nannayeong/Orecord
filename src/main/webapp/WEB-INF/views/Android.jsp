@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-	<a href="./android/memberLogin.do?id=tore1&pass=1234" target="_blank">
+	<a href="./android/memberLogin.do?id=tore1&pw=1234" target="_blank">
 		회원로그인하기(객체형태)
 	</a>
 </body>

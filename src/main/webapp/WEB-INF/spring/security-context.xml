@@ -4,8 +4,9 @@
    xmlns="http://www.springframework.org/schema/security" 
    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
       http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.2.xsd">
+ 	
  	<http security="none" pattern="/android/**" />
- 	<http auto-config="true" />
+	
    <http>
    	  <intercept-url pattern="/admin/**" access="hasRole('ADMIN')"/>
    	  <intercept-url pattern="/upload.do" access="hasAnyRole('USER','ADMIN')"/>
@@ -29,6 +30,7 @@
       <access-denied-handler error-page="/member/accessDenied.do"/>
    </http>
    
+	
    <!-- 계정정보(JDBC연결) -->
    <authentication-manager>
       <authentication-provider>
