@@ -604,7 +604,7 @@ public class MyPageController {
 
 		/*페이징*/
 		//1. 플레이리스트
-		int pageSize = 10;
+		int pageSize = 2;
 		
 		int nowPage = Integer.parseInt(req.getParameter("nowPage"));
 		int start = (nowPage-1)*pageSize+1;
@@ -666,7 +666,7 @@ public class MyPageController {
 		String user_id = req.getParameter("user_id");
 		
 		/*페이징*/
-		int pageSize = 10;
+		int pageSize = 2;
 		
 		int nowPage = Integer.parseInt(req.getParameter("nowPage"));
 		int start = (nowPage-1)*pageSize+1;

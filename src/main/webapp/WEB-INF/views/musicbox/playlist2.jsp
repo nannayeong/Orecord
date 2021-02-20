@@ -13,6 +13,22 @@
 <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
 
 <script>
+function plAudioDeleteFunc(pidx, aidx, index){
+	$.ajax({
+	     url : "./plAudioDelete.do",
+	     type : "get",
+	     contentType : "text/html;charset:utf-8",
+	     data : {idx:pidx, audio_idx:aidx}, 
+	     dataType : "json",
+	     success : function sucFunc(resData) {
+			 if(resData.result==1){
+				alert("정상적으로 삭제되었습니다");
+				$('#'+index).hide(2000);
+			 }
+	     }    
+	});
+}
+
 var i = 1;
 
 function plLoginC(){
@@ -253,9 +269,18 @@ function playprev(){
 	<div id="audioList">
 		<table style="width:100%">
 		<c:forEach items="${audioList}" var="a" varStatus="state">
-		<tr id="${state.count}" onclick="playAudio('${a.imagename}','${a.audiofilename}','${a.audiotitle }','${a.artistname }',${state.count})" style="cursor:pointer;border:2px solid #f1f1f1">
-			<td><img src="${pageContext.request.contextPath}/resources/upload/${a.imagename}" alt="" style="width:35px;height:35px;" /> ${a.audiotitle } - ${a.id }</td>
+		<tr id="${state.count}"  style="cursor:pointer;border:2px solid #f1f1f1">
+			<td onclick="playAudio('${a.imagename}','${a.audiofilename}','${a.audiotitle }','${a.artistname }',${state.count})">
+				<img src="${pageContext.request.contextPath}/resources/upload/${a.imagename}" alt="" style="width:35px;height:35px;" /> 
+				${a.audiotitle } - ${a.id }
+			</td>
+			<td>
+			<a href="javascript:plAudioDeleteFunc(${a.idx}, ${a.audio_idx }, ${state.count});">
+		  		<i class="fas fa-trash-alt"></i>
+		    </a>
+			</td>
 		</tr>
+		
 		</c:forEach>
 		</table>
 	</div>

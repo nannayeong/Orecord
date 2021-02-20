@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Date;
+
 public class AudioBoardDTO {
 	
 	private int audio_idx; //게시물인덱스
@@ -34,6 +36,29 @@ public class AudioBoardDTO {
 	private String plid;
 	private String plname;
 	
+	/*fr*/
+	private int fp_idx;
+	private Date fp_regidate;
+	private String guestip;
+	
+	public int getFp_idx() {
+		return fp_idx;
+	}
+	public void setFp_idx(int fp_idx) {
+		this.fp_idx = fp_idx;
+	}
+	public Date getFp_regidate() {
+		return fp_regidate;
+	}
+	public void setFp_regidate(Date fp_regidate) {
+		this.fp_regidate = fp_regidate;
+	}
+	public String getGuestip() {
+		return guestip;
+	}
+	public void setGuestip(String guestip) {
+		this.guestip = guestip;
+	}
 	//getter/setter
 	public String getImg() {
 		return img;

@@ -15,4 +15,7 @@ public interface MusicBoxImpl {
 	ArrayList<AudioBoardDTO> selectFreeList(String fp_id, String guestip, int start, int end);
 	
 	ArrayList<AudioBoardDTO> np(String fp_id, String guestip);
+	
+	public int frAudioDeleteuser(String fp_id, String fp_idx);
+	public int frAudioDeleteguest(String guestip, String fp_idx);
 }

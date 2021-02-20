@@ -67,7 +67,7 @@ border:1px solid #f2f2f2;
                    				</span>&nbsp&nbsp 
                    				
 								
-                   				<!-- like -->
+                   				<!-- 삭제 -->
                    				<c:if test="${pageContext.request.userPrincipal.name ne user_id}">
                    				<span id="heart" class="iconPoint" onclick="likeFunc(${audio.audio_idx});">
                    					<i id="likeIcon${audio.audio_idx}" class="fas fa-heart ${audio.like eq 'true' ? 'on' : '' }"></i>
@@ -75,7 +75,9 @@ border:1px solid #f2f2f2;
                    				</c:if>	
                    				<c:if test="${pageContext.request.userPrincipal.name eq user_id}">
                    				<span>
-								  <a href="javascript:plAudioDeleteFunc(${audio.idx}, ${audio.audio_idx });"><i class="fas fa-trash-alt"></i></a>
+								  <a href="javascript:plAudioDeleteFunc(${audio.idx}, ${audio.audio_idx });">
+								  	<i class="fas fa-trash-alt"></i>
+								  </a>
 								</span>
 								</c:if>
 							</td>

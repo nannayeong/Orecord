@@ -204,6 +204,40 @@ public class MusicBoxController {
 		
 		return map;
 	}
+	
+	@RequestMapping("/frAudioDelete.do")
+	@ResponseBody
+	public Map<String, Object> frAudioDelete(Principal principal, HttpServletRequest req){
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		String fp_idx = req.getParameter("fp_idx");
+		
+		System.out.println(fp_idx);
+		
+		String login_id = null;
+		int result = -1;
+		try {
+			login_id = principal.getName();
+		}
+		catch(Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		if(login_id!=null) {
+			result = sqlSession.getMapper(MusicBoxImpl.class).frAudioDeleteuser(login_id, fp_idx);
+		}
+		else {
+			req = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
+			String ip = req.getHeader("X-FORWARDED-FOR");
+			if (ip == null)
+				ip = req.getRemoteAddr();
+			
+			result = sqlSession.getMapper(MusicBoxImpl.class).frAudioDeleteuser(ip, fp_idx);
+		}
+		
+		map.put("result", result);
+		return map;
+	}
 }
 
 //	@RequestMapping("/freeList.do")
