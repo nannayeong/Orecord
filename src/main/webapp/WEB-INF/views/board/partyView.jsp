@@ -19,11 +19,17 @@
 <link href="${pageContext.request.contextPath}/resources/css/layout.css" rel="stylesheet" />
 <!-- layout js-->
 <script src="${pageContext.request.contextPath}/resources/js/layout.js"></script>
-
+<script type="text/javascript">
+window.onload = function(){
+	webSocket = new WebSocket("ws://localhost:8080/orecord/EchoServer.do");
+}
+</script>
 <script type="text/javascript">
 function choiceAction(f){
 	var youPoint = f.point.value;
 	var myPoint = f.myPoint.value;
+	var audio_idx = f.audio_idx.value;
+	var r_id = f.id.value;
 	if(myPoint < youPoint){
 		var pointCon = confirm("포인트가 부족합니다. 충전하시겠습니까?");
 		if(pointCon==true){
@@ -133,13 +139,13 @@ function choiceAction(f){
 					<div class="col-8" align="center" style="margin: 10px 0 0 35px;">
 						<div class="form-group">
 							<span style="color:blue;">음원파일</span>
-							<!-- <p style="color:gray; font-size:12px;"> * 채택시 다운로드가 가능합니다.</p> -->
+							<p style="color:gray; font-size:12px;"> * 채택시 다운로드가 가능합니다.</p>
 							<audio controls style="width: 500px;">
 								<source src="${partyView.audiofilename }"/>
 							</audio>
 						</div>
 					</div>
-					<%-- <c:if test="${partyView.choice eq 1 }">
+					<c:if test="${partyView.choice eq 1 }">
 					<div class="col-2" style="padding-top:80px;" align="center">
 						<div>
 							<a href="download.do?audiofilename=${partyView.audiofilename }&oriFileName=${partyView.id}님의작곡">
@@ -147,7 +153,7 @@ function choiceAction(f){
 							</a>
 						</div>
 					</div>
-					</c:if> --%>
+					</c:if>
 				</div>
 			</div>
 		</div>
@@ -167,8 +173,13 @@ function choiceAction(f){
 					<div class="d-flex flex-row-reverse">
 					<c:choose>
 						<c:when test="${partyView.choice eq 1 }">
+							<button type="button" class="btn btn-outline-danger"
+								onclick="location.href='./SendMessage.do?audio_idx=${partyView.audio_idx}&r_id=${partyView.id }'">
+								메세지 보내기
+							</button>
 							<button type="button" class="btn btn-outline-primary"
-								onclick="location.href='partyList.do?audio_idx=${partyView.audio_idx}'">
+								onclick="location.href='partyList.do?audio_idx=${partyView.audio_idx}'"
+								style="margin-right: 10px;">
 								뒤로가기
 							</button>
 						</c:when>

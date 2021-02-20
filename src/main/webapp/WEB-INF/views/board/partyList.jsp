@@ -22,6 +22,11 @@
 <script src="${pageContext.request.contextPath}/resources/js/layout.js"></script>
 </head>
 <body>
+<script type="text/javascript">
+window.onload = function(){
+	webSocket = new WebSocket("ws://localhost:8080/orecord/EchoServer.do");
+}
+</script>
 <div>
 	<div class="content">
 		<!-- 페이지 제목 -->

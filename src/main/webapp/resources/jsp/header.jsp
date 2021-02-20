@@ -54,7 +54,7 @@ if(request.getParameter("partyType").equals("1")){
 	<c:choose>
 	<c:when test="${not empty pageContext.request.userPrincipal.name}">
 	<div class="noti2" id="musicbox">
-		<i class="fas fa-music fa-lg" onclick="openmusicbox();"></i>
+		<i class="fas fa-music fa-lg" onclick="openmusicboxnull();"></i>
 	</div>
 	<div class="noti2" id="noti">
 		<div class="dropdown">
@@ -90,6 +90,9 @@ if(request.getParameter("partyType").equals("1")){
 	<a href="${pageContext.request.contextPath}/upload.do"><div class="menu-r">Upload</div></a>
 	</c:when>
 	<c:otherwise>
+	<div class="menu-unlogin">
+		<i class="fas fa-music fa-lg" onclick='openmusicboxnull();'></i>
+	</div>
 	<div class="menu-unlogin">
 		<button type="button" class="btn btn-secondary btn-sm" onclick="location.href='${pageContext.request.contextPath}/member/membershipsub.do'">회원가입</button>
 	</div>

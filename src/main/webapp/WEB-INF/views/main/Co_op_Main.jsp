@@ -59,7 +59,7 @@ body{
 	width:100%;
 	height : 960px!;
 	margin:auto;
-	padding-top:3em;
+	padding-top:4em!important;
 	padding-bottom:1em;
 	text-align: center;
 }
@@ -222,7 +222,7 @@ function checknull(form) {
 <script type="text/javascript">
 function heartbtn(audioIdx) {
 	var a = audioIdx;
-	var clas = document.getElementsByClassName("btn btn-outline-secondary btn-sm heart "+a);
+	var clas = document.getElementsByClassName("btn btn-warning btn-sm heart "+a);
 	if("${pageContext.request.userPrincipal.name}"==""||"${pageContext.request.userPrincipal.name}"==null){
 		alert("로그인후 이용하세요");
 		location.href="${pageContext.request.contextPath}/member/login.do";
@@ -247,7 +247,7 @@ function like(audioIdx){
 	    	 var section1s = document.getElementsByClassName("btn btn-secondary btn-sm heart "+a);
 	    	 for(var i = section1s.length-1; i>=0; i--){
 	         var sec1 = section1s.item(0);
-	         sec1.className="btn btn-outline-secondary btn-sm heart "+a;
+	         sec1.className="btn btn-warning btn-sm heart "+a;
 	          count = resData.likecount;
 	          $(sec1).html("좋아요&nbsp;&nbsp;&nbsp;"
                       +count);
@@ -265,7 +265,7 @@ function nolike(audioIdx){
       data : { audio_idx :a,like_id:"${pageContext.request.userPrincipal.name}"}, 
       dataType : "json",
       success : function sucFunc(resData){
-    	 var section1s = document.getElementsByClassName("btn btn-outline-secondary btn-sm heart "+a);
+    	 var section1s = document.getElementsByClassName("btn btn-warning btn-sm heart "+a);
     	 for(var i = section1s.length-1; i>=0; i--){
          var sec1 = section1s.item(0);
          sec1.className="btn btn-secondary btn-sm heart "+a;
@@ -281,7 +281,7 @@ function nolike(audioIdx){
 	/* 버튼눌렀을때 팔로잉중인경우 언팔로우, 팔로우 안하는중이면 팔로우 함수로 이동 */
 function fBtn(follow) {
 	var f = follow;
-	var clas = document.getElementsByClassName("btn btn-outline-secondary btn-sm follow " + f);
+	var clas = document.getElementsByClassName("btn btn-warning btn-sm follow " + f);
 	if("${pageContext.request.userPrincipal.name}"==""||"${pageContext.request.userPrincipal.name}"==null){
 	alert("로그인후 이용하세요");
 	location.href="${pageContext.request.contextPath}/member/login.do";
@@ -310,7 +310,7 @@ function followbtn(follow) {
 					.getElementsByClassName("btn btn-secondary btn-sm follow " + f);
 			for (var i = section1s.length - 1; i >= 0; i--) {
 				var sec1 = section1s.item(i);
-				sec1.className = "btn btn-outline-secondary btn-sm follow " + f;
+				sec1.className = "btn btn-warning btn-sm follow " + f;
 			}
 			count = resData.followcount;
 			$('.pCount.' + f).html('팔로워 : ' + count);
@@ -331,7 +331,7 @@ function unfollowbtn(follow) {
 		dataType : "json",
 		success : function sucFunc(resData) {
 			var section1s = document
-					.getElementsByClassName("btn btn-outline-secondary btn-sm follow " + f);
+					.getElementsByClassName("btn btn-warning btn-sm follow " + f);
 			for (var i = section1s.length - 1; i >= 0; i--) {
 				var sec1 = section1s.item(i);
 				sec1.className = "btn btn-secondary btn-sm follow " + f;

@@ -13,17 +13,12 @@
 				style="width: 100%; border: 2px #f2f2f2 solid; margin: auto; margin-bottom: 1em"
 				class="feed">
 				<tr>
-					<td rowspan="4"
+					<td
 						style="width: 7em; padding-left: 1em; padding-right: 1em">
-						<img src="./resources/default.jpg" alt="" style="width: 6em" />
+						<img src="${a.img}" alt="" style="width: 5em" />
 					</td>
-					<td><h3 style="padding-top: 1em;"><a href="./${a.id }/record">${a.nickname}</a></h3></td>
-				</tr>
-				<tr>
-					<td colspan="2"></td>
-				</tr>
-				<tr>
-					<td style="padding-top: 1em; padding-bottom: 1em;">
+					<td><h3 style="padding-top: 1em; padding-bottom: 1em;"><a href="./${a.id }/record">${a.nickname}</a></h3></td>
+					<td style="padding-top: 1em; padding-bottom: 1em; width: 160px;">
 				<c:set var="followB" value="false"/>
         		<c:forEach var="f" items="${followMap }">
         		<c:forEach var="follower" items="${f.value }">
@@ -32,22 +27,19 @@
         		</c:if>
         		</c:forEach>
         		</c:forEach>
-        		     <c:choose>
+        		
+        		<h6 class="pCount ${a.id }">팔로워 : ${a.follower}&nbsp;&nbsp;</h6>
+        		<c:if test="${pageContext.request.userPrincipal.name ne a.id}">
+        		
+        		<c:choose>    
                <c:when test="${followB}">
-               <button type="button" class="btn btn-outline-secondary btn-sm follow ${a.id}" onclick="fBtn('${a.id}')" >팔로우</button>
+               <button type="button" class="btn btn-warning btn-sm follow ${a.id}" onclick="fBtn('${a.id}')" >팔로우</button>
                  </c:when>
                  <c:otherwise>
                    <button type="button" class="btn btn-secondary btn-sm follow ${a.id}" onclick="fBtn('${a.id}')" >팔로우</button>
                  </c:otherwise>
                </c:choose>
-               
-						
-					<td style="text-align: center">
-						<h6 class="pCount ${a.id }">팔로워 : ${memberMap[a]}</h6>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="2">
+               </c:if>
 					</td>
 				</tr>
 			</table>

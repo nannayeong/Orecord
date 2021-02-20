@@ -22,6 +22,11 @@
 <!-- layout js-->
 <script src="${pageContext.request.contextPath}/resources/js/layout.js"></script>
 <script type="text/javascript">
+window.onload = function(){
+	webSocket = new WebSocket("ws://localhost:8080/orecord/EchoServer.do");
+}
+</script>
+<script type="text/javascript">
 function comentValidate(f){
 	
 	if(f.contents.value==""){
@@ -299,7 +304,7 @@ $(function(){
 					</div>
 					<div style="margin-right: 10px;">
 						<button type="button" class="btn btn-outline-info"
-							onclick="location.href='/orecord/main.do'">
+							onclick="location.href='${pageContext.request.contextPath}/${audio.id}/album'">
 							목록
 						</button>
 					</div>
@@ -307,7 +312,7 @@ $(function(){
 					<c:otherwise>
 					<div style="margin-right: 60px;">
 						<button type="button" class="btn btn-outline-info"
-							onclick="location.href='/orecord/main.do'">
+							onclick="location.href='${pageContext.request.contextPath}/${audio.id}/album'">
 							목록
 						</button>
 					</div>

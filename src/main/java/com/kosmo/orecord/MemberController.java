@@ -37,12 +37,14 @@ public class MemberController {
 	
 	/*로그인*/
 	@RequestMapping("/member/login.do")
-	public String Login(Model model, Principal principal, HttpServletRequest req) {
+	public String Login(Model model, Principal principal, HttpServletRequest req,
+			HttpSession session) {
 
 		String id = "";
 		try {
 			id = principal.getName();
 			System.out.println("id=" + id);
+			session.setAttribute("chat_id", id);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}  

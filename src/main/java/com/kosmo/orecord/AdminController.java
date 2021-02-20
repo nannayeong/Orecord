@@ -2,8 +2,10 @@ package com.kosmo.orecord;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +21,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -30,6 +33,7 @@ import model.AlbumDTO;
 import model.AudioBoardDTO;
 import model.ChargeDTO;
 import model.ExchangeDTO;
+import model.FollowDTO;
 import model.MCommentDTO;
 import model.MemberDTO;
 import model.PartyBoardDTO;
@@ -379,7 +383,11 @@ public class AdminController {
 	@RequestMapping("/admin/chargeEditAction.do")
 	public String chargeEditAction(HttpServletRequest req) {
 		
+		
 		int idx = Integer.parseInt(req.getParameter("idx"));
+		
+		
+		
 		System.out.println(Integer.parseInt(req.getParameter("VAT")));
 		System.out.println(Integer.parseInt(req.getParameter("totalPayment")));
 		System.out.println(Integer.parseInt(req.getParameter("chargePoint")));
@@ -695,4 +703,23 @@ public class AdminController {
 		
 		return "redirect:/admin/reportList.do";
 	}
+	@RequestMapping("/admin/exchangeApprove.do")
+	@ResponseBody
+	public Map<Integer, Integer> follow(Model model, HttpServletRequest req) {
+		Map<Integer, Integer> ret = new HashMap<Integer, Integer>();
+		//키값 0에는 맵의 길이를 넣었음
+		int totalresult=0;
+		int length = Integer.parseInt(req.getParameter("0"));
+		for(int i=1;i<=length;i++) {
+			int idx = Integer.parseInt(req.getParameter(i+""));
+			int suc = sqlSession.update("exchangeApprove",idx);
+			totalresult+=suc;
+			ret.put(idx, suc);
+		}
+		String a = req.getParameter("1");
+		ret.put(0, totalresult);
+		return ret;
+	}
+
+	
 }
