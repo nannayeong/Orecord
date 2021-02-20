@@ -205,8 +205,6 @@ public class PointController {
 			UserDetails userInfo = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			loginId = userInfo.getUsername();
 			System.out.println(loginId);
-			
-			
 		}
 		catch (Exception e) {
 		}
@@ -223,6 +221,7 @@ public class PointController {
 		
 		MemberDTO mdto = (MemberDTO)session.getAttribute("user");
 		mdto.setMypoint(mdto.getMypoint()+chargePoint);
+		session.setAttribute("user", mdto);
 		
 		session.setAttribute("user", mdto);
 		
@@ -234,7 +233,7 @@ public class PointController {
 	// 후원시 포인트 이동 처리
 	@RequestMapping("/insertSponsorshipLog.do")
 	@ResponseBody
-	public void insertSponsorshipLog(@RequestParam Map<String, Object> param, Authentication authentication) {
+	public void insertSponsorshipLog(@RequestParam Map<String, Object> param, Authentication authentication, HttpSession session) {
 		// 로그인된 아이디 얻어와서 sponsorId 변수에 넣어주기
 		String sponsorId = "";
 		try {
@@ -247,6 +246,10 @@ public class PointController {
 		int sponPoint = Integer.parseInt(param.get("sponPoint").toString());
 		String patronId = param.get("patronId").toString();
 		
+		MemberDTO mdto = (MemberDTO)session.getAttribute("user");
+		mdto.setMypoint(mdto.getMypoint()-sponPoint);
+		session.setAttribute("user", mdto);
+		
 		sqlSession.getMapper(PointImpl.class).updateSponsorPoint(sponsorId, sponPoint);
 		sqlSession.getMapper(PointImpl.class).updatePatronPoint(patronId, sponPoint);
 	}
@@ -254,7 +257,7 @@ public class PointController {
 	
 	// 환전요청시 포인트 이동 처리
 	@RequestMapping(value="/insertExchangeLog.do", method=RequestMethod.POST)
-	public String insertExchangeLog(Model model, HttpServletRequest req) {
+	public String insertExchangeLog(Model model, HttpServletRequest req, HttpSession session) {
 		String loginId = "";
 		try {
 			UserDetails userInfo = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -290,6 +293,10 @@ public class PointController {
 		map.put("accountName", accountName);
 		map.put("accountNum", accountNum);
 
+		MemberDTO mdto = (MemberDTO)session.getAttribute("user");
+		mdto.setMypoint(mdto.getMypoint()-exchangePoint);
+		session.setAttribute("user", mdto);
+		
 		sqlSession.getMapper(PointImpl.class).insertExchangeLog(map);
 		sqlSession.getMapper(PointImpl.class).updateExchangeMyPoint(map);
 		

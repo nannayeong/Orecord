@@ -143,7 +143,9 @@
 		<div class="d-flex flex-row-reverse" style="margin-top: 15px;">
 			<div style="margin-right: 30px;">
 				<button type="button" class="btn btn-outline-primary"
-					onclick="location.href='view.do?audio_idx=${audio_idx}'">이전으로</button>
+					onclick="location.href='view.do?audio_idx=${audio_idx}'">
+					상세페이지로 이동
+				</button>
 			</div>
 		</div>
 		<br> <br>

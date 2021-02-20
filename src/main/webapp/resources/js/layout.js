@@ -167,11 +167,11 @@ function notify(notiMsg) {
 			notiMsg,
 			{
 				icon : 'https://t4.ftcdn.net/jpg/00/78/87/93/500_F_78879336_2f2Ivwq2jN2EFMSJSi72OevDAQob2JJv.jpg',
-				body : '쪽지가 왔습니다.',
+				body : '채택되셨습니다.',
 			});
 		//Noti에 핸들러를 사용한다.
 		notification.onclick = function() {
-			alert('링크를 이용해서 해당페이지로 이동할 수 있다.');
+			alert('채택된 글이 있습니다. 확인해주세요.');
 		};
 	}
 	
