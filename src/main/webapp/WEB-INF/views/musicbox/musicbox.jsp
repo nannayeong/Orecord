@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Orecord musicbox</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -141,6 +141,8 @@ function playnext(){
 	 	   	$('#nowaudiosource').attr('src','${pageContext.request.contextPath}/resources/upload/'+resData.dto.audiofilename);
 	 	   	$('#title').html(resData.dto.audiotitle);
 	 	   	$('#artist').html(resData.dto.artistname);
+	 		$('#playstop').removeClass('fa-play');
+	 		$('#playstop').addClass('fa-pause');
 	 	   	if(i==1){
 	 	   		$('#'+i).css('background-color','yellow');
 	 	   	}
@@ -171,11 +173,15 @@ function playprev(){
 	 	   	$('#nowaudiosource').attr('src','${pageContext.request.contextPath}/resources/upload/'+resData.dto.audiofilename);
 	 	   	$('#title').html(resData.dto.audiotitle);
 	 	   	$('#artist').html(resData.dto.artistname);
+	 		$('#playstop').removeClass('fa-play');
+	 		$('#playstop').addClass('fa-pause');
 	 	   	if(i==1){
+	 	   		var plus = i+1;
 	 	   		$('#'+i).css('background-color','yellow');
+	 	   		$('#'+plus).css('background-color','white');
 	 	   	}
 	 	   	else{
-		 	   	var next = i-1;
+		 	   	var next = i+1;
 		 	   	$('#'+i).css('background-color','yellow');
 		 	    $('#'+next).css('background-color','white');
 	 	   	}
@@ -202,7 +208,7 @@ function playprev(){
 						<i class="fas fa-fast-backward" onclick="playprev()"></i>
 						<i id="playstop" class="fa fa-play" onclick="playstop()"></i>
 						<i class="fas fa-fast-forward" onclick="playnext();"></i>
-						<audio id="nowaudiosource" autoplay onended="playnext();">
+						<audio id="nowaudiosource" autoplay onended="playnext();" >
 							<c:forEach items="${audioList}" var="a">
 							<source src="${pageContext.request.contextPath}/resources/upload/${a.audiofilename }">
 							</c:forEach>
