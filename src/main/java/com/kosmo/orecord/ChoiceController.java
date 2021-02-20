@@ -68,7 +68,7 @@ public class ChoiceController {
 			HttpServletRequest req, Model model) {
 		
 		int idx = Integer.parseInt(req.getParameter("audio_idx"));
-		String s_id = principal.getName();
+		String s_id = req.getParameter("s_id");
 		System.out.println("s_id="+s_id);
 		String r_id = req.getParameter("r_id");
 		String msg = req.getParameter("msg");

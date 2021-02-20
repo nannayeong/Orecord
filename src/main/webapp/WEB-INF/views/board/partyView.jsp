@@ -20,9 +20,6 @@
 <!-- layout js-->
 <script src="${pageContext.request.contextPath}/resources/js/layout.js"></script>
 <script type="text/javascript">
-window.onload = function(){
-	webSocket = new WebSocket("ws://localhost:8080/orecord/EchoServer.do");
-}
 </script>
 <script type="text/javascript">
 function choiceAction(f){
@@ -174,7 +171,7 @@ function choiceAction(f){
 					<c:choose>
 						<c:when test="${partyView.choice eq 1 }">
 							<button type="button" class="btn btn-outline-danger"
-								onclick="location.href='./SendMessage.do?audio_idx=${partyView.audio_idx}&r_id=${partyView.id }'">
+								onclick="location.href='./SendMessage.do?audio_idx=${partyView.audio_idx}&r_id=${partyView.id }&s_id=${pageContext.request.userPrincipal.name }'">
 								메세지 보내기
 							</button>
 							<button type="button" class="btn btn-outline-primary"
