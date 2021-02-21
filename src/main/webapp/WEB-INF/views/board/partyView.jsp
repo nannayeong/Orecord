@@ -13,6 +13,8 @@
 <!-- Jquery, BootStrap -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
 
 <!-- layout css -->
@@ -170,10 +172,6 @@ function choiceAction(f){
 					<div class="d-flex flex-row-reverse">
 					<c:choose>
 						<c:when test="${partyView.choice eq 1 }">
-							<button type="button" class="btn btn-outline-danger"
-								onclick="location.href='./SendMessage.do?audio_idx=${partyView.audio_idx}&r_id=${partyView.id }&s_id=${pageContext.request.userPrincipal.name }'">
-								메세지 보내기
-							</button>
 							<button type="button" class="btn btn-outline-primary"
 								onclick="location.href='partyList.do?audio_idx=${partyView.audio_idx}'"
 								style="margin-right: 10px;">

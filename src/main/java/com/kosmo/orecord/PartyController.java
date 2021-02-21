@@ -44,8 +44,6 @@ public class PartyController {
 		String partyIdx = req.getParameter("audio_idx");
 		System.out.println("audio_idx="+ partyIdx);
 		
-		
-	
 		String login_id = null;
 		try {
 			login_id = principal.getName();
@@ -54,10 +52,20 @@ public class PartyController {
 			
 		}
 		
-		
-		
+		System.out.println("1");
 		/*내가 작성한 보드에서 party 1인것만 가져옴*/
 		ArrayList<AudioBoardDTO> ptdto = sqlSession.getMapper(PartyImpl.class).party1(login_id);
+		
+		
+		System.out.println(ptdto);
+		
+		boolean check = false;
+		for(AudioBoardDTO dto : ptdto) {
+			check = true;
+		}
+		if(check==false) {
+			return "board/partyList";
+		}
 		
 		model.addAttribute("ptdto", ptdto);
 		

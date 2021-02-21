@@ -20,7 +20,13 @@
 		select * from freeplay f inner join audioboard a on f.audio_idx=a.audio_idx where fp_id=#{param1} or guestip=#{param2} 
 		order by fp_regidate desc
 	</select>
-</mapper>
+	<delete id="frAudioDeleteuser">
+		delete from freeplay where fp_id=#{param1} and fp_idx=#{param2}
+	</delete>
+	<delete id="frAudioDeleteguest">
+		delete from freeplay where guestip=#{param1} and fp_idx=#{param2}
+	</delete>
+</mapper> 
 
 
 

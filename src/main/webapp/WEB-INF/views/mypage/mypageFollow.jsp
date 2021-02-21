@@ -123,13 +123,13 @@ background-color: #f2f2f2;cursor:pointer
 				댓글수 : ${audio.commentCount }
 			</td>
 		</tr>
-		<tr>
-			<td colspan="3">
-				<form action="${pageContext.request.contextPath}/board/commentAction.do?audio_idx=${b.audio_idx}" method="post" onsubmit="return commentNcheck(this)">
-					<input type="text" name="contents" style="width:80%;"/>&nbsp&nbsp<input type="submit" value="댓글달기" class="btn btn-secondary btn-sm" style="margin-bottom:5px"/>
-				</form>
-			</td>
-		</tr>
+<!-- 		<tr> -->
+<!-- 			<td colspan="3"> -->
+<%-- 				<form action="${pageContext.request.contextPath}/board/commentAction.do?audio_idx=${b.audio_idx}" method="post" onsubmit="return commentNcheck(this)"> --%>
+<!-- 					<input type="text" name="contents" style="width:80%;"/>&nbsp&nbsp<input type="submit" value="댓글달기" class="btn btn-secondary btn-sm" style="margin-bottom:5px"/> -->
+<!-- 				</form> -->
+<!-- 			</td> -->
+<!-- 		</tr> -->
 	</table>
 </c:forEach>
 </c:otherwise> 

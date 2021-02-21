@@ -38,6 +38,10 @@ public class ChoiceController {
 		System.out.println("요구포인트:"+point);
 		int party_idx = Integer.parseInt(req.getParameter("party_idx"));
 		
+		MemberDTO mdto = (MemberDTO)session.getAttribute("user");
+		mdto.setMypoint(mdto.getMypoint()-point);
+		session.setAttribute("user", mdto);
+		
 		//채택하는 사람의 포인트 차감을 위한 매퍼 호출
 		int result1 = sqlSession.getMapper(ChoiceImpl.class).choiceAction1(
 				point, name);

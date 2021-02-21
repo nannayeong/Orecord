@@ -80,6 +80,11 @@
 						</tr>
 					</thead>
 					<tbody>
+						<c:if test="${empty partyList}">
+						<tr>
+							<td colspan="8" style="text-align:center">협업 가능한 게시글이 존재하지 않습니다.</td>
+						</tr>
+						</c:if>
 						<c:forEach items="${partyList }" var="par">
 						<input type="hidden" name="" />
 						<c:choose>
@@ -138,7 +143,9 @@
 		<div class="d-flex flex-row-reverse" style="margin-top: 15px;">
 			<div style="margin-right: 30px;">
 				<button type="button" class="btn btn-outline-primary"
-					onclick="location.href='view.do?audio_idx=${audio_idx}'">이전으로</button>
+					onclick="location.href='view.do?audio_idx=${audio_idx}'">
+					상세페이지로 이동
+				</button>
 			</div>
 		</div>
 		<br> <br>

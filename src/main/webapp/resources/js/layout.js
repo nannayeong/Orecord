@@ -121,26 +121,23 @@ function wsOpen(event){
 function wsMessage(event){
 	var message = event.data.split("|");
 	var sender = message[0];//닉네임
-	var content = "temp";
-	content = message[1];//메세지
-	
+	var receiver = message[1];//받는이
+	var msg = message[2];//메세지
+	var idx = message[3];//번호
 	writeResponse(event.data);
-	
+	var sendtxt = sender+"|"+msg+"|"+idx;
 	if(content == ""){
 		//날라온 내용이 없으므로 아무것도 하지 않는다.
 	}
 	else{
-		//내용에 / 가 있다면 귓속말
-		if(content.match("/")){
-			//귓속말
-			if(content.match(("/"+ chat_id))){
-				console.log("notify()");
-				//노티 함수 호출
-				notify(content);
-			}
+		if(receiver.match((chat_id))){
+			console.log("notify()");
+			//노티 함수 호출
+			notify(sendtxt);
 		}
 		else{}
 	}
+	
 }
 function wsClose(event){
 	writeResponse("대화 종료");
@@ -158,20 +155,24 @@ function writeResponse(text){
 	console.log(text);
 }
 function notify(notiMsg) {
+	var array =  notiMsg.split("|");
 	
+	var sender = array[0];
+	var msg = array[1];
+	var idx = array[2];
 	if (Notification.permission !== 'granted') {
 		alert('notification is disabled');
 	}
 	else {
 		var notification = new Notification(
-			notiMsg,
+			'채택되셨습니다. 클릭하면 해당페이지로 이동합니다.',
 			{
 				icon : 'https://t4.ftcdn.net/jpg/00/78/87/93/500_F_78879336_2f2Ivwq2jN2EFMSJSi72OevDAQob2JJv.jpg',
-				body : '쪽지가 왔습니다.',
+				body : sender+":"+msg,
 			});
 		//Noti에 핸들러를 사용한다.
 		notification.onclick = function() {
-			alert('링크를 이용해서 해당페이지로 이동할 수 있다.');
+			location.href='/orecord/board/view.do?audio_idx='+idx;
 		};
 	}
 	

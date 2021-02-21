@@ -361,7 +361,9 @@ $(function(){
 						<tr>
 							<td class="my-con-left">
 								<div id="albumList">
-	
+								<div style="text-align:center">
+									<img src="../resources/img/loading02.gif" alt="" />
+								</div>
 								</div>
 							</td>
 							<td class="my-con-right">

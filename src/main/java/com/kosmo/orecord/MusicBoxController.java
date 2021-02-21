@@ -86,7 +86,7 @@ public class MusicBoxController {
 				audioList = sqlSession.getMapper(MusicBoxImpl.class).np(login_id,"");
 			}
 			
-			System.out.println("여기"+audioList);
+			model.addAttribute("audioparam", audio_idx);
 			model.addAttribute("audioList",audioList);
 			model.addAttribute("listsize", audioList.size());	
 			
@@ -158,18 +158,7 @@ public class MusicBoxController {
 			audioList = sqlSession.getMapper(MusicBoxImpl.class).np(login_id,"");
 		}
 		
-		
-		//오디오리스트의 길이 구하기
-		int arr = Integer.parseInt(req.getParameter("arr"));
-		
-		int i = 1;
-		for(AudioBoardDTO dto : audioList) {
-			if(arr==i) {
-				map.put("dto", dto);
-				break;
-			}
-			i++;
-		}
+		map.put("audioList",audioList);
 		
 		return map;
 	}
@@ -202,6 +191,42 @@ public class MusicBoxController {
 			i++;
 		}
 		
+		return map;
+	}
+	
+	@RequestMapping("/frAudioDelete.do")
+	@ResponseBody
+	public Map<String, Object> frAudioDelete(Principal principal, HttpServletRequest req){
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		String fp_idx = req.getParameter("fp_idx");
+		
+		System.out.println(fp_idx);
+		
+		String login_id = null;
+		int result = -1;
+		try {
+			login_id = principal.getName();
+		}
+		catch(Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		if(login_id!=null) {
+			result = sqlSession.getMapper(MusicBoxImpl.class).frAudioDeleteuser(login_id, fp_idx);
+		}
+		else {
+			req = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
+			String ip = req.getHeader("X-FORWARDED-FOR");
+			if (ip == null)
+				ip = req.getRemoteAddr();
+			System.out.println(ip);
+			
+			result = sqlSession.getMapper(MusicBoxImpl.class).frAudioDeleteguest(ip, fp_idx);
+		}
+		
+		System.out.println(result);
+		map.put("result", result);
 		return map;
 	}
 }
