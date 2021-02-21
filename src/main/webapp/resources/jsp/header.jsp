@@ -19,8 +19,75 @@ a:hover { color: blue; text-decoration: underline;}
 .menu.active{
     background-color:#6c757d;
 }
+.notiPosition{
+width: 18px;
+height: 13px;
+background-color: yellow;
+position: absolute;
+color: black;
+top: 18px;
+left: 25px;
+border-radius: 25%;
+display: none;
+}
+.notiCount{
+font-size: 12px;
+font-weight: bold;
+
+}
 </style>
+<script>
+function read(idx,audio_idx) {
+	var ajax = $.ajax({
+		type : "get",
+		url : "${pageContext.request.contextPath}"+"/msgRead.do",
+		dataType : "json",
+		async: false,
+		data : { n_idx : idx
+			}, 
+			contentType : "text/html;charset:utf-8",
+	      	success : function(resData) {
+	      		location.href="${pageContext.request.contextPath}"+"/board/view.do?audio_idx="+audio_idx;
+	      	},
+	      	error : function(request,status,error) {
+	      		alert("code = "+ request.status + " message = " + request.responseText + " error = " + error);
+
+			}
+	    }); 
+}
+</script>
 <script type="text/javascript">
+$(document).ready(function(){
+	if('${pageContext.request.userPrincipal.name}'!= null&&'${pageContext.request.userPrincipal.name}'!=""){
+ 	var ajax = $.ajax({
+		type : "get",
+		url : "${pageContext.request.contextPath}"+"/msgLoad.do",
+		dataType : "html",
+		async: false,
+		data : { user_id:'${pageContext.request.userPrincipal.name}'
+			}, 
+			contentType : "text/html;charset:utf-8",
+	      	success : function(resData) {
+	      		$('#notiList').append(resData);
+	      	 	var count = $('a#noti').length;
+ 				if(count!=0){
+	      	 		$('.notiPosition').css("display","block");
+	      	 	}else{
+	      	 		$('#notiList').append("<h5>알림이 없습니다.</h5>");
+	      	 	}
+	      	 	$(".notiCount").text(count);
+	      	 	
+	      	
+	      	},
+	      	error : function(request,status,error) {
+	      		alert("code = "+ request.status + " message = " + request.responseText + " error = " + error);
+
+			}
+	    });
+	
+}
+});
+
 function checkNull(t) {
 	if(t.searchWord.value==""||t.searchWord.value==null){
 		alert("검색어를 입력하세요");
@@ -32,11 +99,12 @@ function checkNull(t) {
 <%
 String a="", b="";
 if(request.getParameter("partyType")!=null){
-if(request.getParameter("partyType").equals("1")){
-	a= " active";
-}else if(request.getParameter("partyType").equals("0")){
-	b= " active";
-}}
+	if(request.getParameter("partyType").equals("1")){
+		a= " active";
+	}else if(request.getParameter("partyType").equals("0")){
+		b= " active";
+}
+	}
 %>
 <div class="menu-back">
 	<!-- 오른정렬 -->
@@ -57,16 +125,20 @@ if(request.getParameter("partyType").equals("1")){
 		<i class="fas fa-music fa-lg" onclick="openmusicboxnull();"></i>
 	</div>
 	<div class="noti2" id="noti">
+			
 		<div class="dropdown">
 		  <span class="dropdown-toggle" data-toggle="dropdown">
 		    <i class="fas fa-bell fa-lg" style="margin-left:15px"></i>
 		  </span>
-		  <div class="dropdown-menu">
-		    <a class="dropdown-item" href="">알림</a>
+		  <div class="notiPosition">
+		<h5 class="notiCount"></h5>
+		</div>
+		  <div class="dropdown-menu" id="notiList">
 		  </div>
 		</div>
 	</div>
 	<div class="noti" id="user">
+
 		<div class="dropdown">
 		  <span class="dropdown-toggle" data-toggle="dropdown">
 		 	<img src="${sessionScope.user.img }" alt="" style="width:1.8em;height:1.8em;border-radius:15px;margin-left:5px" />

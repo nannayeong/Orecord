@@ -38,9 +38,9 @@ h4 {
 	margin-right: 0;
 }
 
-#paymentButton {
+#paymentButton, #exchangeButton {
 	font-size: 20px;
-	width: 140px;
+	width: 110px;
 	height: 50px;
 	display: block; 
 	float: right;
@@ -103,7 +103,8 @@ h4 {
 			<div class="content-header">
 				<div class="pointMainMenu" style="border-bottom: 2px solid #545B62; padding-bottom: 10px;">
 					<!-- 모달로 결제창 띄울 버튼 -->
-					<button type="button" class="btn btn-info" id="paymentButton" data-toggle="modal" data-target="#paymentModal">결제하기</button>
+					<button type="button" class="btn btn-info" id="exchangeButton" onClick="location.href='./exchangeForm.do'">환전하기</button>
+					<button type="button" class="btn btn-info" id="paymentButton" style="margin-right:20px"data-toggle="modal" data-target="#paymentModal">결제하기</button>
 					<!-- 결제창 모달 -->
 					<div class="modal" id="paymentModal">
 					  <div class="modal-dialog modal-lg modal-dialog-centered ">
@@ -153,9 +154,11 @@ h4 {
 				<div class="pointSubMenu" style="margin-top:20px;">
 					<div class="btn-group btn-group-sm">  
 						<button type="button" class="btn btn-secondary" disabled>결제 내역</button>
-						<button type="button" class="btn btn-secondary" onClick="location.href='./sponsorLog.do'">후원한 내역</button>
-						<button type="button" class="btn btn-secondary" onClick="location.href='./patronLog.do'">후원 받은 내역</button>
-						<button type="button" class="btn btn-secondary" onClick="location.href='./exchangeLog.do'">환전 내역</button>
+						<button type="button" class="btn btn-secondary" style="margin-left:1px" onClick="location.href='./sponsorLog.do'">후원한 내역</button>
+						<button type="button" class="btn btn-secondary" style="margin-left:1px" onClick="location.href='./patronLog.do'">후원 받은 내역</button>
+						<button type="button" class="btn btn-secondary" style="margin-left:1px" onClick="location.href='./contributorLog.do'">협업한 내역</button>
+						<button type="button" class="btn btn-secondary" style="margin-left:1px" onClick="location.href='./receiverLog.do'">협업 받은 내역</button>
+						<button type="button" class="btn btn-secondary" style="margin-left:1px" onClick="location.href='./exchangeLog.do'">환전 내역</button>
 					</div>
 					<div class="datepicker">
 						<button type="button" class="btn btn-info btn-sm" id="btnToday" onClick="searchingToday()">오늘</button>
