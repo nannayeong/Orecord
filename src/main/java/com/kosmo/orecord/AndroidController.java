@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import impl.AndroidImpl;
+import model.AudioBoardDTO;
 import model.MemberDTO;
 
 @Controller
@@ -56,6 +57,7 @@ public class AndroidController {
 		return lists;
 	}
 	
+	//로그인
 	@RequestMapping("/android/memberLogin.do")
 	@ResponseBody
 	public Map<String, Object> memberLogin(MemberDTO memberDTO, Model model){
@@ -77,5 +79,17 @@ public class AndroidController {
 		}
 		System.out.println(returnMap);
 		return returnMap;
+	}
+	
+	//메인화면 플레이리스트
+	@RequestMapping("/android/audioBoardView.do")
+	@ResponseBody
+	public ArrayList<AudioBoardDTO> audioBoardView(AudioBoardDTO audioBoardDTO){
+		
+		System.out.println("안드 메인화면 요청들어옴");
+		
+		ArrayList<AudioBoardDTO> mainList = sqlSession.getMapper(AndroidImpl.class).audioBoardView();
+		
+		return mainList;
 	}
 }
