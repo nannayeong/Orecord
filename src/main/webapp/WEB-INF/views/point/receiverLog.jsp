@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Orecord - 충전내역 조회</title>
+<title>Orecord - 협업 받은 내역 조회</title>
 
 <!-- Jquery, BootStrap --> 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
