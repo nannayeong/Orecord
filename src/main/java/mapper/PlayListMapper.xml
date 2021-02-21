@@ -32,7 +32,7 @@
 	</select>
 	
 	<delete id="plAudioDelete">
-		delete from playlist where plid=#{param1} and idx=#{param2} and audio_idx=#{param3}
+		delete from playlist where plid=#{param1} and idx=#{param2}
 	</delete>
 	<select id="selectpl" resultType="model.PlayListDTO">
 		select idx, plid, l.audio_idx, plname, audiotitle, artistname, audiofilename, imagename, id, regidate, play_count, like_count, party
