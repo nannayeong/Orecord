@@ -86,7 +86,7 @@ public class MusicBoxController {
 				audioList = sqlSession.getMapper(MusicBoxImpl.class).np(login_id,"");
 			}
 			
-			System.out.println("여기"+audioList);
+			model.addAttribute("audioparam", audio_idx);
 			model.addAttribute("audioList",audioList);
 			model.addAttribute("listsize", audioList.size());	
 			
@@ -158,18 +158,7 @@ public class MusicBoxController {
 			audioList = sqlSession.getMapper(MusicBoxImpl.class).np(login_id,"");
 		}
 		
-		
-		//오디오리스트의 길이 구하기
-		int arr = Integer.parseInt(req.getParameter("arr"));
-		
-		int i = 1;
-		for(AudioBoardDTO dto : audioList) {
-			if(arr==i) {
-				map.put("dto", dto);
-				break;
-			}
-			i++;
-		}
+		map.put("audioList",audioList);
 		
 		return map;
 	}
@@ -231,10 +220,12 @@ public class MusicBoxController {
 			String ip = req.getHeader("X-FORWARDED-FOR");
 			if (ip == null)
 				ip = req.getRemoteAddr();
+			System.out.println(ip);
 			
-			result = sqlSession.getMapper(MusicBoxImpl.class).frAudioDeleteuser(ip, fp_idx);
+			result = sqlSession.getMapper(MusicBoxImpl.class).frAudioDeleteguest(ip, fp_idx);
 		}
 		
+		System.out.println(result);
 		map.put("result", result);
 		return map;
 	}

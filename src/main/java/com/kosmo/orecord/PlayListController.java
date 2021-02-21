@@ -54,7 +54,7 @@ public class PlayListController {
 		try {
 			login_id = principal.getName();
 			
-			result = sqlSession.getMapper(PlayListImpl.class).plAudioDelete(login_id, idx, audio_idx);
+			result = sqlSession.getMapper(PlayListImpl.class).plAudioDelete(login_id, idx);
 			
 		}
 		catch(Exception e) {

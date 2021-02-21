@@ -666,7 +666,7 @@ public class MyPageController {
 		String user_id = req.getParameter("user_id");
 		
 		/*페이징*/
-		int pageSize = 2;
+		int pageSize = 5;
 		
 		int nowPage = Integer.parseInt(req.getParameter("nowPage"));
 		int start = (nowPage-1)*pageSize+1;
@@ -748,7 +748,7 @@ public class MyPageController {
 		String user_id = req.getParameter("user_id");
 		
 		/*페이징*/
-		int pageSize = 10;
+		int pageSize = 5;
 		
 		int nowPage = Integer.parseInt(req.getParameter("nowPage"));
 		int start = (nowPage-1)*pageSize+1;
@@ -829,7 +829,7 @@ public class MyPageController {
 		String user_id = req.getParameter("user_id");
 		
 		/*페이징*/
-		int pageSize = 10;
+		int pageSize = 5;
 		
 		int nowPage = Integer.parseInt(req.getParameter("nowPage"));
 		int start = (nowPage-1)*pageSize+1;
