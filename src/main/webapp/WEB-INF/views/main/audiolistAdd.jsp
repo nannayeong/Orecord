@@ -45,7 +45,7 @@
 						</tr>
 						<tr>
 							<td colspan="3">
-								<audio controls style="width:97%" id="${b.albumName }" >
+								<audio controls style="width:97%" id="${b.albumName }" onplay="upmusiccount(${b.audio_idx });">
 									<source src="${b.audiofilename }" type="audio/mp4">
 								</audio>
 							</td>
@@ -123,7 +123,7 @@
 						</c:if>
 							</td>
 							<td style="text-align:right;padding-right:1.5em;color:#423e3e;font-size:14px" colspan="2">
-								재생 : ${b.play_count} &nbsp&nbsp
+								<span id="playC">재생 : ${b.play_count}</span> &nbsp&nbsp
 								댓글수 : ${b.commentCount }
 							</td>
 						</tr>

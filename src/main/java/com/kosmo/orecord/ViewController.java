@@ -229,6 +229,8 @@ public class ViewController {
 		String login_id = null;
 		String audio_idx = req.getParameter("audio_idx");
 		
+		System.out.println("audio_idx"+audio_idx);
+		
 		try {
 			login_id = principal.getName();
 			
@@ -236,6 +238,8 @@ public class ViewController {
 			int count = sqlSession.getMapper(ViewImpl.class).addPlay(
 				Integer.parseInt(audio_idx));
 			System.out.println("재생횟수 카운트 결과="+count);
+			
+			System.out.println(count);
 			
 			//현재 재생횟수
 			int playCount = sqlSession.getMapper(ViewImpl.class).playCount(

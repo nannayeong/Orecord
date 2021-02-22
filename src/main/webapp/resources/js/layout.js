@@ -199,3 +199,21 @@ function addpl(){
 	     }    
 	});
 }
+
+function upmusiccount(aidx){
+	$.ajax({
+		url : "/orecord/board/playAction.do",
+		type : "get",
+		contentType : "text/html;charset:utf-8",
+		data : { audio_idx : aidx},
+		dataType : "json",
+		success : function(resData){
+            if(resData!=null){
+				$('#playC').html(resData.playCount);
+            }	
+		},
+		error : function(error) {
+			alert("error : " + error);
+		}   
+	});
+}
