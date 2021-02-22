@@ -230,7 +230,6 @@ function playstop(){
 				$('#'+i).removeClass('bg-light');
 			}
 		}
-		
 	}
 	else if($('#playstop').hasClass('fa-pause')){
 		$('#playstop').removeClass('fa-pause');
@@ -291,9 +290,9 @@ function go(){
 	$('#playstop').removeClass('fa-play');
 	$('#playstop').addClass('fa-pause');
 	nas[nowIdx].play();
-	$('#artist').html(artist[0]);
-	$('#title').html(title[0]);
-	$('#nowaudioimg').attr('src', img[0]);
+	$('#artist').html(artist[nowIdx]);
+	$('#title').html(title[nowIdx]);
+	$('#nowaudioimg').attr('src', img[nowIdx]);
 	
 	$('#'+nowIdx).addClass('bg-light');
 	var listsize = '${listsize}';

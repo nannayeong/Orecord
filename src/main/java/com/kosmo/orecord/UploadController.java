@@ -124,6 +124,7 @@ public class UploadController {
 			ArrayList<AlbumDTO> albumList = sqlSession.getMapper(AlbumImpl.class).albumList(id);
 			
 			if(albumList.size()==0) {//아무 앨범도 없는 경우
+				System.out.println("앨범등록");
 				sqlSession.getMapper(AlbumImpl.class).addAlbum(id, albumName);
 				albumList = sqlSession.getMapper(AlbumImpl.class).albumList(id);
 				for(AlbumDTO adto : albumList) {

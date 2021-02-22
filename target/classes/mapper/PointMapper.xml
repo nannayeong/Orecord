@@ -84,6 +84,56 @@
 		WHERE recordNum between #{startRecord} and #{endRecord}
 	</select>
 	
+	<!-- 파티보드에 receiverId(협업 받는 아이디 컬럼 추가 후 테이블, 검색조건, 추출 컬럼(point, regidate, id) 변경-->
+	<!-- 협업한 내역 건수 조회 -->
+	<select id="selectContributorLogTotalCount" resultType="int" parameterType="hashmap">
+		SELECT count(*)
+		FROM partyboard 
+    WHERE id=#{loginId} AND 
+    	trunc(regidate) between #{fromDate} and #{toDate}
+    ORDER BY regidate DESC
+	</select>
+	<!-- 협업한 내역 조회 -->
+	<select id="selectContributorLog" resultType="model.SponsorshipDTO" parameterType="hashmap">
+		SELECT * 
+		FROM (
+					SELECT A.*, rownum recordNum 
+					FROM (
+								SELECT regidate, sponPoint, patronId
+								FROM partyboard
+								WHERE sponsorId=#{loginId} AND 
+									trunc(regidate) between #{fromDate} and #{toDate}
+    						ORDER BY regidate DESC
+					) A
+		)
+		WHERE recordNum between #{startRecord} and #{endRecord}
+	</select>
+	
+	
+	<!-- 협업 받은 내역 건수 조회 -->
+	<select id="selectReceiverLogTotalCount" resultType="int" parameterType="hashmap">
+		SELECT count(*)
+		FROM partyboard 
+    WHERE patronId=#{loginId} AND 
+    	trunc(regidate) between #{fromDate} and #{toDate}
+    ORDER BY regidate DESC
+	</select>
+	<!-- 협업 받은 내역 조회 -->
+	<select id="selectReceiverLog" resultType="model.SponsorshipDTO" parameterType="hashmap">
+		SELECT * 
+		FROM (
+					SELECT A.*, rownum recordNum 
+					FROM (
+								SELECT regidate, sponPoint, sponsorId
+								FROM partyboard
+								WHERE patronId=#{loginId} AND 
+									trunc(regidate) between #{fromDate} and #{toDate}
+    						ORDER BY regidate DESC
+					) A
+		)
+		WHERE recordNum between #{startRecord} and #{endRecord}
+	</select>
+	
 	
 	<!-- 환전내역 건수 조회 -->
 	<select id="selectExchangeLogTotalCount" resultType="int" parameterType="hashmap">
@@ -99,7 +149,7 @@
 		FROM (
 					SELECT A.*, rownum recordNum 
 					FROM (
-								SELECT regidate, exchangePoint, exchangedMoney, exchangeResult
+								SELECT regidate, exchangePoint, exchangedMoney, accountBank, exchangeResult
 								FROM exchangeLog
 								WHERE id=#{loginId} AND 
 									trunc(regidate) between #{fromDate} and #{toDate}
