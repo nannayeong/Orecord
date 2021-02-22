@@ -75,8 +75,6 @@ function sendMessage(){
 	var idx = $("input[name=audio_idx]").val();
 	var message = $("input[name=msg]").val();
 	var send_message = chat_id+'|'+receive_id+'|'+$("#msg").val()+'|'+idx;
-	alert(send_message);
-	alert("여기됨");
 	var ajax = $.ajax({
 		type : "get",
 		url : "../msgSave.do",
@@ -89,7 +87,6 @@ function sendMessage(){
 			}, 
 			contentType : "text/html;charset:utf-8",
 	      	success : function(resData) {
-	      		alert("zz");
 	      		webSocket.send(send_message);
 	      	},
 	      	error : function(request,status,error) {
@@ -97,7 +94,6 @@ function sendMessage(){
 
 			}
 	    }); 
-	alert("여기도됨");
 }
 function enterkey(){
 	if(window.event.keyCode==13){
