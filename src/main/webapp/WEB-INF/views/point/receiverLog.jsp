@@ -385,7 +385,7 @@ function selectLastYear() {
 		  data : {fromDate : $("#date_from").val(), 
 			  			toDate : $("#date_to").val(), 
 			  			selectPage : selectPage,
-			  			selectLog : "chargeLog"},
+			  			selectLog : "receiverLog"},
 		  type : "get",
 		  dataType : "json",
 		  success: function (data) {
@@ -426,7 +426,8 @@ function changingTableFunc(obj) {
 	var table = document.querySelector('#changingTableId');
   var resultLog = obj.list;
   for (var i=0; i<resultLog.length; i++) {
-		resultLog[i].chargePoint = comma(resultLog[i].chargePoint);
+		resultLog[i].point = comma(resultLog[i].point);
+		console.log(resultLog[i]);
 	}
 	var html = '<div class="table" id="changingTableId">';
 			html = '<table class="table table-hover text-center">';
@@ -441,9 +442,9 @@ function changingTableFunc(obj) {
 	}
 	else {
 		for (var i=0; i<resultLog.length; i++) {
-		    html += '<tr><td>' + resultLog[i].regidate + '</td><td>' + resultLog[i].paymentType
-	           + '</td><td> ' + resultLog[i].chargePoint+ '</td></tr>';
-		}
+		    html += '<tr><td>' + resultLog[i].regidate + '</td><td>' + resultLog[i].id
+	           + '</td><td> ' + resultLog[i].point + '</td></tr>';
+		} 
 				html += '	</tbody></table></div>';
 				html += '<nav class="paginationPostion" style="margin-bottom: 200px;">';
 				html += '<ul class="pagination justify-content-center pagination-sm">';

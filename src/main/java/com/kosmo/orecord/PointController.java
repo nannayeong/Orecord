@@ -84,7 +84,7 @@ public class PointController {
 		return "point/patronLog";
 	}
 	
-	// 후원한 내역 조회 페이지 진입
+	// 협업한 내역 조회 페이지 진입
 	@RequestMapping("/contributorLog.do")
 	public String contributor(Model model) {
 		String loginId = "";
@@ -103,7 +103,7 @@ public class PointController {
 		return "point/contributorLog";
 	}
 	
-	// 후원 받은 내역 조회 페이지 진입
+	// 협업 받은 내역 조회 페이지 진입
 	@RequestMapping("/receiverLog.do")
 	public String receiver(Model model) {
 		String loginId = "";
@@ -211,11 +211,15 @@ public class PointController {
 		else if (selectLog.equals("contributorLog")) { // 협업한 내역 조회시 매퍼
 			totalRecord = sqlSession.getMapper(PointImpl.class).selectContributorLogTotalCount(param);
 			list = sqlSession.getMapper(PointImpl.class).selectContributorLog(param);
+			System.out.println(list);
+			System.out.println(totalRecord);
 		}
 
 		else if (selectLog.equals("receiverLog")) { // 협업 받은 내역 조회시 매퍼
 			totalRecord = sqlSession.getMapper(PointImpl.class).selectReceiverLogTotalCount(param);
 			list = sqlSession.getMapper(PointImpl.class).selectReceiverLog(param);
+			System.out.println(list);
+			System.out.println(totalRecord);
 		}
 		
 		else if (selectLog.equals("exchangeLog")) { // 환전 내역 조회시 매퍼
