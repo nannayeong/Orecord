@@ -188,7 +188,7 @@ public class PointController {
 		param.put("endRecord", endRecord);
 		
 		
-		// 4개 뷰 분기 시작
+		// 6개 뷰 분기 시작
 		String selectLog = param.get("selectLog").toString();
 		int totalRecord = 0;
 		
