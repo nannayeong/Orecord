@@ -8,7 +8,8 @@ public class NotificationDTO {
 	private java.sql.Date stime;
 	private String msg;
 	private String exMsg;
-	
+	private int read;
+	private int audio_idx;
 	//getter/setter
 	public int getN_idx() {
 		return n_idx;
@@ -46,4 +47,17 @@ public class NotificationDTO {
 	public void setExMsg(String exMsg) {
 		this.exMsg = exMsg;
 	}
+	public int getRead() {
+		return read;
+	}
+	public void setRead(int read) {
+		this.read = read;
+	}
+	public int getAudio_idx() {
+		return audio_idx;
+	}
+	public void setAudio_idx(int audio_idx) {
+		this.audio_idx = audio_idx;
+	}
+
 }

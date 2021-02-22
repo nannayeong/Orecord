@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="impl.MessageImpl">
+	<!-- 회원가입 -->
+	<insert id="saveMsg">
+		insert into NOTIFICATION values (seq_notification.nextval,#{0},#{1},sysdate,#{2},'T',0,#{3})
+	</insert>
+	<select id="loadMsg" resultType="model.NotificationDTO">
+	select * from NOTIFICATION where r_id=#{0} order by STIME DESC
+	</select>
+	<update id="readMsg">
+	update NOTIFICATION set read=1 where n_idx=#{0}
+	</update>
+</mapper>	 
+

@@ -7,6 +7,10 @@
 <title>알림 메세지 보내기</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<!-- cdn 추가 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
 </head>
 <body>
 <script type="text/javascript">
@@ -42,25 +46,20 @@ function wsOpen(event){
 function wsMessage(event){
 	var message = event.data.split("|");
 	var sender = message[0];//닉네임
+	var receiver = message[1];
 	var content = "temp";
-	content = message[1];//메세지
-	
+	content = message[2];//메세지
 	writeResponse(event.data);
 	
 	if(content == ""){
 		//날라온 내용이 없으므로 아무것도 하지 않는다.
 	}
 	else{
-		//내용에 / 가 있다면 귓속말
-		if(content.match("/")){
-			//귓속말
-			if(content.match(("/"+ chat_id))){
-				console.log("notify()");
-				//노티 함수 호출
-				notify(content);
-			}
+		if(receiver.match((chat_id))){
+			console.log("notify()");
+			//노티 함수 호출
+			notify(sender+':'+content+"|"+idx);
 		}
-		else{}
 	}
 }
 function wsClose(event){
@@ -71,11 +70,34 @@ function wsError(event){
 	writeResponse(event.data);
 }
 function sendMessage(){
-	receive_id = $("#r_id").val();
-	inputMessage = '/'+ receive_id+ ' '+ $("#msg").val();
-	var send_message = chat_id+ '|'+ inputMessage;
-	console.log('send_message:'+ send_message);
-	webSocket.send(send_message);
+	var receive_id = $("input[name=r_id]").val();
+	var send_id = $("input[name=chat_id]").val();
+	var idx = $("input[name=audio_idx]").val();
+	var message = $("input[name=msg]").val();
+	var send_message = chat_id+'|'+receive_id+'|'+$("#msg").val()+'|'+idx;
+	alert(send_message);
+	alert("여기됨");
+	var ajax = $.ajax({
+		type : "get",
+		url : "../msgSave.do",
+		dataType : "json",
+		async: false,
+		data : { receiver : receive_id,
+			sender : send_id,
+			audio_idx : idx,
+			msg : message
+			}, 
+			contentType : "text/html;charset:utf-8",
+	      	success : function(resData) {
+	      		alert("zz");
+	      		webSocket.send(send_message);
+	      	},
+	      	error : function(request,status,error) {
+	      		alert("code = "+ request.status + " message = " + request.responseText + " error = " + error);
+
+			}
+	    }); 
+	alert("여기도됨");
 }
 function enterkey(){
 	if(window.event.keyCode==13){
@@ -114,7 +136,7 @@ function notify(notiMsg) {
 <div class="container">
 	<input type="hidden" name="audio_idx" id="audio_idx" value="${audio_idx }" />
 	<input type="hidden" name="r_id" id="r_id" value="${r_id }" />
-	<input type="hidden" name="chat_id" id="chat_id" value="${pageContext.request.userPrincipal.name}" />
+	<input type="hidden" name="chat_id" id="s_id" value="${pageContext.request.userPrincipal.name}" />
 	<table class="table table-bordered">
 		<tr> 
 			<td>닉네임:</td>

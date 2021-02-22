@@ -17,6 +17,8 @@
 <link href="${pageContext.request.contextPath}/resources/css/layout.css" rel="stylesheet" />
 <!-- layout js-->
 <script src="${pageContext.request.contextPath}/resources/js/layout.js"></script>
+<!-- 아임포트 결제 API 추가 -->
+<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
 <!-- 날짜 선택기 -->
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -36,9 +38,9 @@ h4 {
 	margin-right: 0;
 }
 
-#exchangeButton {
+#paymentButton, #exchangeButton {
 	font-size: 20px;
-	width: 140px;
+	width: 110px;
 	height: 50px;
 	display: block; 
 	float: right;
@@ -80,6 +82,12 @@ h4 {
 	margin-left: 130px;
 	color: #138496;
 }
+.displayModalTextbox {
+	text-align: center;
+	border: 0px;
+	font-family: sans-serif;
+	font-size: 	
+}
 </style>
 <script>
 	$(document).ready(function() {
@@ -93,16 +101,63 @@ h4 {
 			<!-- 본문 제목 시작-->
 			<div class="content-header">
 				<div class="pointMainMenu" style="border-bottom: 2px solid #545B62; padding-bottom: 10px;">
+					<!-- 모달로 결제창 띄울 버튼 -->
 					<button type="button" class="btn btn-info" id="exchangeButton" onClick="location.href='./exchangeForm.do'">환전하기</button>
-					<h2>${MemberDTO.id }님</h2> 
+					<button type="button" class="btn btn-info" id="paymentButton" style="margin-right:20px"data-toggle="modal" data-target="#paymentModal">결제하기</button>
+					<!-- 결제창 모달 -->
+					<div class="modal" id="paymentModal">
+					  <div class="modal-dialog modal-lg modal-dialog-centered ">
+					    <div class="modal-content">
+					
+					      <!-- Modal Header -->
+					      <div class="modal-header">
+					        <h4 class="modal-title">구매하실 포인트를 선택해주세요</h4>
+					        <button type="button" class="close" data-dismiss="modal">&times;</button>
+					      </div>
+					
+					      <!-- Modal body -->
+					      <div class="modal-body">
+					      	<div class="pointButton">
+						        <button type="button" class="btn btn-info" onClick="selectAmount(1000);">1,000</button>
+						        <button type="button" class="btn btn-info" onClick="selectAmount(5000);">5,000</button>
+						        <button type="button" class="btn btn-info" onClick="selectAmount(10000);">10,000</button>
+						        <button type="button" class="btn btn-info" onClick="selectAmount(50000);">50,000</button>
+						        <button type="button" class="btn btn-info" onClick="selectAmount(100000);">100,000</button>
+					      	</div>
+					      	<div class="displayAmount" style="margin-top: 20px;">
+					      		<input size="7" class="displayModalTextbox" value="선택금액" style="text-align: left">
+					      		<input size="4" class="displayModalTextbox" id="amountText" value="" style="text-align: right">
+					      		<input size="13" class="displayModalTextbox" value="원    +   부가세">
+					      		<input size="4" class="displayModalTextbox" id="VATText" value="" style="text-align: right">
+					      		<input size="1" class="displayModalTextbox" value="원"> 
+					      		<input size="8" class="displayModalTextbox" value="총결제금액 : " style="margin-left:140px; font-weight: bold;">
+					      		<input size="4" class="displayModalTextbox" id="totalAmountText" value="" style="text-align: right; font-weight: bold; color: red; font-size: 20px;">
+					      		<input size="1" class="displayModalTextbox" value="원" style="font-weight: bold;">
+					      	</div>
+					      </div>
+					
+					      <!-- Modal footer -->
+					      <div class="modal-footer"> 
+					        <button type="button" class="btn btn-primary" onClick="paymentConfirm(document.getElementById('totalAmountText').value);" data-dismiss="modal">확인</button>
+					        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+					      </div>
+					
+					    </div>
+					  </div>
+					</div>
+					<h2>${MemberDTO.id }님</h2>
+					<input type="hidden" id="loginId" value="${MemberDTO.id }"/>
+					<input type="hidden" id="loginEmail" value="${MemberDTO.email }"/>
 					<h4>보유 포인트 : ${MemberDTO.mypoint }Point</h4>
 				</div>
 				<div class="pointSubMenu" style="margin-top:20px;">
 					<div class="btn-group btn-group-sm"> 
 						<button type="button" class="btn btn-secondary" onClick="location.href='./chargeLog.do'">결제 내역</button>
-						<button type="button" class="btn btn-secondary" onClick="location.href='./sponsorLog.do'">후원한 내역</button>
-						<button type="button" class="btn btn-secondary" onClick="location.href='./patronLog.do'">후원 받은 내역</button>
-						<button type="button" class="btn btn-secondary" disabled>환전 내역</button>
+						<button type="button" class="btn btn-secondary" style="margin-left:1px" onClick="location.href='./sponsorLog.do'">후원한 내역</button>
+						<button type="button" class="btn btn-secondary" style="margin-left:1px" onClick="location.href='./patronLog.do'">후원 받은 내역</button>
+						<button type="button" class="btn btn-secondary" style="margin-left:1px" onClick="location.href='./contributorLog.do'">협업한 내역</button>
+						<button type="button" class="btn btn-secondary" style="margin-left:1px" onClick="location.href='./receiverLog.do'">협업 받은 내역</button>
+						<button type="button" class="btn btn-secondary" style="margin-left:1px" disabled>환전 내역</button>
 					</div>
 					<div class="datepicker">
 						<button type="button" class="btn btn-info btn-sm" id="btnToday" onClick="searchingToday()">오늘</button>
@@ -123,10 +178,11 @@ h4 {
 					<table class="table table-hover text-center">
 						<thead class="thead-light text-center">
 				      <tr>
-				        <th width="30%">날짜</th>
-				        <th width="25%">환전 요청포인트</th>
-				        <th width="25%">입금액</th>
-				        <th width="20%">상태</th>
+				        <th width="15%">날짜</th>
+				        <th width="30%">환전 요청포인트</th>
+				        <th width="20%">입금액</th>
+				        <th width="20%">입금 은행</th>
+				        <th width="15%">상태</th>
 				      </tr>
 						</thead>
 				    <tbody>
@@ -147,6 +203,51 @@ h4 {
 	</header>
 
 </body>
+<!-- 아임포트 결제창 로드 시작 -->
+<script>
+function paymentConfirm(param) {
+	var IMP = window.IMP; // 생략가능
+	var lastAmount = parseInt(param);
+	var loginId = document.getElementById("loginId").value;
+	var loginEmail = document.getElementById("loginEmail").value;
+	IMP.init('imp83561682'); 
+	IMP.request_pay({
+		pg: 'inicis', // version 1.1.0부터 지원.
+    pay_method: 'card',
+    merchant_uid: 'merchant_' + new Date().getTime(),
+    name: 'orecord : 포인트 구매',
+    amount: lastAmount, 
+    buyer_email: loginEmail,
+    buyer_name: loginId,
+    buyer_tel: '',
+    buyer_addr: '',
+    buyer_postcode: '',
+    m_redirect_url: '' // 모바일 환경 결제 성공시 연결될 URL
+	}, 
+ 	function (rsp){
+  	console.log(rsp);
+    if (rsp.success) {
+			console.log("돈 빼감");
+			$.ajax({
+				url: "insertChargeLog.do",
+				method: "get",
+		    data: {
+		    				totalPayment: rsp.paid_amount,
+		            paymentType: rsp.pay_method
+		    			},
+			  success: function () {
+	  			alert("결제가 완료되었습니다.");
+				},
+				error : function(error) {
+					console.log(error);
+					alert("error : " + error);
+				}
+			});
+		}
+	});
+}
+</script>
+<!-- 아임포트 결제창 로드 끝 -->
 <!-- 날짜 선택 달력 시작 -->
 <script>
 $(function() {
@@ -324,6 +425,7 @@ function selectLastYear() {
 function changingTableFunc(obj) {
 	var table = document.querySelector('#changingTableId');
 	var resultLog = obj.list;
+	console.log(resultLog);
 	for (var i=0; i<resultLog.length; i++) {
 		if (resultLog[i].exchangeResult == "0"){
 			resultLog[i].exchangeResult = "환전 대기";
@@ -334,22 +436,26 @@ function changingTableFunc(obj) {
 		else if(resultLog[i].exchangeResult == "2"){ 
 			resultLog[i].exchangeResult = "환전 실패";
 		}
+		resultLog[i].exchangePoint = comma(resultLog[i].exchangePoint);
+		resultLog[i].exchangedMoney = comma(resultLog[i].exchangedMoney);
 	}
+	
 	var html = '<div class="table" id="changingTableId">';
 			html = '<table class="table table-hover text-center">';
 			html += '	<thead class="thead-light text-center">';
-			html += '		<th width="30%">날짜</th><th width="25%">환전 요청포인트</th><th width="25%">입금액</th><th width="20%">상태</th></thead>';
+			html += '		<th width="15%">날짜</th><th width="30%">환전 요청포인트</th><th width="20%">입금액</th><th width="20%">입금 은행</th><th width="15%">상태</th></thead>';
 			html += '	</thead>';
 			html += '	<tbody>';
 	if (obj.totalRecord == 0) {
 			html += '<tr>';
-			html += '	<td colspan="4" align="center"> 조회된 내역이 없습니다. </td>';
+			html += '	<td colspan="5" align="center"> 조회된 내역이 없습니다. </td>';
 			html += '</tr></tbody></table></div>';
 	}
 	else {
 		for (var i=0; i<resultLog.length; i++) {
 				html += '<tr><td>' + resultLog[i].regidate + '</td><td>' + resultLog[i].exchangePoint
-						 + '</td><td> ' + resultLog[i].exchangedMoney + '</td><td>' + resultLog[i].exchangeResult + '</td></tr>';
+						 + '</td><td> ' + resultLog[i].exchangedMoney + '</td><td>' + resultLog[i].accountBank + '</td><td>'
+						 + resultLog[i].exchangeResult + '</td></tr>';
 		}
 				html += '	</tbody></table></div>';
 				html += '<nav class="paginationPostion" style="margin-bottom: 200px;">';
@@ -381,5 +487,28 @@ function changingTableFunc(obj) {
 	}
 	table.innerHTML = html;
 }
+function comma(num){
+    var len, point, str; 
+       
+    num = num + ""; 
+    point = num.length % 3 ;
+    len = num.length; 
+    str = num.substring(0, point); 
+    while (point < len) { 
+        if (str != "") str += ","; 
+        str += num.substring(point, point + 3); 
+        point += 3; 
+    } 
+    return str;
+}
+</script>
+<!-- 결제 모달창에서 금액 선택시 결제 amount 디스플레이 변경 -->
+<script>
+function selectAmount(param){
+	var amount = parseInt(param);
+	document.getElementById("amountText").value = amount;
+	document.getElementById("VATText").value = parseInt(amount/10);
+	document.getElementById("totalAmountText").value = parseInt(amount*1.1);
+}	
 </script>
 </html>
