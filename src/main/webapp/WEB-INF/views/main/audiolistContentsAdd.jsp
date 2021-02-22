@@ -119,6 +119,9 @@
 						  </div>
 						</div>
 						</c:if>
+						<button type="button" class="btn btn-secondary btn-sm" onclick="openmusicbox(${b.audio_idx})">
+							재생목록+
+						</button>
 						<c:if test="${pageContext.request.userPrincipal.name eq b.id and b.party eq 1}">
 						<button type="button" class="btn btn-secondary btn-sm" onclick="coOp('${b.audio_idx}')">참여</button>
 						</c:if>

@@ -163,7 +163,7 @@ $(function(){
 					<div style="padding: 10px 0 0 10px;">
 						<audio controls
 							style="width: 95%; height: 60px; padding-left: 12px;"
-							id="audio" src="${audio.audiofilename }">
+							id="audio" src="${audio.audiofilename }" onplay="upmusiccount(${b.audio_idx });">
 						</audio>
 					</div>
 					<div style="padding: 10px 0 0 35px;">
