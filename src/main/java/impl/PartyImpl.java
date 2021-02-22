@@ -26,7 +26,8 @@ public interface PartyImpl {
 			@Param("audiofilename") String audiofilename,
 			@Param("audiocontents") String audiocontents,
 			@Param("kind") String kind,
-			@Param("point") int point);
+			@Param("point") int point,
+			@Param("receiverId") String receiverId);
 	
 	//협업신청처리(오디오파일X)
 	public int partyAction2(@Param("id") String id,
@@ -35,7 +36,8 @@ public interface PartyImpl {
 			@Param("contents") String contents,
 			@Param("audiocontents") String audiocontents,
 			@Param("kind") String kind,
-			@Param("point") int point);
+			@Param("point") int point,
+			@Param("receiverId") String receiverId);
 	
 	//협업신청서 상세페이지
 	public PartyBoardDTO partyView(@Param("party_idx") int party_idx);

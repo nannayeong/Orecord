@@ -142,6 +142,7 @@ public class PartyController {
 		
 		String name = null;
 		int party3 = Integer.parseInt(req.getParameter("audio_idx"));
+		
 		System.out.println("audio_idx2 = "+ party3);
 		
 		try {
@@ -161,7 +162,7 @@ public class PartyController {
 			int point = Integer.parseInt(req.getParameter("point"));
 			String title = req.getParameter("title");
 			String contents = req.getParameter("contents");
-			
+			String receiverId = req.getParameter("receiverId");
 			String audiofilename = null;
 			
 			/*
@@ -206,17 +207,17 @@ public class PartyController {
 			}
 			
 			if(audiofilename==null) {
+				System.out.println("1");
 				int result3 = sqlSession.getMapper(PartyImpl.class).partyAction2(
-						name, party3, title, contents, audiocontents, kind, point);
+						receiverId, party3, title, contents, audiocontents, kind, point, id);
 				System.out.println("입력결과 = "+ result3);
-				
 				model.addAttribute("audio_idx", party3);
 			}
 			else {
+				System.out.println("2");
 				int result2 = sqlSession.getMapper(PartyImpl.class).partyAction(
-						name, party3, title, contents, audiofilename, audiocontents, kind, point);
+						receiverId, party3, title, contents, audiofilename, audiocontents, kind, point, id); 
 				System.out.println("입력결과 = "+ result2);
-				
 				model.addAttribute("audio_idx", party3);
 			}
 		}

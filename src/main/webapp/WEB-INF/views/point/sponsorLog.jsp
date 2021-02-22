@@ -386,7 +386,7 @@ function selectLastYear() {
 		  dataType : "json",
 		  success: function (data) {
 		    if (data != null) {
-		    	changingTableFunc(data); // HTML 테이블 작성 함수 호출
+		    	changingTableFunc(data); // HTML 테이블 교체 함수 호출
 				}
 			},
 			error : function(error) {
