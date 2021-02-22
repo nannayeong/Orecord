@@ -126,11 +126,11 @@ function wsMessage(event){
 	var idx = message[3];//번호
 	writeResponse(event.data);
 	var sendtxt = sender+"|"+msg+"|"+idx;
-	if(content == ""){
+	if(msg == ""){
 		//날라온 내용이 없으므로 아무것도 하지 않는다.
 	}
 	else{
-		if(receiver.match((chat_id))){
+		if(receiver.match(chat_id)){
 			console.log("notify()");
 			//노티 함수 호출
 			notify(sendtxt);
