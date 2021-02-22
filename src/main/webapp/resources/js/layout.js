@@ -178,7 +178,6 @@ function notify(notiMsg) {
 function addpl(audioidx){
 	var pln = $("#plname"+audioidx+" option:selected").val();
 	var aidx = audioidx;
-	alert(pln + aidx);
 	$.ajax({
 	     url : "/orecord/addpl.do",
 	     type : "get",
