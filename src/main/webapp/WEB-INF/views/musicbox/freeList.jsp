@@ -339,7 +339,7 @@ function freeAudioDeleteFunc(fpi, index){
 	     dataType : "json",
 	     success : function sucFunc(resData) {
 			 if(resData.result==1){
-				 window.open("/orecord/musicbox", "width=400,height=550,toolbars=no,status=no");
+				 window.open("/orecord/musicbox", "musicbox", "width=400,height=550,toolbars=no,status=no");
 			 }
 	     }    
 	});
