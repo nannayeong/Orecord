@@ -184,13 +184,12 @@ public class Calculate {
 				}
 			}
 		}
+		HashMap<String,MemberDTO> ret = new HashMap<String, MemberDTO>();
 		for(String memberid:memberMap.keySet()) {
-			if(memberMap.size()<=4) {
-				break;
-			}else {
-				memberMap.remove(memberMap.get(memberid));
+			if(ret.size()<4) {
+			ret.put(memberid,memberMap.get(memberid));
 			}
 		}
-		return memberMap;
+		return ret;
 	}
 }
