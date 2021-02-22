@@ -94,14 +94,14 @@
     ORDER BY regidate DESC
 	</select>
 	<!-- 협업한 내역 조회 -->
-	<select id="selectContributorLog" resultType="model.SponsorshipDTO" parameterType="hashmap">
+	<select id="selectContributorLog" resultType="model.PartyBoardDTO" parameterType="hashmap">
 		SELECT * 
 		FROM (
 					SELECT A.*, rownum recordNum 
 					FROM (
-								SELECT regidate, sponPoint, patronId
+								SELECT regidate, point, receiverId
 								FROM partyboard
-								WHERE sponsorId=#{loginId} AND 
+								WHERE id=#{loginId} AND 
 									trunc(regidate) between #{fromDate} and #{toDate}
     						ORDER BY regidate DESC
 					) A
@@ -114,19 +114,19 @@
 	<select id="selectReceiverLogTotalCount" resultType="int" parameterType="hashmap">
 		SELECT count(*)
 		FROM partyboard 
-    WHERE patronId=#{loginId} AND 
+    WHERE receiverId=#{loginId} AND 
     	trunc(regidate) between #{fromDate} and #{toDate}
     ORDER BY regidate DESC
 	</select>
 	<!-- 협업 받은 내역 조회 -->
-	<select id="selectReceiverLog" resultType="model.SponsorshipDTO" parameterType="hashmap">
+	<select id="selectReceiverLog" resultType="model.PartyBoardDTO" parameterType="hashmap">
 		SELECT * 
 		FROM (
 					SELECT A.*, rownum recordNum 
 					FROM (
-								SELECT regidate, sponPoint, sponsorId
+								SELECT regidate, point, id
 								FROM partyboard
-								WHERE patronId=#{loginId} AND 
+								WHERE receiverId=#{loginId} AND 
 									trunc(regidate) between #{fromDate} and #{toDate}
     						ORDER BY regidate DESC
 					) A

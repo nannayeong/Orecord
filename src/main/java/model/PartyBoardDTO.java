@@ -16,12 +16,19 @@ public class PartyBoardDTO {
 	private java.sql.Date regidate; //참여일
 	private String img; //프로필사진
 	private int count; //협업신청수 카운트
+	private String receiverId; // 작성자 아이디
 	
 	//getter/setter
 	
 	/*innerjoin*/
 	private String audiotitle;
 	
+	public String getReceiverId() {
+		return receiverId;
+	}
+	public void setReceiverId(String receiverId) {
+		this.receiverId = receiverId;
+	}
 	private String nickname;
 	
 	
