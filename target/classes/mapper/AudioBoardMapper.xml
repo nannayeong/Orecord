@@ -39,7 +39,7 @@
 	select * from
         (select audio.*, rownum n from 
             (select * from audioboard Where <![CDATA[regidate<=sysdate-#{0}]]> and <![CDATA[regidate>=sysdate-#{1}]]> and party=#{4}
-        order by (((like_count/(select sum(like_count)+1 from audioboard))+(play_count/(select sum(play_count)+1 from audioboard)))*100 ) DESC) audio)
+        order by regidate DESC) audio)
     <![CDATA[where n>=#{2}]]> and <![CDATA[n<=#{3}]]> 
 	</select>
 	<select id="audioCoopCount" resultType="int">

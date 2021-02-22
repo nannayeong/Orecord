@@ -94,7 +94,8 @@ public class HomeController {
 		model.addAttribute("plList", plList);
 		
 		//메인페이지에 출력할 오디오게시글 불러옴
-		ArrayList<AudioBoardDTO> audiolist = sqlSession.getMapper(AudioBoardImpl.class).mainAudioList(0,7,1,8);
+		ArrayList<AudioBoardDTO> audiolist = sqlSession.getMapper(AudioBoardImpl.class).mainAudioList(0,60,1,8);
+		System.out.println(audiolist.size()+"사이즈");
 		HashMap<String, String> nicknames = new HashMap<String, String>();
 		for(AudioBoardDTO audioDTO : audiolist) {;
 			int commentCount = sqlSession.selectOne("commentCount",audioDTO.getAudio_idx());
@@ -165,7 +166,7 @@ public class HomeController {
 		int totalAudio = sqlSession.selectOne("audioCount");
 		ArrayList<AudioBoardDTO> audiolist = new ArrayList<AudioBoardDTO>();
 		if(loadedCount!=totalAudio){
-			audiolist = sqlSession.getMapper(AudioBoardImpl.class).mainAudioList(dateCheck,dateCheck+40,loadedCount+1,loadedCount+8);
+			audiolist = sqlSession.getMapper(AudioBoardImpl.class).mainAudioList(dateCheck,dateCheck+60,loadedCount+1,loadedCount+8);
 		}
 		
 	
@@ -244,11 +245,11 @@ public class HomeController {
 		}
 		if(add) {
 			if(loadedCount>=totalAudio){
-				audiolist = sqlSession.getMapper(AudioBoardImpl.class).mainAudioListCoop(0,14,loadedCount+1,loadedCount+8,party);
+				audiolist = sqlSession.getMapper(AudioBoardImpl.class).mainAudioListCoop(0,60,loadedCount+1,loadedCount+8,party);
 			}
 			
 		}else {
-			audiolist = sqlSession.getMapper(AudioBoardImpl.class).mainAudioListCoop(0,14,1,8,party);
+			audiolist = sqlSession.getMapper(AudioBoardImpl.class).mainAudioListCoop(0,60,1,8,party);
 		}
 		
 		
@@ -345,8 +346,9 @@ public class HomeController {
 		}else {
 			totalAudio = sqlSession.selectOne("audioCount");			
 		}
+		System.out.println("totalAudio"+totalAudio +" "+ loaded);
 		Map<String, String> map = new HashMap<String, String>();
-		if(loaded==totalAudio) {
+		if(loaded>=totalAudio) {
 		map.put("nomoreFeed", "이전 게시물이 없습니다.");
 		}
 		return map;
