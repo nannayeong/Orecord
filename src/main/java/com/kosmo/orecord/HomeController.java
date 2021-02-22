@@ -72,7 +72,7 @@ public class HomeController {
 			HttpSession session, Principal principal) {
 		
 		String path = req.getContextPath();
-		ArrayList<PlayListDTO> plList = null;
+		ArrayList<String> plList = null;
 		
 		//로그인
 		String id="";
@@ -80,13 +80,8 @@ public class HomeController {
 			 id = principal.getName();
 			 
 			 /*로그인유저의 플레이리스트 가져오기*/
-			 plList = sqlSession.getMapper(PlayListImpl.class).select(id);
-				
-			 if(plList.size()==0) {
-				 PlayListDTO dto = new PlayListDTO();
-				 dto.setPlname("default");
-				 plList.add(dto);
-			 }
+			 plList = sqlSession.getMapper(PlayListImpl.class).myplaylistName(id);
+			 
 			
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -120,7 +120,7 @@ public class UploadController {
 			int album_idx = -1;
 			
 			/*앨범*/
-			//내가 앨범리스트 불러오기
+			//나의 앨범리스트 불러오기
 			ArrayList<AlbumDTO> albumList = sqlSession.getMapper(AlbumImpl.class).albumList(id);
 			
 			if(albumList.size()==0) {//아무 앨범도 없는 경우

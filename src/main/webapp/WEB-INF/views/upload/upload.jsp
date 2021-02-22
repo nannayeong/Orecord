@@ -152,6 +152,9 @@
 
 
 function addAlbumFunc(){
+	 var form = $('#uploadForm')[0];
+	 var data = new FormData(form);
+	
 	if($('#addAlbumName').val()==''){
 		alert('앨범명을 입력해주세요');
 	}
@@ -160,7 +163,7 @@ function addAlbumFunc(){
 		     url : "./addAlbum.do",
 		     type : "get",
 		     contentType : "text/html;charset:utf-8",
-		     data : {addAlbumName:$('#addAlbumName').val()},
+		     data : {addAlbumName:$('#addAlbumName').val(), data},
 		     dataType : "json",
 		     success : function sucFunc(resData) {
 		    	 if(resData.result==1){
@@ -215,10 +218,12 @@ function addAlbumFunc(){
 							    <div class="modal-content">
 							      <!-- Modal body -->
 							      <div class="modal-body" style="text-align:center">
+							      <form  method="POST" enctype="multipart/form-data" id="uploadForm">
 							      	<span>추가할 앨범명을 입력해주세요</span><br />
 							      	<input type="text" id="addAlbumName" />
+							      	<input type="file" id="albumimg" accept=".jpeg,.jpg,.png" name="albumimg" class="form-control"/>
 							      	<div><button type="button" id="aaButton" class="btn btn-warning btn-sm" onclick='addAlbumFunc();'>추가하기</button></div>
-							      
+							      </form>
 							      </div>
 							      <br />
 							    </div>

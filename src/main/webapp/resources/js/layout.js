@@ -88,13 +88,6 @@ function recordDeleteFunc(aidx){
 	}
 }
 
-var pop;
-function openmusicbox(audio_idx){
-	pop = window.open("/orecord/musicbox?audio_idx="+audio_idx, "musicbox", "width=400,height=550,toolbars=no,status=no");
-}
-function openmusicboxnull(){
-	pop = window.open("/orecord/musicbox", "musicbox", "width=400,height=550,toolbars=no,status=no");
-}
 
 var webSocket;
 var chat_id;
@@ -182,9 +175,10 @@ function notify(notiMsg) {
 		delay : 5000
 	}).toast('show');
 }
-function addpl(){
-	var pln = $("select[name=plname]").val();
-	var aidx = $("input[name=audio_idx]").val();
+function addpl(audioidx){
+	var pln = $("#plname"+audioidx+" option:selected").val();
+	var aidx = audioidx;
+	alert(pln + aidx);
 	$.ajax({
 	     url : "/orecord/addpl.do",
 	     type : "get",
@@ -216,4 +210,12 @@ function upmusiccount(aidx){
 			alert("error : " + error);
 		}   
 	});
+}
+
+var pop;
+function openmusicbox(audio_idx){
+	pop = window.open("/orecord/musicbox?audio_idx="+audio_idx, "musicbox", "width=400,height=550,toolbars=no,status=no");
+}
+function openmusicboxnull(){
+	pop = window.open("/orecord/musicbox", "musicbox", "width=400,height=550,toolbars=no,status=no");
 }

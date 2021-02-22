@@ -192,8 +192,8 @@ function plLoginC(){
 	<div>
 		<table style="margin:auto;text-align:center;width:100%">
 			<tr>
-				<td style="width:50%;cursor:pointer;" class="bg-warning" onclick="location.href='./musicbox?state=freelist'">재생목록</td>
-				<td style="width:50%;cursor:pointer;" class="bg-light" onclick="plLoginC();">나의 플레이리스트</td>
+				<td style="width:50%;cursor:pointer;" class="bg-light" onclick="location.href='./musicbox?state=freelist'">재생목록</td>
+				<td style="width:50%;cursor:pointer;" class="bg-warning" onclick="plLoginC();">나의 플레이리스트</td>
 			</tr>
 		</table>
 	</div>
