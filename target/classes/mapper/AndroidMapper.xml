@@ -11,5 +11,10 @@
 	<select id="memberLogin" resultType="model.MemberDTO" parameterType="model.MemberDTO">
 		select * from member where id=#{id} and pw=#{pw}
 	</select>
-
+	
+	<!-- 메인화면 플레이리스트 보기 -->
+	<select id="audioBoardView" resultType="model.AudioBoardDTO">
+		SELECT * FROM audioboard ORDER BY regidate DESC
+	</select>
+	
 </mapper>

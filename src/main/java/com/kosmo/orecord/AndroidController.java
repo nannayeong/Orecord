@@ -3,6 +3,7 @@ package com.kosmo.orecord;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import impl.AndroidImpl;
+import model.AudioBoardDTO;
 import model.MemberDTO;
 
 @Controller
@@ -56,6 +58,7 @@ public class AndroidController {
 		return lists;
 	}
 	
+	//로그인
 	@RequestMapping("/android/memberLogin.do")
 	@ResponseBody
 	public Map<String, Object> memberLogin(MemberDTO memberDTO, Model model){
@@ -66,7 +69,6 @@ public class AndroidController {
 		//String id = principal.getName();
 		
 		MemberDTO memberInfo = sqlSession.getMapper(AndroidImpl.class).memberLogin(memberDTO);
-		model.addAttribute("memberInfo", memberInfo);
 		
 		if(memberInfo==null) {
 			returnMap.put("isLogin", 0);
@@ -78,4 +80,17 @@ public class AndroidController {
 		System.out.println(returnMap);
 		return returnMap;
 	}
+	
+	//메인화면 플레이리스
+	@RequestMapping("/android/audioBoardView.do")
+	@ResponseBody
+	public ArrayList<AudioBoardDTO> audioBoardView(AudioBoardDTO audioBoardDTO){
+		
+		System.out.println("안드 메인화면 요청들어옴");
+		
+		ArrayList<AudioBoardDTO> mainList = sqlSession.getMapper(AndroidImpl.class).audioBoardView();
+		
+		return mainList;
+	}
+	
 }
