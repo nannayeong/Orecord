@@ -230,7 +230,6 @@ function playstop(){
 				$('#'+i).removeClass('bg-light');
 			}
 		}
-		
 	}
 	else if($('#playstop').hasClass('fa-pause')){
 		$('#playstop').removeClass('fa-pause');
@@ -291,9 +290,9 @@ function go(){
 	$('#playstop').removeClass('fa-play');
 	$('#playstop').addClass('fa-pause');
 	nas[nowIdx].play();
-	$('#artist').html(artist[0]);
-	$('#title').html(title[0]);
-	$('#nowaudioimg').attr('src', img[0]);
+	$('#artist').html(artist[nowIdx]);
+	$('#title').html(title[nowIdx]);
+	$('#nowaudioimg').attr('src', img[nowIdx]);
 	
 	$('#'+nowIdx).addClass('bg-light');
 	var listsize = '${listsize}';
@@ -340,7 +339,7 @@ function freeAudioDeleteFunc(fpi, index){
 	     dataType : "json",
 	     success : function sucFunc(resData) {
 			 if(resData.result==1){
-				 location.reload();
+				 window.open("/orecord/musicbox", "musicbox", "width=400,height=550,toolbars=no,status=no");
 			 }
 	     }    
 	});

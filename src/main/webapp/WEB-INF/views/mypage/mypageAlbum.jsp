@@ -82,12 +82,15 @@ border:1px solid #f2f2f2
  			<div id="accordion">
 				<div id="col${album.albumName }" class="collapse show" data-parent="#accordion">
 					<table style="width:95%;font-size:15px" id="list">
+					<c:set var="idx" value="1"/>
 						<c:forEach items="${audioList }" var="audio" varStatus="status">
+						
 						<c:if test="${audio.albumName eq album.albumName }">	
 						<tr>		
 							<td onclick="location.href='../board/view.do?audio_idx=${audio.audio_idx}'" style="padding-left:0.7em">
 								<img src="${audio.imagename }" alt="" style="width:25px;"/> 
-								${status.count }. ${audio.audiotitle } - ${audio.artistname }
+								${idx }. ${audio.audiotitle } - ${audio.artistname }
+								<c:set var="idx" value="${idx+1}"/>
 							</td>
 							<td style="padding-right:0.7em;text-align:right">
 								<!-- 플레이버튼 -->

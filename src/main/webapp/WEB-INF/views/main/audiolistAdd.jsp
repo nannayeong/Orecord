@@ -45,7 +45,7 @@
 						</tr>
 						<tr>
 							<td colspan="3">
-								<audio controls style="width:97%" id="${b.albumName }" >
+								<audio controls style="width:97%" id="${b.albumName }" onplay="upmusiccount(${b.audio_idx });">
 									<source src="${b.audiofilename }" type="audio/mp4">
 								</audio>
 							</td>
@@ -92,15 +92,15 @@
 				      </div>
 				      <!-- Modal body -->
 				      <form action="${pageContext.request.contextPath}/addPlayList.do?${_csrf.parameterName}=${_csrf.token}" method="post">
-				      <input type="hidden" name="audio_idx" value="${b.audio_idx }" />
+				      <input type="hidden" name="audio_idx" value="${b.audio_idx }" id="plidx" />
 				      <div class="modal-body" style="text-align:center">
 				      	<div><img src="${b.imagename }" alt="" style="width:25px"/> 
 							${b.audiotitle } - ${b.artistname }
 						</div><br />
 						<div style="margin-bottom:0.3em">저장할 플레이리스트 폴더 선택</div>
-				      	<select name="plname" class="custom-select" style="width:12em;text-align:center">
+				      	<select name="plname" class="custom-select" style="width:12em;text-align:center" id="plname${b.audio_idx }">
 				      		<c:forEach items="${plList}" var="pl" varStatus="status">
-				      		<option value="${pl.plname}">${pl.plname }</option>
+				      		<option value="${pl}">${pl }</option>
 				      		</c:forEach>
 				      	</select>
 				      	&nbsp&nbsp<span onclick="addplname();"><i class="fas fa-plus fa-lg"></i></span><br />
@@ -108,7 +108,7 @@
 				
 				      <!-- Modal footer -->
 				      <div class="modal-footer">
-				        <button type="button" class="btn btn-warning btn-sm" onclick="addpl();">추가하기</button>
+				        <button type="button" class="btn btn-warning btn-sm" onclick="addpl(${b.audio_idx})">추가하기</button>
 				      </div>
 					</form>
 				    </div>
@@ -123,7 +123,7 @@
 						</c:if>
 							</td>
 							<td style="text-align:right;padding-right:1.5em;color:#423e3e;font-size:14px" colspan="2">
-								재생 : ${b.play_count} &nbsp&nbsp
+								<span id="playC">재생 : ${b.play_count}</span> &nbsp&nbsp
 								댓글수 : ${b.commentCount }
 							</td>
 						</tr>

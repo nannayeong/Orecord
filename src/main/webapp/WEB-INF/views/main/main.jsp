@@ -216,18 +216,6 @@ $($.checktotalLoad = function () {
 
 <script> 
 
-function addplname(){
-	if("${pageContext.request.userPrincipal.name}"==""){
-		alert('로그인 후 이용해주세요');
-		location.href="../member/login.do"
-	}
-	else{
-		var a = prompt('추가하실 이름을 입력해주세요');
-		if(a!=null){
-			$('select[name=plname]').prepend('<option value='+a+' selected>'+a+"</option>");
-		}
-	}
-}
 function checknull(form) {
 	if(form.searchWord.value==null||form.searchWord.value==""){
 		alert("검색어를 입력하세요");
@@ -427,6 +415,8 @@ function userFunc(){
 		$('.user-down').css('visibility','hidden');
 	}
 }
+
+
 
 </script>
 

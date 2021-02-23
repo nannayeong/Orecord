@@ -74,12 +74,17 @@ public class PlayListController {
 		int idx = Integer.parseInt(req.getParameter("audio_idx"));
 		String pln = req.getParameter("plname");
 		
+		System.out.println(idx);
+		System.out.println(pln);
+		
 		String login_id = null;
 		int result = -1;
 		try {
 			login_id = principal.getName();
 			
 			result = sqlSession.getMapper(PlayListImpl.class).addPlayList(login_id, idx, pln);
+			
+			System.out.println("리스트넣기성공"+result);
 			
 		}
 		catch(Exception e) {

@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Orecord - 충전내역 조회</title>
+<title>Orecord - 협업 받은 내역 조회</title>
 
 <!-- Jquery, BootStrap --> 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -153,11 +153,11 @@ h4 {
 				</div>
 				<div class="pointSubMenu" style="margin-top:20px;">
 					<div class="btn-group btn-group-sm">  
-						<button type="button" class="btn btn-secondary" disabled>결제 내역</button>
+						<button type="button" class="btn btn-secondary" style="margin-left:1px" onClick="location.href='./chargeLog.do'">결제 내역</button>
 						<button type="button" class="btn btn-secondary" style="margin-left:1px" onClick="location.href='./sponsorLog.do'">후원한 내역</button>
 						<button type="button" class="btn btn-secondary" style="margin-left:1px" onClick="location.href='./patronLog.do'">후원 받은 내역</button>
 						<button type="button" class="btn btn-secondary" style="margin-left:1px" onClick="location.href='./contributorLog.do'">협업한 내역</button>
-						<button type="button" class="btn btn-secondary" style="margin-left:1px" onClick="location.href='./receiverLog.do'">협업 받은 내역</button>
+						<button type="button" class="btn btn-secondary" disabled>협업 받은 내역</button>
 						<button type="button" class="btn btn-secondary" style="margin-left:1px" onClick="location.href='./exchangeLog.do'">환전 내역</button>
 					</div>
 					<div class="datepicker">
@@ -180,8 +180,8 @@ h4 {
 						<thead class="thead-light text-center">
 				      <tr>
 				        <th width="30%">날짜</th>
-				        <th width="40%">결제수단</th>
-				        <th width="30%">충전포인트</th>
+				        <th width="40%">나에게 협업 해준 유저</th>
+				        <th width="30%">채택포인트</th>
 				      </tr>
 						</thead>
 				    <tbody>
@@ -385,7 +385,7 @@ function selectLastYear() {
 		  data : {fromDate : $("#date_from").val(), 
 			  			toDate : $("#date_to").val(), 
 			  			selectPage : selectPage,
-			  			selectLog : "chargeLog"},
+			  			selectLog : "receiverLog"},
 		  type : "get",
 		  dataType : "json",
 		  success: function (data) {
@@ -426,12 +426,13 @@ function changingTableFunc(obj) {
 	var table = document.querySelector('#changingTableId');
   var resultLog = obj.list;
   for (var i=0; i<resultLog.length; i++) {
-		resultLog[i].chargePoint = comma(resultLog[i].chargePoint);
+		resultLog[i].point = comma(resultLog[i].point);
+		console.log(resultLog[i]);
 	}
 	var html = '<div class="table" id="changingTableId">';
 			html = '<table class="table table-hover text-center">';
 			html += '	<thead class="thead-light text-center">';
-			html += '		<tr><th width="30%">날짜</th><th width="40%">결제수단</th><th width="30%">충전포인트</th></tr>';
+			html += '		<tr><th width="30%">날짜</th><th width="40%">나에게 협업 해준 유저</th><th width="30%">채택포인트</th></tr>';
 			html += '	</thead>';
 			html += '	<tbody>';
 	if (obj.totalRecord == 0) {
@@ -441,9 +442,9 @@ function changingTableFunc(obj) {
 	}
 	else {
 		for (var i=0; i<resultLog.length; i++) {
-		    html += '<tr><td>' + resultLog[i].regidate + '</td><td>' + resultLog[i].paymentType
-	           + '</td><td> ' + resultLog[i].chargePoint+ '</td></tr>';
-		}
+		    html += '<tr><td>' + resultLog[i].regidate + '</td><td>' + resultLog[i].id
+	           + '</td><td> ' + resultLog[i].point + '</td></tr>';
+		} 
 				html += '	</tbody></table></div>';
 				html += '<nav class="paginationPostion" style="margin-bottom: 200px;">';
 				html += '<ul class="pagination justify-content-center pagination-sm">';

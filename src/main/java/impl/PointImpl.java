@@ -27,6 +27,14 @@ public interface PointImpl {
 	// 후원 받은 내역 조회 쿼리
 	public int selectPatronLogTotalCount(Map<String, Object> obj);
 	public ArrayList<SponsorshipDTO> selectPatronLog(Map<String, Object> obj);
+
+	// 협업한 내역 조회 쿼리
+	public int selectContributorLogTotalCount(Map<String, Object> obj);
+	public ArrayList<SponsorshipDTO> selectContributorLog(Map<String, Object> obj);
+	
+	// 협업 받은 내역 조회 쿼리
+	public int selectReceiverLogTotalCount(Map<String, Object> obj);
+	public ArrayList<SponsorshipDTO> selectReceiverLog(Map<String, Object> obj);
 	
 	// 환불내역 조회 쿼리
 	public int selectExchangeLogTotalCount(Map<String, Object> obj);

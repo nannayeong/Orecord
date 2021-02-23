@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Orecord - main</title> 
+<title>Orecord - 아이디/비번 찾기</title> 
 
 <!-- Jquery, BootStrap -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

@@ -152,7 +152,7 @@ if(request.getParameter("partyType")!=null){
 			</c:if>
 			<a class="dropdown-item" href="${pageContext.request.contextPath}/${pageContext.request.userPrincipal.name}/record">마이페이지</a>
 			<a class="dropdown-item" href="${pageContext.request.contextPath}/board/partyList.do">협업신청서조회</a>
-			<a class="dropdown-item" href="${pageContext.request.contextPath }/chargeLog.do">포인트 조회</a>
+			<a class="dropdown-item" href="${pageContext.request.contextPath }/chargeLog.do">포인트 관리</a>
 			<a class="dropdown-item" href="${pageContext.request.contextPath }/pwCheck.do">정보수정</a>
 			<a class="dropdown-item" href="${pageContext.request.contextPath }/logout.do">로그아웃</a>
 			<a class="dropdown-item" href="${pageContext.request.contextPath}/report/reportlist.do">신고하기</a>

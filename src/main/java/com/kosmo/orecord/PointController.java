@@ -84,6 +84,44 @@ public class PointController {
 		return "point/patronLog";
 	}
 	
+	// 협업한 내역 조회 페이지 진입
+	@RequestMapping("/contributorLog.do")
+	public String contributor(Model model) {
+		String loginId = "";
+		try {
+			UserDetails userInfo = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			loginId = userInfo.getUsername();
+			System.out.println(loginId);
+		}
+		catch (Exception e) {
+			return "redirect:member/login.do";
+		}
+		model.addAttribute("loginId", loginId);
+		
+		MemberDTO memberDTO = sqlSession.getMapper(PointImpl.class).selectUserInfo(loginId);
+		model.addAttribute("MemberDTO", memberDTO);
+		return "point/contributorLog";
+	}
+	
+	// 협업 받은 내역 조회 페이지 진입
+	@RequestMapping("/receiverLog.do")
+	public String receiver(Model model) {
+		String loginId = "";
+		try {
+			UserDetails userInfo = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			loginId = userInfo.getUsername();
+			System.out.println(loginId);
+		}
+		catch (Exception e) {
+			return "redirect:member/login.do";
+		}
+		model.addAttribute("loginId", loginId);
+		
+		MemberDTO memberDTO = sqlSession.getMapper(PointImpl.class).selectUserInfo(loginId);
+		model.addAttribute("MemberDTO", memberDTO);
+		return "point/receiverLog";
+	}
+	
 	// 환전 내역 조회 페이지 진입
 	@RequestMapping("/exchangeLog.do")
 	public String exchange(Model model) {
@@ -150,7 +188,7 @@ public class PointController {
 		param.put("endRecord", endRecord);
 		
 		
-		// 4개 뷰 분기 시작
+		// 6개 뷰 분기 시작
 		String selectLog = param.get("selectLog").toString();
 		int totalRecord = 0;
 		
@@ -165,9 +203,23 @@ public class PointController {
 			list = sqlSession.getMapper(PointImpl.class).selectSponsorLog(param);
 		}
 
-		else if (selectLog.equals("patronLog")) { // 후원 받은한 내역 조회시 매퍼
+		else if (selectLog.equals("patronLog")) { // 후원 받은 내역 조회시 매퍼
 			totalRecord = sqlSession.getMapper(PointImpl.class).selectPatronLogTotalCount(param);
 			list = sqlSession.getMapper(PointImpl.class).selectPatronLog(param);
+		}
+
+		else if (selectLog.equals("contributorLog")) { // 협업한 내역 조회시 매퍼
+			totalRecord = sqlSession.getMapper(PointImpl.class).selectContributorLogTotalCount(param);
+			list = sqlSession.getMapper(PointImpl.class).selectContributorLog(param);
+			System.out.println(list);
+			System.out.println(totalRecord);
+		}
+
+		else if (selectLog.equals("receiverLog")) { // 협업 받은 내역 조회시 매퍼
+			totalRecord = sqlSession.getMapper(PointImpl.class).selectReceiverLogTotalCount(param);
+			list = sqlSession.getMapper(PointImpl.class).selectReceiverLog(param);
+			System.out.println(list);
+			System.out.println(totalRecord);
 		}
 		
 		else if (selectLog.equals("exchangeLog")) { // 환전 내역 조회시 매퍼

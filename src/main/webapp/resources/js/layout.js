@@ -88,13 +88,6 @@ function recordDeleteFunc(aidx){
 	}
 }
 
-var pop;
-function openmusicbox(audio_idx){
-	pop = window.open("/orecord/musicbox?audio_idx="+audio_idx, "musicbox", "width=400,height=550,toolbars=no,status=no");
-}
-function openmusicboxnull(){
-	pop = window.open("/orecord/musicbox", "musicbox", "width=400,height=550,toolbars=no,status=no");
-}
 
 var webSocket;
 var chat_id;
@@ -126,11 +119,11 @@ function wsMessage(event){
 	var idx = message[3];//번호
 	writeResponse(event.data);
 	var sendtxt = sender+"|"+msg+"|"+idx;
-	if(content == ""){
+	if(msg == ""){
 		//날라온 내용이 없으므로 아무것도 하지 않는다.
 	}
 	else{
-		if(receiver.match((chat_id))){
+		if(receiver.match(chat_id)){
 			console.log("notify()");
 			//노티 함수 호출
 			notify(sendtxt);
@@ -182,9 +175,9 @@ function notify(notiMsg) {
 		delay : 5000
 	}).toast('show');
 }
-function addpl(){
-	var pln = $("select[name=plname]").val();
-	var aidx = $("input[name=audio_idx]").val();
+function addpl(audioidx){
+	var pln = $("#plname"+audioidx+" option:selected").val();
+	var aidx = audioidx;
 	$.ajax({
 	     url : "/orecord/addpl.do",
 	     type : "get",
@@ -198,4 +191,30 @@ function addpl(){
 			 }
 	     }    
 	});
+}
+
+function upmusiccount(aidx){
+	$.ajax({
+		url : "/orecord/board/playAction.do",
+		type : "get",
+		contentType : "text/html;charset:utf-8",
+		data : { audio_idx : aidx},
+		dataType : "json",
+		success : function(resData){
+            if(resData!=null){
+				$('#playC').html(resData.playCount);
+            }	
+		},
+		error : function(error) {
+			alert("error : " + error);
+		}   
+	});
+}
+
+var pop;
+function openmusicbox(audio_idx){
+	pop = window.open("/orecord/musicbox?audio_idx="+audio_idx, "musicbox", "width=400,height=550,toolbars=no,status=no");
+}
+function openmusicboxnull(){
+	pop = window.open("/orecord/musicbox", "musicbox", "width=400,height=550,toolbars=no,status=no");
 }

@@ -25,7 +25,7 @@
 	
 	<!-- 댓글리스트 -->
 	<select id="mComment" resultType="model.MCommentDTO">
-		SELECT * FROM member M INNER JOIN m_comment C ON M.id=C.id
+		SELECT C.comment_idx, C.audio_idx, M.img, C.id, C.contents, C.regidate FROM member M INNER JOIN m_comment C ON M.id=C.id
 			WHERE audio_idx=#{audio_idx} ORDER BY comment_idx ASC
 	</select>
 	

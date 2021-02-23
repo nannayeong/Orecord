@@ -114,7 +114,7 @@ var writeValidate = function(f){
 				<div class="col-5">
 					<div class="form-group">
 						<label>작성자</label>
-						<input type="text" class="form-control"
+						<input type="text" class="form-control" name="receiverId"
 							value="${pageContext.request.userPrincipal.name }" readonly style="font-size: 14px;">
 					</div>
 				</div>
