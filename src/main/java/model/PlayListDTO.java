@@ -1,7 +1,7 @@
 package model;
 
 public class PlayListDTO {
-
+	
 	private int idx;
 	private String plid;
 	private int audio_idx;
