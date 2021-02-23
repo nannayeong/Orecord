@@ -14,7 +14,7 @@
 	
 	<!-- 메인화면 플레이리스트 보기 -->
 	<select id="audioBoardView" resultType="model.AudioBoardDTO">
-		SELECT * FROM audioboard
+		SELECT * FROM audioboard ORDER BY regidate DESC
 	</select>
 	
 </mapper>
