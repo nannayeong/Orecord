@@ -131,7 +131,7 @@
 							재생목록+
 						</button>
 						<c:if test="${pageContext.request.userPrincipal.name ne b.id and b.party eq 1}">
-						<button type="button" class="btn btn-secondary btn-sm" onclick="coOp('${b.audio_idx}')">참여</button>
+						<button type="button" class="btn btn-secondary btn-sm" onclick="partyFunc(${b.audio_idx})">참여</button>
 						</c:if>
 							</td>
 							<td style="text-align:right;padding-right:1.5em;color:#423e3e;font-size:14px" colspan="2">

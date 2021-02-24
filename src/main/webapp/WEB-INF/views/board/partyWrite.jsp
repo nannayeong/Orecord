@@ -197,7 +197,7 @@ var writeValidate = function(f){
 						<label>내용 &nbsp; <span style="color: green;"> *
 								전달할 메세지</span></label>
 						<textarea name="contents" id="contents" class="form-control"
-							rows="6"></textarea>
+							rows="6">제가 작업한 내용이에요 잘부탁해염>@<</textarea>
 					</div>
 				</div>
 			</div>

@@ -335,7 +335,7 @@ $(function(){
 						      <div class="modal-body">
 						        <div>${pageContext.request.userPrincipal.name}님의 잔여 포인트 :
 						        	<input type="text" id="myPoint" value="${loginDTO.mypoint }" size="3" style="border: 0px;  margin-bottom: 8px;">포인트 
-						        	<button type="button" class="btn btn-info btn-sm" style="display:block; float:right; margin-right:20px;"onclick="location.href='../chargeLog.do'">충전하기</button>
+						        	<button type="button" class="btn btn-info btn-sm" style="display:block; float:right; margin-right:20px;"onclick="location.reload();window.open('../chargeLog.do')">충전하기</button>
 						        </div>
 						        
 						        <div>후원하실 포인트를 입력해주세요 : <input type="text" id="sponPoint" name="sponPoint" value="" style="width:7em; margin-top: 10px;" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"/> 포인트</div>

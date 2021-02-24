@@ -186,7 +186,7 @@ function addpl(audioidx){
 	     dataType : "json",
 	     success : function sucFunc(resData) {
 	    	 if(resData.result==1){
-					alert("플레이리스트에 등록되었습니다");
+					$('#play'+audioidx).modal('hide');
 					window.open("/orecord/musicbox?state=playlist&pl="+pln, "musicbox", "width=400,height=550,toolbars=no,status=no");
 			 }
 	     }    

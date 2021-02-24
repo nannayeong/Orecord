@@ -84,7 +84,6 @@
 		WHERE recordNum between #{startRecord} and #{endRecord}
 	</select>
 	
-	<!-- 파티보드에 receiverId(협업 받는 아이디 컬럼 추가 후 테이블, 검색조건, 추출 컬럼(point, regidate, id) 변경-->
 	<!-- 협업한 내역 건수 조회 -->
 	<select id="selectContributorLogTotalCount" resultType="int" parameterType="hashmap">
 		SELECT count(*)
@@ -193,4 +192,10 @@
 	<update id="exchangeApprove">
 		UPDATE EXCHANGELOG set EXCHANGERESULT = 1 WHERE IDX=#{0}
 	</update>
+	
+	<!-- 후원한 내역 삽입 -->
+	<insert id="insertSponsorLog">
+	insert into sponsorshipLog(idx, sponsorId, patronId, sponPoint)
+		values (seq_sponsorshipLog.nextval, #{param1}, #{param3}, #{param2}) 
+	</insert>
 </mapper>

@@ -218,6 +218,7 @@ function plLoginC(){
 		</table>
 		<progress value="0" id="progress" style="width:100%;"></progress>
 	</div>
+	<div style="border:2px solid f2f2f2;font-size:1.5em">${pln }</div>
 	<div id="audioList">
 		<table style="width:100%">
 		<c:forEach items="${audioList}" var="a" varStatus="status">

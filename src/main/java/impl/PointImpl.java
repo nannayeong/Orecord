@@ -52,4 +52,6 @@ public interface PointImpl {
 	public void insertExchangeLog(Map<String, Object> obj);
 	public void updateExchangeMyPoint(Map<String, Object> obj);
 	public int  exchangeApprove(int idx);
+	
+	public void insertSponsorLog(String sponsorId, int sponPoint, String patronId);
 }
