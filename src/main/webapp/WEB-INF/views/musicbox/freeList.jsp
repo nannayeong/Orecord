@@ -339,7 +339,7 @@ function freeAudioDeleteFunc(fpi, index){
 	     dataType : "json",
 	     success : function sucFunc(resData) {
 			 if(resData.result==1){
-				 window.open("/orecord/musicbox", "musicbox", "width=400,height=550,toolbars=no,status=no");
+				 pop = window.open("/orecord/musicbox", "musicbox", "width=400,height=550,toolbars=no,status=no");
 			 }
 	     }    
 	});
@@ -347,14 +347,8 @@ function freeAudioDeleteFunc(fpi, index){
 function plLoginC(){
 	if("${pageContext.request.userPrincipal.name}"==""){
 		alert('로그인 후 이용해주세요');
-		if(opener.closed) {   //부모창이 닫혔는지 여부 확인
-		      // 부모창이 닫혔으니 새창으로 열기
-		      window.open('${pageContext.request.contextPath}/member/login.do', "openWin");
-		} 
-		else {
         opener.location.href = '${pageContext.request.contextPath}/member/login.do';
 	    opener.focus();
-	    }
 		self.close();
 	}
 	else{
@@ -405,7 +399,7 @@ function plLoginC(){
 				<img src="${pageContext.request.contextPath}/resources/upload/${a.imagename}" alt="" style="width:35px;height:35px;" />
 				${a.audiotitle } - ${a.artistname }
 			</td>
-			<td>
+			<td style="width:15px;">
 				<a href="javascript:freeAudioDeleteFunc(${a.fp_idx}, ${status.index});">
 			  		<i class="fas fa-trash-alt"></i>
 			    </a>

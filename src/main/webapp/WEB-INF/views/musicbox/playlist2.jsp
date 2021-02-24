@@ -226,7 +226,7 @@ function plLoginC(){
 				<img src="${pageContext.request.contextPath}/resources/upload/${a.imagename}" alt="" style="width:35px;height:35px;" />
 				${a.audiotitle } - ${a.artistname }
 			</td>
-			<td>
+			<td style="width:15px;">
 				<a href="javascript:plAudioDeleteFunc(${a.idx},${status.index});">
 			  		<i class="fas fa-trash-alt"></i>
 			    </a>

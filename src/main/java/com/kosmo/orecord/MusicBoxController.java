@@ -116,6 +116,14 @@ public class MusicBoxController {
 			else {
 				ArrayList<PlayListDTO> plList = sqlSession.getMapper(PlayListImpl.class).selectpl(pln, login_id);
 				
+				if(plList.size()==0) {
+					
+					//내 플레이리스트 목록 가져오기
+					ArrayList<String> plSet = sqlSession.getMapper(PlayListImpl.class).myplaylistName(login_id);//나의 플레이리스트 이름
+					model.addAttribute("plSet", plSet);
+					return "musicbox/playlist1";
+				}
+				
 				model.addAttribute("pln", pln);
 				model.addAttribute("audioList",plList);
 				model.addAttribute("listsize", plList.size());	
