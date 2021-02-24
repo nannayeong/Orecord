@@ -18,7 +18,7 @@
 			from audioboard b inner join album a on b.album_idx=a.album_idx where b.id=#{param1} order by regidate desc)tb) where rnum between #{param2} and #{param3}
 	</select>
 	
-	<select id="audioBoardView">
+	<select id="audioBoardView" resultType="model.AudioBoardDTO">
 		SELECT * FROM audioboard
 	</select>
 	

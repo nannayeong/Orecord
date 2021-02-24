@@ -14,5 +14,9 @@
 	<a href="./android/memberLogin.do?id=tore1&pw=1234" target="_blank">
 		회원로그인하기(객체형태)
 	</a>
+	
+	<a href="./android/audioBoardView.do" target="_blank">
+		안드로이드 플레이리스트보기
+	</a>
 </body>
 </html>
