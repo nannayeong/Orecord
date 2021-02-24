@@ -236,6 +236,7 @@ function paymentConfirm(param) {
 		    			},
 			  success: function () {
 	  			alert("결제가 완료되었습니다.");
+	  			location.reload();
 				},
 				error : function(error) {
 					console.log(error);

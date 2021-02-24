@@ -271,14 +271,13 @@ public class PointController {
 		param.put("VAT", VAT);
 		param.put("paymentType", paymentType);
 		
-		MemberDTO mdto = (MemberDTO)session.getAttribute("user");
-		mdto.setMypoint(mdto.getMypoint()+chargePoint);
-		session.setAttribute("user", mdto);
-		
-		session.setAttribute("user", mdto);
-		
 		sqlSession.getMapper(PointImpl.class).insertChargeLog(param);
 		sqlSession.getMapper(PointImpl.class).updateChargeMyPoint(param);
+		
+		MemberDTO mdto = (MemberDTO)session.getAttribute("user");
+		MemberDTO memberDTO = sqlSession.getMapper(PointImpl.class).selectUserInfo(loginId);
+		mdto.setMypoint(memberDTO.getMypoint());
+		session.setAttribute("user", mdto);
 		
 	}
 	
@@ -298,12 +297,15 @@ public class PointController {
 		int sponPoint = Integer.parseInt(param.get("sponPoint").toString());
 		String patronId = param.get("patronId").toString();
 		
-		MemberDTO mdto = (MemberDTO)session.getAttribute("user");
-		mdto.setMypoint(mdto.getMypoint()-sponPoint);
-		session.setAttribute("user", mdto);
-		
 		sqlSession.getMapper(PointImpl.class).updateSponsorPoint(sponsorId, sponPoint);
 		sqlSession.getMapper(PointImpl.class).updatePatronPoint(patronId, sponPoint);
+		
+		sqlSession.getMapper(PointImpl.class).insertSponsorLog(sponsorId, sponPoint, patronId);
+		
+		MemberDTO mdto = (MemberDTO)session.getAttribute("user");
+		MemberDTO memberDTO = sqlSession.getMapper(PointImpl.class).selectUserInfo(sponsorId);
+		mdto.setMypoint(memberDTO.getMypoint());
+		session.setAttribute("user", mdto);
 	}
 
 	
@@ -344,13 +346,14 @@ public class PointController {
 		map.put("bankName", bankName);
 		map.put("accountName", accountName);
 		map.put("accountNum", accountNum);
-
-		MemberDTO mdto = (MemberDTO)session.getAttribute("user");
-		mdto.setMypoint(mdto.getMypoint()-exchangePoint);
-		session.setAttribute("user", mdto);
 		
 		sqlSession.getMapper(PointImpl.class).insertExchangeLog(map);
 		sqlSession.getMapper(PointImpl.class).updateExchangeMyPoint(map);
+		
+		MemberDTO mdto = (MemberDTO)session.getAttribute("user");
+		MemberDTO memberDTO = sqlSession.getMapper(PointImpl.class).selectUserInfo(loginId);
+		mdto.setMypoint(memberDTO.getMypoint());
+		session.setAttribute("user", mdto);
 		
 		return "redirect:exchangeLog.do";   
 	}

@@ -79,8 +79,10 @@ function fnCheck(){
 	      success : function(resData) {
 	    	  for(var key in resData){
 	    		  var idx = resData[key];
-	    		  $('td[name='+idx+']').html('결제성공');
+	    		  $('td[name='+idx+']').html('환전완료');
 	    	  }
+	    	  
+	    	  location.reload();
 	      },
 	      error : function(request,status,error) {
 	    	  alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
@@ -180,7 +182,7 @@ function fnCheck(){
       </li>
       <li class="nav-item active">
         <a class="nav-link" href="${pageContext.request.contextPath}/admin/chargeList.do">
-          <span>결제/충전관리</span>
+          <span>환전/충전관리</span>
         </a>
       </li>
       <li class="nav-item active">
@@ -231,9 +233,11 @@ function fnCheck(){
 	                    <th class="text-center">환전요청포인트</th>
 	                    <th class="text-center">입금금액</th>
 	                    <th class="text-center">수수료</th>
-	                    <th class="text-center">결제일시</th>
-	                    <th class="text-center">결제결과&nbsp;
-	                    <input type="button" value="선택" onclick="allChecked()"><input type="button" value="해제" onclick="allUnChecked()"><input type="button" value="승인" onclick="fnCheck()" ></th>
+	                    <th class="text-center">환전일시</th>
+	                    <th class="text-center">환전결과&nbsp;
+	                    <input type="button" value="선택" onclick="allChecked()">
+	                    <input type="button" value="해제" onclick="allUnChecked()">
+	                    <input type="button" value="승인" onclick="fnCheck()" ></th>
 	                    <th class="text-center">수정</th>
 	                    <th class="text-center">삭제</th>
                   	</tr>
@@ -245,8 +249,8 @@ function fnCheck(){
 	                    <th class="text-center">환전요청포인트</th>
 	                    <th class="text-center">입금금액</th>
 	                    <th class="text-center">수수료</th>
-	                    <th class="text-center">결제일시</th>
-	                    <th class="text-center">결제결과</th>
+	                    <th class="text-center">환전일시</th>
+	                    <th class="text-center">환전결과</th>
 	                    <th class="text-center">수정</th>
 	                    <th class="text-center">삭제</th>
                   	</tr>
@@ -269,10 +273,10 @@ function fnCheck(){
 								 		대기 &nbsp;<input type="checkbox" name="check" id="check" value="${exchange.exchangeResult }">
 								 	</c:if>
 								 	<c:if test="${exchange.exchangeResult eq 1}">
-								 		결제성공
+								 		환전 완료
 								 	</c:if>
 								 	<c:if test="${exchange.exchangeResult eq 2}">
-								 		결제실패
+								 		환전 실패
 								 	</c:if>
 								 	</td>
 								 	<td class="text-center"><button class="btn btn-primary" onclick="location.href='./exchangeEdit.do?idx=${exchange.idx }';">수정</button></td>
