@@ -355,6 +355,8 @@ public class PointController {
 		mdto.setMypoint(memberDTO.getMypoint());
 		session.setAttribute("user", mdto);
 		
+		session.setAttribute("suc", "suc");
+		
 		return "redirect:exchangeLog.do";   
 	}
 }

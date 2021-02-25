@@ -92,10 +92,18 @@ h4 {
 <script>
 	$(document).ready(function() {
 		searchingLastWeek(); // 문서 로드되면 기본 조회일자 1주일전으로 설정하고 조회
+		
+		var suc = "${suc}"
+		if (suc=="suc"){
+	   alert("환전 신청이 완료되었습니다.");
+		}
 	});
 </script>
 </head>
 <body>
+<%
+session.removeAttribute("suc");
+%>
 	<div>
 		<div class="content">
 			<!-- 본문 제목 시작-->
